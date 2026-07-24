@@ -88,9 +88,7 @@ function StackCarousel<T extends StackCarouselItem>({
 
   const measure = useCallback(() => {
     if (typeof window !== "undefined") {
-      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
-      const isSm = window.matchMedia("(min-width: 640px)").matches;
-      setPortraitScale(isPortrait && isSm ? 1.35 : 1);
+      setPortraitScale(1);
       setSlotLs(getSlotLs());
     }
   }, []);
@@ -148,10 +146,10 @@ function StackCarousel<T extends StackCarouselItem>({
   return (
     <>
       {/* ── PORTRAIT ───────────────────────────────────────── */}
-      <div className="w-full max-w-[390px] sm:max-w-[460px] mx-auto flex flex-col gap-3 sm:gap-5 overflow-hidden landscape:hidden flex-1 min-h-0 py-2 sm:py-4">
+      <div className="w-full max-w-[390px] mx-auto flex flex-col gap-3 overflow-hidden landscape:hidden flex-1 min-h-0 py-2">
         <motion.div
           ref={carouselRef}
-          className="relative flex-1 min-h-[240px] sm:min-h-[440px] overflow-visible select-none cursor-grab active:cursor-grabbing"
+          className="relative flex-1 min-h-[240px] overflow-visible select-none cursor-grab active:cursor-grabbing"
           style={{ touchAction: "none" }}
           onPointerDown={portraitHandlers.onPointerDown}
           onPointerMove={portraitHandlers.onPointerMove}
