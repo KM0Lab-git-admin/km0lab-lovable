@@ -17,8 +17,8 @@ interface DeviceShellProps {
   children: ReactNode
 }
 
-/** Solo en Vite dev: borde/sombra del “teléfono”. En Vercel (PROD) no. */
-const showDeviceChrome = import.meta.env.DEV
+/** Marco "teléfono" siempre visible (dev y prod) hasta que exista layout landscape propio. */
+const showDeviceChrome = true
 
 const DeviceShell = ({ children }: DeviceShellProps) => {
   return (
