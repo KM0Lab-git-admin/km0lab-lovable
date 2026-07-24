@@ -48,8 +48,7 @@ export const scannerMachine = setup({
       errorComercNom: null,
     }),
     setSuccess: assign(({ event }) => {
-      // `event` is xstate.done.actor.validate with `output`
-      const output = (event as { output: ScanResult }).output;
+      const output = (event as unknown as { output: ScanResult }).output;
       return {
         result: output,
         errorKind: null,
@@ -57,7 +56,7 @@ export const scannerMachine = setup({
       };
     }),
     setError: assign(({ event }) => {
-      const output = (event as { output: ScanResult }).output;
+      const output = (event as unknown as { output: ScanResult }).output;
       if (output.ok) return {};
       return {
         result: output,
