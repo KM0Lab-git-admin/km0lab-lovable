@@ -146,10 +146,10 @@ function StackCarousel<T extends StackCarouselItem>({
   return (
     <>
       {/* ── PORTRAIT ───────────────────────────────────────── */}
-      <div className="w-full max-w-[390px] mx-auto flex flex-col gap-3 overflow-hidden landscape:hidden flex-1 min-h-0 py-2">
+      <div className="w-full max-w-[390px] mx-auto flex flex-col gap-3 overflow-hidden landscape:hidden flex-1 min-h-0 py-2 justify-start">
         <motion.div
           ref={carouselRef}
-          className="relative flex-1 min-h-[240px] overflow-visible select-none cursor-grab active:cursor-grabbing"
+          className="relative shrink-0 h-[clamp(300px,48dvh,360px)] overflow-visible select-none cursor-grab active:cursor-grabbing"
           style={{ touchAction: "none" }}
           onPointerDown={portraitHandlers.onPointerDown}
           onPointerMove={portraitHandlers.onPointerMove}
