@@ -86,18 +86,29 @@ const PointsCard = ({
 }) => {
   if (c.visitat) {
     return (
-      <div className="rounded-2xl border border-km0-teal-200 bg-km0-teal-50 p-4 flex items-start gap-3">
-        <span className="shrink-0 w-10 h-10 rounded-full bg-km0-teal-500 text-white flex items-center justify-center">
-          <CheckCircle2 size={20} strokeWidth={2.4} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="font-brand text-sm text-km0-teal-700 leading-tight">
-            {interpolate(t("merchant.points.done_title", lang), { n: c.punts })}
-          </p>
-          <p className="font-ui text-xs text-km0-blue-700/80 mt-1">
-            {t("merchant.points.done_subtitle", lang)}
-          </p>
+      <div className="rounded-2xl border border-km0-teal-200 bg-km0-teal-50 p-4">
+        <div className="flex items-start gap-3">
+          <span className="shrink-0 w-12 h-12 rounded-xl bg-km0-teal-500 text-white flex items-center justify-center shadow-sm">
+            <CheckCircle2 size={24} strokeWidth={2.4} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <p className="font-brand text-base text-km0-teal-700 leading-tight">
+                {interpolate(t("merchant.points.done_title", lang), { n: c.punts })}
+              </p>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-km0-teal-500 text-white font-ui text-[10px] font-bold uppercase tracking-wide">
+                <CheckCircle2 size={10} strokeWidth={2.8} />
+                {t("merchant.points.in_list", lang)}
+              </span>
+            </div>
+            <p className="font-ui text-xs text-km0-blue-800/80 mt-1">
+              {t("merchant.points.done_subtitle", lang)}
+            </p>
+          </div>
         </div>
+        <p className="mt-3 font-ui text-[11px] leading-snug text-km0-blue-800/75 border-t border-km0-teal-200/70 pt-2">
+          {t("merchant.points.done_note", lang)}
+        </p>
       </div>
     );
   }
