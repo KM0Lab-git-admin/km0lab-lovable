@@ -84,6 +84,19 @@ const PointsCard = ({
   onScan: () => void;
 }) => {
   if (c.visitat) {
+    // Mock: última visita fa 5 dies, cooldown de 30 dies per tornar a guanyar punts
+    const COOLDOWN_DAYS = 30;
+    const DAYS_SINCE = 5;
+    const lastScan = new Date(Date.now() - DAYS_SINCE * 24 * 60 * 60 * 1000);
+    const lastScanFmt = lastScan.toLocaleDateString(
+      lang === "en" ? "en-GB" : lang === "es" ? "es-ES" : "ca-ES",
+      { day: "2-digit", month: "2-digit", year: "numeric" },
+    );
+    const daysLeft = Math.max(0, COOLDOWN_DAYS - DAYS_SINCE);
+    const daysLeftLabel =
+      daysLeft === 1
+        ? t("merchant.points.days_left_one", lang)
+        : interpolate(t("merchant.points.days_left", lang), { n: daysLeft });
     return (
       <div className="rounded-2xl border border-km0-teal-200 bg-km0-teal-50 p-4">
         <div className="flex items-start gap-3">
@@ -101,13 +114,19 @@ const PointsCard = ({
               </span>
             </div>
             <p className="font-ui text-xs text-km0-blue-800/80 mt-1">
-              {t("merchant.points.done_subtitle", lang)}
+              {interpolate(t("merchant.points.last_scan", lang), { date: lastScanFmt })}
             </p>
           </div>
         </div>
-        <p className="mt-3 font-ui text-[11px] leading-snug text-km0-blue-800/75 border-t border-km0-teal-200/70 pt-2">
-          {t("merchant.points.done_note", lang)}
-        </p>
+        <div className="mt-3 border-t border-km0-teal-200/70 pt-2 space-y-1.5">
+          <p className="font-ui text-[11px] leading-snug text-km0-blue-800/75">
+            {t("merchant.points.done_note", lang)}
+          </p>
+          <p className="flex items-center gap-1.5 font-ui text-[11px] font-bold text-km0-blue-800">
+            <Clock size={12} strokeWidth={2.4} className="text-km0-teal-600" />
+            {daysLeftLabel}
+          </p>
+        </div>
       </div>
     );
   }
