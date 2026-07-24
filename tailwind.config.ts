@@ -209,11 +209,12 @@ export default {
       //      iframes y manteniendo Visual Edit funcional.
       //
       addVariant("vertical-mobile",    ["@media (orientation: portrait)  and (max-width: 767px)",  "[data-bp~='vertical-mobile'] &"]);
-      addVariant("vertical-tablet",    ["@media (orientation: portrait)  and (min-width: 768px)",  "[data-bp~='vertical-tablet'] &"]);
-      // NOTA: mientras la app prioriza SOLO portrait mobile, las variantes
-      // landscape / horizontal-* SOLO se activan vía data-bp (nunca por
-      // media query). Así el marco fijo del "teléfono" nunca cambia de
-      // layout aunque la ventana esté en landscape.
+      // NOTA: mientras la app prioriza SOLO portrait mobile, vertical-tablet
+      // y las variantes landscape / horizontal-* SOLO se activan vía data-bp
+      // (nunca por media query). Así el marco fijo del "teléfono" (~420px)
+      // nunca reflowa a la maqueta de tablet aunque la VENTANA del navegador
+      // esté en portrait ≥768px.
+      addVariant("vertical-tablet",    ["[data-bp~='vertical-tablet'] &"]);
       addVariant("horizontal-mobile",  ["[data-bp~='horizontal-mobile'] &"]);
       addVariant("horizontal-desktop", ["[data-bp~='horizontal-desktop'] &"]);
 
