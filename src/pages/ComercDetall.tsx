@@ -235,19 +235,25 @@ const ComercDetallPage = () => {
     return () => clearTimeout(timer);
   }, [forced, id]);
 
+  const visitatOverride = params.get("visitat");
+  const initialVisitat =
+    visitatOverride === "true" || visitatOverride === "1"
+      ? true
+      : visitatOverride === "false" || visitatOverride === "0"
+        ? false
+        : null;
+  const [visitatToggle, setVisitatToggle] = useState<boolean | null>(initialVisitat);
+
   const comerc = useMemo<ComercDetall | undefined>(() => {
     if (!id) return undefined;
     const base = COMERCIOS_DETALL[id];
     if (!base) return undefined;
-    const visitatOverride = params.get("visitat");
-    if (visitatOverride === "true" || visitatOverride === "1") {
-      return { ...base, visitat: true };
-    }
-    if (visitatOverride === "false" || visitatOverride === "0") {
-      return { ...base, visitat: false };
+    if (visitatToggle !== null) {
+      return { ...base, visitat: visitatToggle };
     }
     return base;
-  }, [id, params]);
+  }, [id, visitatToggle]);
+
 
   const k = langKey(lang);
   const isError = forced === "error";
