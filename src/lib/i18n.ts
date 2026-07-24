@@ -381,6 +381,21 @@ const D = {
     es: "Este comercio ya está en tu lista. No se dan más puntos por volver a escanearlo.",
     en: "This shop is already in your list. No extra points for scanning it again.",
   } as Dict,
+  "merchant.points.last_scan": {
+    ca: "Última visita: {date}",
+    es: "Última visita: {date}",
+    en: "Last visit: {date}",
+  } as Dict,
+  "merchant.points.days_left": {
+    ca: "Falten {n} dies per tornar a guanyar punts",
+    es: "Faltan {n} días para volver a ganar puntos",
+    en: "{n} days left to earn points again",
+  } as Dict,
+  "merchant.points.days_left_one": {
+    ca: "Falta 1 dia per tornar a guanyar punts",
+    es: "Falta 1 día para volver a ganar puntos",
+    en: "1 day left to earn points again",
+  } as Dict,
   "merchant.points.in_list": {
     ca: "A la teva llista",
     es: "En tu lista",
