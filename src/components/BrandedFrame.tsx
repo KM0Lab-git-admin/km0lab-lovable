@@ -37,8 +37,8 @@ interface BrandedFrameProps {
   landscapeContentClassName?: string
 }
 
-/** Solo en Vite dev: borde/sombra del “teléfono”. En Vercel (PROD) no. */
-const showDeviceChrome = import.meta.env.DEV
+/** Marco "teléfono" siempre visible (dev y prod) hasta que exista layout landscape propio. */
+const showDeviceChrome = true
 
 const frameChromeClass = showDeviceChrome
   ? 'rounded-3xl border-2 border-km0-blue-700/80 shadow-device-frame'
