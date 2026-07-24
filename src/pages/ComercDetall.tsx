@@ -258,7 +258,6 @@ const ComercDetallPage = () => {
   const isError = forced === "error";
   const goBack = () => navigate("/comercos");
   const openScanner = () => navigate("/scanner");
-  const openPromos = () => navigate("/promocions");
 
   const stateOpen = comerc?.obertAra
     ? t("merchant.status.open", lang)
