@@ -7,7 +7,6 @@ import {
   Phone,
   Globe,
   ScanLine,
-  ChevronRight,
   Tag,
   CheckCircle2,
   Circle,
@@ -259,7 +258,6 @@ const ComercDetallPage = () => {
   const isError = forced === "error";
   const goBack = () => navigate("/comercos");
   const openScanner = () => navigate("/scanner");
-  const openPromos = () => navigate("/promocions");
 
   const stateOpen = comerc?.obertAra
     ? t("merchant.status.open", lang)
@@ -562,16 +560,6 @@ const ComercDetallPage = () => {
                         ))}
                       </ul>
                     </div>
-                    {comerc.promocions.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={openPromos}
-                        className="mt-2 w-full inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl border border-km0-blue-100 bg-white font-ui text-xs font-bold text-km0-blue-800 active:scale-[0.99] transition-transform"
-                      >
-                        {t("merchant.promos.see_all", lang)}
-                        <ChevronRight size={14} />
-                      </button>
-                    )}
                   </section>
 
                   {/* Descripció */}
@@ -588,30 +576,19 @@ const ComercDetallPage = () => {
             </AnimatePresence>
           </section>
 
-          {/* CTA sticky */}
-          {comerc && !loading && !isError && (
+          {/* CTA sticky — només escanejar */}
+          {comerc && !loading && !isError && !comerc.visitat && (
             <div className="absolute left-0 right-0 bottom-0 z-20 px-4 pb-3 pt-4 bg-gradient-to-t from-km0-beige-50 via-km0-beige-50/95 to-transparent">
-              {comerc.visitat ? (
-                <button
-                  type="button"
-                  onClick={openPromos}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-km0-teal-500 text-white font-ui text-sm font-bold shadow-lg shadow-km0-teal-500/30 active:scale-[0.99] transition-transform"
-                >
-                  <Tag size={16} strokeWidth={2.4} />
-                  {t("merchant.cta.see_promos", lang)}
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={openScanner}
-                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-km0-blue-800 text-white font-ui text-sm font-bold shadow-lg shadow-km0-blue-800/30 active:scale-[0.99] transition-transform"
-                >
-                  <ScanLine size={18} strokeWidth={2.4} />
-                  {interpolate(t("merchant.cta.scan_earn", lang), {
-                    n: comerc.punts,
-                  })}
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={openScanner}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-km0-blue-800 text-white font-ui text-sm font-bold shadow-lg shadow-km0-blue-800/30 active:scale-[0.99] transition-transform"
+              >
+                <ScanLine size={18} strokeWidth={2.4} />
+                {interpolate(t("merchant.cta.scan_earn", lang), {
+                  n: comerc.punts,
+                })}
+              </button>
             </div>
           )}
         </div>
