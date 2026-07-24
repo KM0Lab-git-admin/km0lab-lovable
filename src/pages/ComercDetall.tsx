@@ -393,10 +393,45 @@ const ComercDetallPage = () => {
                     </p>
                   </header>
 
+                  {/* Toggle previsualització d'estat (només mock) */}
+                  <div className="px-4">
+                    <div
+                      role="group"
+                      aria-label="Estat de visita (previsualització)"
+                      className="inline-flex items-center gap-1 p-1 rounded-full bg-km0-blue-50 border border-km0-blue-100"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setVisitatToggle(false)}
+                        className={cn(
+                          "px-3 py-1 rounded-full font-ui text-[11px] font-bold transition-colors",
+                          !comerc.visitat
+                            ? "bg-km0-blue-800 text-white"
+                            : "text-km0-blue-800/70",
+                        )}
+                      >
+                        Encara no visitat
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setVisitatToggle(true)}
+                        className={cn(
+                          "px-3 py-1 rounded-full font-ui text-[11px] font-bold transition-colors",
+                          comerc.visitat
+                            ? "bg-km0-teal-500 text-white"
+                            : "text-km0-blue-800/70",
+                        )}
+                      >
+                        Ja escanejat
+                      </button>
+                    </div>
+                  </div>
+
                   {/* Tarjeta punts */}
                   <div className="px-4">
                     <PointsCard c={comerc} lang={lang} onScan={openScanner} />
                   </div>
+
 
                   {/* Info */}
                   <section className="px-4">
