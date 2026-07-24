@@ -60,10 +60,7 @@ const OnboardingCard = ({
   lang: Lang;
 }) => (
   <div className="flex flex-col h-full max-h-full">
-    <div
-      className="relative mx-3 mt-3 vertical-mobile:mx-2 vertical-mobile:mt-2 wide-landscape:mx-3 wide-landscape:mt-3 short-landscape:mx-2 short-landscape:mt-2 shrink-0 h-[clamp(140px,28vh,220px)] vertical-tablet:h-[240px] wide-landscape:h-[clamp(200px,42vh,320px)] short-landscape:h-[clamp(130px,40vh,200px)] rounded-2xl overflow-hidden"
-      style={{ background: slide.color }}
-    >
+    <div className="relative mx-2 mt-2 shrink-0 h-[clamp(140px,28vh,220px)] rounded-2xl overflow-hidden bg-km0-beige-100">
       <img
         src={slide.image}
         alt={getAlt(slide, lang)}
