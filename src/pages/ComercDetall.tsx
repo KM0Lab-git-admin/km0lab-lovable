@@ -7,6 +7,7 @@ import {
   Phone,
   Globe,
   ScanLine,
+  Tag,
   CheckCircle2,
   Circle,
   RefreshCw,
