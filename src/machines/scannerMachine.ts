@@ -57,12 +57,14 @@ export const scannerMachine = setup({
     }),
     setError: assign(({ event }) => {
       const output = (event as unknown as { output: ScanResult }).output;
-      if (output.ok) return {};
-      return {
-        result: output,
-        errorKind: output.kind,
-        errorComercNom: output.comercNom ?? null,
-      };
+      if (output.ok === false) {
+        return {
+          result: output,
+          errorKind: output.kind,
+          errorComercNom: output.comercNom ?? null,
+        };
+      }
+      return {};
     }),
     reset: assign({
       code: null,
@@ -73,7 +75,7 @@ export const scannerMachine = setup({
   },
   guards: {
     isOk: ({ event }) => {
-      const output = (event as { output: ScanResult }).output;
+      const output = (event as unknown as { output: ScanResult }).output;
       return output.ok === true;
     },
   },
