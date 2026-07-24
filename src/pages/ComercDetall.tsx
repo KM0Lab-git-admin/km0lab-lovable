@@ -7,8 +7,6 @@ import {
   Phone,
   Globe,
   ScanLine,
-  ChevronRight,
-  Tag,
   CheckCircle2,
   Circle,
   RefreshCw,
