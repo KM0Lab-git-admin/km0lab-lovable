@@ -672,6 +672,127 @@ const D = {
     en: "We'll let you know when there's news.",
   } as Dict,
   "notifications.item.cta": { ca: "Llegir", es: "Leer", en: "Read" } as Dict,
+
+  // ── Scanner (Escàner de QR global) ───────────────────────
+  "scanner.close": { ca: "Tancar", es: "Cerrar", en: "Close" } as Dict,
+  "scanner.flash": { ca: "Flaix", es: "Flash", en: "Flash" } as Dict,
+  "scanner.title": { ca: "Escaneja el codi", es: "Escanea el código", en: "Scan the code" } as Dict,
+  "scanner.hint": {
+    ca: "Enfoca el codi QR del taulell dins del marc",
+    es: "Enfoca el código QR del mostrador dentro del marco",
+    en: "Point the counter's QR code inside the frame",
+  } as Dict,
+  "scanner.footer": {
+    ca: "Cada comerç té el seu QR únic",
+    es: "Cada comercio tiene su QR único",
+    en: "Each shop has its own unique QR",
+  } as Dict,
+  "scanner.debug.title": {
+    ca: "Simulació (només preview)",
+    es: "Simulación (solo preview)",
+    en: "Simulation (preview only)",
+  } as Dict,
+  "scanner.debug.ok": { ca: "Èxit", es: "Éxito", en: "Success" } as Dict,
+  "scanner.debug.ja_visitat": { ca: "Ja visitat", es: "Ya visitado", en: "Already visited" } as Dict,
+  "scanner.debug.codi_no_valid": { ca: "Codi no vàlid", es: "Código no válido", en: "Invalid code" } as Dict,
+  "scanner.debug.qr_caducat": { ca: "QR caducat", es: "QR caducado", en: "Expired QR" } as Dict,
+  "scanner.debug.sense_connexio": { ca: "Sense connexió", es: "Sin conexión", en: "Offline" } as Dict,
+
+  "scanner.validating.title": { ca: "Validant codi…", es: "Validando código…", en: "Validating code…" } as Dict,
+  "scanner.validating.subtitle": {
+    ca: "Comprovant el comerç i assignant els teus punts",
+    es: "Comprobando el comercio y asignando tus puntos",
+    en: "Checking the shop and assigning your points",
+  } as Dict,
+
+  "scanner.error.retry": { ca: "Tornar a escanejar", es: "Volver a escanear", en: "Scan again" } as Dict,
+  "scanner.error.ja_visitat.title": {
+    ca: "Ja has visitat aquest comerç",
+    es: "Ya has visitado este comercio",
+    en: "You've already visited this shop",
+  } as Dict,
+  "scanner.error.ja_visitat.subtitle": {
+    ca: "Els punts de {nom} ja són teus. Cada comerç dona punts un sol cop — però pots consultar les seves promocions!",
+    es: "Los puntos de {nom} ya son tuyos. Cada comercio da puntos una sola vez — ¡pero puedes consultar sus promociones!",
+    en: "You already earned {nom}'s points. Each shop gives points only once — but you can still check its promotions!",
+  } as Dict,
+  "scanner.error.ja_visitat.cta_promos": {
+    ca: "Veure les promocions del comerç",
+    es: "Ver las promociones del comercio",
+    en: "See the shop's promotions",
+  } as Dict,
+  "scanner.error.ja_visitat.cta_next": {
+    ca: "Escanejar un altre comerç",
+    es: "Escanear otro comercio",
+    en: "Scan another shop",
+  } as Dict,
+  "scanner.error.codi_no_valid.title": {
+    ca: "Codi no vàlid",
+    es: "Código no válido",
+    en: "Invalid code",
+  } as Dict,
+  "scanner.error.codi_no_valid.subtitle": {
+    ca: "Aquest QR sembla d'una altra app. Assegura't d'escanejar el QR oficial de KM0 LAB del taulell del comerç.",
+    es: "Este QR parece de otra app. Asegúrate de escanear el QR oficial de KM0 LAB del mostrador del comercio.",
+    en: "This QR looks like it's from another app. Make sure to scan the official KM0 LAB QR at the counter.",
+  } as Dict,
+  "scanner.error.qr_caducat.title": {
+    ca: "Aquest QR ha caducat",
+    es: "Este QR ha caducado",
+    en: "This QR has expired",
+  } as Dict,
+  "scanner.error.qr_caducat.subtitle": {
+    ca: "El comerç ja no forma part del programa. Prova amb un altre comerç adherit.",
+    es: "El comercio ya no forma parte del programa. Prueba con otro comercio adherido.",
+    en: "This shop is no longer part of the programme. Try another partner shop.",
+  } as Dict,
+  "scanner.error.sense_connexio.title": {
+    ca: "Sense connexió",
+    es: "Sin conexión",
+    en: "No connection",
+  } as Dict,
+  "scanner.error.sense_connexio.subtitle": {
+    ca: "No hem pogut validar el codi. Comprova la connexió i torna-ho a provar.",
+    es: "No hemos podido validar el código. Comprueba la conexión y vuelve a intentarlo.",
+    en: "We couldn't validate the code. Check your connection and try again.",
+  } as Dict,
+
+  "scanner.success.title": {
+    ca: "Molt bé, {nom}! 🎉",
+    es: "¡Muy bien, {nom}! 🎉",
+    en: "Well done, {nom}! 🎉",
+  } as Dict,
+  "scanner.success.subtitle": {
+    ca: "Has visitat {comerc}",
+    es: "Has visitado {comerc}",
+    en: "You visited {comerc}",
+  } as Dict,
+  "scanner.success.points": {
+    ca: "+{n} pts",
+    es: "+{n} pts",
+    en: "+{n} pts",
+  } as Dict,
+  "scanner.success.total": {
+    ca: "Total: {n} punts",
+    es: "Total: {n} puntos",
+    en: "Total: {n} points",
+  } as Dict,
+
+  "scanner.confirmation.title": {
+    ca: "Confirmació de punts",
+    es: "Confirmación de puntos",
+    en: "Points confirmation",
+  } as Dict,
+  "scanner.confirmation.placeholder": {
+    ca: "Aquesta pantalla es construeix a l'apartat 5.",
+    es: "Esta pantalla se construye en el apartado 5.",
+    en: "This screen is built in section 5.",
+  } as Dict,
+  "scanner.confirmation.back": {
+    ca: "Tornar a l'inici",
+    es: "Volver al inicio",
+    en: "Back home",
+  } as Dict,
 } as const;
 
 export type TKey = keyof typeof D;
