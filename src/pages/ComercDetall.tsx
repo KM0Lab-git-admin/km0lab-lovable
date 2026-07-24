@@ -235,19 +235,25 @@ const ComercDetallPage = () => {
     return () => clearTimeout(timer);
   }, [forced, id]);
 
+  const visitatOverride = params.get("visitat");
+  const initialVisitat =
+    visitatOverride === "true" || visitatOverride === "1"
+      ? true
+      : visitatOverride === "false" || visitatOverride === "0"
+        ? false
+        : null;
+  const [visitatToggle, setVisitatToggle] = useState<boolean | null>(initialVisitat);
+
   const comerc = useMemo<ComercDetall | undefined>(() => {
     if (!id) return undefined;
     const base = COMERCIOS_DETALL[id];
     if (!base) return undefined;
-    const visitatOverride = params.get("visitat");
-    if (visitatOverride === "true" || visitatOverride === "1") {
-      return { ...base, visitat: true };
-    }
-    if (visitatOverride === "false" || visitatOverride === "0") {
-      return { ...base, visitat: false };
+    if (visitatToggle !== null) {
+      return { ...base, visitat: visitatToggle };
     }
     return base;
-  }, [id, params]);
+  }, [id, visitatToggle]);
+
 
   const k = langKey(lang);
   const isError = forced === "error";
@@ -387,10 +393,45 @@ const ComercDetallPage = () => {
                     </p>
                   </header>
 
+                  {/* Toggle previsualització d'estat (només mock) */}
+                  <div className="px-4">
+                    <div
+                      role="group"
+                      aria-label="Estat de visita (previsualització)"
+                      className="inline-flex items-center gap-1 p-1 rounded-full bg-km0-blue-50 border border-km0-blue-100"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setVisitatToggle(false)}
+                        className={cn(
+                          "px-3 py-1 rounded-full font-ui text-[11px] font-bold transition-colors",
+                          !comerc.visitat
+                            ? "bg-km0-blue-800 text-white"
+                            : "text-km0-blue-800/70",
+                        )}
+                      >
+                        Encara no visitat
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setVisitatToggle(true)}
+                        className={cn(
+                          "px-3 py-1 rounded-full font-ui text-[11px] font-bold transition-colors",
+                          comerc.visitat
+                            ? "bg-km0-teal-500 text-white"
+                            : "text-km0-blue-800/70",
+                        )}
+                      >
+                        Ja escanejat
+                      </button>
+                    </div>
+                  </div>
+
                   {/* Tarjeta punts */}
                   <div className="px-4">
                     <PointsCard c={comerc} lang={lang} onScan={openScanner} />
                   </div>
+
 
                   {/* Info */}
                   <section className="px-4">
