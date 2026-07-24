@@ -562,16 +562,6 @@ const ComercDetallPage = () => {
                         ))}
                       </ul>
                     </div>
-                    {comerc.promocions.length > 0 && (
-                      <button
-                        type="button"
-                        onClick={openPromos}
-                        className="mt-2 w-full inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl border border-km0-blue-100 bg-white font-ui text-xs font-bold text-km0-blue-800 active:scale-[0.99] transition-transform"
-                      >
-                        {t("merchant.promos.see_all", lang)}
-                        <ChevronRight size={14} />
-                      </button>
-                    )}
                   </section>
 
                   {/* Descripció */}
