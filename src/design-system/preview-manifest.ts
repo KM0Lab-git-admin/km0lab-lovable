@@ -2,9 +2,7 @@
  * preview-manifest — FUENTE ÚNICA DE VERDAD de pantallas y estados visuales.
  *
  * Este fichero es DATA PURA (sin React ni imports con side-effects) porque
- * lo consumen dos mundos:
- *   1. `src/pages/PreviewAll.tsx`  → catálogo visual /preview-all
- *   2. `tests/visual/screens.spec.ts` (Playwright) → regresión visual
+ * lo consumen los tests de regresión visual de Playwright.
  *
  * REGLA: cada vez que se añade una pantalla nueva (ruta en App.tsx) o un
  * estado visual nuevo (variante con más/menos componentes según sesión,
