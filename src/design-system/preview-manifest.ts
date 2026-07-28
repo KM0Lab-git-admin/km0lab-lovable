@@ -134,7 +134,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard. Tab Mis puntos navega a /points.",
+        notes: "Oculta LoginButton; muestra PointsCard. Tab Mis puntos navega a /historial-punts (antes /points).",
       },
 
       {
@@ -201,6 +201,19 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         src: "/profile",
         seedSession: true,
         notes: "Formulario precargado con el perfil de la sesión sembrada.",
+      },
+    ],
+  },
+  {
+    id: "premis-canjats",
+    label: "PremisCanjats",
+    path: "/premis-canjats",
+    states: [
+      {
+        id: "default",
+        label: "Por defecto",
+        src: "/premis-canjats",
+        notes: "Mock con todos los estados: pending, ready, redeemed y expired.",
       },
     ],
   },
