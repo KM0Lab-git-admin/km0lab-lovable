@@ -226,11 +226,6 @@ const Premis = () => {
     [filter],
   );
 
-  const handleRedeem = () => {
-    // TODO: flujo real de bescanvi (fuera de scope de esta pantalla).
-  };
-
-  const handleLoginPrompt = () => navigate("/login");
 
   return (
     <DeviceShell>
@@ -280,8 +275,6 @@ const Premis = () => {
                     points={points}
                     isAuthed={isAuthed}
                     index={i}
-                    onRedeem={handleRedeem}
-                    onLoginPrompt={handleLoginPrompt}
                   />
                 ))}
               </div>
