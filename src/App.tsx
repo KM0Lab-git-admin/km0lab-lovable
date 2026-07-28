@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Onboarding from "./pages/Onboarding";
 import PostalCode from "./pages/PostalCode";
 import Home from "./pages/Home";
+import Points from "./pages/Points";
 import Agenda from "./pages/Agenda";
 import Evento from "./pages/Evento";
 import Noticias from "./pages/Noticias";
@@ -20,6 +21,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
 import PreviewAll from "./pages/PreviewAll";
+
 
 import TopLoadingBar from "./components/TopLoadingBar";
 import RequireAuth from "./components/RequireAuth";
@@ -44,6 +46,8 @@ const App = () => (
             
             <Route path="/home" element={<Home />} />
             <Route path="/home-registrado" element={<Home forceAuthState="authed" />} />
+            <Route path="/points" element={<Points />} />
+
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/evento" element={<Evento />} />
             <Route path="/noticias" element={<Noticias />} />

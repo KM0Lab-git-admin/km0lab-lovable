@@ -127,15 +127,16 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "LoginButton en el header; oculta PointsCard y tab Perfil.",
+        notes: "LoginButton en el header; oculta PointsCard. Tab Perfil muestra 'Iniciar sessió' y Mis puntos requiere login.",
       },
       {
         id: "registered",
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard y tab Perfil.",
+        notes: "Oculta LoginButton; muestra PointsCard. Tab Mis puntos navega a /points.",
       },
+
       {
         id: "reward-welcome",
         label: "Bienvenida (+500 pts)",

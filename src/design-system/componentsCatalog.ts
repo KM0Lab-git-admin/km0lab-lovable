@@ -131,15 +131,17 @@ export const componentsCatalog: ComponentSpec[] = [
     name: "BottomTabs",
     category: "navegacion",
     importPath: "@/components/BottomTabs",
-    description: "Barra de navegación inferior fija con 4 tabs (Inicio · Comercios · Ofertas · Perfil). El tab Perfil cambia de acción según haya sesión.",
-    usedIn: ["Home", "Agenda", "Comercos"],
+    description: "Barra de navegación inferior fija con 3 tabs (Inicio · Mis puntos · Perfil). El tab Perfil navega a login si no hay sesión; Mis puntos también requiere sesión.",
+    usedIn: ["Home", "Comercos", "Points"],
     props: [
-      { name: "activeTab", type: '"home" | "comercos" | "ofertes" | "perfil"', required: true, description: "Tab activo (controlado por la pantalla)." },
+      { name: "activeTab", type: '"home" | "perfil" | "puntos"', required: true, description: "Tab activo (controlado por la pantalla)." },
       { name: "onTabChange", type: "(t: HomeTab) => void", required: true, description: "Callback al cambiar de tab." },
-      { name: "showProfile", type: "boolean", required: true, description: "Si hay sesión, el tab Perfil navega a /profile; si no, a /login." },
+      { name: "showProfile", type: "boolean", required: true, description: "Si hay sesión, el tab Perfil va a /profile; si no, a /login." },
       { name: "onLogin", type: "() => void", required: true, description: "Acción cuando no hay sesión y se pulsa Perfil." },
       { name: "onProfile", type: "() => void", required: true, description: "Acción cuando hay sesión y se pulsa Perfil." },
+      { name: "onPoints", type: "() => void", required: true, description: "Acción al pulsar el tab 'Mis puntos'." },
     ],
+
     responsive: [
       { breakpoint: "vertical-mobile", behavior: "pt-2/pb-3, iconos 20px, labels 10px." },
       { breakpoint: "vertical-tablet", behavior: "Igual que vertical-mobile (no escala)." },
@@ -352,10 +354,12 @@ export const componentsCatalog: ComponentSpec[] = [
       { name: "comercios", type: "Comercio[]", required: true, description: "Comercios del ComercioCarousel." },
       { name: "activeTab", type: "HomeTab", required: true, description: "Tab activo del BottomTabs." },
       { name: "onTabChange", type: "(t: HomeTab) => void", required: true, description: "Callback al cambiar tab." },
-      { name: "showLogin", type: "boolean", required: true, description: "Si true, hay botón login (CTA central portrait + en hero landscape)." },
+      { name: "showLogin", type: "boolean", required: true, description: "Si true, hay botón login." },
       { name: "onLogin", type: "() => void", required: true, description: "Acción login." },
-      { name: "showProfile", type: "boolean", required: true, description: "Si true, el tab Perfil va a /profile (no a /login)." },
+      { name: "showProfile", type: "boolean", required: true, description: "Si true, el tab Perfil va a /profile." },
       { name: "onProfile", type: "() => void", required: true, description: "Acción tab Perfil con sesión." },
+      { name: "onPoints", type: "() => void", required: true, description: "Acción tab Mis puntos." },
+
       { name: "onSeeAllComercios", type: "() => void", description: "Acción del link 'Ver todos' en ComerciosSection." },
     ],
     responsive: [
