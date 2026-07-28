@@ -75,6 +75,7 @@ const emptyProfile = (email: string | null = null): AppProfile => ({
   first_name: null,
   last_name: null,
   email,
+  phone: null,
   postal_code: null,
   town: null,
   avatar_url: null,
