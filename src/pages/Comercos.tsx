@@ -444,13 +444,15 @@ const Comercos = () => {
           />
 
           <BottomTabs
-            activeTab={activeTab}
-            onTabChange={onTabChange}
-            showProfile={!!user}
-            onLogin={() => navigate("/login")}
-            onProfile={() => navigate("/profile")}
-            onPoints={() => navigate(user ? "/historial-punts" : "/login")}
+            activeTab="home"
+            isAuthed={isAuthed}
+            onLogin={goToLogin}
+            onHome={goToHome}
+            onProfile={goToProfile}
+            onPoints={goToPoints}
+            onRewards={goToRewards}
           />
+
 
         </div>
       </div>
