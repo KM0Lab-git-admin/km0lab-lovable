@@ -203,6 +203,12 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       },
     ],
   },
+  {
+    id: "scanner",
+    label: "Scanner",
+    path: "/scanner",
+    states: [{ id: "default", label: "Lectura", src: "/scanner" }],
+  },
 ];
 
 export const getScreenById = (id: string): PreviewScreen => {
