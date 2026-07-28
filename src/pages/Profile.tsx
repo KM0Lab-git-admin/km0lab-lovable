@@ -129,10 +129,10 @@ const Profile = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex-1 flex flex-col gap-4 horizontal-mobile:overflow-y-auto horizontal-desktop:overflow-y-auto"
+        className="min-h-full flex flex-col justify-center gap-4"
       >
         <div className="text-center space-y-1 mt-2">
-          <h1 className="font-brand text-2xl horizontal-mobile:text-xl text-km0-blue-700">
+          <h1 className="font-brand text-2xl text-km0-blue-700">
             {t("profile.title", lang)}
           </h1>
           <p className="font-body text-sm text-muted-foreground">

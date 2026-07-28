@@ -24,7 +24,7 @@ const BottomTabs = ({
   const { lang } = useLang();
   return (
     <nav
-      className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-4 horizontal-mobile:!pt-1 horizontal-mobile:!pb-1.5"
+      className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-4"
       aria-label="Navegación principal"
     >
       <TabItem

@@ -43,10 +43,10 @@ const IMAGE_SRC: Partial<Record<HomeModuleId, string>> = {
 
 /** Padding interno de la imagen dentro del círculo, por id. */
 const IMAGE_PADDING: Partial<Record<HomeModuleId, string>> = {
-  ajuntament: "p-2.5 horizontal-mobile:!p-2",
-  comerc: "p-2.5 horizontal-mobile:!p-2",
-  noticias: "p-2.5 horizontal-mobile:!p-2",
-  servicios: "p-2.5 horizontal-mobile:!p-2",
+  ajuntament: "p-2.5",
+  comerc: "p-2.5",
+  noticias: "p-2.5",
+  servicios: "p-2.5",
 };
 
 interface HomeModulesProps {
@@ -61,18 +61,14 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
     <div className={cn("relative w-full max-w-full", className)}>
       <div
         className={cn(
-          "relative bg-km0-beige-100 rounded-3xl px-3 py-2 vertical-tablet:py-3 my-0",
-          "horizontal-mobile:!h-[140px] horizontal-desktop:!h-[180px]",
-          "horizontal-mobile:!py-1 horizontal-desktop:!py-2",
+          "relative bg-km0-beige-100 rounded-3xl px-3 py-2 my-0",
         )}
       >
         {/* Grid 2 filas × 3 columnas: distribución determinista independiente
             del ancho del label. */}
         <div
           className={cn(
-            "relative grid items-center gap-2 vertical-tablet:gap-4",
-            "horizontal-mobile:!h-full horizontal-mobile:!items-center",
-            "horizontal-mobile:!gap-2 horizontal-desktop:!gap-3",
+            "relative grid items-center gap-2",
           )}
           style={{
             gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
@@ -123,8 +119,6 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
           className={cn(
             "relative flex items-center justify-center rounded-full bg-white shrink-0 border-2 border-km0-blue-400",
             "w-[68px] h-[68px]",
-            "vertical-tablet:w-[84px] vertical-tablet:h-[84px]",
-            "horizontal-mobile:!w-[52px] horizontal-mobile:!h-[52px]",
           )}
         >
           {imageSrc && (
@@ -140,12 +134,12 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
         {/* Pill del label */}
         <span
           className={cn(
-            "relative -mt-2.5 horizontal-mobile:!-mt-2 z-10",
-            "px-1.5 py-0.5 vertical-tablet:px-2 horizontal-mobile:!px-1",
+            "relative -mt-2.5 z-10",
+            "px-1.5 py-0.5",
             "rounded-full bg-white border border-km0-blue-300/60",
             "shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.25)]",
             "font-ui font-bold leading-tight text-km0-blue-800",
-            "text-[9px] vertical-tablet:text-[11px] horizontal-mobile:!text-[8px]",
+            "text-[9px]",
             "text-center whitespace-nowrap max-w-full",
           )}
         >

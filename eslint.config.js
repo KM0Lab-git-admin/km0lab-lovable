@@ -25,24 +25,23 @@ export default tseslint.config(
   },
   // ─────────────────────────────────────────────────────────────
   // PORTRAIT-ONLY — una sola maqueta portrait por pantalla.
-  // Prohíbe las variantes de orientación/tablet en pantallas y
-  // componentes de app (ver docs/KNOWLEDGE.md §3). Evita que se
+  // Prohíbe las variantes de orientación/tablet en TODAS las pantallas
+  // y componentes de app (ver docs/KNOWLEDGE.md §3). Evita que se
   // reintroduzcan maquetas landscape/tablet paralelas que rompen la
   // consistencia entre resoluciones.
   //
-  // FASE 1: acotado a los archivos ya migrados. FASE 2: ampliar
-  // `files` a ["src/pages/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"]
-  // una vez barridas el resto de pantallas. NO incluir aquí las piezas
-  // solo-Lovable (PreviewAll, DesignSystem, SimulatedDevice), que sí
-  // necesitan renderizar a distintos tamaños.
+  // Se excluyen las piezas solo-Lovable (PreviewAll, DesignSystem,
+  // SimulatedDevice), que legítimamente renderizan a distintos tamaños.
   // ─────────────────────────────────────────────────────────────
   {
     files: [
-      "src/components/BrandedFrame.tsx",
-      "src/components/StackCarousel.tsx",
-      "src/pages/Onboarding.tsx",
-      "src/pages/Language.tsx",
-      "src/pages/PostalCode.tsx",
+      "src/pages/**/*.{ts,tsx}",
+      "src/components/**/*.{ts,tsx}",
+    ],
+    ignores: [
+      "src/pages/PreviewAll.tsx",
+      "src/pages/DesignSystem.tsx",
+      "src/components/SimulatedDevice.tsx",
     ],
     rules: {
       "no-restricted-syntax": [

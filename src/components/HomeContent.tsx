@@ -82,7 +82,7 @@ const HomeContent = ({
       />
 
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
-        <div className="relative z-10 flex flex-col gap-5 vertical-tablet:gap-6 horizontal-mobile:!gap-3 horizontal-desktop:!gap-5 px-2 pt-4 pb-6 horizontal-mobile:!pt-2 horizontal-mobile:!pb-3 vertical-tablet:pt-0 vertical-tablet:mt-4">
+        <div className="relative z-10 flex flex-col gap-5 px-2 pt-4 pb-6">
           <section className="flex flex-col gap-3 px-2">
             {showLogin && <JoinCard onCreateAccount={onLogin} />}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} nextReward={nextReward} level={level} />}
@@ -136,17 +136,17 @@ interface SectionHeaderProps {
 
 const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => (
   <div className="flex items-center justify-between gap-2">
-    <h2 className="font-brand font-black text-km0-blue-800 text-base vertical-tablet:text-lg horizontal-mobile:!text-sm horizontal-desktop:!text-lg">
+    <h2 className="font-brand font-black text-km0-blue-800 text-base">
       {title}
     </h2>
     {actionLabel && (
       <button
         type="button"
         onClick={onAction}
-        className="font-ui font-bold text-km0-coral-400 active:scale-95 transition-transform underline underline-offset-4 text-xs vertical-tablet:text-sm horizontal-mobile:!text-[11px] horizontal-desktop:!text-sm gap-0 flex items-center justify-start whitespace-nowrap shrink-0"
+        className="font-ui font-bold text-km0-coral-400 active:scale-95 transition-transform underline underline-offset-4 text-xs gap-0 flex items-center justify-start whitespace-nowrap shrink-0"
       >
         {actionLabel}
-        <ArrowRight size={13} strokeWidth={2.4} className="horizontal-mobile:!w-3 horizontal-mobile:!h-3" />
+        <ArrowRight size={13} strokeWidth={2.4} />
       </button>
     )}
   </div>
