@@ -4,6 +4,8 @@ import { AlertTriangle, Check, Loader2, ScanLine, WifiOff, X } from "lucide-reac
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
+import BrandedFrame from "@/components/BrandedFrame";
+import Km0Logo from "@/components/Km0Logo";
 import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -19,6 +21,10 @@ import type { ScanErrorKind } from "@/services/mock/scanner";
  * disparador de "detecció" és un panell de simulació visible només a
  * preview per demostrar els quatre estats (lectura / validació / error /
  * èxit).
+ *
+ * Maquetació dins de `BrandedFrame` amb el Design System KM0: card beix,
+ * visor fosc amb esquines `km0-teal`, accent inferior `km0-teal` i
+ * jerarquia tipogràfica de marca.
  */
 
 const ERROR_ICONS: Record<ScanErrorKind, typeof AlertTriangle> = {
@@ -69,42 +75,43 @@ const Scanner = () => {
   const retry = () => send({ type: "RESET" });
 
   return (
-    <div
-      className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100"
-      style={{
-        paddingTop: "env(safe-area-inset-top)",
-        paddingBottom: "env(safe-area-inset-bottom)",
-      }}
+    <BrandedFrame
+      hideHeader
+      portraitContentClassName="relative p-0 overflow-hidden"
+      landscapeContentClassName="relative p-0 overflow-hidden"
     >
-      <div
-        data-bp="vertical-mobile portrait"
-        className="relative flex flex-col overflow-hidden bg-km0-blue-900 text-white rounded-3xl border-2 border-km0-blue-700/80 shadow-device-frame"
-        style={{
-          width: "min(100vw, 420px)",
-          height:
-            "min(calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)), 920px)",
-        }}
-      >
-        {/* Header ── X + títol + flaix ───────────────────── */}
-        <header className="relative z-30 shrink-0 flex items-center justify-between px-4 pt-5 pb-3">
-          <button
-            type="button"
-            onClick={close}
-            aria-label={t("scanner.close", lang)}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            <X size={20} strokeWidth={2.4} />
-          </button>
-          <h1 className="font-ui font-bold text-base tracking-wide">
-            {t("scanner.title", lang)}
-          </h1>
-        </header>
+      {/* Header ── cierre + logo ─────────────────────────── */}
+      <header className="relative z-30 shrink-0 flex items-center justify-between px-4 pt-5 pb-3">
+        <button
+          type="button"
+          onClick={close}
+          aria-label={t("scanner.close", lang)}
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-km0-blue-900/5 text-km0-blue-900 hover:bg-km0-blue-900/10 transition-colors"
+        >
+          <X size={20} strokeWidth={2.4} />
+        </button>
+        <Km0Logo className="h-7 w-auto" />
+        <div className="w-10" aria-hidden="true" />
+      </header>
 
-        {/* Body ── viewfinder ─────────────────────────────── */}
-        <div className="relative flex-1 min-h-0 flex flex-col items-center justify-center px-6">
-          {/* Marc del visor */}
+      {/* Títol ── marca + hint ─────────────────────────── */}
+      <div className="shrink-0 px-6 pb-4">
+        <h1 className="font-brand text-2xl text-km0-blue-900">
+          {t("scanner.title", lang)}
+        </h1>
+        <p className="mt-1 font-body text-sm text-km0-blue-900/70">
+          {t("scanner.hint", lang)}
+        </p>
+      </div>
+
+      {/* Visor ── àrea fosca amb esquines teal ─────────── */}
+      <div className="relative flex-1 min-h-0 mx-6 mb-4 rounded-3xl overflow-hidden bg-gradient-to-b from-km0-blue-800 to-km0-blue-900">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-km0-blue-700/30 to-transparent" />
+
+        <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative aspect-square w-full max-w-[260px]">
-            <div className="absolute inset-0 rounded-2xl bg-black/40 backdrop-blur-[1px]" />
+            <div className="absolute inset-0 rounded-2xl bg-km0-blue-900/20 backdrop-blur-[1px]" />
+
             {/* Esquines */}
             {[
               "top-0 left-0 border-t-4 border-l-4 rounded-tl-2xl",
@@ -115,16 +122,17 @@ const Scanner = () => {
               <span
                 key={pos}
                 className={cn(
-                  "absolute w-10 h-10 border-km0-yellow-400",
+                  "absolute w-10 h-10 border-km0-teal-400",
                   pos,
                 )}
               />
             ))}
+
             {/* Línia d'escaneig animada (només durant lectura) */}
             {status === "reading" && (
               <motion.div
                 aria-hidden
-                className="absolute left-3 right-3 h-[2px] rounded-full bg-km0-yellow-400 shadow-[0_0_12px_hsl(var(--km0-yellow-400))]"
+                className="absolute left-3 right-3 h-[2px] rounded-full bg-km0-teal-400 shadow-[0_0_12px_hsl(var(--km0-teal-400))]"
                 initial={{ top: "12%" }}
                 animate={{ top: ["12%", "88%", "12%"] }}
                 transition={{
@@ -134,94 +142,88 @@ const Scanner = () => {
                 }}
               />
             )}
-
-            {/* Overlay VALIDANT */}
-            {status === "validating" && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-2xl bg-black/60 backdrop-blur-sm">
-                <Loader2 size={40} className="animate-spin text-km0-yellow-400" />
-              </div>
-            )}
           </div>
-
-          {/* Pista sota el visor */}
-          <p className="mt-6 text-center text-sm font-ui text-white/80 max-w-[280px]">
-            {status === "validating"
-              ? t("scanner.validating.subtitle", lang)
-              : t("scanner.hint", lang)}
-          </p>
-          {status === "validating" && (
-            <p className="mt-2 text-center text-base font-ui font-semibold text-white">
-              {t("scanner.validating.title", lang)}
-            </p>
-          )}
         </div>
 
-        {/* Footer ─────────────────────────────────────────── */}
-        <footer className="shrink-0 px-6 pb-5 pt-2 text-center">
-          <p className="text-xs font-ui text-white/60 flex items-center justify-center gap-2">
-            <ScanLine size={14} strokeWidth={2.2} />
-            {t("scanner.footer", lang)}
-          </p>
-
-          {/* Panell de simulació (només preview) */}
-          {status === "reading" && (
-            <div className="mt-4 rounded-xl bg-white/5 border border-white/10 p-3">
-              <p className="text-[10px] uppercase tracking-wider text-white/50 mb-2 text-center">
-                {t("scanner.debug.title", lang)}
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => simulate("OK_FORN_ROVIRA")}
-                  className="col-span-2 rounded-lg bg-km0-yellow-400 text-km0-blue-900 font-ui font-bold text-xs py-2 hover:bg-km0-yellow-300 transition-colors"
-                >
-                  {t("scanner.debug.ok", lang)}
-                </button>
-                {(
-                  [
-                    ["ERR_JA_VISITAT", "scanner.debug.ja_visitat"],
-                    ["ERR_CODI", "scanner.debug.codi_no_valid"],
-                    ["ERR_CADUCAT", "scanner.debug.qr_caducat"],
-                    ["ERR_CONNEXIO", "scanner.debug.sense_connexio"],
-                  ] as const
-                ).map(([code, key]) => (
-                  <button
-                    key={code}
-                    type="button"
-                    onClick={() => simulate(code)}
-                    className="rounded-lg bg-white/10 hover:bg-white/20 text-white font-ui text-xs py-2 transition-colors"
-                  >
-                    {t(key as TKey, lang)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </footer>
-
-        {/* ── ERROR overlay ─────────────────────────────── */}
-        {status === "error" && state.context.errorKind && (
-          <ErrorOverlay
-            kind={state.context.errorKind}
-            comercNom={state.context.errorComercNom ?? undefined}
-            onRetry={retry}
-            onPromos={() =>
-              navigate("/comercos", { state: { openPromos: true } })
-            }
-          />
-        )}
-
-        {/* ── SUCCESS mini-confirmació ─────────────────── */}
-        {status === "success" && state.context.result?.ok && (
-          <SuccessOverlay
-            userName={userFirstName}
-            comercNom={state.context.result.comercNom}
-            puntsGuanyats={state.context.result.puntsGuanyats}
-            totalPunts={state.context.result.totalPunts}
-          />
+        {/* Overlay VALIDANT */}
+        {status === "validating" && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-km0-blue-900/60 backdrop-blur-sm">
+            <Loader2 size={40} className="animate-spin text-km0-teal-400" />
+            <p className="text-sm font-ui font-semibold text-km0-beige-50">
+              {t("scanner.validating.title", lang)}
+            </p>
+          </div>
         )}
       </div>
-    </div>
+
+      {/* Footer ── estatus + simulació ─────────────────── */}
+      <footer className="shrink-0 px-6 pb-6 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full bg-km0-blue-900 px-4 py-2 text-km0-beige-50 text-xs font-ui">
+          <ScanLine size={14} strokeWidth={2.2} />
+          {t("scanner.footer", lang)}
+        </div>
+
+        {/* Panell de simulació (només preview) */}
+        {status === "reading" && (
+          <div className="mt-4 rounded-2xl border border-km0-beige-200 bg-card p-3 shadow-sm">
+            <p className="text-[10px] uppercase tracking-wider text-km0-blue-900/50 mb-2 text-center">
+              {t("scanner.debug.title", lang)}
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => simulate("OK_FORN_ROVIRA")}
+                className="col-span-2 rounded-lg bg-km0-yellow-400 text-km0-blue-900 font-ui font-bold text-xs py-2 hover:bg-km0-yellow-300 transition-colors"
+              >
+                {t("scanner.debug.ok", lang)}
+              </button>
+              {(
+                [
+                  ["ERR_JA_VISITAT", "scanner.debug.ja_visitat"],
+                  ["ERR_CODI", "scanner.debug.codi_no_valid"],
+                  ["ERR_CADUCAT", "scanner.debug.qr_caducat"],
+                  ["ERR_CONNEXIO", "scanner.debug.sense_connexio"],
+                ] as const
+              ).map(([code, key]) => (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => simulate(code)}
+                  className="rounded-lg bg-km0-blue-900 hover:bg-km0-blue-800 text-km0-beige-50 font-ui text-xs py-2 transition-colors"
+                >
+                  {t(key as TKey, lang)}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </footer>
+
+      {/* Accent inferior de marca */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-km0-teal-500" />
+
+      {/* ── ERROR overlay ─────────────────────────────── */}
+      {status === "error" && state.context.errorKind && (
+        <ErrorOverlay
+          kind={state.context.errorKind}
+          comercNom={state.context.errorComercNom ?? undefined}
+          onRetry={retry}
+          onPromos={() =>
+            navigate("/comercos", { state: { openPromos: true } })
+          }
+        />
+      )}
+
+      {/* ── SUCCESS mini-confirmació ─────────────────── */}
+      {status === "success" && state.context.result?.ok && (
+        <SuccessOverlay
+          userName={userFirstName}
+          comercNom={state.context.result.comercNom}
+          puntsGuanyats={state.context.result.puntsGuanyats}
+          totalPunts={state.context.result.totalPunts}
+        />
+      )}
+    </BrandedFrame>
   );
 };
 
@@ -249,7 +251,7 @@ const ErrorOverlay = ({ kind, comercNom, onRetry, onPromos }: ErrorOverlayProps)
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="absolute inset-0 z-40 flex items-end justify-center bg-black/70 backdrop-blur-sm"
+      className="absolute inset-0 z-40 flex items-end justify-center bg-km0-blue-900/70 backdrop-blur-sm"
     >
       <div className="w-full rounded-t-3xl bg-km0-beige-50 text-km0-blue-900 p-6 pb-8 shadow-2xl">
         <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-km0-yellow-100 flex items-center justify-center">
@@ -267,7 +269,7 @@ const ErrorOverlay = ({ kind, comercNom, onRetry, onPromos }: ErrorOverlayProps)
             <button
               type="button"
               onClick={onPromos}
-              className="w-full rounded-xl bg-km0-blue-900 text-white font-ui font-bold text-sm py-3 hover:bg-km0-blue-800 transition-colors"
+              className="w-full rounded-xl bg-km0-blue-900 text-km0-beige-50 font-ui font-bold text-sm py-3 hover:bg-km0-blue-800 transition-colors"
             >
               {t("scanner.error.ja_visitat.cta_promos", lang)}
             </button>
@@ -317,7 +319,7 @@ const SuccessOverlay = ({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 240, damping: 18 }}
-        className="w-full rounded-3xl bg-white text-km0-blue-900 p-6 text-center shadow-2xl"
+        className="w-full rounded-3xl bg-card text-km0-blue-900 p-6 text-center shadow-2xl"
       >
         <div className="mx-auto mb-3 w-16 h-16 rounded-full bg-km0-yellow-400 flex items-center justify-center">
           <Check size={32} strokeWidth={3} className="text-km0-blue-900" />

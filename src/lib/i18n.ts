@@ -676,7 +676,7 @@ const D = {
   // ── Scanner (Escàner de QR global) ───────────────────────
   "scanner.close": { ca: "Tancar", es: "Cerrar", en: "Close" } as Dict,
   "scanner.flash": { ca: "Flaix", es: "Flash", en: "Flash" } as Dict,
-  "scanner.title": { ca: "Escaneja el codi", es: "Escanea el código", en: "Scan the code" } as Dict,
+  "scanner.title": { ca: "Escàner QR", es: "Escáner QR", en: "QR Scanner" } as Dict,
   "scanner.hint": {
     ca: "Enfoca el codi QR del taulell dins del marc",
     es: "Enfoca el código QR del mostrador dentro del marco",
