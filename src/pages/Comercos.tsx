@@ -231,6 +231,12 @@ const Comercos = () => {
   const { lang } = useLang();
   const { user } = useAuth();
   const { hasUnread, markAllSeen } = useNotifications();
+  const isAuthed = !!user;
+  const goToHome = () => navigate("/home");
+  const goToLogin = () => navigate("/login");
+  const goToPoints = () => navigate("/historial-punts");
+  const goToRewards = () => navigate("/premis-canjats");
+  const goToProfile = () => navigate("/profile");
 
   const forced = new URLSearchParams(window.location.search).get("state");
 
@@ -238,8 +244,8 @@ const Comercos = () => {
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState("totes");
   const [filterOpen, setFilterOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const [notifOpen, setNotifOpen] = useState(false);
+
 
 
   useEffect(() => {
