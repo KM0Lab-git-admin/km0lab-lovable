@@ -305,8 +305,18 @@ const Premis = () => {
             )}
           </div>
 
-          {redeeming && (
+          {redeeming && redeeming.category === "balance" && (
             <RedeemBalanceOverlay
+              reward={redeeming}
+              currentPoints={points}
+              onClose={() => setRedeeming(null)}
+              onConfirmed={({ costPoints }) =>
+                setPoints((p) => Math.max(0, p - costPoints))
+              }
+            />
+          )}
+          {redeeming && redeeming.category !== "balance" && (
+            <RedeemMerchandiseOverlay
               reward={redeeming}
               currentPoints={points}
               onClose={() => setRedeeming(null)}
