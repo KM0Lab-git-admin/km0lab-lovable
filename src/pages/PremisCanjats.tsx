@@ -278,7 +278,16 @@ const RedemptionCard = ({
 const PremisCanjats = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
+  const { user } = useAuth();
+  const isAuthed = !!user;
   const [filter, setFilter] = useState<Filter>("all");
+
+  const goToHome = () => navigate("/home");
+  const goToLogin = () => navigate("/login");
+  const goToPoints = () => navigate("/historial-punts");
+  const goToProfile = () => navigate("/profile");
+  const goToRewards = () => {};
+
 
   const sorted = useMemo(
     () =>
