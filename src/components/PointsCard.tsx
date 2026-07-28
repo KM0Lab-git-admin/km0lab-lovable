@@ -2,6 +2,7 @@ import { Star, Gift } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 /**
  * PointsCard — tarjeta de progreso del usuario registrado.
