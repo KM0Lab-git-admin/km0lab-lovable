@@ -16,9 +16,9 @@ DeviceShell → contenedor centrado → HomeContent
 │   ├── section JoinCard (guest) / PointsCard (auth)
 │   ├── section "Accesos rápidos"     → HomeModules (6 módulos: 2 filas × 3 cols)
 │   ├── section "Eventos destacados"  → EventHeroCarousel
-│   ├── section "Descubre lo nuestro" → ComercioCarousel
 │   ├── section "Bescanvia amb punts" → CouponCard × N (guest: locked)
 │   └── section "Com guanyar punts"   → EarnPointsCard (guest)
+
 ├── BottomTabs             ← fijo abajo (showProfile si auth)
 └── NotificationsOverlay
 
