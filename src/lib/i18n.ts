@@ -386,7 +386,9 @@ const D = {
   // ── BottomTabs ───────────────────────────────────────────
   "tabs.home": { ca: "Inici", es: "Inicio", en: "Home" } as Dict,
   "tabs.points": { ca: "Els meus punts", es: "Mis puntos", en: "My points" } as Dict,
+  "tabs.rewards": { ca: "Premis canjats", es: "Premios canjeados", en: "Redeemed rewards" } as Dict,
   "tabs.profile": { ca: "Perfil", es: "Perfil", en: "Profile" } as Dict,
+
 
   // ── Points history ───────────────────────────────────────
   "points.title": { ca: "Historial de punts", es: "Historial de puntos", en: "Points history" } as Dict,

@@ -12,7 +12,7 @@ import NotificationsOverlay from "@/components/NotificationsOverlay";
 import PointsRewardOverlay from "@/components/PointsRewardOverlay";
 import DeviceShell from "@/components/DeviceShell";
 import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
-import { type HomeTab } from "@/components/BottomTabs";
+
 
 import { PROMOS } from "@/data/promos";
 import { REDEEM_COUPONS } from "@/data/redeemCoupons";
