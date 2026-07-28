@@ -48,6 +48,7 @@ const App = () => (
             <Route path="/home" element={<Home />} />
             <Route path="/home-registrado" element={<Home forceAuthState="authed" />} />
             <Route path="/points" element={<Points />} />
+            <Route path="/historial-punts" element={<HistorialPunts />} />
 
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/evento" element={<Evento />} />
