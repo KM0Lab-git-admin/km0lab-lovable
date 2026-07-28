@@ -15,7 +15,6 @@ import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 
 
 import { PROMOS } from "@/data/promos";
-import { REDEEM_COUPONS } from "@/data/redeemCoupons";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 
 import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
@@ -151,7 +150,6 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     level,
     modules: modulesWithHandlers,
     promos,
-    coupons: REDEEM_COUPONS,
     activeTab: "home" as const,
     isAuthed,
     onLogin: goToLogin,
@@ -162,7 +160,6 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     showLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/agenda"),
-    onSeeAllCoupons: () => {},
     onOpenEvent: (id: string) => navigate(`/evento?id=${id}`),
     onOpenPointsHistory: () => navigate("/historial-punts"),
 

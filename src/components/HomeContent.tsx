@@ -1,7 +1,6 @@
 import HomeModules, { type HomeModule } from "./HomeModules";
 import HomeHero from "./HomeHero";
 import EventHeroCarousel from "./EventHeroCarousel";
-import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import JoinCard from "./JoinCard";
 import EarnPointsCard from "./EarnPointsCard";
@@ -11,7 +10,6 @@ import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 
 import type { Promo } from "@/types/promo";
-import type { Coupon } from "@/types/coupon";
 
 
 export interface HomeContentProps {
@@ -28,7 +26,6 @@ export interface HomeContentProps {
   level?: number;
   modules: HomeModule[];
   promos: Promo[];
-  coupons: Coupon[];
 
   activeTab: HomeTab;
   isAuthed: boolean;
@@ -42,7 +39,6 @@ export interface HomeContentProps {
   showLogin: boolean;
   showPoints: boolean;
   onSeeAllEvents?: () => void;
-  onSeeAllCoupons?: () => void;
   onOpenEvent?: (id: string) => void;
   onOpenPointsHistory?: () => void;
 }
@@ -58,7 +54,6 @@ const HomeContent = ({
   level,
   modules,
   promos,
-  coupons,
 
   activeTab,
   isAuthed,
@@ -71,7 +66,6 @@ const HomeContent = ({
   showPoints,
 
   onSeeAllEvents,
-  onSeeAllCoupons,
   onOpenEvent,
   onOpenPointsHistory,
 
@@ -103,16 +97,6 @@ const HomeContent = ({
           <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
             <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
             <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
-          </section>
-
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
-            <SectionHeader title={t("home.redeem.title", lang)} actionLabel={showLogin ? undefined : t("home.action.see_all_m", lang)} onAction={onSeeAllCoupons} />
-
-            <div className="flex flex-col gap-2">
-              {coupons.map((c, i) => (
-                <CouponCard key={c.id} coupon={{ ...c, locked: showLogin }} delay={i * 0.05} />
-              ))}
-            </div>
           </section>
 
           <EarnPointsCard locked={showLogin} />
