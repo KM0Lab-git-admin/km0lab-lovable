@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 import chatMascot from "@/assets/chat-mascot.png";
 import agendaIcon from "@/assets/agenda-icon.png";
 import cityHallIcon from "@/assets/cityhall-icon.png";
