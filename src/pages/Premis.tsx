@@ -293,11 +293,7 @@ const Premis = () => {
                 key={c}
                 active={filter === c}
                 onClick={() => setFilter(c)}
-                label={
-                  c === "all"
-                    ? t("rewards.filter_all", lang)
-                    : t(CATEGORY_KEY[c], lang)
-                }
+                label={t(CATEGORY_KEY[c], lang)}
               />
             ))}
           </div>
