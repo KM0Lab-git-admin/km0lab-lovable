@@ -5,16 +5,14 @@ import CouponCard from "./CouponCard";
 import PointsCard from "./PointsCard";
 import JoinCard from "./JoinCard";
 import EarnPointsCard from "./EarnPointsCard";
-import ComercioCarousel from "./ComercioCarousel";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 
-
 import type { Promo } from "@/types/promo";
-import type { Comercio } from "@/types/comercio";
 import type { Coupon } from "@/types/coupon";
+
 
 export interface HomeContentProps {
   cityName: string;
@@ -99,12 +97,8 @@ const HomeContent = ({
           </section>
 
           <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
-            <SectionHeader title={t("home.section.shops", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllComercios} />
-            <ComercioCarousel comercios={comercios} />
-          </section>
-
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
             <SectionHeader title={t("home.redeem.title", lang)} actionLabel={showLogin ? undefined : t("home.action.see_all_m", lang)} onAction={onSeeAllCoupons} />
+
             <div className="flex flex-col gap-2">
               {coupons.map((c, i) => (
                 <CouponCard key={c.id} coupon={{ ...c, locked: showLogin }} delay={i * 0.05} />
