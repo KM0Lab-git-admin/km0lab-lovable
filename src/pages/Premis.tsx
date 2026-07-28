@@ -147,15 +147,6 @@ const RewardCard = ({
           strokeWidth={1.8}
           className={cn("text-km0-blue-900", dimmed && "grayscale-[0.3]")}
         />
-
-        {/* Overlay de bloqueo (invitado o sin puntos) */}
-        {showLock && (
-          <div className="absolute inset-0 flex items-center justify-center bg-km0-blue-900/25 backdrop-blur-[1px]">
-            <span className="w-11 h-11 rounded-full bg-white/95 flex items-center justify-center shadow-md">
-              <Lock size={20} className="text-km0-blue-900" strokeWidth={2.2} />
-            </span>
-          </div>
-        )}
       </div>
 
       {/* Cuerpo */}
@@ -203,6 +194,15 @@ const RewardCard = ({
         <p className="font-body text-[11px] text-km0-blue-800/60 pt-0.5 truncate">
           {reward.scope}
         </p>
+
+        <div
+          className={cn(
+            "mt-auto w-full rounded-full px-3 py-1.5 text-center text-xs font-ui font-bold",
+            redeemStatus.cls,
+          )}
+        >
+          {statusLabel}
+        </div>
       </div>
     </motion.article>
   );
@@ -278,7 +278,6 @@ const Premis = () => {
                     key={r.id}
                     reward={r}
                     points={points}
-                    isAuthed={isAuthed}
                     index={i}
                   />
                 ))}
