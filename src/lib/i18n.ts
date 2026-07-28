@@ -670,6 +670,13 @@ const D = {
   "profile.last_name": { ca: "Cognoms", es: "Apellidos", en: "Last name" } as Dict,
   "profile.last_name_ph": { ca: "Els teus cognoms", es: "Tus apellidos", en: "Your last name" } as Dict,
   "profile.email": { ca: "Correu", es: "Email", en: "Email" } as Dict,
+  "profile.phone": { ca: "Telèfon", es: "Teléfono", en: "Phone" } as Dict,
+  "profile.phone_ph": { ca: "+34 600 000 000", es: "+34 600 000 000", en: "+34 600 000 000" } as Dict,
+  "profile.error_phone": {
+    ca: "Telèfon no vàlid",
+    es: "Teléfono no válido",
+    en: "Invalid phone number",
+  } as Dict,
   "profile.postal": { ca: "C. postal", es: "C. postal", en: "Postal code" } as Dict,
   "profile.town": { ca: "Població", es: "Población", en: "Town" } as Dict,
   "profile.town_empty": {

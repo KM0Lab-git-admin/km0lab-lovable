@@ -9,23 +9,20 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import BrandedFrame from "@/components/BrandedFrame";
-import { lookupTown } from "@/lib/postalCodes";
 
 /**
  * Profile — Edición y visualización del perfil del usuario.
  *
- * Campos:
- *  - Nombre, apellidos, código postal y población → editables
- *  - Email → solo lectura (viene de la sesión, cambiarlo rompería el login)
- *
- * Estados: loading (carga inicial del perfil), saving (al guardar),
- * error (toast). El email se obtiene de `user.email`.
+ * Campos editables: nombre, apellidos, teléfono.
+ * Email → solo lectura (viene de la sesión).
+ * CP/población no se editan aquí: se eligen antes del registro y se
+ * guardan al sembrar el perfil.
  */
 
 type ProfileForm = {
   first_name: string;
   last_name: string;
-  postal_code: string;
+  phone: string;
 };
 
 const Profile = () => {
@@ -37,33 +34,19 @@ const Profile = () => {
   const [form, setForm] = useState<ProfileForm>({
     first_name: "",
     last_name: "",
-    postal_code: "",
+    phone: "",
   });
-  // Población derivada del CP (read-only). Se resuelve async vía Supabase.
-  const [town, setTown] = useState<string | null>(null);
 
   const profileSchema = z.object({
     first_name: z.string().trim().max(100, t("profile.error_max", lang)).optional(),
     last_name: z.string().trim().max(100, t("profile.error_max", lang)).optional(),
-    postal_code: z
+    phone: z
       .string()
       .trim()
-      .regex(/^\d{5}$|^$/, t("profile.error_postal", lang))
+      .regex(/^[+\d][\d\s]{5,19}$|^$/, t("profile.error_phone", lang))
       .optional(),
   });
 
-  useEffect(() => {
-    let cancelled = false;
-    lookupTown(form.postal_code).then((townName) => {
-      if (!cancelled) setTown(townName);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [form.postal_code]);
-
-  // Cargar perfil al montar (RLS restringe a la fila del propio user).
-  // Modo testing: si no hay user, dejamos el formulario vacío y editable.
   useEffect(() => {
     if (!user) {
       setLoading(false);
@@ -77,7 +60,7 @@ const Profile = () => {
         setForm({
           first_name: data.first_name ?? "",
           last_name: data.last_name ?? "",
-          postal_code: data.postal_code ?? "",
+          phone: data.phone ?? "",
         });
       }
       setLoading(false);
@@ -105,8 +88,7 @@ const Profile = () => {
     const { error } = await updateProfile(user.id, {
       first_name: form.first_name.trim() || null,
       last_name: form.last_name.trim() || null,
-      postal_code: form.postal_code.trim() || null,
-      town: town ?? null,
+      phone: form.phone.trim() || null,
     });
 
     setSaving(false);
@@ -178,34 +160,17 @@ const Profile = () => {
               />
             </Field>
 
-            <div className="grid grid-cols-[110px_1fr] gap-2">
-              <Field label={t("profile.postal", lang)}>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  maxLength={5}
-                  value={form.postal_code}
-                  onChange={handleChange("postal_code")}
-                  placeholder="08380"
-                  className={inputCls}
-                />
-              </Field>
-              <Field label={t("profile.town", lang)}>
-                <input
-                  type="text"
-                  value={town ?? ""}
-                  readOnly
-                  disabled
-                  placeholder={
-                    form.postal_code.length === 5
-                      ? t("profile.town_empty", lang)
-                      : t("profile.town_hint", lang)
-                  }
-                  className={`${inputCls} opacity-60 cursor-not-allowed`}
-                />
-              </Field>
-            </div>
+            <Field label={t("profile.phone", lang)}>
+              <input
+                type="tel"
+                inputMode="tel"
+                value={form.phone}
+                onChange={handleChange("phone")}
+                placeholder={t("profile.phone_ph", lang)}
+                autoComplete="tel"
+                className={inputCls}
+              />
+            </Field>
 
             <button
               type="submit"
@@ -242,3 +207,4 @@ const Field = ({ label, children }: { label: string; children: React.ReactNode }
 );
 
 export default Profile;
+
