@@ -68,6 +68,44 @@ const D = {
     en: "Once the shop enters it in their back‑office, the code will be validated and consumed.",
   } as Dict,
 
+  // ── Redeem merchandise / experience flow ────────────────
+  "redeem_merch.title_confirm": { ca: "Sol·licita el bescanvi", es: "Solicita el canje", en: "Request redemption" } as Dict,
+  "redeem_merch.title_pending": { ca: "Bescanvi sol·licitat", es: "Canje solicitado", en: "Redemption requested" } as Dict,
+  "redeem_merch.step1": {
+    ca: "Confirma la sol·licitud i descomptarem els punts del teu saldo.",
+    es: "Confirma la solicitud y descontaremos los puntos de tu saldo.",
+    en: "Confirm the request and we'll deduct the points from your balance.",
+  } as Dict,
+  "redeem_merch.step2": {
+    ca: "Rebràs un codi de 5 dígits. Ensenya'l al comerç per recollir el premi.",
+    es: "Recibirás un código de 5 dígitos. Muéstralo en el comercio para recoger el premio.",
+    en: "You'll get a 5-digit code. Show it at the shop to pick up the prize.",
+  } as Dict,
+  "redeem_merch.step3": {
+    ca: "Quan el back‑office confirmi el lliurament, el bescanvi passarà a redimit.",
+    es: "Cuando el back‑office confirme la entrega, el canje pasará a redimido.",
+    en: "Once the back‑office confirms delivery, the redemption is marked redeemed.",
+  } as Dict,
+  "redeem_merch.cta_request": { ca: "Sol·licitar bescanvi", es: "Solicitar canje", en: "Request redemption" } as Dict,
+  "redeem_merch.status_pending": { ca: "Pendent de lliurament", es: "Pendiente de entrega", en: "Pending delivery" } as Dict,
+  "redeem_merch.pending_hint": {
+    ca: "Ensenya aquest codi al comerç per recollir el teu premi. Quedarà com a redimit quan el back‑office ho confirmi.",
+    es: "Muestra este código en el comercio para recoger tu premio. Quedará como redimido cuando el back‑office lo confirme.",
+    en: "Show this code at the shop to pick up your prize. It becomes redeemed once the back‑office confirms.",
+  } as Dict,
+  "redeem_merch.instructions_pickup": {
+    ca: "Acosta't al comerç indicat i ensenya el codi al personal per recollir el premi.",
+    es: "Acércate al comercio indicado y muestra el código al personal para recoger el premio.",
+    en: "Visit the indicated shop and show the code to the staff to pick up your prize.",
+  } as Dict,
+  "redeem_merch.instructions_confirm": {
+    ca: "Quan el back‑office validi el lliurament, rebràs la confirmació i el bescanvi quedarà redimit.",
+    es: "Cuando el back‑office valide la entrega, recibirás la confirmación y el canje quedará redimido.",
+    en: "Once the back‑office validates delivery, you'll get a confirmation and the redemption is marked redeemed.",
+  } as Dict,
+
+
+
   // ── Language screen ──────────────────────────────────────
   "language.title": { ca: "Tria el teu idioma", es: "Escoge tu idioma", en: "Choose your language" } as Dict,
 
