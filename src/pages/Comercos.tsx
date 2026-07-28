@@ -455,7 +455,7 @@ const Comercos = () => {
             showProfile={!!user}
             onLogin={() => navigate("/login")}
             onProfile={() => navigate("/profile")}
-            onPoints={() => navigate(user ? "/points" : "/login")}
+            onPoints={() => navigate(user ? "/historial-punts" : "/login")}
           />
 
         </div>

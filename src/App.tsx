@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Points from "./pages/Points";
 import HistorialPunts from "./pages/HistorialPunts";
 import Premis from "./pages/Premis";
+import PremisCanjats from "./pages/PremisCanjats";
 import Agenda from "./pages/Agenda";
 import Evento from "./pages/Evento";
 import Noticias from "./pages/Noticias";
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="/points" element={<Points />} />
             <Route path="/historial-punts" element={<HistorialPunts />} />
             <Route path="/premis" element={<Premis />} />
+            <Route path="/premis-canjats" element={<PremisCanjats />} />
 
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/evento" element={<Evento />} />

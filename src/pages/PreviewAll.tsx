@@ -272,6 +272,31 @@ Lògica:
   · XState scannerMachine: reading → validating → error|success
   · scannerMockService retorna èxit/error segons el codi simulat
   · success → navigate("/scanner/success")`,
+  "premis-canjats": `DeviceShell (frame estándar)
+└── content (flex-col h-full)
+    ├── header
+    │   ├── back button
+    │   └── <h1> "Els meus bescanvis"
+    ├── summary card (gradient blue)
+    │   ├── total de bescanvis
+    │   └── CTA "Veure els meus bescanvis" (solo en HistorialPunts)
+    ├── filter chips (Tots / Pendent / Llest / Redimit / Caducat)
+    └── lista scroll-y
+        ├── empty state  "Encara no tens bescanvis..."
+        └── RedemptionCard × N
+            ├── header icono (yellow gradient)
+            │   └── status chip (pending / ready / redeemed / expired)
+            ├── título + coste en puntos
+            ├── descripción
+            ├── fecha + valor
+            ├── comercio / punto de recogida
+            ├── código de 5 dígitos (pending / ready) + botón copiar
+            └── fecha de expiración / validación
+
+Lógica:
+  · Datos mock: REDEMPTIONS (src/data/redemptions.ts)
+  · Filtrado local por estado
+  · Estados visuales: pending, ready, redeemed, expired`,
 };
 
 const StateTabs = ({
