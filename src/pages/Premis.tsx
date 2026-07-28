@@ -74,6 +74,7 @@ const RewardCard = ({
   reward,
   points,
   index,
+  onRedeem,
 }: RewardCardProps) => {
   const { lang } = useLang();
   const KindIcon = KIND_ICON[reward.kind];
