@@ -23,6 +23,50 @@ const D = {
   "common.points": { ca: "punts", es: "puntos", en: "points" } as Dict,
   "common.previous": { ca: "Anterior", es: "Anterior", en: "Previous" } as Dict,
   "common.next": { ca: "Següent", es: "Siguiente", en: "Next" } as Dict,
+  "common.close": { ca: "Tancar", es: "Cerrar", en: "Close" } as Dict,
+  "common.cancel": { ca: "Cancel·lar", es: "Cancelar", en: "Cancel" } as Dict,
+
+  // ── Redeem balance flow ─────────────────────────────────
+  "redeem.title_confirm": { ca: "Confirma el bescanvi", es: "Confirma el canje", en: "Confirm redemption" } as Dict,
+  "redeem.title_code": { ca: "El teu codi de bescanvi", es: "Tu código de canje", en: "Your redemption code" } as Dict,
+  "redeem.current_balance": { ca: "Saldo actual", es: "Saldo actual", en: "Current balance" } as Dict,
+  "redeem.balance_after": { ca: "Saldo després del bescanvi", es: "Saldo después del canje", en: "Balance after redemption" } as Dict,
+  "redeem.step1": {
+    ca: "Confirma el bescanvi i descomptarem els punts del teu saldo.",
+    es: "Confirma el canje y descontaremos los puntos de tu saldo.",
+    en: "Confirm and we'll deduct the points from your balance.",
+  } as Dict,
+  "redeem.step2": {
+    ca: "Rebràs un codi de 5 dígits. Ensenya'l al comerç adherit.",
+    es: "Recibirás un código de 5 dígitos. Muéstralo en el comercio adherido.",
+    en: "You'll get a 5-digit code. Show it at the participating shop.",
+  } as Dict,
+  "redeem.step3": {
+    ca: "El comerç introdueix el codi al seu back‑office i aplica el descompte.",
+    es: "El comercio introduce el código en su back‑office y aplica el descuento.",
+    en: "The shop enters the code in their back‑office and applies the discount.",
+  } as Dict,
+  "redeem.cta_confirm": { ca: "Bescanviar ara", es: "Canjear ahora", en: "Redeem now" } as Dict,
+  "redeem.cta_done": { ca: "Fet", es: "Hecho", en: "Done" } as Dict,
+  "redeem.code_label": { ca: "Codi de bescanvi", es: "Código de canje", en: "Redemption code" } as Dict,
+  "redeem.code_hint": {
+    ca: "Vàlid per un únic ús. No comparteixis aquest codi.",
+    es: "Válido para un único uso. No compartas este código.",
+    en: "Single use only. Do not share this code.",
+  } as Dict,
+  "redeem.copy_code": { ca: "Copiar codi", es: "Copiar código", en: "Copy code" } as Dict,
+  "redeem.copied": { ca: "Copiat", es: "Copiado", en: "Copied" } as Dict,
+  "redeem.status_pending": { ca: "Pendent", es: "Pendiente", en: "Pending" } as Dict,
+  "redeem.instructions_show": {
+    ca: "Ensenya el codi al personal del comerç quan vulguis aplicar el descompte.",
+    es: "Muestra el código al personal del comercio cuando quieras aplicar el descuento.",
+    en: "Show the code to the shop staff when you want to apply the discount.",
+  } as Dict,
+  "redeem.instructions_validate": {
+    ca: "Quan el comerç l'introdueixi al back‑office, el codi es validarà i quedarà consumit.",
+    es: "Cuando el comercio lo introduzca en el back‑office, el código se validará y quedará consumido.",
+    en: "Once the shop enters it in their back‑office, the code will be validated and consumed.",
+  } as Dict,
 
   // ── Language screen ──────────────────────────────────────
   "language.title": { ca: "Tria el teu idioma", es: "Escoge tu idioma", en: "Choose your language" } as Dict,

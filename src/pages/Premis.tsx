@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
+import RedeemBalanceOverlay from "@/components/RedeemBalanceOverlay";
 import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -66,12 +67,14 @@ interface RewardCardProps {
   reward: Reward;
   points: number;
   index: number;
+  onRedeem?: (reward: Reward) => void;
 }
 
 const RewardCard = ({
   reward,
   points,
   index,
+  onRedeem,
 }: RewardCardProps) => {
   const { lang } = useLang();
   const KindIcon = KIND_ICON[reward.kind];
@@ -108,15 +111,21 @@ const RewardCard = ({
 
   const statusLabel = t(redeemStatus.key, lang).replace("{n}", fmt(missingPoints));
 
+  const isRedeemable = canAfford && reward.category === "balance";
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.28) }}
+      onClick={isRedeemable ? () => onRedeem?.(reward) : undefined}
+      role={isRedeemable ? "button" : undefined}
+      tabIndex={isRedeemable ? 0 : undefined}
       className={cn(
         "relative overflow-hidden rounded-2xl bg-white border border-km0-blue-100",
         "shadow-[0_8px_20px_-14px_hsl(var(--km0-blue-900)/0.35)]",
         "flex flex-col",
+        isRedeemable && "cursor-pointer active:scale-[0.98] transition-transform",
       )}
     >
       {/* Cabecera: banda con icono grande + chip estado */}
@@ -214,7 +223,8 @@ const Premis = () => {
 
 
   // Demo: saldo de ejemplo alto para visualizar el estado "Pots bescanviar".
-  const points = 2500;
+  const [points, setPoints] = useState(2500);
+  const [redeeming, setRedeeming] = useState<Reward | null>(null);
 
   const [filter, setFilter] = useState<Filter>("balance");
 
@@ -287,11 +297,23 @@ const Premis = () => {
                     reward={r}
                     points={points}
                     index={i}
+                    onRedeem={setRedeeming}
                   />
                 ))}
               </div>
             )}
           </div>
+
+          {redeeming && (
+            <RedeemBalanceOverlay
+              reward={redeeming}
+              currentPoints={points}
+              onClose={() => setRedeeming(null)}
+              onConfirmed={({ costPoints }) =>
+                setPoints((p) => Math.max(0, p - costPoints))
+              }
+            />
+          )}
         </div>
       </div>
     </DeviceShell>
