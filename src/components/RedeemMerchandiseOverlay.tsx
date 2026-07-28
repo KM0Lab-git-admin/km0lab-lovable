@@ -52,7 +52,6 @@ const RedeemMerchandiseOverlay = ({
 }: RedeemMerchandiseOverlayProps) => {
   const { lang } = useLang();
   const [step, setStep] = useState<"confirm" | "pending">("confirm");
-  const [code, setCode] = useState<string | null>(null);
 
   const KindIcon = KIND_ICON[reward.kind];
 
@@ -63,7 +62,6 @@ const RedeemMerchandiseOverlay = ({
 
   const handleRequest = () => {
     const newCode = generateCode();
-    setCode(newCode);
     setStep("pending");
     onConfirmed?.({ code: newCode, costPoints: reward.costPoints });
   };
