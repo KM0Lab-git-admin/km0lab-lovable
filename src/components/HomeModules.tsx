@@ -98,9 +98,12 @@ interface ModuleItemProps {
 
 const ModuleItem = ({ module }: ModuleItemProps) => {
   const { lang } = useLang();
-  const { id, active, label, onClick } = module;
+  const { id, active, label, onClick, disabledReason } = module;
   const imageSrc = IMAGE_SRC[id];
   const imagePadding = IMAGE_PADDING[id];
+  const badgeKey = disabledReason === "requires_registration"
+    ? "module.register_to_enable"
+    : "module.coming_soon";
 
   return (
     <button
@@ -138,7 +141,7 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
             />
           )}
 
-          {/* Badge "Pròximament" para módulos aún no habilitados */}
+          {/* Badge para módulos aún no habilitados: pròximament o registra't */}
           {!active && (
             <span
               aria-hidden
@@ -151,7 +154,7 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
                 "text-[8px] leading-none whitespace-nowrap",
               )}
             >
-              {t("module.coming_soon", lang)}
+              {t(badgeKey, lang)}
             </span>
           )}
         </span>
