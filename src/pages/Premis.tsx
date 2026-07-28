@@ -8,7 +8,6 @@ import {
   Percent,
   ShoppingBag,
   Package,
-  Lock,
   Coins,
   type LucideIcon,
 } from "lucide-react";
@@ -67,14 +66,12 @@ const FilterChip = ({
 interface RewardCardProps {
   reward: Reward;
   points: number;
-  isAuthed: boolean;
   index: number;
 }
 
 const RewardCard = ({
   reward,
   points,
-  isAuthed,
   index,
 }: RewardCardProps) => {
   const { lang } = useLang();
@@ -83,13 +80,11 @@ const RewardCard = ({
   const isSoldOut = reward.status === "sold_out";
   const isInactive = reward.status === "inactive";
   const missingPoints = Math.max(0, reward.costPoints - points);
-  const canAfford = isAuthed && missingPoints === 0;
+  const canAfford = missingPoints === 0;
 
-  // Registrat: sempre veu el premi complet; el cost es ressalta si pot bescanviar.
-  // No registrat: tot el catàleg queda bloquejat (dim + candau).
-  // Esgotat / inactiu conserven el seu propi estat visual.
-  const dimmed = !isAuthed || isSoldOut || isInactive;
-  const showLock = !isAuthed;
+  // Esgotat / inactiu conserven el seu propi estat visual; la resta mostra
+  // clarament si l'usuari pot bescanviar el premi o li falten punts.
+  const dimmed = isSoldOut || isInactive;
 
   const statusChip = isSoldOut
     ? { key: "rewards.status.sold_out" as TKey, cls: "bg-km0-coral-100 text-km0-coral-500" }
@@ -103,6 +98,16 @@ const RewardCard = ({
       : t("rewards.stock_units", lang).replace("{n}", String(reward.stock));
 
   const costActive = canAfford && !isSoldOut && !isInactive;
+
+  const redeemStatus = isSoldOut
+    ? { key: "rewards.status.sold_out" as TKey, cls: "bg-km0-coral-100 text-km0-coral-500" }
+    : isInactive
+      ? { key: "rewards.status.inactive" as TKey, cls: "bg-km0-blue-100 text-km0-blue-800/70" }
+      : canAfford
+        ? { key: "rewards.status.can_redeem" as TKey, cls: "bg-km0-teal-100 text-km0-teal-700" }
+        : { key: "rewards.status.missing_points" as TKey, cls: "bg-km0-coral-100 text-km0-coral-500" };
+
+  const statusLabel = t(redeemStatus.key, lang).replace("{n}", fmt(missingPoints));
 
   return (
     <motion.article
@@ -142,15 +147,6 @@ const RewardCard = ({
           strokeWidth={1.8}
           className={cn("text-km0-blue-900", dimmed && "grayscale-[0.3]")}
         />
-
-        {/* Overlay de bloqueo (invitado o sin puntos) */}
-        {showLock && (
-          <div className="absolute inset-0 flex items-center justify-center bg-km0-blue-900/25 backdrop-blur-[1px]">
-            <span className="w-11 h-11 rounded-full bg-white/95 flex items-center justify-center shadow-md">
-              <Lock size={20} className="text-km0-blue-900" strokeWidth={2.2} />
-            </span>
-          </div>
-        )}
       </div>
 
       {/* Cuerpo */}
@@ -198,6 +194,15 @@ const RewardCard = ({
         <p className="font-body text-[11px] text-km0-blue-800/60 pt-0.5 truncate">
           {reward.scope}
         </p>
+
+        <div
+          className={cn(
+            "mt-auto w-full rounded-full px-3 py-1.5 text-center text-xs font-ui font-bold",
+            redeemStatus.cls,
+          )}
+        >
+          {statusLabel}
+        </div>
       </div>
     </motion.article>
   );
@@ -246,6 +251,16 @@ const Premis = () => {
             </h1>
           </header>
 
+          {/* Saldo */}
+          <section className="shrink-0 px-4 pb-2">
+            <div className="flex items-center gap-2 rounded-full bg-white border border-km0-blue-100 px-3 py-1.5 w-fit">
+              <Coins size={14} className="text-km0-yellow-500" />
+              <span className="font-ui font-bold text-xs text-km0-blue-900">
+                {t("rewards.balance_label", lang).replace("{n}", fmt(points))}
+              </span>
+            </div>
+          </section>
+
           {/* Filtros */}
           <div className="shrink-0 px-4 pb-2 flex items-center gap-2 overflow-x-auto no-scrollbar">
             {categories.map((c) => (
@@ -273,7 +288,6 @@ const Premis = () => {
                     key={r.id}
                     reward={r}
                     points={points}
-                    isAuthed={isAuthed}
                     index={i}
                   />
                 ))}
