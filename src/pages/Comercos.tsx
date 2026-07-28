@@ -116,17 +116,14 @@ const ComercCard = ({ c, lang, onOpen }: CardProps) => (
           </span>
         </div>
 
-        <div className="mt-2 flex items-center gap-1.5 flex-wrap">
-          <span className="px-2 py-0.5 rounded-full bg-km0-coral-500 text-white text-[10px] font-ui font-bold">
-            {interpolate(t("merchants.card.points", lang), { n: c.punts })}
-          </span>
-          {c.teQR && (
+        {c.teQR && (
+          <div className="mt-2 flex items-center gap-1.5 flex-wrap">
             <span className="px-2 py-0.5 rounded-full bg-km0-blue-50 text-km0-blue-800 text-[10px] font-ui font-bold flex items-center gap-1 border border-km0-blue-100">
               <QrCode size={10} strokeWidth={2.4} />
               {t("merchants.card.qr", lang)}
             </span>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </button>
   </motion.article>
@@ -314,6 +311,10 @@ const Comercos = () => {
               </h2>
               <p className="font-ui text-xs text-km0-blue-700/70 mt-0.5">
                 {interpolate(t("merchants.subtitle", lang), { count: totalPrograma })}
+              </p>
+              <p className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-km0-coral-500 text-white text-[11px] font-ui font-bold">
+                <QrCode size={12} strokeWidth={2.4} />
+                {interpolate(t("merchants.points_notice", lang), { n: 20 })}
               </p>
             </header>
 

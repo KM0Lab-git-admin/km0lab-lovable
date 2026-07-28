@@ -312,6 +312,11 @@ const D = {
     es: "{count} establecimientos participan en el programa",
     en: "{count} shops take part in the programme",
   } as Dict,
+  "merchants.points_notice": {
+    ca: "Cada comerç et dóna {n} punts en escanejar el seu QR",
+    es: "Cada comercio te da {n} puntos al escanear su QR",
+    en: "Each shop gives you {n} points when you scan its QR",
+  } as Dict,
   "merchants.filter_all": { ca: "Totes les categories", es: "Todas las categorías", en: "All categories" } as Dict,
   "merchants.filter_by_category": {
     ca: "Filtra per categoria",
