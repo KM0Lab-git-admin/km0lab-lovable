@@ -398,7 +398,18 @@ const PremisCanjats = () => {
               </div>
             )}
           </div>
+
+          <BottomTabs
+            activeTab="rewards"
+            isAuthed={isAuthed}
+            onLogin={goToLogin}
+            onHome={goToHome}
+            onProfile={goToProfile}
+            onPoints={goToPoints}
+            onRewards={goToRewards}
+          />
         </div>
+
       </div>
     </DeviceShell>
   );
