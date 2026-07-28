@@ -110,7 +110,7 @@ const Scanner = () => {
 
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative aspect-square w-full max-w-[260px]">
-            <div className="absolute inset-0 rounded-2xl bg-black/20 backdrop-blur-[1px]" />
+            <div className="absolute inset-0 rounded-2xl bg-km0-blue-900/20 backdrop-blur-[1px]" />
 
             {/* Esquines */}
             {[
@@ -147,9 +147,9 @@ const Scanner = () => {
 
         {/* Overlay VALIDANT */}
         {status === "validating" && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-black/60 backdrop-blur-sm">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl bg-km0-blue-900/60 backdrop-blur-sm">
             <Loader2 size={40} className="animate-spin text-km0-teal-400" />
-            <p className="text-sm font-ui font-semibold text-white">
+            <p className="text-sm font-ui font-semibold text-km0-beige-50">
               {t("scanner.validating.title", lang)}
             </p>
           </div>
@@ -158,14 +158,14 @@ const Scanner = () => {
 
       {/* Footer ── estatus + simulació ─────────────────── */}
       <footer className="shrink-0 px-6 pb-6 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full bg-km0-blue-900 px-4 py-2 text-white text-xs font-ui">
+        <div className="inline-flex items-center gap-2 rounded-full bg-km0-blue-900 px-4 py-2 text-km0-beige-50 text-xs font-ui">
           <ScanLine size={14} strokeWidth={2.2} />
           {t("scanner.footer", lang)}
         </div>
 
         {/* Panell de simulació (només preview) */}
         {status === "reading" && (
-          <div className="mt-4 rounded-2xl border border-km0-beige-200 bg-white p-3 shadow-sm">
+          <div className="mt-4 rounded-2xl border border-km0-beige-200 bg-card p-3 shadow-sm">
             <p className="text-[10px] uppercase tracking-wider text-km0-blue-900/50 mb-2 text-center">
               {t("scanner.debug.title", lang)}
             </p>
@@ -189,7 +189,7 @@ const Scanner = () => {
                   key={code}
                   type="button"
                   onClick={() => simulate(code)}
-                  className="rounded-lg bg-km0-blue-900 hover:bg-km0-blue-800 text-white font-ui text-xs py-2 transition-colors"
+                  className="rounded-lg bg-km0-blue-900 hover:bg-km0-blue-800 text-km0-beige-50 font-ui text-xs py-2 transition-colors"
                 >
                   {t(key as TKey, lang)}
                 </button>
@@ -251,7 +251,7 @@ const ErrorOverlay = ({ kind, comercNom, onRetry, onPromos }: ErrorOverlayProps)
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="absolute inset-0 z-40 flex items-end justify-center bg-black/70 backdrop-blur-sm"
+      className="absolute inset-0 z-40 flex items-end justify-center bg-km0-blue-900/70 backdrop-blur-sm"
     >
       <div className="w-full rounded-t-3xl bg-km0-beige-50 text-km0-blue-900 p-6 pb-8 shadow-2xl">
         <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-km0-yellow-100 flex items-center justify-center">
@@ -269,7 +269,7 @@ const ErrorOverlay = ({ kind, comercNom, onRetry, onPromos }: ErrorOverlayProps)
             <button
               type="button"
               onClick={onPromos}
-              className="w-full rounded-xl bg-km0-blue-900 text-white font-ui font-bold text-sm py-3 hover:bg-km0-blue-800 transition-colors"
+              className="w-full rounded-xl bg-km0-blue-900 text-km0-beige-50 font-ui font-bold text-sm py-3 hover:bg-km0-blue-800 transition-colors"
             >
               {t("scanner.error.ja_visitat.cta_promos", lang)}
             </button>
@@ -319,7 +319,7 @@ const SuccessOverlay = ({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 240, damping: 18 }}
-        className="w-full rounded-3xl bg-white text-km0-blue-900 p-6 text-center shadow-2xl"
+        className="w-full rounded-3xl bg-card text-km0-blue-900 p-6 text-center shadow-2xl"
       >
         <div className="mx-auto mb-3 w-16 h-16 rounded-full bg-km0-yellow-400 flex items-center justify-center">
           <Check size={32} strokeWidth={3} className="text-km0-blue-900" />
