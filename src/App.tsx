@@ -8,6 +8,7 @@ import Onboarding from "./pages/Onboarding";
 import PostalCode from "./pages/PostalCode";
 import Home from "./pages/Home";
 import Points from "./pages/Points";
+import HistorialPunts from "./pages/HistorialPunts";
 import Agenda from "./pages/Agenda";
 import Evento from "./pages/Evento";
 import Noticias from "./pages/Noticias";
