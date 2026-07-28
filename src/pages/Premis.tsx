@@ -9,6 +9,7 @@ import {
   ShoppingBag,
   Package,
   Coins,
+  Tag,
   type LucideIcon,
 } from "lucide-react";
 
@@ -19,9 +20,21 @@ import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { REWARDS } from "@/data/rewards";
+import { COMERCIOS_DETALL } from "@/data/comerciosAdheridos";
+import type { PromocioInfo } from "@/types/comercAdherit";
 import type { Reward, RewardCategory, RewardKind } from "@/types/reward";
 
+type TopTab = "rewards" | "promos";
 type Filter = "all" | RewardCategory;
+
+interface PromoRow {
+  promo: PromocioInfo;
+  shopId: string;
+  shopName: string;
+  shopEmoji?: string;
+  shopImage?: string;
+  shopBg?: string;
+}
 
 const CATEGORY_KEY: Record<RewardCategory, TKey> = {
   balance: "rewards.category.balance",
@@ -217,6 +230,68 @@ const RewardCard = ({
   );
 };
 
+/* ─── Tarjeta de promoción de comercio ───────────────────── */
+interface PromoCardProps {
+  row: PromoRow;
+  index: number;
+}
+
+const PromoCard = ({ row, index }: PromoCardProps) => {
+  const { lang } = useLang();
+  const l = lang === "en" ? "es" : lang;
+  const { promo, shopName, shopEmoji, shopImage, shopBg } = row;
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.28) }}
+      className={cn(
+        "relative overflow-hidden rounded-2xl bg-white border border-km0-blue-100",
+        "shadow-[0_8px_20px_-14px_hsl(var(--km0-blue-900)/0.35)]",
+        "flex flex-col p-3 gap-2",
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <span
+          className={cn(
+            "shrink-0 w-10 h-10 rounded-full flex items-center justify-center overflow-hidden border border-km0-blue-100",
+            shopBg ?? "bg-km0-beige-100",
+          )}
+        >
+          {shopImage ? (
+            <img src={shopImage} alt="" aria-hidden className="w-full h-full object-contain p-1" />
+          ) : (
+            <span className="text-lg" aria-hidden>{shopEmoji ?? "🛍️"}</span>
+          )}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="font-body text-[10px] uppercase tracking-wide text-km0-blue-800/60 truncate">
+            {t("rewards.promos.at", lang).replace("{shop}", shopName)}
+          </p>
+          <h3 className="font-brand font-black text-sm text-km0-blue-900 leading-tight truncate">
+            {promo.titol[l]}
+          </h3>
+        </div>
+        <span className="shrink-0 rounded-full px-2 py-1 text-[11px] font-ui font-black bg-km0-coral-400 text-white">
+          {promo.etiqueta}
+        </span>
+      </div>
+
+      <p className="font-body text-xs text-km0-blue-800/80 leading-snug">
+        {promo.detall[l]}
+      </p>
+
+      {promo.condicio && (
+        <p className="font-body text-[11px] text-km0-blue-800/60 leading-snug flex items-start gap-1">
+          <Tag size={11} className="mt-0.5 shrink-0 text-km0-blue-800/50" />
+          <span>{promo.condicio[l]}</span>
+        </p>
+      )}
+    </motion.article>
+  );
+};
+
 /* ─── Pantalla ───────────────────────────────────────────── */
 const Premis = () => {
   const navigate = useNavigate();
@@ -227,6 +302,7 @@ const Premis = () => {
   const [points, setPoints] = useState(2500);
   const [redeeming, setRedeeming] = useState<Reward | null>(null);
 
+  const [topTab, setTopTab] = useState<TopTab>("rewards");
   const [filter, setFilter] = useState<Filter>("balance");
 
   const categories = useMemo<RewardCategory[]>(() => {
@@ -239,6 +315,23 @@ const Premis = () => {
     () => REWARDS.filter((r) => r.category === filter),
     [filter],
   );
+
+  const promoRows = useMemo<PromoRow[]>(() => {
+    const rows: PromoRow[] = [];
+    for (const shop of Object.values(COMERCIOS_DETALL)) {
+      for (const promo of shop.promocions) {
+        rows.push({
+          promo,
+          shopId: shop.id,
+          shopName: shop.nom,
+          shopEmoji: shop.emoji,
+          shopImage: shop.imatge,
+          shopBg: shop.bg,
+        });
+      }
+    }
+    return rows;
+  }, []);
 
 
   return (
@@ -270,36 +363,79 @@ const Premis = () => {
             </div>
           </section>
 
-          {/* Filtros */}
-          <div className="shrink-0 px-4 pb-2 flex items-center gap-2 overflow-x-auto no-scrollbar">
-            {categories.map((c) => (
-              <FilterChip
-                key={c}
-                active={filter === c}
-                onClick={() => setFilter(c)}
-                label={t(CATEGORY_KEY[c], lang)}
-              />
-            ))}
+          {/* Top tabs: Premis / Promocions */}
+          <div className="shrink-0 px-4 pb-2 flex items-center gap-1 bg-km0-beige-50">
+            <div className="flex items-center gap-1 rounded-full bg-white border border-km0-blue-100 p-1 w-full">
+              {(["rewards", "promos"] as TopTab[]).map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => setTopTab(tab)}
+                  className={cn(
+                    "flex-1 px-3 py-1.5 rounded-full text-xs font-ui font-bold transition-colors",
+                    topTab === tab
+                      ? "bg-km0-blue-800 text-white"
+                      : "bg-transparent text-km0-blue-800",
+                  )}
+                >
+                  {t(tab === "rewards" ? "rewards.tab.rewards" : "rewards.tab.promos", lang)}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Filtros (solo en Premis) */}
+          {topTab === "rewards" && (
+            <div className="shrink-0 px-4 pb-2 flex items-center gap-2 overflow-x-auto no-scrollbar">
+              {categories.map((c) => (
+                <FilterChip
+                  key={c}
+                  active={filter === c}
+                  onClick={() => setFilter(c)}
+                  label={t(CATEGORY_KEY[c], lang)}
+                />
+              ))}
+            </div>
+          )}
+
+          {topTab === "promos" && (
+            <p className="shrink-0 px-4 pb-2 font-body text-[11px] text-km0-blue-800/60 leading-snug">
+              {t("rewards.promos.info", lang)}
+            </p>
+          )}
 
           {/* Grid */}
           <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pt-1 pb-6">
-            {filtered.length === 0 ? (
+            {topTab === "rewards" ? (
+              filtered.length === 0 ? (
+                <div className="h-full flex items-center justify-center text-center px-6">
+                  <p className="font-body text-sm text-km0-blue-800/60">
+                    {t("rewards.empty", lang)}
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  {filtered.map((r, i) => (
+                    <RewardCard
+                      key={r.id}
+                      reward={r}
+                      points={points}
+                      index={i}
+                      onRedeem={setRedeeming}
+                    />
+                  ))}
+                </div>
+              )
+            ) : promoRows.length === 0 ? (
               <div className="h-full flex items-center justify-center text-center px-6">
                 <p className="font-body text-sm text-km0-blue-800/60">
-                  {t("rewards.empty", lang)}
+                  {t("rewards.promos.empty", lang)}
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3">
-                {filtered.map((r, i) => (
-                  <RewardCard
-                    key={r.id}
-                    reward={r}
-                    points={points}
-                    index={i}
-                    onRedeem={setRedeeming}
-                  />
+              <div className="flex flex-col gap-2">
+                {promoRows.map((row, i) => (
+                  <PromoCard key={`${row.shopId}-${row.promo.id}`} row={row} index={i} />
                 ))}
               </div>
             )}
