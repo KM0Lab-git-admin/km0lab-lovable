@@ -219,43 +219,11 @@ const RedeemMerchandiseOverlay = ({
             >
               <div className="rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 p-5 text-center">
                 <p className="font-ui font-bold text-[11px] uppercase tracking-widest text-white/60">
-                  {t("redeem.code_label", lang)}
+                  {t("redeem_merch.status_pending", lang)}
                 </p>
-                <div
-                  aria-label={t("redeem.code_label", lang)}
-                  className="mt-2 flex items-center justify-center gap-2"
-                >
-                  {code?.split("").map((digit, i) => (
-                    <span
-                      key={i}
-                      className={cn(
-                        "w-11 h-14 rounded-xl bg-white/10 border border-white/25",
-                        "flex items-center justify-center",
-                        "font-brand font-black text-3xl text-white tabular-nums",
-                      )}
-                    >
-                      {digit}
-                    </span>
-                  ))}
-                </div>
-                <p className="mt-3 font-body text-xs text-white/80">
+                <p className="mt-2 font-body text-sm text-white">
                   {t("redeem_merch.pending_hint", lang)}
                 </p>
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/25 px-3 py-1.5 text-xs font-ui font-bold text-white active:scale-95 transition-transform"
-                >
-                  {copied ? (
-                    <>
-                      <Check size={14} /> {t("redeem.copied", lang)}
-                    </>
-                  ) : (
-                    <>
-                      <Copy size={14} /> {t("redeem.copy_code", lang)}
-                    </>
-                  )}
-                </button>
               </div>
 
               <div className="rounded-2xl border border-km0-blue-100 bg-white p-4 flex items-center gap-3">
