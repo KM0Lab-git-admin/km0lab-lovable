@@ -79,7 +79,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
           toggleModule(m.id);
         },
       })),
-    [moduleSeeds, lang, navigate, isAuthed],
+    [moduleSeeds, lang, navigate],
   );
 
   const openNotifications = () => {
