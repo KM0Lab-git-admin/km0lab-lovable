@@ -67,6 +67,7 @@ interface RewardCardProps {
   reward: Reward;
   points: number;
   index: number;
+  onRedeem?: (reward: Reward) => void;
 }
 
 const RewardCard = ({
