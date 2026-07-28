@@ -496,6 +496,55 @@ const D = {
   "module.premis": { ca: "Tots els premis", es: "Todos los premios", en: "All rewards" } as Dict,
   "module.coming_soon": { ca: "Pròximament", es: "Próximamente", en: "Coming soon" } as Dict,
 
+  // ── Rewards catalog ──────────────────────────────────────
+  "rewards.title": { ca: "Tots els premis", es: "Todos los premios", en: "All rewards" } as Dict,
+  "rewards.subtitle": {
+    ca: "Catàleg de recompenses que pots bescanviar amb els teus punts.",
+    es: "Catálogo de recompensas que puedes canjear con tus puntos.",
+    en: "Catalog of rewards you can redeem with your points.",
+  } as Dict,
+  "rewards.balance_label": {
+    ca: "Tens {n} punts",
+    es: "Tienes {n} puntos",
+    en: "You have {n} points",
+  } as Dict,
+  "rewards.guest_label": {
+    ca: "Registra't per començar a acumular punts.",
+    es: "Regístrate para empezar a acumular puntos.",
+    en: "Sign up to start earning points.",
+  } as Dict,
+  "rewards.category.balance": { ca: "Saldo", es: "Saldo", en: "Balance" } as Dict,
+  "rewards.category.experience": { ca: "Experiència", es: "Experiencia", en: "Experience" } as Dict,
+  "rewards.category.merchandising": { ca: "Merchandising", es: "Merchandising", en: "Merchandising" } as Dict,
+  "rewards.category.discount": { ca: "Descompte", es: "Descuento", en: "Discount" } as Dict,
+  "rewards.filter_all": { ca: "Tots", es: "Todos", en: "All" } as Dict,
+  "rewards.status.active": { ca: "Disponible", es: "Disponible", en: "Available" } as Dict,
+  "rewards.status.sold_out": { ca: "Esgotat", es: "Agotado", en: "Sold out" } as Dict,
+  "rewards.status.inactive": { ca: "No disponible", es: "No disponible", en: "Unavailable" } as Dict,
+  "rewards.value": { ca: "Valor", es: "Valor", en: "Value" } as Dict,
+  "rewards.stock": { ca: "Estoc", es: "Stock", en: "Stock" } as Dict,
+  "rewards.stock_unlimited": { ca: "Estoc il·limitat", es: "Stock ilimitado", en: "Unlimited stock" } as Dict,
+  "rewards.stock_units": { ca: "{n} unitats", es: "{n} unidades", en: "{n} units" } as Dict,
+  "rewards.cta.redeem": { ca: "Bescanviar", es: "Canjear", en: "Redeem" } as Dict,
+  "rewards.cta.locked_points": {
+    ca: "Et falten {n} punts",
+    es: "Te faltan {n} puntos",
+    en: "{n} points short",
+  } as Dict,
+  "rewards.cta.locked_guest": {
+    ca: "Registra't per bescanviar",
+    es: "Regístrate para canjear",
+    en: "Sign up to redeem",
+  } as Dict,
+  "rewards.cta.sold_out": { ca: "Esgotat", es: "Agotado", en: "Sold out" } as Dict,
+  "rewards.cta.inactive": { ca: "No disponible", es: "No disponible", en: "Unavailable" } as Dict,
+  "rewards.cost": { ca: "{n} pts", es: "{n} pts", en: "{n} pts" } as Dict,
+  "rewards.empty": {
+    ca: "Encara no hi ha premis en aquesta categoria.",
+    es: "Aún no hay premios en esta categoría.",
+    en: "No rewards in this category yet.",
+  } as Dict,
+
   // ── Profile ──────────────────────────────────────────────
   "profile.title": { ca: "El meu perfil", es: "Mi perfil", en: "My profile" } as Dict,
   "profile.subtitle": {
