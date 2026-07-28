@@ -84,6 +84,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
 
   const goToProfile = () => navigate("/profile");
   const goToLogin = () => navigate("/login");
+  const goToPoints = () => navigate("/points");
+
 
   // Nombre: solo si el usuario está registrado Y ha guardado un first_name.
   const firstName = showProfile ? profile?.first_name?.trim() || null : null;
@@ -125,16 +127,17 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     activeTab,
     onTabChange: (tab: HomeTab) => {
       setActiveTab(tab);
-      if (tab === "comercos") navigate("/comercos");
     },
     showLogin,
     onLogin: goToLogin,
     showProfile,
     onProfile: goToProfile,
+    onPoints: showProfile ? goToPoints : goToLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/agenda"),
     onSeeAllCoupons: () => {},
     onOpenEvent: (id: string) => navigate(`/evento?id=${id}`),
+
   };
 
 

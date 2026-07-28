@@ -72,12 +72,14 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
         onLogin={noop}
         showProfile={isRegistered}
         onProfile={noop}
+        onPoints={noop}
         showPoints={isRegistered}
         onSeeAllEvents={noop}
         onSeeAllCoupons={noop}
 
         onOpenEvent={noop}
       />
+
       {state === "reward-welcome" && showReward && (
         <PointsRewardOverlay
           points={500}

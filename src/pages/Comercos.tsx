@@ -238,8 +238,9 @@ const Comercos = () => {
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState("totes");
   const [filterOpen, setFilterOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<HomeTab>("comercos");
+  const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const [notifOpen, setNotifOpen] = useState(false);
+
 
   useEffect(() => {
     if (forced === "loading") {
@@ -277,7 +278,12 @@ const Comercos = () => {
       if (user) navigate("/profile");
       else navigate("/login");
     }
+    if (tab === "puntos") {
+      if (user) navigate("/points");
+      else navigate("/login");
+    }
   };
+
 
   const openScanner = () => navigate("/scanner");
 
@@ -449,7 +455,9 @@ const Comercos = () => {
             showProfile={!!user}
             onLogin={() => navigate("/login")}
             onProfile={() => navigate("/profile")}
+            onPoints={() => navigate(user ? "/points" : "/login")}
           />
+
         </div>
       </div>
     </DeviceShell>
