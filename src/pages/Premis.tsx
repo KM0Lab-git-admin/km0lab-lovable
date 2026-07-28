@@ -14,6 +14,7 @@ import {
 
 import DeviceShell from "@/components/DeviceShell";
 import RedeemBalanceOverlay from "@/components/RedeemBalanceOverlay";
+import RedeemMerchandiseOverlay from "@/components/RedeemMerchandiseOverlay";
 import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
