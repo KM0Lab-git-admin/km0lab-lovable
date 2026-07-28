@@ -253,6 +253,25 @@ Lógica:
   · validación: zod schema (first_name, last_name, postal_code regex 5d)
   · town se resuelve async vía lookupTown(postal_code)
   · signOut → toast + navigate("/home")`,
+  scanner: `BrandedFrame (hideHeader)
+└── content (relative flex-col h-full overflow-hidden)
+    ├── header (X close + KM0 logo)
+    ├── title block
+    │   ├── <h1> "Escàner QR" (font-brand)
+    │   └── <p> hint
+    ├── viewport (dark gradient bg + teal corners + scanline)
+    │   ├── motion scan line (reading only)
+    │   └── validating overlay (spinner + title)
+    ├── footer
+    │   ├── status pill (ScanLine + footer text)
+    │   └── simulation panel (reading only)
+    ├── bottom teal accent line
+    └── absolute overlays (error bottom-sheet / success centered card)
+
+Lògica:
+  · XState scannerMachine: reading → validating → error|success
+  · scannerMockService retorna èxit/error segons el codi simulat
+  · success → navigate("/scanner/success")`,
 };
 
 const StateTabs = ({
