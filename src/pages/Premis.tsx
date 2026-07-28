@@ -85,7 +85,7 @@ const RewardCard = ({
   const missingPoints = Math.max(0, reward.costPoints - points);
   const canAfford = isAuthed && missingPoints === 0;
 
-  // Registrat: sempre veu el premi complet; el CTA indica si pot bescanviar.
+  // Registrat: sempre veu el premi complet; el cost es ressalta si pot bescanviar.
   // No registrat: tot el catàleg queda bloquejat (dim + candau).
   // Esgotat / inactiu conserven el seu propi estat visual.
   const dimmed = !isAuthed || isSoldOut || isInactive;
@@ -102,10 +102,7 @@ const RewardCard = ({
       ? t("rewards.stock_unlimited", lang)
       : t("rewards.stock_units", lang).replace("{n}", String(reward.stock));
 
-  const handleCta = () => {
-    if (isSoldOut || isInactive) return;
-    if (canAfford) return;
-  };
+  const costActive = canAfford && !isSoldOut && !isInactive;
 
   return (
     <motion.article
