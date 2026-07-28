@@ -23,7 +23,8 @@ import CheckEmail from "./pages/CheckEmail";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
-import PreviewAll from "./pages/PreviewAll";
+
+
 
 
 import TopLoadingBar from "./components/TopLoadingBar";
