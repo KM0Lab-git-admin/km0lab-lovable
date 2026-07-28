@@ -301,9 +301,7 @@ const PremisCanjats = () => {
   const filters: { key: Filter; labelKey: Parameters<typeof t>[0] }[] = [
     { key: "all", labelKey: "redemptions.filter.all" },
     { key: "pending", labelKey: "redemptions.filter.pending" },
-    { key: "ready", labelKey: "redemptions.filter.ready" },
     { key: "redeemed", labelKey: "redemptions.filter.redeemed" },
-    { key: "expired", labelKey: "redemptions.filter.expired" },
   ];
 
   return (
