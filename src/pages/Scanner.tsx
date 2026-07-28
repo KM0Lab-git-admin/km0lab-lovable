@@ -98,13 +98,6 @@ const Scanner = () => {
           <h1 className="font-ui font-bold text-base tracking-wide">
             {t("scanner.title", lang)}
           </h1>
-          <button
-            type="button"
-            aria-label={t("scanner.flash", lang)}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            <Zap size={20} strokeWidth={2.4} />
-          </button>
         </header>
 
         {/* Body ── viewfinder ─────────────────────────────── */}
