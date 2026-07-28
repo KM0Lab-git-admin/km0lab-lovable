@@ -69,8 +69,6 @@ interface RewardCardProps {
   points: number;
   isAuthed: boolean;
   index: number;
-  onRedeem: (r: Reward) => void;
-  onLoginPrompt: () => void;
 }
 
 const RewardCard = ({
@@ -78,8 +76,6 @@ const RewardCard = ({
   points,
   isAuthed,
   index,
-  onRedeem,
-  onLoginPrompt,
 }: RewardCardProps) => {
   const { lang } = useLang();
   const KindIcon = KIND_ICON[reward.kind];
@@ -89,7 +85,7 @@ const RewardCard = ({
   const missingPoints = Math.max(0, reward.costPoints - points);
   const canAfford = isAuthed && missingPoints === 0;
 
-  // Registrat: sempre veu el premi complet; el CTA indica si pot bescanviar.
+  // Registrat: sempre veu el premi complet; el cost es ressalta si pot bescanviar.
   // No registrat: tot el catàleg queda bloquejat (dim + candau).
   // Esgotat / inactiu conserven el seu propi estat visual.
   const dimmed = !isAuthed || isSoldOut || isInactive;
@@ -106,24 +102,7 @@ const RewardCard = ({
       ? t("rewards.stock_unlimited", lang)
       : t("rewards.stock_units", lang).replace("{n}", String(reward.stock));
 
-  const ctaLabel = isSoldOut
-    ? t("rewards.cta.sold_out", lang)
-    : isInactive
-      ? t("rewards.cta.inactive", lang)
-      : !isAuthed
-        ? t("rewards.cta.locked_guest", lang)
-        : !canAfford
-          ? t("rewards.cta.locked_points", lang).replace("{n}", fmt(missingPoints))
-          : t("rewards.cta.redeem", lang);
-
-  const ctaDisabled = isSoldOut || isInactive;
-  const ctaActive = canAfford && !isSoldOut && !isInactive;
-
-  const handleCta = () => {
-    if (ctaDisabled) return;
-    if (!isAuthed) return onLoginPrompt();
-    if (canAfford) return onRedeem(reward);
-  };
+  const costActive = canAfford && !isSoldOut && !isInactive;
 
   return (
     <motion.article
@@ -183,7 +162,7 @@ const RewardCard = ({
           <span
             className={cn(
               "shrink-0 rounded-full px-2 py-1 text-[11px] font-ui font-black tabular-nums",
-              ctaActive
+              costActive
                 ? "bg-km0-yellow-400 text-km0-blue-900"
                 : "bg-km0-beige-100 text-km0-blue-800/70",
             )}
@@ -219,20 +198,6 @@ const RewardCard = ({
         <p className="font-body text-[11px] text-km0-blue-800/60 pt-0.5 truncate">
           {reward.scope}
         </p>
-
-        <button
-          type="button"
-          onClick={handleCta}
-          disabled={ctaDisabled}
-          className={cn(
-            "mt-auto w-full h-10 rounded-full font-ui font-bold text-xs transition-transform active:scale-[0.98]",
-            ctaDisabled && "bg-km0-beige-100 text-km0-blue-800/50 cursor-not-allowed",
-            !ctaDisabled && ctaActive && "bg-km0-blue-800 text-white",
-            !ctaDisabled && !ctaActive && "bg-white text-km0-blue-800 border border-km0-blue-200",
-          )}
-        >
-          {ctaLabel}
-        </button>
       </div>
     </motion.article>
   );
@@ -261,11 +226,6 @@ const Premis = () => {
     [filter],
   );
 
-  const handleRedeem = () => {
-    // TODO: flujo real de bescanvi (fuera de scope de esta pantalla).
-  };
-
-  const handleLoginPrompt = () => navigate("/login");
 
   return (
     <DeviceShell>
@@ -315,8 +275,6 @@ const Premis = () => {
                     points={points}
                     isAuthed={isAuthed}
                     index={i}
-                    onRedeem={handleRedeem}
-                    onLoginPrompt={handleLoginPrompt}
                   />
                 ))}
               </div>
