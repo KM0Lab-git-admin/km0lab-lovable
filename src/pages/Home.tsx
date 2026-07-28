@@ -57,6 +57,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
       moduleSeeds.map((m) => ({
         id: m.id,
         active: m.id === "premis" ? isAuthed : m.active,
+        disabledReason: m.id === "premis" && !isAuthed ? "requires_registration" : undefined,
         label: t(m.labelKey, lang),
         onClick: () => {
           if (m.id === "agenda") {
