@@ -223,7 +223,8 @@ const Premis = () => {
 
 
   // Demo: saldo de ejemplo alto para visualizar el estado "Pots bescanviar".
-  const points = 2500;
+  const [points, setPoints] = useState(2500);
+  const [redeeming, setRedeeming] = useState<Reward | null>(null);
 
   const [filter, setFilter] = useState<Filter>("balance");
 
