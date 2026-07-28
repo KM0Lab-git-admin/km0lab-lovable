@@ -12,8 +12,8 @@ export interface HomeModuleSeed extends Omit<HomeModule, "label"> {
 export const INITIAL_MODULES: HomeModuleSeed[] = [
   { id: "agenda", labelKey: "module.agenda", active: true },
   { id: "noticias", labelKey: "module.noticias", active: true },
-  { id: "ajuntament", labelKey: "module.ajuntament", active: false },
   { id: "comerc", labelKey: "module.comerc", active: true },
+  { id: "ajuntament", labelKey: "module.ajuntament", active: false },
   { id: "chat", labelKey: "module.chat", active: false },
   { id: "premis", labelKey: "module.premis", active: true },
 ];
