@@ -522,6 +522,8 @@ const D = {
   "rewards.status.active": { ca: "Disponible", es: "Disponible", en: "Available" } as Dict,
   "rewards.status.sold_out": { ca: "Esgotat", es: "Agotado", en: "Sold out" } as Dict,
   "rewards.status.inactive": { ca: "No disponible", es: "No disponible", en: "Unavailable" } as Dict,
+  "rewards.status.can_redeem": { ca: "Pots bescanviar", es: "Puedes canjear", en: "You can redeem" } as Dict,
+  "rewards.status.missing_points": { ca: "Et falten {n} punts", es: "Te faltan {n} puntos", en: "{n} points short" } as Dict,
   "rewards.value": { ca: "Valor", es: "Valor", en: "Value" } as Dict,
   "rewards.stock": { ca: "Estoc", es: "Stock", en: "Stock" } as Dict,
   "rewards.stock_unlimited": { ca: "Estoc il·limitat", es: "Stock ilimitado", en: "Unlimited stock" } as Dict,
