@@ -40,6 +40,17 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const showProfile = isAuthed;
   const showPoints = isAuthed;
 
+  // Bandera de preview: permite que las rutas protegidas (historial, premis
+  // canjats, perfil) sean navegables desde `/home-registrado` sin sesión real.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (forceAuthState === "authed") {
+      sessionStorage.setItem("km0_preview_authed", "1");
+    } else if (forceAuthState === "guest") {
+      sessionStorage.removeItem("km0_preview_authed");
+    }
+  }, [forceAuthState]);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
   const [rewardOpen, setRewardOpen] = useState(searchParams.get("welcome") === "1");
