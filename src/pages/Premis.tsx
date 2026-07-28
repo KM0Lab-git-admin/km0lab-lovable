@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -16,19 +16,10 @@ import DeviceShell from "@/components/DeviceShell";
 import RedeemBalanceOverlay from "@/components/RedeemBalanceOverlay";
 import RedeemMerchandiseOverlay from "@/components/RedeemMerchandiseOverlay";
 import { useLang } from "@/contexts/LangContext";
-import { t, type TKey } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { REWARDS } from "@/data/rewards";
-import type { Reward, RewardCategory, RewardKind } from "@/types/reward";
-
-type Filter = "all" | RewardCategory;
-
-const CATEGORY_KEY: Record<RewardCategory, TKey> = {
-  balance: "rewards.category.balance",
-  experience: "rewards.category.experience",
-  merchandising: "rewards.category.merchandising",
-  discount: "rewards.category.discount",
-};
+import type { Reward, RewardKind } from "@/types/reward";
 
 const KIND_ICON: Record<RewardKind, LucideIcon> = {
   voucher: Gift,
@@ -39,29 +30,6 @@ const KIND_ICON: Record<RewardKind, LucideIcon> = {
 
 const fmt = (n: number) => n.toLocaleString("es-ES");
 
-/* ─── Chip filtro ────────────────────────────────────────── */
-const FilterChip = ({
-  active,
-  onClick,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={cn(
-      "shrink-0 px-3 py-1.5 rounded-full text-xs font-ui font-bold transition-colors",
-      active
-        ? "bg-km0-blue-800 text-white"
-        : "bg-white text-km0-blue-800 border border-km0-blue-100",
-    )}
-  >
-    {label}
-  </button>
-);
 
 /* ─── Tarjeta de premio ──────────────────────────────────── */
 interface RewardCardProps {
