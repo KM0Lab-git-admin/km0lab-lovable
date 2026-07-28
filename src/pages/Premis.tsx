@@ -251,6 +251,16 @@ const Premis = () => {
             </h1>
           </header>
 
+          {/* Saldo */}
+          <section className="shrink-0 px-4 pb-2">
+            <div className="flex items-center gap-2 rounded-full bg-white border border-km0-blue-100 px-3 py-1.5 w-fit">
+              <Coins size={14} className="text-km0-yellow-500" />
+              <span className="font-ui font-bold text-xs text-km0-blue-900">
+                {t("rewards.balance_label", lang).replace("{n}", fmt(points))}
+              </span>
+            </div>
+          </section>
+
           {/* Filtros */}
           <div className="shrink-0 px-4 pb-2 flex items-center gap-2 overflow-x-auto no-scrollbar">
             {categories.map((c) => (
