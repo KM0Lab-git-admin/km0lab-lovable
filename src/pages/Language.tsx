@@ -29,9 +29,11 @@ const Language = () => {
 
   return (
     <BrandedFrame>
-      {/* Frame siempre portrait-shaped (mismo tamaño en cualquier resolución),
-          por eso renderizamos SIEMPRE el body vertical. */}
-      <div className="flex-1 min-h-0 w-full max-w-[390px] mx-auto flex flex-col justify-start items-stretch pt-2 pb-4 gap-4">
+      {/* Maqueta ÚNICA portrait, centrada verticalmente en el marco. Con
+          min-h-full + justify-center el contenido queda centrado cuando
+          cabe y, si algún día no cupiera, el body de BrandedFrame haría
+          scroll sin recortar. */}
+      <div className="min-h-full w-full max-w-[390px] mx-auto flex flex-col justify-center items-stretch py-4 gap-4">
         {/* Robot */}
         <div className="flex justify-center shrink-0">
           <div className="relative w-[230px] h-[230px] flex items-center justify-center">

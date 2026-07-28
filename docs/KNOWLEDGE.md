@@ -92,11 +92,23 @@ pantalla tenga varios componentes auxiliares propios.
   que props mágicas.
 - Pantallas con marca se envuelven en `<BrandedFrame>`; el chat usa su
   fullbleed propio.
-- Breakpoints: usa SOLO los 4 semánticos (`vertical-mobile:`,
-  `vertical-tablet:`, `horizontal-mobile:`, `horizontal-desktop:`). No
-  uses `sm:`/`md:`/`lg:` ni aliases viejos (`wide-landscape:`,
-  `short-landscape:`, `tablet-portrait:`) en código nuevo. No modifiques
-  la definición de breakpoints: está espejada con producción y Playwright.
+- **Portrait-only (regla absoluta).** La app vive en un marco fijo
+  vertical (~420px). Diseña UNA sola maqueta portrait por pantalla, que
+  se ve igual en cualquier resolución u orientación real del dispositivo.
+  En `src/pages` y `src/components` está **prohibido** usar variantes de
+  orientación/tablet — `landscape:`, `vertical-tablet:`,
+  `horizontal-mobile:`, `horizontal-desktop:`, `wide-landscape:`,
+  `short-landscape:` — y también `sm:`/`md:`/`lg:`. No crees bloques
+  paralelos por orientación (`hidden landscape:flex`, componentes
+  `XxxLandscape`) ni midas `window.innerWidth`/`innerHeight` para
+  maquetar: el layout debe depender del marco, no de la ventana. Una
+  regla de ESLint rechaza estas variantes (ver `eslint.config.js`).
+- Las 4 variantes siguen DEFINIDAS en `tailwind.config.ts` (mirror 1:1
+  con producción y Playwright) y las usan las piezas solo-Lovable
+  (`PreviewAll`, `SimulatedDevice`), pero NO el código de producto. No
+  modifiques su definición: está espejada con producción. En pantallas,
+  en la práctica solo se usa la base portrait (opcionalmente
+  `vertical-mobile:`, que conserva su media-query).
 - Diseña y valida cada pantalla en las resoluciones canónicas. En
   portrait, valida SIEMPRE en horquilla de altura: 375×667 (el más bajo)
   Y 390×844 (alto). Un solo alto de pantalla no basta: los gaps y
@@ -114,12 +126,21 @@ pantalla tenga varios componentes auxiliares propios.
   renderiza la MISMA columna, centrada y con ancho máximo (~430px), y el
   fondo rellena los laterales. Así todos los formatos heredan
   automáticamente los cambios del portrait y ninguno se desincroniza. NO
-  crees layouts bespoke por orientación (un componente
-  `XxxLandscape` aparte) salvo que se pida explícitamente y se
-  justifique; las pantallas de marca que ya lo tienen (Language,
-  Onboarding, PostalCode) se mantienen. Los bloques anchos (carruseles)
-  hacen scroll DENTRO de su contenedor; el cuerpo nunca desborda en
-  horizontal.
+  crees layouts bespoke por orientación (un componente `XxxLandscape`
+  aparte). Esto aplica a TODAS las pantallas sin excepción, incluidas las
+  de marca (Language, Onboarding, PostalCode). Los bloques anchos
+  (carruseles) hacen scroll DENTRO de su contenedor; el cuerpo nunca
+  desborda en horizontal.
+- **Centrado vertical.** El cuerpo de la pantalla centra su contenido en
+  el eje vertical cuando cabe, y hace scroll (sin recortar) cuando no
+  cabe. Patrón: el contenedor de scroll es `flex-1 min-h-0 overflow-y-auto`
+  y el contenido va en una columna `min-h-full flex flex-col justify-center`.
+  Con esto, en pantallas cortas (onboarding, idioma, código postal) el
+  contenido queda centrado sin gaps colgando abajo; en pantallas con
+  mucho contenido (Home, Noticias, Agenda) el sobrante se resuelve con
+  scroll del cuerpo. Nunca uses `justify-start` + alturas fijas dejando
+  que el hueco caiga abajo, ni `justify-center` a secas en un contenedor
+  con scroll (recorta la parte superior al desbordar).
 - **Desktop = teléfono centrado (app mobile-first).** KM0 LAB es una app
   de móvil (Capacitor); desktop es superficie secundaria. En pantallas
   anchas la app se presenta como un teléfono en vertical centrado sobre
