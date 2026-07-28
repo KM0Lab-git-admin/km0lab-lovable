@@ -6,9 +6,9 @@ import { t } from "@/lib/i18n";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 import type { HomeModule, HomeModuleId } from "@/components/HomeModules";
 import { PROMOS } from "@/data/promos";
-import { COMERCIOS } from "@/data/comercios";
 import { REDEEM_COUPONS } from "@/data/redeemCoupons";
 import { type HomeTab } from "@/components/BottomTabs";
+
 
 export type HomeSandboxState = "guest" | "registered" | "reward-welcome";
 
@@ -64,18 +64,18 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
         nextLevel={500}
         modules={modulesWithHandlers}
         promos={PROMOS}
-        comercios={COMERCIOS}
         coupons={REDEEM_COUPONS}
         activeTab={activeTab}
+
         onTabChange={setActiveTab}
         showLogin={!isRegistered}
         onLogin={noop}
         showProfile={isRegistered}
         onProfile={noop}
         showPoints={isRegistered}
-        onSeeAllComercios={noop}
         onSeeAllEvents={noop}
         onSeeAllCoupons={noop}
+
         onOpenEvent={noop}
       />
       {state === "reward-welcome" && showReward && (

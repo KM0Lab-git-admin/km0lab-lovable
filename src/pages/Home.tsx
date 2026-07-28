@@ -15,9 +15,9 @@ import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 import { type HomeTab } from "@/components/BottomTabs";
 
 import { PROMOS } from "@/data/promos";
-import { COMERCIOS } from "@/data/comercios";
 import { REDEEM_COUPONS } from "@/data/redeemCoupons";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
+
 import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
 
 type HomeProps = {
@@ -117,7 +117,6 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     level,
     modules: modulesWithHandlers,
     promos,
-    comercios: COMERCIOS,
     coupons: REDEEM_COUPONS,
     activeTab,
     onTabChange: (tab: HomeTab) => {
@@ -129,11 +128,11 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     showProfile,
     onProfile: goToProfile,
     showPoints,
-    onSeeAllComercios: () => {},
     onSeeAllEvents: () => navigate("/agenda"),
     onSeeAllCoupons: () => {},
     onOpenEvent: (id: string) => navigate(`/evento?id=${id}`),
   };
+
 
   return (
     <DeviceShell>
