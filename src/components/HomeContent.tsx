@@ -28,8 +28,8 @@ export interface HomeContentProps {
   level?: number;
   modules: HomeModule[];
   promos: Promo[];
-  comercios: Comercio[];
   coupons: Coupon[];
+
   activeTab: HomeTab;
   onTabChange: (t: HomeTab) => void;
   showLogin: boolean;
@@ -38,10 +38,10 @@ export interface HomeContentProps {
   onProfile: () => void;
   /** Solo se muestra PointsCard si hay sesión. */
   showPoints: boolean;
-  onSeeAllComercios?: () => void;
   onSeeAllEvents?: () => void;
   onSeeAllCoupons?: () => void;
   onOpenEvent?: (id: string) => void;
+
 }
 
 const HomeContent = ({
@@ -54,8 +54,8 @@ const HomeContent = ({
   level,
   modules,
   promos,
-  comercios,
   coupons,
+
   activeTab,
   onTabChange,
   showLogin,
@@ -63,10 +63,10 @@ const HomeContent = ({
   showProfile,
   onProfile,
   showPoints,
-  onSeeAllComercios,
   onSeeAllEvents,
   onSeeAllCoupons,
   onOpenEvent,
+
 }: HomeContentProps) => {
   const { lang } = useLang();
 
