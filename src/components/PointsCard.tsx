@@ -2,6 +2,7 @@ import { Star, Gift } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
 /**
  * PointsCard — tarjeta de progreso del usuario registrado.
@@ -23,6 +24,8 @@ export interface PointsCardProps {
   nextReward?: string;
   /** Nivel actual (ej: 4). Si no se pasa, se usa "Local". */
   level?: number;
+  /** Si se pasa, la tarjeta es pulsable y navega al historial. */
+  onClick?: () => void;
 }
 
 const PointsCard = ({
@@ -30,6 +33,7 @@ const PointsCard = ({
   nextLevel,
   nextReward,
   level,
+  onClick,
 }: PointsCardProps) => {
   const { lang } = useLang();
   const safePoints = Math.max(0, points);
@@ -37,12 +41,31 @@ const PointsCard = ({
   const pct = Math.min(100, Math.round((safePoints / safeNext) * 100));
   const pointsToNext = Math.max(0, safeNext - safePoints);
 
+  const clickable = typeof onClick === "function";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="relative w-full max-w-[600px] overflow-hidden rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-3.5 shadow-[0_12px_28px_-12px_hsl(var(--km0-blue-900)/0.45)]"
+      {...(clickable
+        ? {
+            role: "button",
+            tabIndex: 0,
+            onClick,
+            onKeyDown: (e: React.KeyboardEvent) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick?.();
+              }
+            },
+          }
+        : {})}
+      className={cn(
+        "relative w-full max-w-[600px] overflow-hidden rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-3.5 shadow-[0_12px_28px_-12px_hsl(var(--km0-blue-900)/0.45)]",
+        clickable &&
+          "cursor-pointer active:scale-[0.99] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-km0-yellow-400"
+      )}
     >
       {/* Estrella decorativa de fondo */}
       <Star

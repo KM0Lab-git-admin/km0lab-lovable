@@ -137,6 +137,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onSeeAllEvents: () => navigate("/agenda"),
     onSeeAllCoupons: () => {},
     onOpenEvent: (id: string) => navigate(`/evento?id=${id}`),
+    onOpenPointsHistory: () => navigate("/historial-punts"),
 
   };
 

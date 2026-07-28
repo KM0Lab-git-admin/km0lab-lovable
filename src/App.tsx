@@ -8,6 +8,7 @@ import Onboarding from "./pages/Onboarding";
 import PostalCode from "./pages/PostalCode";
 import Home from "./pages/Home";
 import Points from "./pages/Points";
+import HistorialPunts from "./pages/HistorialPunts";
 import Agenda from "./pages/Agenda";
 import Evento from "./pages/Evento";
 import Noticias from "./pages/Noticias";
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/home" element={<Home />} />
             <Route path="/home-registrado" element={<Home forceAuthState="authed" />} />
             <Route path="/points" element={<Points />} />
+            <Route path="/historial-punts" element={<HistorialPunts />} />
 
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/evento" element={<Evento />} />

@@ -43,6 +43,7 @@ export interface HomeContentProps {
   onSeeAllEvents?: () => void;
   onSeeAllCoupons?: () => void;
   onOpenEvent?: (id: string) => void;
+  onOpenPointsHistory?: () => void;
 
 }
 
@@ -70,6 +71,7 @@ const HomeContent = ({
   onSeeAllEvents,
   onSeeAllCoupons,
   onOpenEvent,
+  onOpenPointsHistory,
 
 }: HomeContentProps) => {
   const { lang } = useLang();
@@ -87,7 +89,7 @@ const HomeContent = ({
         <div className="relative z-10 flex flex-col gap-5 px-2 pt-4 pb-6">
           <section className="flex flex-col gap-3 px-2">
             {showLogin && <JoinCard onCreateAccount={onLogin} />}
-            {showPoints && <PointsCard points={points} nextLevel={nextLevel} nextReward={nextReward} level={level} />}
+            {showPoints && <PointsCard points={points} nextLevel={nextLevel} nextReward={nextReward} level={level} onClick={onOpenPointsHistory} />}
           </section>
 
           <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 space-y-3 px-[10px] py-[10px]">
