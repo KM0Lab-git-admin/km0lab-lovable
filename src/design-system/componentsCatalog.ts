@@ -354,10 +354,12 @@ export const componentsCatalog: ComponentSpec[] = [
       { name: "comercios", type: "Comercio[]", required: true, description: "Comercios del ComercioCarousel." },
       { name: "activeTab", type: "HomeTab", required: true, description: "Tab activo del BottomTabs." },
       { name: "onTabChange", type: "(t: HomeTab) => void", required: true, description: "Callback al cambiar tab." },
-      { name: "showLogin", type: "boolean", required: true, description: "Si true, hay botón login (CTA central portrait + en hero landscape)." },
+      { name: "showLogin", type: "boolean", required: true, description: "Si true, hay botón login." },
       { name: "onLogin", type: "() => void", required: true, description: "Acción login." },
-      { name: "showProfile", type: "boolean", required: true, description: "Si true, el tab Perfil va a /profile (no a /login)." },
+      { name: "showProfile", type: "boolean", required: true, description: "Si true, el tab Perfil va a /profile." },
       { name: "onProfile", type: "() => void", required: true, description: "Acción tab Perfil con sesión." },
+      { name: "onPoints", type: "() => void", required: true, description: "Acción tab Mis puntos." },
+
       { name: "onSeeAllComercios", type: "() => void", description: "Acción del link 'Ver todos' en ComerciosSection." },
     ],
     responsive: [
