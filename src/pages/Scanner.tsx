@@ -1,6 +1,6 @@
 import { useMachine } from "@xstate/react";
 import { motion } from "framer-motion";
-import { AlertTriangle, Check, Loader2, ScanLine, WifiOff, X, Zap } from "lucide-react";
+import { AlertTriangle, Check, Loader2, ScanLine, WifiOff, X } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
