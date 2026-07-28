@@ -277,18 +277,6 @@ const Comercos = () => {
     selectedCat?.nom[lang === "en" ? "es" : lang] ??
     t("merchants.filter_all", lang);
 
-  const onTabChange = (tab: HomeTab) => {
-    setActiveTab(tab);
-    if (tab === "home") navigate("/home");
-    if (tab === "perfil") {
-      if (user) navigate("/profile");
-      else navigate("/login");
-    }
-    if (tab === "puntos") {
-      if (user) navigate("/points");
-      else navigate("/login");
-    }
-  };
 
 
   const openScanner = () => navigate("/scanner");
