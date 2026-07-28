@@ -463,6 +463,7 @@ const D = {
   "module.noticias": { ca: "Notícies", es: "Noticias", en: "News" } as Dict,
   "module.servicios": { ca: "Serveis", es: "Servicios", en: "Services" } as Dict,
   "module.premis": { ca: "Tots els premis", es: "Todos los premios", en: "All rewards" } as Dict,
+  "module.coming_soon": { ca: "Pròximament", es: "Próximamente", en: "Coming soon" } as Dict,
 
   // ── Profile ──────────────────────────────────────────────
   "profile.title": { ca: "El meu perfil", es: "Mi perfil", en: "My profile" } as Dict,

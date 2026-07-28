@@ -1,4 +1,6 @@
 import { cn } from "@/lib/utils";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 import chatMascot from "@/assets/chat-mascot.png";
 import agendaIcon from "@/assets/agenda-icon.png";
 import cityHallIcon from "@/assets/cityhall-icon.png";
@@ -94,6 +96,7 @@ interface ModuleItemProps {
 }
 
 const ModuleItem = ({ module }: ModuleItemProps) => {
+  const { lang } = useLang();
   const { id, active, label, onClick } = module;
   const imageSrc = IMAGE_SRC[id];
   const imagePadding = IMAGE_PADDING[id];
@@ -132,6 +135,23 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
               aria-hidden
               className={cn("w-full h-full object-contain", imagePadding, !active && "opacity-70")}
             />
+          )}
+
+          {/* Badge "Pròximament" para módulos aún no habilitados */}
+          {!active && (
+            <span
+              aria-hidden
+              className={cn(
+                "absolute -top-1.5 -right-3 z-20",
+                "px-1.5 py-0.5 rounded-full",
+                "bg-km0-coral-400 text-white",
+                "border border-white shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.35)]",
+                "font-ui font-bold uppercase tracking-wide",
+                "text-[8px] leading-none whitespace-nowrap",
+              )}
+            >
+              {t("module.coming_soon", lang)}
+            </span>
           )}
         </span>
 
