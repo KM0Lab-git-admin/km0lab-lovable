@@ -100,6 +100,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const goToProfile = () => navigate("/profile");
   const goToLogin = () => navigate("/login");
   const goToPoints = () => navigate("/historial-punts");
+  const goToRewards = () => navigate("/premis-canjats");
+
 
 
   // Nombre: solo si el usuario está registrado Y ha guardado un first_name.
