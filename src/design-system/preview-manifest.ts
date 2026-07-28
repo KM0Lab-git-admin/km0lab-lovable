@@ -16,8 +16,7 @@ export interface ScreenStatePreview {
   label: string;
   /**
    * Ruta completa (path + query) que reproduce este estado en la app real.
-   * `null` = el estado solo es reproducible en el sandbox de /preview-all
-   * (sin URL), y Playwright lo ignora.
+   * `null` = el estado no tiene URL propia y Playwright lo ignora.
    */
   src: string | null;
   /**
@@ -135,12 +134,6 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         notes: "Oculta LoginButton; muestra PointsCard. Tab Mis puntos navega a /historial-punts (antes /points).",
       },
 
-      {
-        id: "reward-welcome",
-        label: "Bienvenida (+500 pts)",
-        src: null,
-        notes: "Overlay de recompensa al montar. Solo reproducible vía HomeSandbox en /preview-all.",
-      },
       {
         id: "notifications",
         label: "Notificaciones abiertas",
