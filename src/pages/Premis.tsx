@@ -8,7 +8,6 @@ import {
   Percent,
   ShoppingBag,
   Package,
-  Lock,
   Coins,
   type LucideIcon,
 } from "lucide-react";
