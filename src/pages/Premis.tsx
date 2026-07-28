@@ -212,8 +212,7 @@ const RewardCard = ({
 const Premis = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
-  const { user } = useAuth();
-  const isAuthed = !!user;
+
 
   // Demo: saldo de ejemplo alto para visualizar el estado "Pots bescanviar".
   const points = 2500;
