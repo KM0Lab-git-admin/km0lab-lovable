@@ -89,11 +89,11 @@ const RewardCard = ({
   const missingPoints = Math.max(0, reward.costPoints - points);
   const canAfford = isAuthed && missingPoints === 0;
 
-  // Dim si: no registrado, sin puntos suficientes, esgotat o inactiu.
-  const dimmed = !isAuthed || !canAfford || isSoldOut || isInactive;
-  // Locked overlay solo para: no registrado o sin puntos suficientes en un
-  // premio que sí está disponible (evita doble mensaje con esgotat/inactiu).
-  const showLock = (!isAuthed || !canAfford) && !isSoldOut && !isInactive;
+  // Registrat: sempre veu el premi complet; el CTA indica si pot bescanviar.
+  // No registrat: tot el catàleg queda bloquejat (dim + candau).
+  // Esgotat / inactiu conserven el seu propi estat visual.
+  const dimmed = !isAuthed || isSoldOut || isInactive;
+  const showLock = !isAuthed;
 
   const statusChip = isSoldOut
     ? { key: "rewards.status.sold_out" as TKey, cls: "bg-km0-coral-100 text-km0-coral-500" }
