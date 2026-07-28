@@ -151,7 +151,7 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
                 "bg-km0-coral-400 text-white",
                 "border border-white shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.35)]",
                 "font-ui font-bold uppercase tracking-wide",
-                "text-[8px] leading-none whitespace-nowrap",
+                "text-[8px] leading-tight text-center max-w-[60px]",
               )}
             >
               {t(badgeKey, lang)}
