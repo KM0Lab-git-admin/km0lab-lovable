@@ -14,7 +14,7 @@ import {
 
 import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
-import BottomTabs, { type HomeTab } from "@/components/BottomTabs";
+import BottomTabs from "@/components/BottomTabs";
 import {
   Sheet,
   SheetContent,
