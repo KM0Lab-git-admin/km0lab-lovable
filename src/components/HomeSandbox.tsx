@@ -37,8 +37,8 @@ const HomeSandbox = ({ state = "guest" }: HomeSandboxProps) => {
     setSeeds((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
 
   const modulesWithHandlers: HomeModule[] = useMemo(
-    () => seeds.map((m) => ({ id: m.id, active: m.active, label: t(m.labelKey, lang), onClick: () => toggle(m.id) })),
-    [seeds, lang],
+    () => seeds.map((m) => ({ id: m.id, active: m.id === "premis" ? isRegistered : m.active, label: t(m.labelKey, lang), onClick: () => toggle(m.id) })),
+    [seeds, lang, isRegistered],
   );
 
   const noop = () => {};

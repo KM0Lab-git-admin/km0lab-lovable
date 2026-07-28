@@ -56,7 +56,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     () =>
       moduleSeeds.map((m) => ({
         id: m.id,
-        active: m.active,
+        active: m.id === "premis" ? isAuthed : m.active,
         label: t(m.labelKey, lang),
         onClick: () => {
           if (m.id === "agenda") {
@@ -78,7 +78,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
           toggleModule(m.id);
         },
       })),
-    [moduleSeeds, lang, navigate],
+    [moduleSeeds, lang, navigate, isAuthed],
   );
 
   const openNotifications = () => {
