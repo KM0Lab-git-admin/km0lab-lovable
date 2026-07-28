@@ -23,7 +23,8 @@ export type HomeModuleId =
   | "cupons"
   | "comerc"
   | "noticias"
-  | "servicios";
+  | "servicios"
+  | "premis";
 
 export interface HomeModule {
   id: HomeModuleId;
@@ -39,6 +40,7 @@ const IMAGE_SRC: Partial<Record<HomeModuleId, string>> = {
   comerc: shopServicesIcon.url,
   noticias: newsIcon,
   servicios: servicesIcon,
+  premis: rewardsIcon.url,
 };
 
 /** Padding interno de la imagen dentro del círculo, por id. */
@@ -47,6 +49,7 @@ const IMAGE_PADDING: Partial<Record<HomeModuleId, string>> = {
   comerc: "p-2.5",
   noticias: "p-2.5",
   servicios: "p-2.5",
+  premis: "p-2",
 };
 
 interface HomeModulesProps {
