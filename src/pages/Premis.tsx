@@ -162,7 +162,7 @@ const RewardCard = ({
           <span
             className={cn(
               "shrink-0 rounded-full px-2 py-1 text-[11px] font-ui font-black tabular-nums",
-              ctaActive
+              costActive
                 ? "bg-km0-yellow-400 text-km0-blue-900"
                 : "bg-km0-beige-100 text-km0-blue-800/70",
             )}
@@ -198,20 +198,6 @@ const RewardCard = ({
         <p className="font-body text-[11px] text-km0-blue-800/60 pt-0.5 truncate">
           {reward.scope}
         </p>
-
-        <button
-          type="button"
-          onClick={handleCta}
-          disabled={ctaDisabled}
-          className={cn(
-            "mt-auto w-full h-10 rounded-full font-ui font-bold text-xs transition-transform active:scale-[0.98]",
-            ctaDisabled && "bg-km0-beige-100 text-km0-blue-800/50 cursor-not-allowed",
-            !ctaDisabled && ctaActive && "bg-km0-blue-800 text-white",
-            !ctaDisabled && !ctaActive && "bg-white text-km0-blue-800 border border-km0-blue-200",
-          )}
-        >
-          {ctaLabel}
-        </button>
       </div>
     </motion.article>
   );
