@@ -1,9 +1,9 @@
-import { Home as HomeIcon, Store, Tag, User } from "lucide-react";
+import { Home as HomeIcon, User, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 
-export type HomeTab = "home" | "comercos" | "ofertes" | "perfil";
+export type HomeTab = "home" | "perfil" | "puntos";
 
 export interface BottomTabsProps {
   activeTab: HomeTab;
@@ -12,6 +12,8 @@ export interface BottomTabsProps {
   showProfile: boolean;
   onLogin: () => void;
   onProfile: () => void;
+  /** Acción del tab "Ver mis puntos". */
+  onPoints: () => void;
 }
 
 const BottomTabs = ({
@@ -20,11 +22,12 @@ const BottomTabs = ({
   showProfile,
   onLogin,
   onProfile,
+  onPoints,
 }: BottomTabsProps) => {
   const { lang } = useLang();
   return (
     <nav
-      className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-4"
+      className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-3"
       aria-label="Navegación principal"
     >
       <TabItem
@@ -34,20 +37,17 @@ const BottomTabs = ({
         onClick={() => onTabChange("home")}
       />
       <TabItem
-        icon={<Store size={20} strokeWidth={2.2} />}
-        label={t("tabs.merchants", lang)}
-        active={activeTab === "comercos"}
-        onClick={() => onTabChange("comercos")}
-      />
-      <TabItem
-        icon={<Tag size={20} strokeWidth={2.2} />}
-        label={t("tabs.offers", lang)}
-        active={activeTab === "ofertes"}
-        onClick={() => onTabChange("ofertes")}
+        icon={<Coins size={20} strokeWidth={2.2} />}
+        label={t("tabs.points", lang)}
+        active={activeTab === "puntos"}
+        onClick={() => {
+          onTabChange("puntos");
+          onPoints();
+        }}
       />
       <TabItem
         icon={<User size={20} strokeWidth={2.2} />}
-        label={showProfile ? t("tabs.profile", lang) : t("home.login_cta", lang)}
+        label={t("tabs.profile", lang)}
         active={activeTab === "perfil"}
         onClick={() => {
           onTabChange("perfil");
