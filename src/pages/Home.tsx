@@ -139,15 +139,14 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     modules: modulesWithHandlers,
     promos,
     coupons: REDEEM_COUPONS,
-    activeTab,
-    onTabChange: (tab: HomeTab) => {
-      setActiveTab(tab);
-    },
-    showLogin,
+    activeTab: "home" as const,
+    isAuthed,
     onLogin: goToLogin,
-    showProfile,
+    onHome: () => {},
     onProfile: goToProfile,
-    onPoints: showProfile ? goToPoints : goToLogin,
+    onPoints: goToPoints,
+    onRewards: goToRewards,
+    showLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/agenda"),
     onSeeAllCoupons: () => {},
@@ -155,6 +154,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onOpenPointsHistory: () => navigate("/historial-punts"),
 
   };
+
 
 
   return (
