@@ -69,8 +69,6 @@ interface RewardCardProps {
   points: number;
   isAuthed: boolean;
   index: number;
-  onRedeem: (r: Reward) => void;
-  onLoginPrompt: () => void;
 }
 
 const RewardCard = ({
@@ -78,8 +76,6 @@ const RewardCard = ({
   points,
   isAuthed,
   index,
-  onRedeem,
-  onLoginPrompt,
 }: RewardCardProps) => {
   const { lang } = useLang();
   const KindIcon = KIND_ICON[reward.kind];
@@ -106,23 +102,9 @@ const RewardCard = ({
       ? t("rewards.stock_unlimited", lang)
       : t("rewards.stock_units", lang).replace("{n}", String(reward.stock));
 
-  const ctaLabel = isSoldOut
-    ? t("rewards.cta.sold_out", lang)
-    : isInactive
-      ? t("rewards.cta.inactive", lang)
-      : !isAuthed
-        ? t("rewards.cta.locked_guest", lang)
-        : !canAfford
-          ? t("rewards.cta.locked_points", lang).replace("{n}", fmt(missingPoints))
-          : t("rewards.cta.redeem", lang);
-
-  const ctaDisabled = isSoldOut || isInactive;
-  const ctaActive = canAfford && !isSoldOut && !isInactive;
-
   const handleCta = () => {
-    if (ctaDisabled) return;
-    if (!isAuthed) return onLoginPrompt();
-    if (canAfford) return onRedeem(reward);
+    if (isSoldOut || isInactive) return;
+    if (canAfford) return;
   };
 
   return (
