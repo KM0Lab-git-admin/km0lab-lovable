@@ -66,14 +66,12 @@ const FilterChip = ({
 interface RewardCardProps {
   reward: Reward;
   points: number;
-  isAuthed: boolean;
   index: number;
 }
 
 const RewardCard = ({
   reward,
   points,
-  isAuthed,
   index,
 }: RewardCardProps) => {
   const { lang } = useLang();
@@ -82,13 +80,11 @@ const RewardCard = ({
   const isSoldOut = reward.status === "sold_out";
   const isInactive = reward.status === "inactive";
   const missingPoints = Math.max(0, reward.costPoints - points);
-  const canAfford = isAuthed && missingPoints === 0;
+  const canAfford = missingPoints === 0;
 
-  // Registrat: sempre veu el premi complet; el cost es ressalta si pot bescanviar.
-  // No registrat: tot el catàleg queda bloquejat (dim + candau).
-  // Esgotat / inactiu conserven el seu propi estat visual.
-  const dimmed = !isAuthed || isSoldOut || isInactive;
-  const showLock = !isAuthed;
+  // Esgotat / inactiu conserven el seu propi estat visual; la resta mostra
+  // clarament si l'usuari pot bescanviar el premi o li falten punts.
+  const dimmed = isSoldOut || isInactive;
 
   const statusChip = isSoldOut
     ? { key: "rewards.status.sold_out" as TKey, cls: "bg-km0-coral-100 text-km0-coral-500" }
@@ -102,6 +98,16 @@ const RewardCard = ({
       : t("rewards.stock_units", lang).replace("{n}", String(reward.stock));
 
   const costActive = canAfford && !isSoldOut && !isInactive;
+
+  const redeemStatus = isSoldOut
+    ? { key: "rewards.status.sold_out" as TKey, cls: "bg-km0-coral-100 text-km0-coral-500" }
+    : isInactive
+      ? { key: "rewards.status.inactive" as TKey, cls: "bg-km0-blue-100 text-km0-blue-800/70" }
+      : canAfford
+        ? { key: "rewards.status.can_redeem" as TKey, cls: "bg-km0-teal-100 text-km0-teal-700" }
+        : { key: "rewards.status.missing_points" as TKey, cls: "bg-km0-coral-100 text-km0-coral-500" };
+
+  const statusLabel = t(redeemStatus.key, lang).replace("{n}", fmt(missingPoints));
 
   return (
     <motion.article
