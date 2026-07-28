@@ -5,6 +5,7 @@ import cityHallIcon from "@/assets/cityhall-icon.png";
 import shopServicesIcon from "@/assets/shop-services-icon.png.asset.json";
 import newsIcon from "@/assets/news-icon.png";
 import servicesIcon from "@/assets/services-icon.png";
+import rewardsIcon from "@/assets/rewards-icon.png.asset.json";
 
 /**
  * HomeModules — accesos rápidos de la Home.
