@@ -36,7 +36,7 @@ const IMAGE_SRC: Partial<Record<HomeModuleId, string>> = {
   chat: chatMascot,
   agenda: agendaIcon,
   ajuntament: cityHallIcon,
-  comerc: shopIcon,
+  comerc: shopServicesIcon.url,
   noticias: newsIcon,
   servicios: servicesIcon,
 };
