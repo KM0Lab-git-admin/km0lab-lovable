@@ -21,9 +21,9 @@ import type { Reward, RewardKind } from "@/types/reward";
  *
  * A diferencia del saldo, el premio requiere recogida presencial:
  *  1) confirm → resumen + saldo abans/després, CTA "Sol·licitar bescanvi".
- *  2) pending → codi 5 dígits + estat "Pendent de lliurament". El back‑office
- *               confirma que el client ha rebut el premi i el canje passa a
- *               "redimit".
+ *  2) pending → estat "Pendent de lliurament". El comerç valida el canje
+ *               manualment al back‑office; el client només ha de presentar-se
+ *               al punt de recollida. No es mostra codi de 5 dígits en pantalla.
  */
 export interface RedeemMerchandiseOverlayProps {
   reward: Reward;
