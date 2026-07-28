@@ -14,6 +14,7 @@ import {
 
 import DeviceShell from "@/components/DeviceShell";
 import RedeemBalanceOverlay from "@/components/RedeemBalanceOverlay";
+import RedeemMerchandiseOverlay from "@/components/RedeemMerchandiseOverlay";
 import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -111,7 +112,7 @@ const RewardCard = ({
 
   const statusLabel = t(redeemStatus.key, lang).replace("{n}", fmt(missingPoints));
 
-  const isRedeemable = canAfford && reward.category === "balance";
+  const isRedeemable = canAfford && !isSoldOut && !isInactive;
 
   return (
     <motion.article
@@ -304,8 +305,18 @@ const Premis = () => {
             )}
           </div>
 
-          {redeeming && (
+          {redeeming && redeeming.category === "balance" && (
             <RedeemBalanceOverlay
+              reward={redeeming}
+              currentPoints={points}
+              onClose={() => setRedeeming(null)}
+              onConfirmed={({ costPoints }) =>
+                setPoints((p) => Math.max(0, p - costPoints))
+              }
+            />
+          )}
+          {redeeming && redeeming.category !== "balance" && (
+            <RedeemMerchandiseOverlay
               reward={redeeming}
               currentPoints={points}
               onClose={() => setRedeeming(null)}
