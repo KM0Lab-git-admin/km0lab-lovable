@@ -225,6 +225,16 @@ const HistorialPunts = () => {
                 </span>
               </div>
 
+              <button
+                type="button"
+                onClick={() => navigate("/premis-canjats")}
+                className="relative z-10 mt-3 flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 active:scale-[0.98] transition-transform w-fit"
+              >
+                <GiftIcon size={14} className="text-km0-yellow-100" />
+                <span className="font-ui font-bold text-xs text-white">
+                  {t("redemptions.see_list", lang)}
+                </span>
+              </button>
 
               <div className="relative z-10 mt-3 grid grid-cols-2 gap-2">
                 <div className="rounded-xl bg-white/10 px-3 py-2">
