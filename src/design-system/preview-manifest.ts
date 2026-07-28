@@ -124,15 +124,16 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "LoginButton en el header; oculta PointsCard. Tab Perfil muestra 'Iniciar sessió' y Mis puntos requiere login.",
+        notes: "LoginButton en el header; oculta PointsCard. BottomTabs con 4 tabs: Inicio · Mis puntos · Premis canjats · Perfil. Sin sesión solo Inicio está activo; los demás redirigen a /login.",
       },
       {
         id: "registered",
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard. Tab Mis puntos navega a /historial-punts (antes /points).",
+        notes: "Oculta LoginButton; muestra PointsCard. BottomTabs: Inicio · Mis puntos · Premis canjats · Perfil.",
       },
+
 
       {
         id: "notifications",
