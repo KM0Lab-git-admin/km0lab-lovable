@@ -112,7 +112,7 @@ const RewardCard = ({
 
   const statusLabel = t(redeemStatus.key, lang).replace("{n}", fmt(missingPoints));
 
-  const isRedeemable = canAfford && reward.category === "balance";
+  const isRedeemable = canAfford && !isSoldOut && !isInactive;
 
   return (
     <motion.article
