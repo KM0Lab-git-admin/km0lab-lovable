@@ -9,6 +9,7 @@ import {
   ShoppingBag,
   Package,
   Coins,
+  Tag,
   type LucideIcon,
 } from "lucide-react";
 
@@ -19,9 +20,21 @@ import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { REWARDS } from "@/data/rewards";
+import { COMERCIOS_DETALL } from "@/data/comerciosAdheridos";
+import type { PromocioInfo } from "@/types/comercAdherit";
 import type { Reward, RewardCategory, RewardKind } from "@/types/reward";
 
+type TopTab = "rewards" | "promos";
 type Filter = "all" | RewardCategory;
+
+interface PromoRow {
+  promo: PromocioInfo;
+  shopId: string;
+  shopName: string;
+  shopEmoji?: string;
+  shopImage?: string;
+  shopBg?: string;
+}
 
 const CATEGORY_KEY: Record<RewardCategory, TKey> = {
   balance: "rewards.category.balance",
