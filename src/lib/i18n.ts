@@ -630,6 +630,31 @@ const D = {
     en: "No rewards in this category yet.",
   } as Dict,
 
+  // ── My redemptions ───────────────────────────────────────
+  "redemptions.title": { ca: "Els meus bescanvis", es: "Mis canjes", en: "My redemptions" } as Dict,
+  "redemptions.summary": { ca: "Bescanvis realitzats", es: "Canjes realizados", en: "Redemptions made" } as Dict,
+  "redemptions.reward_one": { ca: "premi", es: "premio", en: "reward" } as Dict,
+  "redemptions.reward_many": { ca: "premis", es: "premios", en: "rewards" } as Dict,
+  "redemptions.active_one": { ca: "Tens 1 premi pendent o llest per recollir.", es: "Tienes 1 premio pendiente o listo para recoger.", en: "You have 1 reward pending or ready for pickup." } as Dict,
+  "redemptions.active_many": { ca: "Tens {n} premis pendents o llestos per recollir.", es: "Tienes {n} premios pendientes o listos para recoger.", en: "You have {n} rewards pending or ready for pickup." } as Dict,
+  "redemptions.filter.all": { ca: "Tots", es: "Todos", en: "All" } as Dict,
+  "redemptions.filter.pending": { ca: "Pendent", es: "Pendiente", en: "Pending" } as Dict,
+  "redemptions.filter.ready": { ca: "Llest", es: "Listo", en: "Ready" } as Dict,
+  "redemptions.filter.redeemed": { ca: "Redimit", es: "Canjeado", en: "Redeemed" } as Dict,
+  "redemptions.filter.expired": { ca: "Caducat", es: "Caducado", en: "Expired" } as Dict,
+  "redemptions.status.pending": { ca: "Pendent de lliurament", es: "Pendiente de entrega", en: "Pending delivery" } as Dict,
+  "redemptions.status.ready": { ca: "Llest per recollir", es: "Listo para recoger", en: "Ready for pickup" } as Dict,
+  "redemptions.status.redeemed": { ca: "Redimit", es: "Canjeado", en: "Redeemed" } as Dict,
+  "redemptions.status.expired": { ca: "Caducat", es: "Caducado", en: "Expired" } as Dict,
+  "redemptions.date": { ca: "Data de bescanvi", es: "Fecha de canje", en: "Redemption date" } as Dict,
+  "redemptions.value": { ca: "Valor", es: "Valor", en: "Value" } as Dict,
+  "redemptions.shop": { ca: "Comerç / punt de recollida", es: "Comercio / punto de recogida", en: "Shop / pickup point" } as Dict,
+  "redemptions.code": { ca: "Codi de bescanvi", es: "Código de canje", en: "Redemption code" } as Dict,
+  "redemptions.expires": { ca: "Vàlid fins al {date}", es: "Válido hasta el {date}", en: "Valid until {date}" } as Dict,
+  "redemptions.expired_on": { ca: "Va caducar el {date}", es: "Caducó el {date}", en: "Expired on {date}" } as Dict,
+  "redemptions.completed": { ca: "Validat el {date}", es: "Validado el {date}", en: "Validated on {date}" } as Dict,
+  "redemptions.empty": { ca: "Encara no tens bescanvis registrats.", es: "Aún no tienes canjes registrados.", en: "You have no registered redemptions yet." } as Dict,
+
   // ── Profile ──────────────────────────────────────────────
   "profile.title": { ca: "El meu perfil", es: "Mi perfil", en: "My profile" } as Dict,
   "profile.subtitle": {
