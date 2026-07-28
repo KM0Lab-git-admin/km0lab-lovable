@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
-import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -212,11 +211,10 @@ const RewardCard = ({
 const Premis = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
-  const { user } = useAuth();
-  const isAuthed = !!user;
 
-  // Mismo mock que Home: registrado = 100 pts.
-  const points = isAuthed ? 100 : 0;
+
+  // Demo: saldo de ejemplo alto para visualizar el estado "Pots bescanviar".
+  const points = 2500;
 
   const [filter, setFilter] = useState<Filter>("balance");
 
