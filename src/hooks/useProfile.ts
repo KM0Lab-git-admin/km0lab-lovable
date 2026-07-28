@@ -11,10 +11,12 @@ export interface Profile {
   last_name: string | null;
   email: string | null;
   phone: string | null;
+  birth_date: string | null;
   postal_code: string | null;
   town: string | null;
   avatar_url: string | null;
 }
+
 
 export const useProfile = () => {
   const userId = useAppStore((s) => s.session?.user.id ?? null);
