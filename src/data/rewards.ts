@@ -65,16 +65,4 @@ export const REWARDS: Reward[] = [
     stock: 0,
     scope: "Tots els comerços adherits",
   },
-  {
-    id: "descompte-llibreria",
-    title: "10% a la Llibreria Robafaves",
-    description: "Descompte del 10% en llibres i material.",
-    category: "discount",
-    status: "inactive",
-    kind: "discount",
-    costPoints: 500,
-    valueLabel: "10%",
-    stock: null,
-    scope: "1 comerç",
-  },
 ];

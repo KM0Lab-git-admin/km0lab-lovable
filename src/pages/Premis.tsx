@@ -248,16 +248,16 @@ const Premis = () => {
   // Mismo mock que Home: registrado = 100 pts.
   const points = isAuthed ? 100 : 0;
 
-  const [filter, setFilter] = useState<Filter>("all");
+  const [filter, setFilter] = useState<Filter>("balance");
 
-  const categories = useMemo<Filter[]>(() => {
+  const categories = useMemo<RewardCategory[]>(() => {
     const set = new Set<RewardCategory>();
     for (const r of REWARDS) set.add(r.category);
-    return ["all", ...Array.from(set)];
+    return Array.from(set);
   }, []);
 
   const filtered = useMemo(
-    () => (filter === "all" ? REWARDS : REWARDS.filter((r) => r.category === filter)),
+    () => REWARDS.filter((r) => r.category === filter),
     [filter],
   );
 
@@ -293,11 +293,7 @@ const Premis = () => {
                 key={c}
                 active={filter === c}
                 onClick={() => setFilter(c)}
-                label={
-                  c === "all"
-                    ? t("rewards.filter_all", lang)
-                    : t(CATEGORY_KEY[c], lang)
-                }
+                label={t(CATEGORY_KEY[c], lang)}
               />
             ))}
           </div>
