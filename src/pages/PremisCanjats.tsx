@@ -17,7 +17,10 @@ import {
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
+import BottomTabs from "@/components/BottomTabs";
+import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
+
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { REDEMPTIONS } from "@/data/redemptions";
@@ -275,7 +278,16 @@ const RedemptionCard = ({
 const PremisCanjats = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
+  const { user } = useAuth();
+  const isAuthed = !!user;
   const [filter, setFilter] = useState<Filter>("all");
+
+  const goToHome = () => navigate("/home");
+  const goToLogin = () => navigate("/login");
+  const goToPoints = () => navigate("/historial-punts");
+  const goToProfile = () => navigate("/profile");
+  const goToRewards = () => {};
+
 
   const sorted = useMemo(
     () =>
@@ -386,7 +398,18 @@ const PremisCanjats = () => {
               </div>
             )}
           </div>
+
+          <BottomTabs
+            activeTab="rewards"
+            isAuthed={isAuthed}
+            onLogin={goToLogin}
+            onHome={goToHome}
+            onProfile={goToProfile}
+            onPoints={goToPoints}
+            onRewards={goToRewards}
+          />
         </div>
+
       </div>
     </DeviceShell>
   );

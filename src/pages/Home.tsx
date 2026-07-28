@@ -12,7 +12,7 @@ import NotificationsOverlay from "@/components/NotificationsOverlay";
 import PointsRewardOverlay from "@/components/PointsRewardOverlay";
 import DeviceShell from "@/components/DeviceShell";
 import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
-import { type HomeTab } from "@/components/BottomTabs";
+
 
 import { PROMOS } from "@/data/promos";
 import { REDEEM_COUPONS } from "@/data/redeemCoupons";
@@ -44,7 +44,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
   const [rewardOpen, setRewardOpen] = useState(searchParams.get("welcome") === "1");
   const [moduleSeeds, setModuleSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
-  const [activeTab, setActiveTab] = useState<HomeTab>("home");
+
   const { promos: apiPromos } = useFeaturedPromos(4);
   const promos = apiPromos.length > 0 ? apiPromos : PROMOS;
 
@@ -100,6 +100,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const goToProfile = () => navigate("/profile");
   const goToLogin = () => navigate("/login");
   const goToPoints = () => navigate("/historial-punts");
+  const goToRewards = () => navigate("/premis-canjats");
+
 
 
   // Nombre: solo si el usuario está registrado Y ha guardado un first_name.
@@ -139,15 +141,14 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     modules: modulesWithHandlers,
     promos,
     coupons: REDEEM_COUPONS,
-    activeTab,
-    onTabChange: (tab: HomeTab) => {
-      setActiveTab(tab);
-    },
-    showLogin,
+    activeTab: "home" as const,
+    isAuthed,
     onLogin: goToLogin,
-    showProfile,
+    onHome: () => {},
     onProfile: goToProfile,
-    onPoints: showProfile ? goToPoints : goToLogin,
+    onPoints: goToPoints,
+    onRewards: goToRewards,
+    showLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/agenda"),
     onSeeAllCoupons: () => {},
@@ -155,6 +156,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onOpenPointsHistory: () => navigate("/historial-punts"),
 
   };
+
 
 
   return (

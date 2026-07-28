@@ -51,9 +51,9 @@ const App = () => (
             <Route path="/home" element={<Home />} />
             <Route path="/home-registrado" element={<Home forceAuthState="authed" />} />
             <Route path="/points" element={<Points />} />
-            <Route path="/historial-punts" element={<HistorialPunts />} />
+            <Route path="/historial-punts" element={<RequireAuth><HistorialPunts /></RequireAuth>} />
             <Route path="/premis" element={<Premis />} />
-            <Route path="/premis-canjats" element={<PremisCanjats />} />
+            <Route path="/premis-canjats" element={<RequireAuth><PremisCanjats /></RequireAuth>} />
 
             <Route path="/agenda" element={<Agenda />} />
             <Route path="/evento" element={<Evento />} />
@@ -62,8 +62,8 @@ const App = () => (
             <Route path="/comercos/:id" element={<ComercDetall />} />
             <Route path="/scanner" element={<Scanner />} />
             <Route path="/scanner/success" element={<ScannerSuccess />} />
-            {/* Perfil accesible sin auth para testing — Profile gestiona el estado sin user. */}
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+
             <Route path="/design-system" element={<DesignSystem />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

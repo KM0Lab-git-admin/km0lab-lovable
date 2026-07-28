@@ -131,16 +131,18 @@ export const componentsCatalog: ComponentSpec[] = [
     name: "BottomTabs",
     category: "navegacion",
     importPath: "@/components/BottomTabs",
-    description: "Barra de navegación inferior fija con 3 tabs (Inicio · Mis puntos · Perfil). El tab Perfil navega a login si no hay sesión; Mis puntos también requiere sesión.",
-    usedIn: ["Home", "Comercos", "Points"],
+    description: "Barra de navegación inferior fija con 4 tabs (Inicio · Mis puntos · Premis canjats · Perfil). Sin sesión solo Inicio está activo; los demás redirigen a /login.",
+    usedIn: ["Home", "Comercos", "PremisCanjats"],
     props: [
-      { name: "activeTab", type: '"home" | "perfil" | "puntos"', required: true, description: "Tab activo (controlado por la pantalla)." },
-      { name: "onTabChange", type: "(t: HomeTab) => void", required: true, description: "Callback al cambiar de tab." },
-      { name: "showProfile", type: "boolean", required: true, description: "Si hay sesión, el tab Perfil va a /profile; si no, a /login." },
-      { name: "onLogin", type: "() => void", required: true, description: "Acción cuando no hay sesión y se pulsa Perfil." },
-      { name: "onProfile", type: "() => void", required: true, description: "Acción cuando hay sesión y se pulsa Perfil." },
+      { name: "activeTab", type: '"home" | "perfil" | "puntos" | "rewards"', required: true, description: "Tab activo (controlado por la pantalla)." },
+      { name: "isAuthed", type: "boolean", required: true, description: "Indica si hay sesión. Sin sesión, solo el tab Inicio está activo; los demás redirigen a login." },
+      { name: "onLogin", type: "() => void", required: true, description: "Acción cuando se pulsa un tab protegido sin sesión." },
+      { name: "onHome", type: "() => void", required: true, description: "Acción al pulsar el tab Inicio." },
+      { name: "onProfile", type: "() => void", required: true, description: "Acción al pulsar el tab Perfil (con sesión)." },
       { name: "onPoints", type: "() => void", required: true, description: "Acción al pulsar el tab 'Mis puntos'." },
+      { name: "onRewards", type: "() => void", required: true, description: "Acción al pulsar el tab 'Premis canjats'." },
     ],
+
 
     responsive: [
       { breakpoint: "vertical-mobile", behavior: "pt-2/pb-3, iconos 20px, labels 10px." },

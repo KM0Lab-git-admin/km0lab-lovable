@@ -14,7 +14,7 @@ import {
 
 import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
-import BottomTabs, { type HomeTab } from "@/components/BottomTabs";
+import BottomTabs from "@/components/BottomTabs";
 import {
   Sheet,
   SheetContent,
@@ -231,6 +231,12 @@ const Comercos = () => {
   const { lang } = useLang();
   const { user } = useAuth();
   const { hasUnread, markAllSeen } = useNotifications();
+  const isAuthed = !!user;
+  const goToHome = () => navigate("/home");
+  const goToLogin = () => navigate("/login");
+  const goToPoints = () => navigate("/historial-punts");
+  const goToRewards = () => navigate("/premis-canjats");
+  const goToProfile = () => navigate("/profile");
 
   const forced = new URLSearchParams(window.location.search).get("state");
 
@@ -238,8 +244,8 @@ const Comercos = () => {
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState("totes");
   const [filterOpen, setFilterOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const [notifOpen, setNotifOpen] = useState(false);
+
 
 
   useEffect(() => {
@@ -271,18 +277,6 @@ const Comercos = () => {
     selectedCat?.nom[lang === "en" ? "es" : lang] ??
     t("merchants.filter_all", lang);
 
-  const onTabChange = (tab: HomeTab) => {
-    setActiveTab(tab);
-    if (tab === "home") navigate("/home");
-    if (tab === "perfil") {
-      if (user) navigate("/profile");
-      else navigate("/login");
-    }
-    if (tab === "puntos") {
-      if (user) navigate("/points");
-      else navigate("/login");
-    }
-  };
 
 
   const openScanner = () => navigate("/scanner");
@@ -450,13 +444,15 @@ const Comercos = () => {
           />
 
           <BottomTabs
-            activeTab={activeTab}
-            onTabChange={onTabChange}
-            showProfile={!!user}
-            onLogin={() => navigate("/login")}
-            onProfile={() => navigate("/profile")}
-            onPoints={() => navigate(user ? "/historial-punts" : "/login")}
+            activeTab="home"
+            isAuthed={isAuthed}
+            onLogin={goToLogin}
+            onHome={goToHome}
+            onProfile={goToProfile}
+            onPoints={goToPoints}
+            onRewards={goToRewards}
           />
+
 
         </div>
       </div>

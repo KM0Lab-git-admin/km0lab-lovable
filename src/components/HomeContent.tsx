@@ -31,21 +31,22 @@ export interface HomeContentProps {
   coupons: Coupon[];
 
   activeTab: HomeTab;
-  onTabChange: (t: HomeTab) => void;
-  showLogin: boolean;
+  isAuthed: boolean;
   onLogin: () => void;
-  showProfile: boolean;
+  onHome: () => void;
   onProfile: () => void;
   onPoints: () => void;
+  onRewards: () => void;
 
   /** Solo se muestra PointsCard si hay sesión. */
+  showLogin: boolean;
   showPoints: boolean;
   onSeeAllEvents?: () => void;
   onSeeAllCoupons?: () => void;
   onOpenEvent?: (id: string) => void;
   onOpenPointsHistory?: () => void;
-
 }
+
 
 const HomeContent = ({
   cityName,
@@ -60,12 +61,13 @@ const HomeContent = ({
   coupons,
 
   activeTab,
-  onTabChange,
-  showLogin,
+  isAuthed,
   onLogin,
-  showProfile,
+  onHome,
   onProfile,
   onPoints,
+  onRewards,
+  showLogin,
   showPoints,
 
   onSeeAllEvents,
@@ -74,6 +76,7 @@ const HomeContent = ({
   onOpenPointsHistory,
 
 }: HomeContentProps) => {
+
   const { lang } = useLang();
 
   return (
@@ -119,12 +122,14 @@ const HomeContent = ({
 
       <BottomTabs
         activeTab={activeTab}
-        onTabChange={onTabChange}
-        showProfile={showProfile}
+        isAuthed={isAuthed}
         onLogin={onLogin}
+        onHome={onHome}
         onProfile={onProfile}
         onPoints={onPoints}
+        onRewards={onRewards}
       />
+
 
     </>
   );
