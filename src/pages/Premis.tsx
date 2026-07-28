@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -19,16 +19,7 @@ import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { REWARDS } from "@/data/rewards";
-import type { Reward, RewardCategory, RewardKind } from "@/types/reward";
-
-type Filter = "all" | RewardCategory;
-
-const CATEGORY_KEY: Record<RewardCategory, TKey> = {
-  balance: "rewards.category.balance",
-  experience: "rewards.category.experience",
-  merchandising: "rewards.category.merchandising",
-  discount: "rewards.category.discount",
-};
+import type { Reward, RewardKind } from "@/types/reward";
 
 const KIND_ICON: Record<RewardKind, LucideIcon> = {
   voucher: Gift,
@@ -39,29 +30,6 @@ const KIND_ICON: Record<RewardKind, LucideIcon> = {
 
 const fmt = (n: number) => n.toLocaleString("es-ES");
 
-/* ─── Chip filtro ────────────────────────────────────────── */
-const FilterChip = ({
-  active,
-  onClick,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={cn(
-      "shrink-0 px-3 py-1.5 rounded-full text-xs font-ui font-bold transition-colors",
-      active
-        ? "bg-km0-blue-800 text-white"
-        : "bg-white text-km0-blue-800 border border-km0-blue-100",
-    )}
-  >
-    {label}
-  </button>
-);
 
 /* ─── Tarjeta de premio ──────────────────────────────────── */
 interface RewardCardProps {
@@ -137,10 +105,6 @@ const RewardCard = ({
           dimmed && "opacity-60",
         )}
       >
-        {/* Chip categoría (top-left) */}
-        <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-white/85 text-[10px] font-ui font-bold text-km0-blue-800 uppercase tracking-wide">
-          {t(CATEGORY_KEY[reward.category], lang)}
-        </span>
         {/* Chip estado (top-right) */}
         <span
           className={cn(
@@ -227,19 +191,6 @@ const Premis = () => {
   const [points, setPoints] = useState(2500);
   const [redeeming, setRedeeming] = useState<Reward | null>(null);
 
-  const [filter, setFilter] = useState<Filter>("balance");
-
-  const categories = useMemo<RewardCategory[]>(() => {
-    const set = new Set<RewardCategory>();
-    for (const r of REWARDS) set.add(r.category);
-    return Array.from(set);
-  }, []);
-
-  const filtered = useMemo(
-    () => REWARDS.filter((r) => r.category === filter),
-    [filter],
-  );
-
 
   return (
     <DeviceShell>
@@ -270,21 +221,9 @@ const Premis = () => {
             </div>
           </section>
 
-          {/* Filtros */}
-          <div className="shrink-0 px-4 pb-2 flex items-center gap-2 overflow-x-auto no-scrollbar">
-            {categories.map((c) => (
-              <FilterChip
-                key={c}
-                active={filter === c}
-                onClick={() => setFilter(c)}
-                label={t(CATEGORY_KEY[c], lang)}
-              />
-            ))}
-          </div>
-
           {/* Grid */}
           <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pt-1 pb-6">
-            {filtered.length === 0 ? (
+            {REWARDS.length === 0 ? (
               <div className="h-full flex items-center justify-center text-center px-6">
                 <p className="font-body text-sm text-km0-blue-800/60">
                   {t("rewards.empty", lang)}
@@ -292,7 +231,7 @@ const Premis = () => {
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3">
-                {filtered.map((r, i) => (
+                {REWARDS.map((r, i) => (
                   <RewardCard
                     key={r.id}
                     reward={r}
