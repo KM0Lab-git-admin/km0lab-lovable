@@ -577,7 +577,7 @@ const D = {
   "module.cupons": { ca: "Cupons", es: "Cupones", en: "Coupons" } as Dict,
   "module.noticias": { ca: "Notícies", es: "Noticias", en: "News" } as Dict,
   "module.servicios": { ca: "Serveis", es: "Servicios", en: "Services" } as Dict,
-  "module.premis": { ca: "Tots els premis", es: "Todos los premios", en: "All rewards" } as Dict,
+  "module.premis": { ca: "Premis i promos", es: "Premios y promos", en: "Rewards & promos" } as Dict,
   "module.coming_soon": { ca: "Pròximament", es: "Próximamente", en: "Coming soon" } as Dict,
   "module.register_to_enable": { ca: "Registra't per activar", es: "Regístrate para activar", en: "Sign up to enable" } as Dict,
 
