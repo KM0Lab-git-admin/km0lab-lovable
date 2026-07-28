@@ -9,7 +9,7 @@ import { RESPONSIVE_VIEWPORTS } from "./src/design-system/viewports";
  * - Viewports `tier: "smoke"` (móvil landscape) → solo checks estructurales.
  *
  * Las pantallas/estados que se validan viven en
- * `src/design-system/preview-manifest.ts` (los mismos que muestra /preview-all).
+ * `src/design-system/preview-manifest.ts`.
  *
  * Baselines: se generan en CI (Linux) con el workflow "update-baselines";
  * en local (Windows/macOS el rendering difiere) usa `npm run test:visual:local`,

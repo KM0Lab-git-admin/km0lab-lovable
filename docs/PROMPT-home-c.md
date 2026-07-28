@@ -1,8 +1,8 @@
 # Prompt de arranque — Home "Missió del barri" (variant C)
 
 > Pega este prompt en el chat de Lovable para construir la Home por
-> fases. La especificación completa está en `docs/spec-home-c.md` (léela
-> antes) y las reglas del proyecto en `docs/KNOWLEDGE.md`.
+fases. La especificación completa está en `docs/spec-home-c.md` (léela
+antes) y las reglas del proyecto en `docs/KNOWLEDGE.md`.
 
 ## Paso 1 — Estructura, copy y los dos estados
 
@@ -18,13 +18,13 @@ resume en 3-4 líneas cómo vas a montar los dos estados; espera mi OK.
 Reutiliza los componentes existentes (HomeHero, GreetingBlock,
 EventHeroCarousel, CouponCard, BottomTabs); no construyas todavía
 PointsCard evolucionada ni el escáner. Copy nuevo en lib/i18n.ts según
-la tabla del spec. Valida guest y registered en PreviewAll a 375×667.
+la tabla del spec. Valida guest y registered a 375×667.
 ```
 
 ## Paso 2 — PointsCard + EarnPointsInfo + reward-welcome
 
 ```
-Continúa la Home del spec docs/spec-home-c.md. Evoluciona PointsCard al
+Continua la Home del spec docs/spec-home-c.md. Evoluciona PointsCard al
 modo "progreso con recompensa" (añade variante, no rompas su API) y crea
 el bloque informativo EarnPointsInfo (título + formas de ganar puntos +
 botón "Escaneja un QR" que navega a un placeholder /scan; NO construyas
@@ -38,7 +38,7 @@ de benvinguda" al registrarse. Copy en lib/i18n.ts. Valida en 375×667 y
 ```
 Cierra la Home del spec docs/spec-home-c.md. Añade el forzado de estados
 por query param (?state=loading|empty|error y ?session=guest|registered)
-en PreviewAll, y pule los 4 estados de pantalla (loading con skeletons,
+y pule los 4 estados de pantalla (loading con skeletons,
 empty del carrusel, error, feliz) en las 4 resoluciones canónicas. No
 toques el contrato de API ni los primitivos de components/ui.
 ```

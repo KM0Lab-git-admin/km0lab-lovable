@@ -2,9 +2,7 @@
  * preview-manifest — FUENTE ÚNICA DE VERDAD de pantallas y estados visuales.
  *
  * Este fichero es DATA PURA (sin React ni imports con side-effects) porque
- * lo consumen dos mundos:
- *   1. `src/pages/PreviewAll.tsx`  → catálogo visual /preview-all
- *   2. `tests/visual/screens.spec.ts` (Playwright) → regresión visual
+ * lo consumen los tests de regresión visual de Playwright.
  *
  * REGLA: cada vez que se añade una pantalla nueva (ruta en App.tsx) o un
  * estado visual nuevo (variante con más/menos componentes según sesión,
@@ -18,8 +16,7 @@ export interface ScreenStatePreview {
   label: string;
   /**
    * Ruta completa (path + query) que reproduce este estado en la app real.
-   * `null` = el estado solo es reproducible en el sandbox de /preview-all
-   * (sin URL), y Playwright lo ignora.
+   * `null` = el estado no tiene URL propia y Playwright lo ignora.
    */
   src: string | null;
   /**
@@ -137,12 +134,6 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         notes: "Oculta LoginButton; muestra PointsCard. Tab Mis puntos navega a /historial-punts (antes /points).",
       },
 
-      {
-        id: "reward-welcome",
-        label: "Bienvenida (+500 pts)",
-        src: null,
-        notes: "Overlay de recompensa al montar. Solo reproducible vía HomeSandbox en /preview-all.",
-      },
       {
         id: "notifications",
         label: "Notificaciones abiertas",

@@ -23,7 +23,8 @@ import CheckEmail from "./pages/CheckEmail";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
-import PreviewAll from "./pages/PreviewAll";
+
+
 
 
 import TopLoadingBar from "./components/TopLoadingBar";
@@ -64,7 +65,6 @@ const App = () => (
             {/* Perfil accesible sin auth para testing — Profile gestiona el estado sin user. */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/design-system" element={<DesignSystem />} />
-            <Route path="/preview-all" element={<PreviewAll />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

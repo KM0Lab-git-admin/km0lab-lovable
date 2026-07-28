@@ -11,15 +11,15 @@ Todo prompt de cambio visual lleva estas 5 partes:
 1. **Alcance cerrado** — qué pantalla/componente tocar y, explícitamente, qué
    NO tocar ("no toques componentes compartidos ni otras pantallas").
 2. **Nivel de jerarquía** — frame / layout de página / sección / atómico
-   (pedirle que lo identifique antes de cambiar código evita arreglos en el
-   nivel equivocado).
+   (pedirle que lo identifique antes de cambiar código evita arreglos en
+   el nivel equivocado).
 3. **Contrato responsive** — recordar los breakpoints oficiales y el orden:
    base 375×667 primero, overrides con prefijo después. Móvil landscape =
    solo no-rotura.
 4. **Estados afectados** — enumerar los estados de la pantalla (ver
    `docs/screen-states.md`) y exigir que el cambio funcione en todos.
 5. **Definición de hecho** — registrar pantalla/estado nuevos en
-   `src/design-system/preview-manifest.ts`, y validar en `/preview-all`.
+   `src/design-system/preview-manifest.ts`, y pasar `npm run build`.
 
 ## Plantillas
 
@@ -44,8 +44,7 @@ Reglas responsive (docs/responsive-layout-process.md):
 Esta pantalla tiene los estados: [lista de docs/screen-states.md].
 El cambio debe verse bien en TODOS; dime si alguno requiere ajuste especial.
 
-Al acabar: lista los archivos tocados y confirma que /preview-all sigue
-mostrando la pantalla correctamente en sus dos frames y todos sus estados.
+Al acabar: lista los archivos tocados y confirma que `npm run build` pasa.
 ```
 
 ### B. Crear una pantalla nueva
@@ -67,7 +66,6 @@ Definición de hecho (obligatorio):
 - Ruta añadida en src/App.tsx ANTES del catch-all.
 - Pantalla y todos sus estados registrados en
   src/design-system/preview-manifest.ts (con su src por estado).
-- Árbol de componentes añadido a TREES en src/pages/PreviewAll.tsx.
 - npm run build pasa.
 ```
 
@@ -80,8 +78,8 @@ Es un componente de nivel [sección/atómico]: NO debe imponer alturas de
 pantalla ni decisiones de layout de página; debe adaptarse al espacio que le
 dé su padre (min-w-0 si vive en flex/grid).
 
-Lo usan las pantallas: [lista]. Después del cambio revisa cada una en
-/preview-all (todos sus estados) y dime si alguna composición se degrada.
+Lo usan las pantallas: [lista]. Después del cambio revisa cada una en su
+ruta real y dime si alguna composición se degrada.
 No "arregles" una pantalla concreta metiendo lógica de esa pantalla dentro
 del componente compartido.
 ```
@@ -108,9 +106,9 @@ pantalla no cambian.
 ```txt
 Añade a [pantalla] el estado [X]: [qué componentes aparecen/desaparecen].
 
-- Hazlo forzable por URL (query param ?[param]=) para que /preview-all y
-  Playwright puedan abrirlo directamente. Si depende de sesión, usa useAuth
-  (el test lo sembrará por localStorage).
+- Hazlo forzable por URL (query param ?[param]=) para que Playwright pueda
+  abrirlo directamente. Si depende de sesión, usa useAuth (el test lo
+  sembrará por localStorage).
 - Regístralo en src/design-system/preview-manifest.ts (id, label, src y
   notes), como los estados existentes de Home.
 - El estado nuevo debe cumplir el mismo contrato responsive que el estado
@@ -125,8 +123,7 @@ Añade a [pantalla] el estado [X]: [qué componentes aparecen/desaparecen].
   sale mal no sabrás qué revertir.
 - ❌ "Arregla el desktop" sin prohibir tocar clases base: es el origen del
   loop arreglo-desktop-rompo-mobile.
-- ❌ Aceptar un cambio sin pasar por `/preview-all` con todas las tabs de
-  estado de la pantalla.
+- ❌ Aceptar un cambio sin validar `npm run build` y los estados afectados.
 
 ## Bloque para el Knowledge de Lovable
 
@@ -152,7 +149,6 @@ REGLAS DE MAQUETACIÓN (resumen — detalle en docs/responsive-layout-process.md
    TODOS los estados de la pantalla. Estados nuevos: forzables por query
    param si es posible.
 6. Definición de hecho: toda pantalla o estado visual nuevo se registra en
-   src/design-system/preview-manifest.ts (alimenta /preview-all y los tests
-   de regresión visual de Playwright) y su árbol en TREES de PreviewAll.tsx.
-   npm run build debe pasar.
+   src/design-system/preview-manifest.ts (alimenta los tests de regresión
+   visual de Playwright). npm run build debe pasar.
 ```

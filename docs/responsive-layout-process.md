@@ -42,14 +42,15 @@ layout se trata como estado feliz.
 
 ## Jerarquía de responsabilidades
 
-1. **Frame de pantalla** (`ScreenFrame`, `SimulatedDevice`, shells de página):
-   controla anchura, altura, `overflow`, safe area y breakpoint forzado en previews.
-2. **Layout de página** (`HomeContent`, `HomeContentLandscape`, `Agenda`, `Chat`):
-   decide columnas, filas, zonas con scroll y orden de bloques.
+1. **Frame de pantalla** (`ScreenFrame`, shells de página): controla
+   anchura, altura, `overflow`, safe area y breakpoint forzado en previews.
+2. **Layout de página** (`HomeContent`, `Agenda`, `Chat`): decide columnas,
+   filas, zonas con scroll y orden de bloques.
 3. **Componente de sección** (`HomeHero`, `EventHeroCarousel`, `ComercioCarousel`):
-   resuelve composición interna, espaciados y densidad dentro del espacio recibido.
-4. **Componente atómico** (`CouponCard`, `PointsCard`, botones):
-   no debería imponer alturas globales de pantalla ni reglas de layout de página.
+   resuelve composición interna, espaciados y densidad dentro del espacio
+   recibido.
+4. **Componente atómico** (`CouponCard`, `PointsCard`, botones): no debe
+   imponer alturas globales de pantalla ni reglas de layout de página.
 
 ## Orden obligatorio para cambios visuales
 
@@ -76,8 +77,7 @@ layout se trata como estado feliz.
 ## Registro de pantallas y estados (OBLIGATORIO)
 
 `src/design-system/preview-manifest.ts` es la fuente única de pantallas y
-estados visuales. La consumen `/preview-all` (catálogo visual) y Playwright
-(regresión). **Una tarea que añade una pantalla nueva o un estado visual
+estados visuales. **Una tarea que añade una pantalla nueva o un estado visual
 nuevo (variante con más/menos componentes según sesión, datos o query param)
 no está terminada hasta registrarlo en el manifest.** Detalle de cada estado
 y cómo forzarlo: `docs/screen-states.md`.
@@ -98,17 +98,3 @@ viewports, (2) captura px-a-px contra baseline en los viewports `contract`
   baselines nuevas se commitean solas. Revisar el diff de imágenes en el PR.
 - Informe con diffs: artifact `playwright-report` del workflow, o
   `npm run test:visual:report` en local.
-
-## Checklist antes de aceptar una maqueta
-
-- [ ] No hay scroll horizontal accidental en ningún viewport de la matriz.
-- [ ] Los textos importantes no quedan cortados en `375×667`.
-- [ ] Las tarjetas tienen `min-w-0` cuando viven dentro de grids/flex.
-- [ ] Las zonas con scroll usan `min-h-0` en todos sus padres flex/grid.
-- [ ] Desktop mejora la composición, pero no redefine el comportamiento base.
-- [ ] Pantalla/estado nuevos registrados en `preview-manifest.ts`.
-- [ ] `npm run build` y `npm run test:visual:local` pasan después del cambio.
-
-## Prompts para Lovable
-
-Plantillas completas y reglas de redacción: `docs/lovable-prompting-guide.md`.

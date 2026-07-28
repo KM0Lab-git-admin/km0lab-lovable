@@ -3,8 +3,8 @@
 Inventario de cada pantalla de la app y sus **estados visuales** (variantes
 con más/menos componentes según sesión, datos o query param). La versión
 ejecutable de esta tabla es `src/design-system/preview-manifest.ts`, que
-alimenta `/preview-all` y los tests de Playwright: **este doc explica, el
-manifest manda**. Si añades una pantalla o estado, actualiza los dos.
+alimenta los tests de Playwright: **este doc explica, el manifest manda**.
+Si añades una pantalla o estado, actualiza los dos.
 
 ## Cómo se fuerza cada tipo de estado
 
@@ -12,7 +12,6 @@ manifest manda**. Si añades una pantalla o estado, actualiza los dos.
 | --- | --- | --- |
 | Query param | Estados de UI puros (overlay abierto, variante de diseño) | `/home?notifs=open`, `/evento?variant=ticket` |
 | Sesión sembrada en localStorage | Estados que dependen de `useAuth` (registrado vs guest) | Playwright siembra `PREVIEW_SESSION` (clave `km0_app`) antes de cargar |
-| Sandbox en `/preview-all` | Estados que requieren montar un escenario (overlay de recompensa) | `HomeSandbox state="reward-welcome"` |
 
 La sesión sembrada replica el shape de `zustand/persist` de
 `src/stores/useAppStore.ts`. Si el store cambia de shape o de `version`,
@@ -26,7 +25,6 @@ actualizar `PREVIEW_SESSION` en el manifest.
 | --- | --- | --- |
 | No registrado (guest) | localStorage limpio | `LoginButton` visible y centrado; sin `PointsCard`; `BottomTabs` sin tab Perfil |
 | Registrado | sesión sembrada | Sin `LoginButton`; `PointsCard` en el hero; tab Perfil en `BottomTabs` |
-| Bienvenida (+500 pts) | solo sandbox (`/preview-all`) | Como registrado + `PointsRewardOverlay` montado |
 | Notificaciones abiertas | `/home?notifs=open` | `NotificationsOverlay` sobre la card |
 
 ### Profile (`/profile`)
@@ -57,13 +55,12 @@ actualizar `PREVIEW_SESSION` en el manifest.
 | Onboarding | `/onboarding` | posición del carrusel (drag) |
 | PostalCode | `/postal-code` | `idle / validating / found / not_found / error` — dependen de input + Supabase |
 | Login | `/login` | enviando enlace (spinner) |
-| Chat | `/chat` | conversación con `EventCard`s; grabación de voz. **dynamicContent** (fecha actual en banner) |
 | Agenda | `/agenda` | `loading (skeleton) / error / empty / con resultados` — dependen de Supabase. **dynamicContent** |
 
 Las pantallas `dynamicContent` no tienen comparación de screenshot en
 Playwright (los datos remotos/fecha harían el test flaky); solo checks
 estructurales. **Mejora pendiente**: interceptar las llamadas a Supabase con
-`page.route()` y fixtures para poder capturar Agenda/Chat y los estados
+`page.route()` y fixtures para poder capturar Agenda y los estados
 `empty/error` de forma determinista — cuando se haga, quitar
 `dynamicContent: true` del manifest.
 
@@ -71,8 +68,9 @@ estructurales. **Mejora pendiente**: interceptar las llamadas a Supabase con
 
 1. ¿La pantalla muestra/oculta componentes según sesión, datos o params?
    → cada combinación visualmente distinta es un **estado** y se registra en
-   `preview-manifest.ts` (con `src` que lo fuerce, o `src: null` + sandbox).
-2. Un cambio en una pantalla con N estados debe validarse en los N estados:
-   en `/preview-all` con las tabs, y en Playwright automáticamente.
+   `preview-manifest.ts` (con `src` que lo fuerce, o `src: null` si no es
+   forzable por URL).
+2. Un cambio en una pantalla con N estados debe validarse en los N estados
+   en su ruta real y con `npm run build`.
 3. Preferir estados forzables por URL (query param) a estados solo-sandbox:
    son testeables sin código extra.

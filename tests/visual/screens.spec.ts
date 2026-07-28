@@ -7,9 +7,8 @@ import {
 /**
  * Matriz pantallas × estados × viewports.
  *
- * - Pantallas/estados: `src/design-system/preview-manifest.ts` (las mismas
- *   entradas que muestra /preview-all). Estados con `src: null` (solo
- *   sandbox) se omiten.
+ * - Pantallas/estados: `src/design-system/preview-manifest.ts`. Estados con
+ *   `src: null` (no forzables por URL) se omiten.
  * - Viewports: un project de Playwright por entrada de
  *   `src/design-system/viewports.ts` (ver playwright.config.ts).
  *
@@ -21,7 +20,7 @@ import {
 
 for (const screen of PREVIEW_SCREENS) {
   for (const state of screen.states) {
-    if (!state.src) continue; // estado solo reproducible en /preview-all
+    if (!state.src) continue; // estado no forzable por URL
 
     const title =
       screen.states.length > 1

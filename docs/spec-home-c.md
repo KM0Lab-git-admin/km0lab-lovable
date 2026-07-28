@@ -78,7 +78,7 @@ escanear). Nada interactivo con estado.
 - error: reservado (datos mock, pero deja el patrón).
 - reward-welcome: al venir de registrarse, momento de "+100 punts de
   benvinguda" antes de asentar la home registrada.
-- Forzables por query param (`?state=` y `?session=`) como PreviewAll.
+- Forzables por query param (`?state=` y `?session=`).
 
 ## Copy — TODO en lib/i18n.ts (claves nuevas ca/es/en; ca de referencia)
 
@@ -119,8 +119,7 @@ escanear). Nada interactivo con estado.
 ## Secuencia de construcción (3 prompts a Lovable)
 
 1. **Estructura + copy + los dos estados**, con puntos/eventos/cupones
-   como datos mock estáticos. Validar layout de guest y registered en
-   PreviewAll.
+   como datos mock estáticos. Validar layout de guest y registered a 375×667.
 2. **PointsCard evolucionada + EarnPointsInfo + reward-welcome** (el
    momento de +100 al registrarse).
 3. **Estados forzables** (`?state=` / `?session=`) y pulido de
