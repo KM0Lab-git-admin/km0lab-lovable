@@ -303,7 +303,17 @@ const D = {
 
   // ── BottomTabs ───────────────────────────────────────────
   "tabs.home": { ca: "Inici", es: "Inicio", en: "Home" } as Dict,
-  "tabs.merchants": { ca: "Comerços", es: "Comercios", en: "Shops" } as Dict,
+  "tabs.points": { ca: "Els meus punts", es: "Mis puntos", en: "My points" } as Dict,
+  "tabs.profile": { ca: "Perfil", es: "Perfil", en: "Profile" } as Dict,
+
+  // ── Points history placeholder ───────────────────────────
+  "points.title": { ca: "Historial de punts", es: "Historial de puntos", en: "Points history" } as Dict,
+  "points.placeholder": {
+    ca: "Aquí veuràs els punts guanyats i consumits.",
+    es: "Aquí verás los puntos ganados y consumidos.",
+    en: "Here you'll see earned and redeemed points.",
+  } as Dict,
+
 
   // ── Merchants (Comerços) screen ──────────────────────────
   "merchants.title": { ca: "Comerços adherits", es: "Comercios adheridos", en: "Member shops" } as Dict,
@@ -446,8 +456,7 @@ const D = {
     en: "Shop not found",
   } as Dict,
   "merchant.notfound.back": { ca: "Tornar al llistat", es: "Volver al listado", en: "Back to list" } as Dict,
-  "tabs.offers": { ca: "Ofertes", es: "Ofertas", en: "Offers" } as Dict,
-  "tabs.profile": { ca: "Perfil", es: "Perfil", en: "Profile" } as Dict,
+
 
   // ── Module labels ────────────────────────────────────────
   "module.agenda": { ca: "Agenda", es: "Agenda", en: "Agenda" } as Dict,
