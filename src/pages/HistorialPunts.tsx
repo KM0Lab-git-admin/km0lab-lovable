@@ -73,37 +73,6 @@ const formatDate = (iso: string, lang: Lang): string => {
 
 const fmtInt = (n: number) => Math.abs(n).toLocaleString("es-ES");
 
-/* ─── Sparkline evolución de saldo ───────────────────────── */
-const Sparkline = ({ values }: { values: number[] }) => {
-  if (values.length < 2) return null;
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const range = max - min || 1;
-  const w = 100;
-  const h = 24;
-  const step = w / (values.length - 1);
-  const points = values
-    .map((v, i) => `${(i * step).toFixed(1)},${(h - ((v - min) / range) * h).toFixed(1)}`)
-    .join(" ");
-  return (
-    <svg
-      viewBox={`0 0 ${w} ${h}`}
-      preserveAspectRatio="none"
-      className="w-full h-6"
-      aria-hidden
-    >
-      <polyline
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        points={points}
-      />
-    </svg>
-  );
-};
-
 /* ─── Fila de movimiento ─────────────────────────────────── */
 const TxRow = ({ tx, lang, index }: { tx: PointsTransaction; lang: Lang; index: number }) => {
   const meta = TYPE_META[tx.type];
@@ -182,18 +151,14 @@ const HistorialPunts = () => {
     []
   );
 
-  const { balance, earned, spent, series } = useMemo(() => {
+  const { balance, earned, spent } = useMemo(() => {
     let e = 0;
     let s = 0;
     for (const tx of sorted) {
       if (tx.points >= 0) e += tx.points;
       else s += -tx.points;
     }
-    // series = saldo acumulado por orden cronológico ascendente
-    const chrono = [...sorted].reverse();
-    let acc = 0;
-    const ser = chrono.map((tx) => (acc += tx.points));
-    return { balance: e - s, earned: e, spent: s, series: ser };
+    return { balance: e - s, earned: e, spent: s };
   }, [sorted]);
 
   const filtered = useMemo(() => {
@@ -259,9 +224,6 @@ const HistorialPunts = () => {
                 </span>
               </div>
 
-              <div className="relative z-10 mt-3 text-km0-teal-300/80">
-                <Sparkline values={series} />
-              </div>
 
               <div className="relative z-10 mt-3 grid grid-cols-2 gap-2">
                 <div className="rounded-xl bg-white/10 px-3 py-2">
