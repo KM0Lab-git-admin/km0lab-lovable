@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
   Gift,
   Coins,
-  Copy,
-  Check,
   Store,
   PackageCheck,
   Ticket,
