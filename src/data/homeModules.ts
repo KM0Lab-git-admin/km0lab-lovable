@@ -15,4 +15,5 @@ export const INITIAL_MODULES: HomeModuleSeed[] = [
   { id: "ajuntament", labelKey: "module.ajuntament", active: false },
   { id: "comerc", labelKey: "module.comerc", active: true },
   { id: "chat", labelKey: "module.chat", active: false },
+  { id: "premis", labelKey: "module.premis", active: true },
 ];
