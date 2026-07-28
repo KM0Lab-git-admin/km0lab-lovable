@@ -10,6 +10,7 @@ import {
   Sparkles,
   Tag,
   Coins,
+  Gift as GiftIcon,
   type LucideIcon,
 } from "lucide-react";
 
