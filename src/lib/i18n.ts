@@ -306,13 +306,35 @@ const D = {
   "tabs.points": { ca: "Els meus punts", es: "Mis puntos", en: "My points" } as Dict,
   "tabs.profile": { ca: "Perfil", es: "Perfil", en: "Profile" } as Dict,
 
-  // ── Points history placeholder ───────────────────────────
+  // ── Points history ───────────────────────────────────────
   "points.title": { ca: "Historial de punts", es: "Historial de puntos", en: "Points history" } as Dict,
   "points.placeholder": {
     ca: "Aquí veuràs els punts guanyats i consumits.",
     es: "Aquí verás los puntos ganados y consumidos.",
     en: "Here you'll see earned and redeemed points.",
   } as Dict,
+  "points.history.title": { ca: "Historial de punts", es: "Historial de puntos", en: "Points history" } as Dict,
+  "points.history.balance": { ca: "Saldo actual", es: "Saldo actual", en: "Current balance" } as Dict,
+  "points.history.earned": { ca: "Guanyats", es: "Ganados", en: "Earned" } as Dict,
+  "points.history.spent": { ca: "Gastats", es: "Gastados", en: "Spent" } as Dict,
+  "points.history.filter_all": { ca: "Tots", es: "Todos", en: "All" } as Dict,
+  "points.history.filter_earned": { ca: "Guanyats", es: "Ganados", en: "Earned" } as Dict,
+  "points.history.filter_spent": { ca: "Gastats", es: "Gastados", en: "Spent" } as Dict,
+  "points.history.empty": {
+    ca: "Encara no tens moviments de punts.",
+    es: "Aún no tienes movimientos de puntos.",
+    en: "You have no points activity yet.",
+  } as Dict,
+  "points.history.group.today": { ca: "Avui", es: "Hoy", en: "Today" } as Dict,
+  "points.history.group.week": { ca: "Aquesta setmana", es: "Esta semana", en: "This week" } as Dict,
+  "points.history.group.month": { ca: "Aquest mes", es: "Este mes", en: "This month" } as Dict,
+  "points.history.group.earlier": { ca: "Anteriors", es: "Anteriores", en: "Earlier" } as Dict,
+  "points.history.type.signup": { ca: "Registre / benvinguda", es: "Registro / bienvenida", en: "Sign-up bonus" } as Dict,
+  "points.history.type.first_scan": { ca: "Primer escaneig del local", es: "Primer escaneo del local", en: "First scan" } as Dict,
+  "points.history.type.visit": { ca: "Visita amb QR", es: "Visita con QR", en: "QR visit" } as Dict,
+  "points.history.type.purchase": { ca: "Compra / reserva / servei", es: "Compra / reserva / servicio", en: "Purchase / booking" } as Dict,
+  "points.history.type.campaign": { ca: "Campanya especial", es: "Campaña especial", en: "Special campaign" } as Dict,
+  "points.history.type.redeem": { ca: "Bescanvi per premi", es: "Canje por premio", en: "Reward redeemed" } as Dict,
 
 
   // ── Merchants (Comerços) screen ──────────────────────────
