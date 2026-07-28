@@ -32,9 +32,8 @@ lectura** (ver §6).
 acceso a BD, secretos, procesamiento de datos de negocio.
 
 **Piezas solo-Lovable** (nunca se sincronizan; no las mezcles con código
-de producto): `src/integrations/`, `supabase/`, `src/design-system/`,
-las páginas `PreviewAll`, `DesignSystem` y `Components`, y los
-componentes `DeviceShell` y `SimulatedDevice`.
+ de producto): `src/integrations/`, `supabase/`, `src/design-system/`,
+ las páginas `DesignSystem` y `Components`, y los componentes `DeviceShell`.
 
 ## 1. Estructura de carpetas (contrato de sync)
 
@@ -104,8 +103,7 @@ pantalla tenga varios componentes auxiliares propios.
   maquetar: el layout debe depender del marco, no de la ventana. Una
   regla de ESLint rechaza estas variantes (ver `eslint.config.js`).
 - Las 4 variantes siguen DEFINIDAS en `tailwind.config.ts` (mirror 1:1
-  con producción y Playwright) y las usan las piezas solo-Lovable
-  (`PreviewAll`, `SimulatedDevice`), pero NO el código de producto. No
+  con producción y Playwright), pero NO el código de producto. No
   modifiques su definición: está espejada con producción. En pantallas,
   en la práctica solo se usa la base portrait (opcionalmente
   `vertical-mobile:`, que conserva su media-query).
