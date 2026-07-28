@@ -205,8 +205,9 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "default",
         label: "Por defecto",
         src: "/premis-canjats",
-        notes: "Mock con todos los estados: pending, ready, redeemed y expired.",
+        notes: "Mock con todos los estados: pending, redeemed y expired. Incluye BottomTabs con tab 'Premis canjats' activo.",
       },
+
     ],
   },
   {
