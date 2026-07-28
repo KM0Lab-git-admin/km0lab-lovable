@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
   Gift,
   Coins,
-  Copy,
-  Check,
   Store,
   PackageCheck,
   Ticket,
@@ -23,9 +21,9 @@ import type { Reward, RewardKind } from "@/types/reward";
  *
  * A diferencia del saldo, el premio requiere recogida presencial:
  *  1) confirm → resumen + saldo abans/després, CTA "Sol·licitar bescanvi".
- *  2) pending → codi 5 dígits + estat "Pendent de lliurament". El back‑office
- *               confirma que el client ha rebut el premi i el canje passa a
- *               "redimit".
+ *  2) pending → estat "Pendent de lliurament". El comerç valida el canje
+ *               manualment al back‑office; el client només ha de presentar-se
+ *               al punt de recollida. No es mostra codi de 5 dígits en pantalla.
  */
 export interface RedeemMerchandiseOverlayProps {
   reward: Reward;
@@ -54,8 +52,6 @@ const RedeemMerchandiseOverlay = ({
 }: RedeemMerchandiseOverlayProps) => {
   const { lang } = useLang();
   const [step, setStep] = useState<"confirm" | "pending">("confirm");
-  const [code, setCode] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
 
   const KindIcon = KIND_ICON[reward.kind];
 
@@ -64,27 +60,10 @@ const RedeemMerchandiseOverlay = ({
     [currentPoints, reward.costPoints],
   );
 
-  useEffect(() => {
-    if (!copied) return;
-    const id = window.setTimeout(() => setCopied(false), 1600);
-    return () => window.clearTimeout(id);
-  }, [copied]);
-
   const handleRequest = () => {
     const newCode = generateCode();
-    setCode(newCode);
     setStep("pending");
     onConfirmed?.({ code: newCode, costPoints: reward.costPoints });
-  };
-
-  const handleCopy = async () => {
-    if (!code) return;
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-    } catch {
-      /* ignore */
-    }
   };
 
   return (
@@ -219,43 +198,11 @@ const RedeemMerchandiseOverlay = ({
             >
               <div className="rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 p-5 text-center">
                 <p className="font-ui font-bold text-[11px] uppercase tracking-widest text-white/60">
-                  {t("redeem.code_label", lang)}
+                  {t("redeem_merch.status_pending", lang)}
                 </p>
-                <div
-                  aria-label={t("redeem.code_label", lang)}
-                  className="mt-2 flex items-center justify-center gap-2"
-                >
-                  {code?.split("").map((digit, i) => (
-                    <span
-                      key={i}
-                      className={cn(
-                        "w-11 h-14 rounded-xl bg-white/10 border border-white/25",
-                        "flex items-center justify-center",
-                        "font-brand font-black text-3xl text-white tabular-nums",
-                      )}
-                    >
-                      {digit}
-                    </span>
-                  ))}
-                </div>
-                <p className="mt-3 font-body text-xs text-white/80">
+                <p className="mt-2 font-body text-sm text-white">
                   {t("redeem_merch.pending_hint", lang)}
                 </p>
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/25 px-3 py-1.5 text-xs font-ui font-bold text-white active:scale-95 transition-transform"
-                >
-                  {copied ? (
-                    <>
-                      <Check size={14} /> {t("redeem.copied", lang)}
-                    </>
-                  ) : (
-                    <>
-                      <Copy size={14} /> {t("redeem.copy_code", lang)}
-                    </>
-                  )}
-                </button>
               </div>
 
               <div className="rounded-2xl border border-km0-blue-100 bg-white p-4 flex items-center gap-3">
