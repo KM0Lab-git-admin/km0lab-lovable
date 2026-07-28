@@ -142,7 +142,7 @@ const ModuleItem = ({ module }: ModuleItemProps) => {
             <span
               aria-hidden
               className={cn(
-                "absolute -top-1.5 -right-3 z-20",
+                "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20",
                 "px-1.5 py-0.5 rounded-full",
                 "bg-km0-coral-400 text-white",
                 "border border-white shadow-[0_2px_6px_-2px_hsl(var(--km0-blue-900)/0.35)]",
