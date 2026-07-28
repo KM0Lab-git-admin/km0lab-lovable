@@ -653,6 +653,7 @@ const D = {
   "redemptions.expires": { ca: "Vàlid fins al {date}", es: "Válido hasta el {date}", en: "Valid until {date}" } as Dict,
   "redemptions.expired_on": { ca: "Va caducar el {date}", es: "Caducó el {date}", en: "Expired on {date}" } as Dict,
   "redemptions.completed": { ca: "Validat el {date}", es: "Validado el {date}", en: "Validated on {date}" } as Dict,
+  "redemptions.see_list": { ca: "Veure els meus bescanvis", es: "Ver mis canjes", en: "See my redemptions" } as Dict,
   "redemptions.empty": { ca: "Encara no tens bescanvis registrats.", es: "Aún no tienes canjes registrados.", en: "You have no registered redemptions yet." } as Dict,
 
   // ── Profile ──────────────────────────────────────────────
