@@ -631,6 +631,19 @@ const D = {
     es: "Aún no hay premios en esta categoría.",
     en: "No rewards in this category yet.",
   } as Dict,
+  "rewards.tab.rewards": { ca: "Premis", es: "Premios", en: "Rewards" } as Dict,
+  "rewards.tab.promos": { ca: "Promocions", es: "Promociones", en: "Promos" } as Dict,
+  "rewards.promos.at": { ca: "A {shop}", es: "En {shop}", en: "At {shop}" } as Dict,
+  "rewards.promos.empty": {
+    ca: "Encara no hi ha promocions publicades.",
+    es: "Aún no hay promociones publicadas.",
+    en: "No promotions published yet.",
+  } as Dict,
+  "rewards.promos.info": {
+    ca: "Ofertes dels comerços adherits. No es bescanvien amb punts.",
+    es: "Ofertas de los comercios adheridos. No se canjean con puntos.",
+    en: "Offers from partner shops. Not redeemable with points.",
+  } as Dict,
 
   // ── My redemptions ───────────────────────────────────────
   "redemptions.title": { ca: "Els meus bescanvis", es: "Mis canjes", en: "My redemptions" } as Dict,
