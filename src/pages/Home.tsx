@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { useAuth } from "@/hooks/useAuth";
@@ -39,6 +39,17 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const showLogin = !isAuthed;
   const showProfile = isAuthed;
   const showPoints = isAuthed;
+
+  // Bandera de preview: permite que las rutas protegidas (historial, premis
+  // canjats, perfil) sean navegables desde `/home-registrado` sin sesión real.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (forceAuthState === "authed") {
+      sessionStorage.setItem("km0_preview_authed", "1");
+    } else if (forceAuthState === "guest") {
+      sessionStorage.removeItem("km0_preview_authed");
+    }
+  }, [forceAuthState]);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
