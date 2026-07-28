@@ -111,15 +111,21 @@ const RewardCard = ({
 
   const statusLabel = t(redeemStatus.key, lang).replace("{n}", fmt(missingPoints));
 
+  const isRedeemable = canAfford && reward.category === "balance";
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.28) }}
+      onClick={isRedeemable ? () => onRedeem?.(reward) : undefined}
+      role={isRedeemable ? "button" : undefined}
+      tabIndex={isRedeemable ? 0 : undefined}
       className={cn(
         "relative overflow-hidden rounded-2xl bg-white border border-km0-blue-100",
         "shadow-[0_8px_20px_-14px_hsl(var(--km0-blue-900)/0.35)]",
         "flex flex-col",
+        isRedeemable && "cursor-pointer active:scale-[0.98] transition-transform",
       )}
     >
       {/* Cabecera: banda con icono grande + chip estado */}
