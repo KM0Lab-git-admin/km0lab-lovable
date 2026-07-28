@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import chatMascot from "@/assets/chat-mascot.png";
 import agendaIcon from "@/assets/agenda-icon.png";
 import cityHallIcon from "@/assets/cityhall-icon.png";
-import shopIcon from "@/assets/shop-icon.png";
+import shopServicesIcon from "@/assets/shop-services-icon.png.asset.json";
 import newsIcon from "@/assets/news-icon.png";
 import servicesIcon from "@/assets/services-icon.png";
 
@@ -36,7 +36,7 @@ const IMAGE_SRC: Partial<Record<HomeModuleId, string>> = {
   chat: chatMascot,
   agenda: agendaIcon,
   ajuntament: cityHallIcon,
-  comerc: shopIcon,
+  comerc: shopServicesIcon.url,
   noticias: newsIcon,
   servicios: servicesIcon,
 };
