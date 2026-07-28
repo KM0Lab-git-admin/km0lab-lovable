@@ -32,10 +32,12 @@ export interface AppProfile {
   last_name: string | null;
   email: string | null;
   phone: string | null;
+  birth_date: string | null;
   postal_code: string | null;
   town: string | null;
   avatar_url: string | null;
 }
+
 
 interface AppState {
   // session / profile
@@ -76,10 +78,12 @@ const emptyProfile = (email: string | null = null): AppProfile => ({
   last_name: null,
   email,
   phone: null,
+  birth_date: null,
   postal_code: null,
   town: null,
   avatar_url: null,
 });
+
 
 export const useAppStore = create<AppState>()(
   persist(

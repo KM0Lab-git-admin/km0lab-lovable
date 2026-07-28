@@ -23,6 +23,7 @@ type ProfileForm = {
   first_name: string;
   last_name: string;
   phone: string;
+  birth_date: string;
 };
 
 const Profile = () => {
@@ -35,7 +36,10 @@ const Profile = () => {
     first_name: "",
     last_name: "",
     phone: "",
+    birth_date: "",
   });
+
+  const todayIso = new Date().toISOString().slice(0, 10);
 
   const profileSchema = z.object({
     first_name: z.string().trim().max(100, t("profile.error_max", lang)).optional(),
@@ -45,7 +49,13 @@ const Profile = () => {
       .trim()
       .regex(/^[+\d][\d\s]{5,19}$|^$/, t("profile.error_phone", lang))
       .optional(),
+    birth_date: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$|^$/)
+      .refine((v) => !v || v <= todayIso, { message: t("profile.error_max", lang) })
+      .optional(),
   });
+
 
   useEffect(() => {
     if (!user) {
@@ -61,7 +71,9 @@ const Profile = () => {
           first_name: data.first_name ?? "",
           last_name: data.last_name ?? "",
           phone: data.phone ?? "",
+          birth_date: data.birth_date ?? "",
         });
+
       }
       setLoading(false);
     })();
@@ -89,7 +101,9 @@ const Profile = () => {
       first_name: form.first_name.trim() || null,
       last_name: form.last_name.trim() || null,
       phone: form.phone.trim() || null,
+      birth_date: form.birth_date.trim() || null,
     });
+
 
     setSaving(false);
     if (error) {
@@ -171,6 +185,21 @@ const Profile = () => {
                 className={inputCls}
               />
             </Field>
+
+            <Field label={t("profile.birth_date", lang)}>
+              <input
+                type="date"
+                value={form.birth_date}
+                onChange={handleChange("birth_date")}
+                max={todayIso}
+                autoComplete="bday"
+                className={inputCls}
+              />
+              <span className="font-body text-[11px] text-km0-blue-800/60 px-1 mt-0.5">
+                {t("profile.birth_date_hint", lang)}
+              </span>
+            </Field>
+
 
             <button
               type="submit"
