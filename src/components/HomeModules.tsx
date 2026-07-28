@@ -33,6 +33,7 @@ export interface HomeModule {
   id: HomeModuleId;
   label: string;
   active: boolean;
+  disabledReason?: "coming_soon" | "requires_registration";
   onClick?: () => void;
 }
 
