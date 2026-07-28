@@ -53,7 +53,6 @@ const RedeemMerchandiseOverlay = ({
   const { lang } = useLang();
   const [step, setStep] = useState<"confirm" | "pending">("confirm");
   const [code, setCode] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
 
   const KindIcon = KIND_ICON[reward.kind];
 
@@ -62,27 +61,11 @@ const RedeemMerchandiseOverlay = ({
     [currentPoints, reward.costPoints],
   );
 
-  useEffect(() => {
-    if (!copied) return;
-    const id = window.setTimeout(() => setCopied(false), 1600);
-    return () => window.clearTimeout(id);
-  }, [copied]);
-
   const handleRequest = () => {
     const newCode = generateCode();
     setCode(newCode);
     setStep("pending");
     onConfirmed?.({ code: newCode, costPoints: reward.costPoints });
-  };
-
-  const handleCopy = async () => {
-    if (!code) return;
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-    } catch {
-      /* ignore */
-    }
   };
 
   return (
