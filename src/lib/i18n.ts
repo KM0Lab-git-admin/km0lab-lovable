@@ -457,7 +457,7 @@ const D = {
     es: "Ayuntamiento",
     en: "Town hall",
   } as Dict,
-  "module.comerc": { ca: "Comerços", es: "Comercios", en: "Shops" } as Dict,
+  "module.comerc": { ca: "Comerços i serveis", es: "Comercios y servicios", en: "Shops & services" } as Dict,
   "module.punts": { ca: "Punts", es: "Puntos", en: "Points" } as Dict,
   "module.cupons": { ca: "Cupons", es: "Cupones", en: "Coupons" } as Dict,
   "module.noticias": { ca: "Notícies", es: "Noticias", en: "News" } as Dict,

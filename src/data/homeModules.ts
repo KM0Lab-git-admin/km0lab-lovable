@@ -13,7 +13,6 @@ export const INITIAL_MODULES: HomeModuleSeed[] = [
   { id: "agenda", labelKey: "module.agenda", active: true },
   { id: "noticias", labelKey: "module.noticias", active: true },
   { id: "ajuntament", labelKey: "module.ajuntament", active: false },
-  { id: "comerc", labelKey: "module.comerc", active: false },
+  { id: "comerc", labelKey: "module.comerc", active: true },
   { id: "chat", labelKey: "module.chat", active: false },
-  { id: "servicios", labelKey: "module.servicios", active: false },
 ];
