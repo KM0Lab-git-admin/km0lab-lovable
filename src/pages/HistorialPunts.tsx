@@ -318,6 +318,16 @@ const HistorialPunts = () => {
               </div>
             )}
           </div>
+
+          <BottomTabs
+            activeTab="puntos"
+            isAuthed={isAuthed}
+            onLogin={() => navigate("/login")}
+            onHome={() => navigate("/home")}
+            onProfile={() => navigate("/profile")}
+            onPoints={() => navigate("/points-history")}
+            onRewards={() => navigate("/redeemed-rewards")}
+          />
         </div>
       </div>
     </DeviceShell>
