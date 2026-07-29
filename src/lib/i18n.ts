@@ -430,7 +430,6 @@ const D = {
   "points.actions.completed": { ca: "Completada", es: "Completada", en: "Completed" } as Dict,
   "points.actions.pending": { ca: "Pendent", es: "Pendiente", en: "Pending" } as Dict,
   "points.actions.empty": { ca: "No hi ha accions disponibles.", es: "No hay acciones disponibles.", en: "No actions available." } as Dict,
-  "points.actions.type.hidden": { ca: "Oculta en la home", es: "Oculta en la home", en: "Hidden on home" } as Dict,
 
   "points.actions.type.birthday": { ca: "Aniversari", es: "Aniversario", en: "Birthday" } as Dict,
   "points.actions.type.signup": { ca: "Registre en l'app", es: "Registro en la app", en: "App sign-up" } as Dict,

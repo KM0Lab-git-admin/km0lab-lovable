@@ -37,7 +37,6 @@ export interface PointAction {
   typeKey: TKey;
   points: number;
   completed: boolean;
-  hidden?: boolean;
   icon: PointActionIcon;
 }
 

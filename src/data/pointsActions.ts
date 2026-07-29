@@ -6,7 +6,6 @@ import type { PointAction } from "@/types/points";
  * MOCK: refleja las acciones configuradas en el panel de puntos.
  * - completed: true → el usuario ya ha obtenido los puntos.
  * - completed: false → acción pendiente por realizar.
- * - hidden: true → no se muestra en la Home (EarnPointsCard).
  */
 export const POINTS_ACTIONS: PointAction[] = [
   {
@@ -16,7 +15,6 @@ export const POINTS_ACTIONS: PointAction[] = [
     typeKey: "points.actions.type.birthday",
     points: 10,
     completed: false,
-    hidden: true,
     icon: "cake",
   },
   {
@@ -26,7 +24,6 @@ export const POINTS_ACTIONS: PointAction[] = [
     typeKey: "points.actions.type.signup",
     points: 100,
     completed: true,
-    hidden: true,
     icon: "user-plus",
   },
   {
