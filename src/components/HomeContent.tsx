@@ -110,7 +110,7 @@ const HomeContent = ({
           </section>
 
           {!isAuthed && (
-            <p className="text-center font-ui font-bold text-sm text-km0-teal-600 px-4">
+            <p className="text-center font-ui font-bold text-sm text-km0-coral-400 px-4">
               {t("home.members.teaser", lang)}
             </p>
           )}
