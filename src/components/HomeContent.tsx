@@ -34,6 +34,7 @@ export interface HomeContentProps {
   onProfile: () => void;
   onPoints: () => void;
   onRewards: () => void;
+  onActions: () => void;
 
   /** Solo se muestra PointsCard si hay sesión. */
   showLogin: boolean;
@@ -42,6 +43,7 @@ export interface HomeContentProps {
   onOpenEvent?: (id: string) => void;
   onOpenPointsHistory?: () => void;
 }
+
 
 
 const HomeContent = ({
