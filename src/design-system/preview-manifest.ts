@@ -124,14 +124,14 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "LoginButton en el header; oculta PointsCard. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil. Sin sesión solo Inicio y Acciones están activos; los demás redirigen a /login.",
+        notes: "LoginButton en el header; oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles con overlay bloqueado + CTA 'Registra't per desbloquejar'. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil. Sin sesión solo Inicio y Acciones están activos; los demás redirigen a /login.",
       },
       {
         id: "registered",
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
+        notes: "Oculta LoginButton; muestra PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas (sin overlay). BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "notifications",
