@@ -127,3 +127,60 @@ canjats.
   (`/redeemed-rewards`, `/profile`), aplicar el mismo patrón: importar
   `BottomTabs`, `useAuth`, y añadir la barra como `shrink-0` dentro del
   contenedor principal de la pantalla.
+
+---
+
+### 4. Nueva pantalla de acciones para ganar puntos (`/points-actions`)
+
+**Qué:** se añade una página pública, accesible también sin sesión, que
+muestra el catálogo de acciones disponibles para obtener puntos, distinguiendo
+las ya completadas de las pendientes y explicando en qué consiste cada una.
+La página se integra en la navegación principal: el menú inferior pasa de 4 a
+5 tabs con el nuevo tab **Accions** (icono Sparkles), ubicado entre Inici y
+Els meus punts. El tab Accions está activo para usuarios registrados y no
+registrados; el resto de tabs de perfil/puntos/premis sigue requiriendo sesión.
+
+**Catálogo de acciones (mock):**
+- Cumpleaños: +10 pts (oculta en Home).
+- Primer registre a l'app: +100 pts (oculta en Home, marcada como completada en el mock).
+- Primer escaneig d'un comerç: +75 pts.
+- Escaneig d'un comerç: +50 pts.
+- Visita web: +20 pts.
+- Registre al butlletí municipal: +30 pts.
+- Inscripció a la Festa Major: +40 pts.
+- Enquesta de satisfacció: +15 pts.
+
+**Archivos nuevos:**
+- `src/pages/PointsActions.tsx`
+- `src/data/pointsActions.ts`
+
+**Archivos tocados:**
+- `src/App.tsx` (ruta `/points-actions` pública)
+- `src/components/BottomTabs.tsx` (5 columnas, tipo `HomeTab` ampliado, prop `onActions`, lógica de auth actualizada)
+- `src/components/HomeContent.tsx` (prop `onActions` en la interfaz y paso a `BottomTabs`)
+- `src/pages/Home.tsx` (handler `onActions` → `/points-actions`)
+- `src/pages/HistorialPunts.tsx` (navegación a `/points-actions` y 5-column tabs)
+- `src/pages/Comercos.tsx` (navegación a `/points-actions` y 5-column tabs)
+- `src/pages/PremisCanjats.tsx` (navegación a `/points-actions` y 5-column tabs)
+- `src/lib/i18n.ts` (nuevas claves: `tabs.actions`, `points.actions.*`, textos de título/descripción/tipo/filtros)
+- `src/types/points.ts` (nuevos tipos `PointActionId`, `PointActionIcon`, interfaz `PointAction`)
+- `src/design-system/preview-manifest.ts` (pantalla `points-actions` con estados guest/registered; notas de Home/Historial/Premis actualizadas a 5 tabs)
+- `docs/PORTABILITY-CHANGELOG.md` (este registro)
+
+**Motivo:** el usuario necesita saber qué acciones le otorgan puntos, cuáles ya
+ha completado y qué le falta por hacer. Al ser informativa, la página puede
+ser pública y actúa como punto de entrada para no registrados.
+
+**Notas de portabilidad:**
+- La fuente de datos actual es un mock (`src/data/pointsActions.ts`). Al
+  portar, consumir la misma fuente de configuración que el panel de admin de
+  puntos y añadir la propiedad `completed` por usuario (endpoint o tabla
+  propia).
+- Las acciones marcadas como `hidden: true` no deben aparecer en el módulo
+  `EarnPointsCard` de la Home; asegurar que `EarnPointsCard` filtre
+  `POINTS_ACTIONS.filter(a => !a.hidden)`.
+- Ajustar el ancho del menú inferior si 5 tabs rompe la legibilidad en
+  móviles pequeños (texto de 9-10 px actual).
+- El icono `Sparkles` proviene de `lucide-react`, ya disponible en la lista de
+  dependencias aprobadas.
+
