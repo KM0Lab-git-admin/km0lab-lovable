@@ -42,6 +42,8 @@ export interface HomeContentProps {
   showLogin: boolean;
   showPoints: boolean;
   onSeeAllEvents?: () => void;
+  onSeeAllRewards?: () => void;
+  onSeeAllPromos?: () => void;
   onOpenEvent?: (id: string) => void;
   onOpenPointsHistory?: () => void;
 }
