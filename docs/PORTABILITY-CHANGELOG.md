@@ -185,6 +185,39 @@ ser pública y actúa como punto de entrada para no registrados.
   dependencias aprobadas.
 
 
+### 5. Home: teaser de registro en color coral
+
+**Qué:** el texto teaser "Registra't i podràs guanyar punts, bescanjar premis i gaudir de promocions." pasa de `text-km0-teal-600` a `text-km0-coral-400`, manteniendo el peso `font-bold` y el centrado.
+
+**Archivos:**
+- `src/components/HomeContent.tsx`
+
+**Motivo:** destacar la llamada a registrarse entre las secciones de la Home y alinearla con el color de acento de alerta/conversión de KM0 LAB.
+
+**Notas de portabilidad:**
+- El color se toma del token `km0-coral-400` del design system; si en el monorepo existe un token semántico de "alerta de conversión", preferirlo.
+- No afecta a la funcionalidad, solo a la legibilidad visual.
+
+---
+
+### 6. Home: carrusel de premios con formato idéntico al de eventos destacados
+
+**Qué:** la sección **Premis** de la Home ahora comparte envoltorio, cabecera y padding con la sección **Eventos destacados**. El componente `RewardsPreview` se simplifica al contenido del carrusel (portada + panel inferior + CTA circular), mientras que el `section` con `SectionHeader`, bordes redondeados, gradiente y sombra se controla desde `HomeContent`.
+
+**Archivos:**
+- `src/components/HomeContent.tsx` (envoltorio unificado para Eventos y Premis)
+- `src/components/RewardsPreview.tsx` (removido el wrapper propio; ahora solo el carrusel)
+- `src/lib/i18n.ts` (claves de premios compartidas)
+- `src/data/rewards.ts` (datos mock de premios)
+
+**Motivo:** consistencia visual entre las dos secciones hero de la Home; evitar que el padding, sombra o bordes difieran entre eventos y premios.
+
+**Notas de portabilidad:**
+- Asegurar que en el monorepo el componente `RewardsPreview` reciba `onSeeAll` como prop y no renderice su propio `section` ni `SectionHeader`.
+- Las tarjetas de premios reutilizan gradientes por categoría (`voucher`, `ticket`, `product`, `discount`) definidos en `RewardsPreview`; verificar que coincidan con el sistema de categorías del backend real.
+
+---
+
 ### N. Home: secciones siempre visibles con estado bloqueado para invitados
 
 **Qué:** las tres secciones de valor de la Home —**Cómo ganar puntos**,
