@@ -1,40 +1,58 @@
-# Notificaciones basadas en noticias
+## Objetivo
 
-## Comportamiento
+En la Home, las tres secciones de valor —**Cómo ganar puntos**, **Promocions de comerços** y **Premis**— deben mostrarse siempre con el mismo formato tanto si el usuario está registrado como si no. Cuando el usuario es invitado, cada sección aparece con un overlay de candado + CTA de registro; el contenido sigue siendo visible pero no interactivo.
 
-- La campana de la Home lista las últimas noticias de la API (`GET /api/v1/news?city=…&limit=20`) como notificaciones.
-- Se guarda en `useAppStore` un timestamp `notificationsLastSeenAt` por usuario (persistido en localStorage).
-- Una noticia se considera **no leída** si su `fecha_publicacion` es posterior a `notificationsLastSeenAt` (o si nunca se ha abierto el panel).
-- Al **abrir** el drawer, se actualiza `notificationsLastSeenAt = now()` → todas quedan marcadas como leídas.
-- Al **cerrar** el drawer no pasa nada extra. Si al día siguiente entra una noticia nueva, la campana vuelve a ámbar.
+## Cambios de UI
 
-## Estados de la campana (`NotificationBell`)
+### 1. `EarnPointsCard` (ya existente, siempre visible)
+- Añadir prop `locked?: boolean`.
+- Cuando `locked`, envolver la lista de acciones en un contenedor con `pointer-events-none` + ligera opacidad, y superponer un badge/candado en la esquina superior derecha (junto al "Verlos todos") con texto "Registra't per activar" (i18n).
+- El botón "Verlos todos" en modo `locked` navega a `/login` en vez de `/points-actions`.
 
-- **Ámbar** (`bg-km0-coral-400`) → hay al menos una noticia con fecha > `lastSeenAt`.
-- **Amarillo** (`bg-km0-yellow-400`) → todas leídas.
-- Se elimina el estado "beige" actual: siempre uno de los dos.
+### 2. Nueva sección **Premis destacats** en Home
+- Componente `RewardsPreview` (nuevo, `src/components/RewardsPreview.tsx`).
+- Reutiliza el mismo estilo visual que las tarjetas de `/rewards` pero en versión compacta: carrusel horizontal (scroll-snap) con las 3-4 primeras `REWARDS` activas.
+- Cabecera con título "Premis" y acción "Veure tots" → `/rewards`.
+- Prop `locked` idem que EarnPointsCard: overlay candado + CTA registro, navegación a `/login`.
 
-## Panel lateral (drawer)
+### 3. Nueva sección **Promocions de comerços** en Home
+- Componente `MerchantPromosPreview` (nuevo, `src/components/MerchantPromosPreview.tsx`).
+- Deriva las promos de `COMERCIOS_DETALL` (mismo mapeo que hace `Premis.tsx` en la tab "promos") y muestra las 3-4 primeras con la misma `PromoCard` compacta.
+- Cabecera "Promocions" con acción "Veure totes" → `/rewards?tab=promos`.
+- Soporta `locked` con overlay + CTA registro.
 
-- Reutilizo `NotificationsOverlay.tsx` reconvertido a **drawer lateral derecho** con animación slide-in (Framer Motion, `x: 100% → 0`).
-- Ancho: `w-full vertical-tablet:max-w-[420px]`, ocupa altura completa del contenedor de la Home.
-- Cabecera "Notificacions" (i18n ca/es/en) + botón cerrar.
-- Cada item: imagen miniatura de la noticia, título, fecha relativa, dot ámbar si no leída. Tap → navega a `/noticias/:id` y cierra el drawer.
-- Estados: loading (skeletons), error (mensaje + retry), vacío ("Encara no tens notificacions").
+### 4. Integración en `HomeContent.tsx`
+Orden dentro del scroll (mobile-first, portrait):
+1. `JoinCard` (solo invitado) / `PointsCard` (solo registrado) — sin cambios.
+2. `HomeModules` — sin cambios.
+3. `EventHeroCarousel` — sin cambios.
+4. `EarnPointsCard` con `locked={!isAuthed}`.
+5. `RewardsPreview` con `locked={!isAuthed}`.
+6. `MerchantPromosPreview` con `locked={!isAuthed}`.
+
+### 5. Overlay reutilizable de bloqueo
+Un pequeño helper interno (mismo patrón usado en cada uno de los tres componentes, sin nuevo componente compartido para no proliferar API) con:
+- Ícono `Lock` de lucide-react sobre un chip pill con fondo `bg-km0-blue-800/85 text-white`, esquina superior derecha de la cabecera.
+- Botón CTA en la parte inferior de la sección: "Registra't per activar" que llama al handler `onLogin`.
 
 ## Cambios técnicos
 
-1. **`src/stores/useAppStore.ts`**: añadir `notificationsLastSeenAt: string | null` y acción `markNotificationsSeen()`. Persistido.
-2. **`src/hooks/useNotifications.ts`**: reescribir para consumir `useNewsList()` (o llamada equivalente vía `newsApi`) y derivar `unreadCount` comparando `fecha_publicacion` con `notificationsLastSeenAt`. Devuelve `{ items, hasUnread, loading, error, markAllSeen }`.
-3. **`src/data/notifications.ts`**: eliminar mocks `INITIAL_NOTIFICATIONS` (ya no se usan) o vaciar tipos si están referenciados en otro sitio.
-4. **`src/components/NotificationBell.tsx`**: prop `state: "unread" | "read"` (o mantener `hasAlerts`) y aplicar amarillo/ámbar al dot.
-5. **`src/components/NotificationsOverlay.tsx`** → renombrar mentalmente a drawer: cambiar animación (`x` en lugar de `y`), layout lateral, y renderizar items de noticia (imagen + título + fecha).
-6. **`src/pages/Home.tsx` / `HomeHero.tsx`**: al abrir → `markAllSeen()` antes de mostrar; pasar el nuevo estado al bell.
-7. **`src/lib/i18n.ts`**: claves `notifications.title`, `notifications.empty.*`, `notifications.error.*`, `notifications.loading`.
-8. **`preview-manifest.ts`**: actualizar estado del bell y del drawer.
+- `src/components/EarnPointsCard.tsx`: nueva prop `locked` + `onLogin`.
+- `src/components/RewardsPreview.tsx` (nuevo).
+- `src/components/MerchantPromosPreview.tsx` (nuevo).
+- `src/components/HomeContent.tsx`: pasar handlers y renderizar las dos nuevas secciones siempre.
+- `src/pages/Home.tsx`: pasar `onRewards={() => navigate('/rewards')}`, `onPromos={() => navigate('/rewards?tab=promos')}`, `onLogin={goToLogin}` a las nuevas props.
+- `src/pages/Premis.tsx`: leer `?tab=promos` del querystring para abrir directamente la pestaña de promocions cuando se navega desde la Home.
+- `src/lib/i18n.ts`: nuevas claves
+  - `home.section.rewards` — "Premis" / "Premios" / "Rewards"
+  - `home.section.promos` — "Promocions dels comerços" / "Promociones de los comercios" / "Merchant promos"
+  - `home.locked.badge` — "Bloquejat" / "Bloqueado" / "Locked"
+  - `home.locked.cta` — "Registra't per desbloquejar" / "Regístrate para desbloquear" / "Sign up to unlock"
+- `src/design-system/preview-manifest.ts`: actualizar la ficha de `/home` para reflejar las nuevas secciones (títulos y estado guest vs registered).
+- `docs/PORTABILITY-CHANGELOG.md`: añadir entrada bajo **v1.0 — En curso** describiendo las nuevas secciones y el patrón `locked` + CTA.
 
-## Fuera de scope
+## Fuera de alcance
 
-- Notificaciones push del navegador.
-- Marcar noticias individuales como leídas (el criterio es global por timestamp).
-- Otros orígenes de notificación (eventos, cupones): solo noticias por ahora.
+- No se cambian rutas, no se toca RLS, no se añaden dependencias.
+- No se rediseñan las tarjetas de `/rewards`; solo se reutiliza su estilo en versión compacta horizontal.
+- No se cambia la lógica de puntos ni de canje.
