@@ -98,4 +98,32 @@ independientes del idioma de UI.
 - Revisar analytics, sitemaps, deep links móviles y emails
   transaccionales que apunten a las rutas antiguas.
 - Los `id` internos de módulos (`m.id === "premis"`, `"agenda"`,
-  `"noticias"`) NO se han renombrado — son claves de datos, no URLs.
+   `"noticias"`) NO se han renombrado — son claves de datos, no URLs.
+
+---
+
+### 3. Bottom tabs persistente en historial de puntos
+
+**Qué:** la pantalla `/points-history` ahora muestra el mismo menú
+inferior (`BottomTabs`) que la Home, de modo que el usuario no pierde
+el contexto de navegación principal al consultar su historial de puntos.
+La pestaña activa es **"Els meus punts"**.
+
+**Archivos:**
+- `src/pages/HistorialPunts.tsx`
+
+**Motivo:** coherencia de navegación; evitar que el usuario quede "atrapado"
+en una pantalla protegida sin acceso rápido a Inicio, Perfil o Premis
+canjats.
+
+**Notas de portabilidad:**
+- Se reutiliza el componente `BottomTabs` existente; no hay nuevas
+  dependencias.
+- El cálculo de `isAuthed` respeta tanto la sesión real (`useAuth`) como
+  la bandera de preview `sessionStorage.km0_preview_authed` usada en
+  `/home-registered`. Al portar, mantener esta misma lógica para que las
+  demos de diseño sigan navegables.
+- Si se quiere el mismo comportamiento en otras pantallas protegidas
+  (`/redeemed-rewards`, `/profile`), aplicar el mismo patrón: importar
+  `BottomTabs`, `useAuth`, y añadir la barra como `shrink-0` dentro del
+  contenedor principal de la pantalla.
