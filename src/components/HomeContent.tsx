@@ -116,7 +116,9 @@ const HomeContent = ({
         onProfile={onProfile}
         onPoints={onPoints}
         onRewards={onRewards}
+        onActions={onActions}
       />
+
 
 
     </>

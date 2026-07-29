@@ -327,7 +327,9 @@ const HistorialPunts = () => {
             onProfile={() => navigate("/profile")}
             onPoints={() => navigate("/points-history")}
             onRewards={() => navigate("/redeemed-rewards")}
+            onActions={() => navigate("/points-actions")}
           />
+
         </div>
       </div>
     </DeviceShell>

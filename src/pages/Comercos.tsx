@@ -451,7 +451,9 @@ const Comercos = () => {
             onProfile={goToProfile}
             onPoints={goToPoints}
             onRewards={goToRewards}
+            onActions={goToActions}
           />
+
 
 
         </div>

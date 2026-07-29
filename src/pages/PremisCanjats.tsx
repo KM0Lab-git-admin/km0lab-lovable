@@ -407,7 +407,9 @@ const PremisCanjats = () => {
             onProfile={goToProfile}
             onPoints={goToPoints}
             onRewards={goToRewards}
+            onActions={goToActions}
           />
+
         </div>
 
       </div>
