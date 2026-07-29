@@ -19,7 +19,7 @@ portarse **manualmente** al monorepo de producción KM0 LAB.
 
 **Qué:** el guard `RequireAuth` deja pasar sin sesión cuando
 `import.meta.env.DEV` es `true`, para poder validar pantallas
-protegidas (`/historial-punts`, `/premis-canjats`, `/profile`) sin
+protegidas (`/points-history`, `/redeemed-rewards`, `/profile`) sin
 loguearse.
 
 **Archivos:**
@@ -34,4 +34,68 @@ loguearse.
   var propia), sustituir `import.meta.env.DEV` por el flag equivalente
   antes de portar.
 - Mantener también el bypass por `sessionStorage.km0_preview_authed`
-  usado por `/home-registrado` para las demos.
+  usado por `/home-registered` para las demos.
+
+---
+
+### 2. Slugs de URL en inglés (internacionalización de rutas)
+
+**Qué:** todos los `path` de React Router y los `navigate(...)` del
+código pasan a slugs en inglés. La app es internacional; el copy sigue
+traducido vía `lib/i18n.ts`, pero las URLs son estables y en inglés.
+
+**Mapa de renombrados (aplicar 1:1 en el monorepo):**
+
+| Antes (CA/ES)         | Ahora (EN)            |
+| --------------------- | --------------------- |
+| `/historial-punts`    | `/points-history`     |
+| `/premis`             | `/rewards`            |
+| `/premis-canjats`     | `/redeemed-rewards`   |
+| `/comercos`           | `/merchants`          |
+| `/comercos/:id`       | `/merchants/:id`      |
+| `/noticias`           | `/news`               |
+| `/agenda`             | `/events`             |
+| `/evento`             | `/event`              |
+| `/home-registrado`    | `/home-registered`    |
+
+Sin cambios (ya en inglés o neutros): `/`, `/onboarding`,
+`/postal-code`, `/login`, `/check-email`, `/home`, `/points`,
+`/scanner`, `/scanner/success`, `/profile`, `/design-system`.
+
+**Archivos tocados** (todas las referencias a rutas — `<Route path>`,
+`navigate("/...")`, `<Link to="/...">`, `<Navigate to="/...">`):
+- `src/App.tsx`
+- `src/pages/Home.tsx`
+- `src/pages/HistorialPunts.tsx`
+- `src/pages/PremisCanjats.tsx`
+- `src/pages/Premis.tsx`
+- `src/pages/Points.tsx`
+- `src/pages/Comercos.tsx`
+- `src/pages/ComercDetall.tsx`
+- `src/pages/Agenda.tsx`
+- `src/pages/Evento.tsx`
+- `src/pages/Noticias.tsx`
+- `src/pages/Scanner.tsx`
+- `src/components/HomeModules.tsx`
+- `src/components/PromoCarousel.tsx`
+- `src/components/NotificationsOverlay.tsx`
+- `src/components/RequireAuth.tsx`
+- `src/design-system/preview-manifest.ts`
+- `src/design-system/componentsCatalog.ts`
+
+**Nota:** los **nombres de archivo/componente** (`HistorialPunts.tsx`,
+`PremisCanjats.tsx`, `Comercos.tsx`, etc.) se conservan intencionadamente
+en esta versión para minimizar el diff. Se renombrarán a inglés en una
+versión posterior si el monorepo lo requiere; por ahora el mapping es
+solo de **URLs públicas**.
+
+**Motivo:** producto internacional; los slugs deben ser estables e
+independientes del idioma de UI.
+
+**Notas de portabilidad:**
+- Redirigir permanentemente (301) las rutas antiguas a las nuevas si el
+  monorepo ya está publicado con los slugs CA/ES.
+- Revisar analytics, sitemaps, deep links móviles y emails
+  transaccionales que apunten a las rutas antiguas.
+- Los `id` internos de módulos (`m.id === "premis"`, `"agenda"`,
+  `"noticias"`) NO se han renombrado — son claves de datos, no URLs.
