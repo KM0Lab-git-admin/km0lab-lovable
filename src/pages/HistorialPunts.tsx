@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
+import BottomTabs from "@/components/BottomTabs";
+import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -146,7 +148,13 @@ const FilterChip = ({
 const HistorialPunts = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
+  const { user } = useAuth();
   const [filter, setFilter] = useState<Filter>("all");
+
+  const isAuthed =
+    !!user ||
+    (typeof window !== "undefined" &&
+      sessionStorage.getItem("km0_preview_authed") === "1");
 
   const sorted = useMemo(
     () =>
