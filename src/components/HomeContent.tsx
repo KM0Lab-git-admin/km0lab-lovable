@@ -4,6 +4,8 @@ import EventHeroCarousel from "./EventHeroCarousel";
 import PointsCard from "./PointsCard";
 import JoinCard from "./JoinCard";
 import EarnPointsCard from "./EarnPointsCard";
+import RewardsPreview from "./RewardsPreview";
+import MerchantPromosPreview from "./MerchantPromosPreview";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
@@ -40,6 +42,8 @@ export interface HomeContentProps {
   showLogin: boolean;
   showPoints: boolean;
   onSeeAllEvents?: () => void;
+  onSeeAllRewards?: () => void;
+  onSeeAllPromos?: () => void;
   onOpenEvent?: (id: string) => void;
   onOpenPointsHistory?: () => void;
 }
@@ -69,6 +73,8 @@ const HomeContent = ({
   showPoints,
 
   onSeeAllEvents,
+  onSeeAllRewards,
+  onSeeAllPromos,
   onOpenEvent,
   onOpenPointsHistory,
 
@@ -103,7 +109,11 @@ const HomeContent = ({
             <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
           </section>
 
-          <EarnPointsCard onSeeAll={onActions} />
+          <EarnPointsCard onSeeAll={onActions} locked={!isAuthed} onLogin={onLogin} />
+
+          <RewardsPreview onSeeAll={onSeeAllRewards} locked={!isAuthed} onLogin={onLogin} />
+
+          <MerchantPromosPreview onSeeAll={onSeeAllPromos} locked={!isAuthed} onLogin={onLogin} />
         </div>
       </div>
 

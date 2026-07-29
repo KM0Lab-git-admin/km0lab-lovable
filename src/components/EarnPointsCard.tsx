@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Circle,
   ArrowRight,
+  Lock,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,10 @@ export interface EarnPointsCardProps {
   className?: string;
   /** Enlace opcional "Veure totes" que navega a /points-actions. */
   onSeeAll?: () => void;
+  /** Si true, aplica overlay de candado + CTA de registro. */
+  locked?: boolean;
+  /** Handler para el CTA de registro cuando `locked`. */
+  onLogin?: () => void;
 }
 
 const ICONS: Record<PointActionIcon, LucideIcon> = {
@@ -54,10 +59,11 @@ const ICON_META: Record<PointActionIcon, { ring: string; text: string }> = {
 
 const fmtInt = (n: number) => n.toLocaleString("es-ES");
 
-const EarnPointsCard = ({ className, onSeeAll }: EarnPointsCardProps) => {
+const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin }: EarnPointsCardProps) => {
   const { lang } = useLang();
 
   const pending: PointAction[] = POINTS_ACTIONS.filter((a) => !a.completed).slice(0, 3);
+  const handleSeeAll = locked ? onLogin : onSeeAll;
 
   return (
     <motion.section
@@ -70,14 +76,22 @@ const EarnPointsCard = ({ className, onSeeAll }: EarnPointsCardProps) => {
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <h2 className="font-brand font-black text-km0-blue-800 text-base">
-          {t("home.earn.title", lang)}
-          <span className="text-km0-teal-500"> {t("home.earn.today", lang)}</span>
+        <h2 className="font-brand font-black text-km0-blue-800 text-base flex items-center gap-2">
+          <span>
+            {t("home.earn.title", lang)}
+            <span className="text-km0-teal-500"> {t("home.earn.today", lang)}</span>
+          </span>
+          {locked && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-km0-blue-800/85 text-white px-2 py-0.5 text-[10px] font-ui font-bold uppercase tracking-wide">
+              <Lock size={10} strokeWidth={2.4} />
+              {t("home.locked.badge", lang)}
+            </span>
+          )}
         </h2>
-        {onSeeAll && (
+        {handleSeeAll && (
           <button
             type="button"
-            onClick={onSeeAll}
+            onClick={handleSeeAll}
             className="font-ui font-bold text-km0-coral-400 active:scale-95 transition-transform underline underline-offset-4 text-xs gap-0 flex items-center justify-start whitespace-nowrap shrink-0"
           >
             {t("home.action.see_all_m", lang)}
@@ -86,7 +100,7 @@ const EarnPointsCard = ({ className, onSeeAll }: EarnPointsCardProps) => {
         )}
       </div>
 
-      <ul className="flex flex-col gap-3">
+      <ul className={cn("flex flex-col gap-3", locked && "pointer-events-none opacity-60")} aria-hidden={locked || undefined}>
         {pending.map((action, i) => {
           const Icon = ICONS[action.icon];
           const meta = ICON_META[action.icon];
@@ -127,6 +141,17 @@ const EarnPointsCard = ({ className, onSeeAll }: EarnPointsCardProps) => {
           );
         })}
       </ul>
+
+      {locked && onLogin && (
+        <button
+          type="button"
+          onClick={onLogin}
+          className="w-full rounded-full bg-km0-blue-800 text-white font-ui font-bold text-sm py-2.5 active:scale-[0.98] transition-transform inline-flex items-center justify-center gap-2"
+        >
+          <Lock size={14} strokeWidth={2.4} />
+          {t("home.locked.cta", lang)}
+        </button>
+      )}
     </motion.section>
   );
 };

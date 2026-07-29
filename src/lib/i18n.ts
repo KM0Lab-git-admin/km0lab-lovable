@@ -252,6 +252,26 @@ const D = {
     es: "Iniciar sesión",
     en: "Sign in",
   } as Dict,
+  "home.section.rewards": {
+    ca: "Premis",
+    es: "Premios",
+    en: "Rewards",
+  } as Dict,
+  "home.section.promos": {
+    ca: "Promocions dels comerços",
+    es: "Promociones de los comercios",
+    en: "Merchant promos",
+  } as Dict,
+  "home.locked.badge": {
+    ca: "Bloquejat",
+    es: "Bloqueado",
+    en: "Locked",
+  } as Dict,
+  "home.locked.cta": {
+    ca: "Registra't per desbloquejar",
+    es: "Regístrate para desbloquear",
+    en: "Sign up to unlock",
+  } as Dict,
 
   // ── Home · Missió del barri (spec-home-c) ───────────────
   "home.greeting.registered": {

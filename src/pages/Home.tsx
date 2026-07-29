@@ -161,6 +161,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     showLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/events"),
+    onSeeAllRewards: () => navigate("/rewards"),
+    onSeeAllPromos: () => navigate("/rewards?tab=promos"),
     onOpenEvent: (id: string) => navigate(`/event?id=${id}`),
     onOpenPointsHistory: () => navigate("/points-history"),
 
