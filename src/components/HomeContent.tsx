@@ -109,7 +109,11 @@ const HomeContent = ({
             <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
           </section>
 
-          <EarnPointsCard onSeeAll={onActions} />
+          <EarnPointsCard onSeeAll={onActions} locked={!isAuthed} onLogin={onLogin} />
+
+          <RewardsPreview onSeeAll={onSeeAllRewards} locked={!isAuthed} onLogin={onLogin} />
+
+          <MerchantPromosPreview onSeeAll={onSeeAllPromos} locked={!isAuthed} onLogin={onLogin} />
         </div>
       </div>
 
