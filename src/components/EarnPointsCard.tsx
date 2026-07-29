@@ -29,6 +29,10 @@ export interface EarnPointsCardProps {
   className?: string;
   /** Enlace opcional "Veure totes" que navega a /points-actions. */
   onSeeAll?: () => void;
+  /** Si true, aplica overlay de candado + CTA de registro. */
+  locked?: boolean;
+  /** Handler para el CTA de registro cuando `locked`. */
+  onLogin?: () => void;
 }
 
 const ICONS: Record<PointActionIcon, LucideIcon> = {
