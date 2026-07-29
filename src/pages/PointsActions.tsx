@@ -125,11 +125,6 @@ const ActionRow = ({
           >
             {t(action.typeKey, lang)}
           </span>
-          {action.hidden && (
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-ui font-bold uppercase tracking-wide bg-km0-beige-200 text-km0-blue-800">
-              {t("points.actions.type.hidden", lang)}
-            </span>
-          )}
           {action.completed && (
             <span className="px-2 py-0.5 rounded-full text-[10px] font-ui font-bold uppercase tracking-wide bg-km0-teal-100 text-km0-teal-700 flex items-center gap-1">
               <CheckCircle2 size={10} strokeWidth={2.4} />
