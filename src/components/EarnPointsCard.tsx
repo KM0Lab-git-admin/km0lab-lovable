@@ -141,17 +141,6 @@ const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin }: EarnPo
           );
         })}
       </ul>
-
-      {locked && onLogin && (
-        <button
-          type="button"
-          onClick={onLogin}
-          className="w-full rounded-full bg-km0-blue-800 text-white font-ui font-bold text-sm py-2.5 active:scale-[0.98] transition-transform inline-flex items-center justify-center gap-2"
-        >
-          <Lock size={14} strokeWidth={2.4} />
-          {t("home.locked.cta", lang)}
-        </button>
-      )}
     </motion.section>
   );
 };
