@@ -302,7 +302,9 @@ const Premis = () => {
   const [points, setPoints] = useState(2500);
   const [redeeming, setRedeeming] = useState<Reward | null>(null);
 
-  const [topTab, setTopTab] = useState<TopTab>("rewards");
+  const [searchParams] = useSearchParams();
+  const initialTab: TopTab = searchParams.get("tab") === "promos" ? "promos" : "rewards";
+  const [topTab, setTopTab] = useState<TopTab>(initialTab);
   const [filter, setFilter] = useState<Filter>("balance");
 
   const categories = useMemo<RewardCategory[]>(() => {
