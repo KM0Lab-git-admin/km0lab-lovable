@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Gift, Ticket, Percent, ShoppingBag, Lock, type LucideIcon } from "lucide-react";
+import { ArrowRight, Gift, Ticket, Percent, ShoppingBag, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -7,14 +7,11 @@ import { REWARDS } from "@/data/rewards";
 import type { Reward, RewardKind } from "@/types/reward";
 
 /**
- * RewardsPreview — sección Home con los primeros premios del catálogo.
- * Reutiliza el estilo visual de `/rewards` en versión compacta horizontal.
- * Cuando `locked`, aplica overlay + CTA de registro.
+ * RewardsPreview — sección Home con los premios activos del catálogo en carrusel horizontal.
+ * Reutiliza el estilo visual de `/rewards` en versión compacta. Siempre visible para todos los usuarios.
  */
 export interface RewardsPreviewProps {
   onSeeAll?: () => void;
-  locked?: boolean;
-  onLogin?: () => void;
   className?: string;
 }
 
@@ -27,10 +24,9 @@ const KIND_ICON: Record<RewardKind, LucideIcon> = {
 
 const fmt = (n: number) => n.toLocaleString("es-ES");
 
-const RewardsPreview = ({ onSeeAll, locked = false, onLogin, className }: RewardsPreviewProps) => {
+const RewardsPreview = ({ onSeeAll, className }: RewardsPreviewProps) => {
   const { lang } = useLang();
-  const items: Reward[] = REWARDS.filter((r) => r.status === "active").slice(0, 4);
-  const handleSeeAll = locked ? onLogin : onSeeAll;
+  const items: Reward[] = REWARDS.filter((r) => r.status === "active");
 
   return (
     <motion.section
@@ -43,19 +39,13 @@ const RewardsPreview = ({ onSeeAll, locked = false, onLogin, className }: Reward
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <h2 className="font-brand font-black text-km0-blue-800 text-base flex items-center gap-2">
+        <h2 className="font-brand font-black text-km0-blue-800 text-base">
           {t("home.section.rewards", lang)}
-          {locked && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-km0-blue-800/85 text-white px-2 py-0.5 text-[10px] font-ui font-bold uppercase tracking-wide">
-              <Lock size={10} strokeWidth={2.4} />
-              {t("home.locked.badge", lang)}
-            </span>
-          )}
         </h2>
-        {handleSeeAll && (
+        {onSeeAll && (
           <button
             type="button"
-            onClick={handleSeeAll}
+            onClick={onSeeAll}
             className="font-ui font-bold text-km0-coral-400 active:scale-95 transition-transform underline underline-offset-4 text-xs flex items-center whitespace-nowrap shrink-0"
           >
             {t("home.action.see_all_m", lang)}
@@ -64,13 +54,7 @@ const RewardsPreview = ({ onSeeAll, locked = false, onLogin, className }: Reward
         )}
       </div>
 
-      <ul
-        className={cn(
-          "flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-1 px-1",
-          locked && "pointer-events-none opacity-60",
-        )}
-        aria-hidden={locked || undefined}
-      >
+      <ul className="flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory -mx-1 px-1">
         {items.map((reward, i) => {
           const Icon = KIND_ICON[reward.kind];
           return (
@@ -99,17 +83,6 @@ const RewardsPreview = ({ onSeeAll, locked = false, onLogin, className }: Reward
           );
         })}
       </ul>
-
-      {locked && onLogin && (
-        <button
-          type="button"
-          onClick={onLogin}
-          className="w-full rounded-full bg-km0-blue-800 text-white font-ui font-bold text-sm py-2.5 active:scale-[0.98] transition-transform inline-flex items-center justify-center gap-2"
-        >
-          <Lock size={14} strokeWidth={2.4} />
-          {t("home.locked.cta", lang)}
-        </button>
-      )}
     </motion.section>
   );
 };
