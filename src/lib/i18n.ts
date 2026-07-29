@@ -388,6 +388,8 @@ const D = {
   "tabs.points": { ca: "Els meus punts", es: "Mis puntos", en: "My points" } as Dict,
   "tabs.rewards": { ca: "Premis canjats", es: "Premios canjeados", en: "Redeemed rewards" } as Dict,
   "tabs.profile": { ca: "Perfil", es: "Perfil", en: "Profile" } as Dict,
+  "tabs.actions": { ca: "Accions", es: "Acciones", en: "Actions" } as Dict,
+
 
 
   // ── Points history ───────────────────────────────────────
