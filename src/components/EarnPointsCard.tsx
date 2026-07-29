@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Circle,
   ArrowRight,
+  Lock,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
