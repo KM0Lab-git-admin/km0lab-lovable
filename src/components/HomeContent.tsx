@@ -4,6 +4,8 @@ import EventHeroCarousel from "./EventHeroCarousel";
 import PointsCard from "./PointsCard";
 import JoinCard from "./JoinCard";
 import EarnPointsCard from "./EarnPointsCard";
+import RewardsPreview from "./RewardsPreview";
+import MerchantPromosPreview from "./MerchantPromosPreview";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
