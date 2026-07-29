@@ -9,8 +9,10 @@ import PostalCode from "./pages/PostalCode";
 import Home from "./pages/Home";
 import Points from "./pages/Points";
 import HistorialPunts from "./pages/HistorialPunts";
+import PointsActions from "./pages/PointsActions";
 import Premis from "./pages/Premis";
 import PremisCanjats from "./pages/PremisCanjats";
+
 import Agenda from "./pages/Agenda";
 import Evento from "./pages/Evento";
 import Noticias from "./pages/Noticias";
@@ -52,8 +54,10 @@ const App = () => (
             <Route path="/home-registered" element={<Home forceAuthState="authed" />} />
             <Route path="/points" element={<Points />} />
             <Route path="/points-history" element={<RequireAuth><HistorialPunts /></RequireAuth>} />
+            <Route path="/points-actions" element={<PointsActions />} />
             <Route path="/rewards" element={<Premis />} />
             <Route path="/redeemed-rewards" element={<RequireAuth><PremisCanjats /></RequireAuth>} />
+
 
             <Route path="/events" element={<Agenda />} />
             <Route path="/event" element={<Evento />} />
