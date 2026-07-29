@@ -111,7 +111,7 @@ const HomeContent = ({
 
           <EarnPointsCard onSeeAll={onActions} locked={!isAuthed} onLogin={onLogin} />
 
-          <RewardsPreview onSeeAll={onSeeAllRewards} locked={!isAuthed} onLogin={onLogin} />
+          <RewardsPreview onSeeAll={onSeeAllRewards} />
 
           <MerchantPromosPreview onSeeAll={onSeeAllPromos} locked={!isAuthed} onLogin={onLogin} />
         </div>
