@@ -124,22 +124,40 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "LoginButton en el header; oculta PointsCard. BottomTabs con 4 tabs: Inicio · Mis puntos · Premis canjats · Perfil. Sin sesión solo Inicio está activo; los demás redirigen a /login.",
+        notes: "LoginButton en el header; oculta PointsCard. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil. Sin sesión solo Inicio y Acciones están activos; los demás redirigen a /login.",
       },
       {
         id: "registered",
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard. BottomTabs: Inicio · Mis puntos · Premis canjats · Perfil.",
+        notes: "Oculta LoginButton; muestra PointsCard. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
-
-
       {
         id: "notifications",
         label: "Notificaciones abiertas",
         src: "/home?notifs=open",
         notes: "NotificationsOverlay abierto al montar.",
+      },
+    ],
+  },
+  {
+    id: "points-actions",
+    label: "PointsActions",
+    path: "/points-actions",
+    states: [
+      {
+        id: "guest",
+        label: "No registrado",
+        src: "/points-actions",
+        notes: "Lista de acciones para ganar puntos; el tab 'Accions' está activo y es accesible sin sesión. Sin sesión simulada se muestran los estados del mock.",
+      },
+      {
+        id: "registered",
+        label: "Registrado",
+        src: "/points-actions",
+        seedSession: true,
+        notes: "Lista de acciones para ganar puntos con sesión simulada. El tab 'Accions' está activo.",
       },
     ],
   },
@@ -153,10 +171,11 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Registrado",
         src: "/points-history",
         seedSession: true,
-        notes: "Historial de transacciones con filtros y resumen de saldo. BottomTabs con tab 'Els meus punts' activo.",
+        notes: "Historial de transacciones con filtros y resumen de saldo. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil; tab 'Els meus punts' activo.",
       },
     ],
   },
+
   {
     id: "agenda",
     label: "Agenda",
