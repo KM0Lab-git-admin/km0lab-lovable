@@ -144,6 +144,20 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     ],
   },
   {
+    id: "historial-punts",
+    label: "HistorialPunts",
+    path: "/points-history",
+    states: [
+      {
+        id: "registered",
+        label: "Registrado",
+        src: "/points-history",
+        seedSession: true,
+        notes: "Historial de transacciones con filtros y resumen de saldo. BottomTabs con tab 'Els meus punts' activo.",
+      },
+    ],
+  },
+  {
     id: "agenda",
     label: "Agenda",
     path: "/events",
