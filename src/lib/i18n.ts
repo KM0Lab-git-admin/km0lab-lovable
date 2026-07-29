@@ -245,8 +245,8 @@ const D = {
     es: "Promos para ti",
     en: "Promos for you",
   } as Dict,
-  "home.action.see_all_m": { ca: "Veure'ls tots", es: "Ver todos", en: "See all" } as Dict,
-  "home.action.see_all_f": { ca: "Veure-les totes", es: "Ver todas", en: "See all" } as Dict,
+  "home.action.see_all_m": { ca: "Veure'ls tots", es: "Verlos todos", en: "See all" } as Dict,
+  "home.action.see_all_f": { ca: "Veure-les totes", es: "Verlas todas", en: "See all" } as Dict,
   "home.login_cta": {
     ca: "Iniciar sessió",
     es: "Iniciar sesión",
