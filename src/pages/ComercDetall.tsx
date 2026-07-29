@@ -275,7 +275,7 @@ const ComercDetallPage = () => {
 
   const k = langKey(lang);
   const isError = forced === "error";
-  const goBack = () => navigate("/comercos");
+  const goBack = () => navigate("/merchants");
   const openScanner = () => navigate("/scanner");
 
   const stateOpen = comerc?.obertAra

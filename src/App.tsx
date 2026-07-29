@@ -49,17 +49,17 @@ const App = () => (
             <Route path="/check-email" element={<CheckEmail />} />
             
             <Route path="/home" element={<Home />} />
-            <Route path="/home-registrado" element={<Home forceAuthState="authed" />} />
+            <Route path="/home-registered" element={<Home forceAuthState="authed" />} />
             <Route path="/points" element={<Points />} />
-            <Route path="/historial-punts" element={<RequireAuth><HistorialPunts /></RequireAuth>} />
-            <Route path="/premis" element={<Premis />} />
-            <Route path="/premis-canjats" element={<RequireAuth><PremisCanjats /></RequireAuth>} />
+            <Route path="/points-history" element={<RequireAuth><HistorialPunts /></RequireAuth>} />
+            <Route path="/rewards" element={<Premis />} />
+            <Route path="/redeemed-rewards" element={<RequireAuth><PremisCanjats /></RequireAuth>} />
 
-            <Route path="/agenda" element={<Agenda />} />
-            <Route path="/evento" element={<Evento />} />
-            <Route path="/noticias" element={<Noticias />} />
-            <Route path="/comercos" element={<Comercos />} />
-            <Route path="/comercos/:id" element={<ComercDetall />} />
+            <Route path="/events" element={<Agenda />} />
+            <Route path="/event" element={<Evento />} />
+            <Route path="/news" element={<Noticias />} />
+            <Route path="/merchants" element={<Comercos />} />
+            <Route path="/merchants/:id" element={<ComercDetall />} />
             <Route path="/scanner" element={<Scanner />} />
             <Route path="/scanner/success" element={<ScannerSuccess />} />
             <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />

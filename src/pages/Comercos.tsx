@@ -234,8 +234,8 @@ const Comercos = () => {
   const isAuthed = !!user;
   const goToHome = () => navigate("/home");
   const goToLogin = () => navigate("/login");
-  const goToPoints = () => navigate("/historial-punts");
-  const goToRewards = () => navigate("/premis-canjats");
+  const goToPoints = () => navigate("/points-history");
+  const goToRewards = () => navigate("/redeemed-rewards");
   const goToProfile = () => navigate("/profile");
 
   const forced = new URLSearchParams(window.location.search).get("state");
@@ -414,7 +414,7 @@ const Comercos = () => {
                         <ComercCard
                           c={c}
                           lang={lang}
-                          onOpen={() => navigate(`/comercos/${c.id}`)}
+                          onOpen={() => navigate(`/merchants/${c.id}`)}
                         />
                       </li>
                     ))}

@@ -39,7 +39,7 @@ const NotificationsOverlay = ({
 
   const handleOpen = (item: NotificationItem) => {
     onClose();
-    navigate(`/noticias?id=${encodeURIComponent(item.noticia.id)}`);
+    navigate(`/news?id=${encodeURIComponent(item.noticia.id)}`);
   };
 
   return (

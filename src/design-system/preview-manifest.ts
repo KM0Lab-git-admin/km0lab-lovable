@@ -146,34 +146,34 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
   {
     id: "agenda",
     label: "Agenda",
-    path: "/agenda",
+    path: "/events",
     dynamicContent: true, // eventos remotos (Supabase)
-    states: [{ id: "default", label: "Por defecto", src: "/agenda" }],
+    states: [{ id: "default", label: "Por defecto", src: "/events" }],
   },
   {
     id: "evento",
     label: "Evento",
-    path: "/evento",
+    path: "/event",
     dynamicContent: true,
     states: [
-      { id: "notfound", label: "Sin id", src: "/evento" },
+      { id: "notfound", label: "Sin id", src: "/event" },
       {
         id: "detail",
         label: "Detalle",
-        src: "/evento?id=d981284158e506fe00adc07973b5c3645d10a9e169ab69c6acd985eb3a887359",
+        src: "/event?id=d981284158e506fe00adc07973b5c3645d10a9e169ab69c6acd985eb3a887359",
       },
     ],
   },
   {
     id: "noticias",
     label: "Noticias",
-    path: "/noticias",
+    path: "/news",
     states: [
-      { id: "happy", label: "Feliz", src: "/noticias" },
-      { id: "loading", label: "Loading", src: "/noticias?state=loading" },
-      { id: "empty", label: "Vacío", src: "/noticias?state=empty" },
-      { id: "error", label: "Error", src: "/noticias?state=error" },
-      { id: "detail", label: "Detalle", src: "/noticias?id=not_a1b2c3d4e5f6" },
+      { id: "happy", label: "Feliz", src: "/news" },
+      { id: "loading", label: "Loading", src: "/news?state=loading" },
+      { id: "empty", label: "Vacío", src: "/news?state=empty" },
+      { id: "error", label: "Error", src: "/news?state=error" },
+      { id: "detail", label: "Detalle", src: "/news?id=not_a1b2c3d4e5f6" },
     ],
   },
   {
@@ -199,12 +199,12 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
   {
     id: "premis-canjats",
     label: "PremisCanjats",
-    path: "/premis-canjats",
+    path: "/redeemed-rewards",
     states: [
       {
         id: "default",
         label: "Por defecto",
-        src: "/premis-canjats",
+        src: "/redeemed-rewards",
         notes: "Mock con todos los estados: pending, redeemed y expired. Incluye BottomTabs con tab 'Premis canjats' activo.",
       },
 

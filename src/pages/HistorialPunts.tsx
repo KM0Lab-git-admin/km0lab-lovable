@@ -231,7 +231,7 @@ const HistorialPunts = () => {
 
               <button
                 type="button"
-                onClick={() => navigate("/premis-canjats")}
+                onClick={() => navigate("/redeemed-rewards")}
                 className="relative z-10 mt-3 flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 active:scale-[0.98] transition-transform w-fit"
               >
                 <GiftIcon size={14} className="text-km0-yellow-100" />

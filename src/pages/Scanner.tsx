@@ -69,7 +69,7 @@ const Scanner = () => {
     return () => window.clearTimeout(timer);
   }, [status, state.context.result, navigate]);
 
-  const close = () => navigate("/comercos");
+  const close = () => navigate("/merchants");
 
   const simulate = (code: string) => send({ type: "DETECT", code });
   const retry = () => send({ type: "RESET" });
@@ -209,7 +209,7 @@ const Scanner = () => {
           comercNom={state.context.errorComercNom ?? undefined}
           onRetry={retry}
           onPromos={() =>
-            navigate("/comercos", { state: { openPromos: true } })
+            navigate("/merchants", { state: { openPromos: true } })
           }
         />
       )}

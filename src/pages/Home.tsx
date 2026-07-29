@@ -20,7 +20,7 @@ import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
 
 type HomeProps = {
-  /** Forzar estado para previews (`/home-registrado`, `/home-no-registrado`). */
+  /** Forzar estado para previews (`/home-registered`, `/home-no-registrado`). */
   forceAuthState?: "authed" | "guest";
 };
 
@@ -40,7 +40,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const showPoints = isAuthed;
 
   // Bandera de preview: permite que las rutas protegidas (historial, premis
-  // canjats, perfil) sean navegables desde `/home-registrado` sin sesión real.
+  // canjats, perfil) sean navegables desde `/home-registered` sin sesión real.
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (forceAuthState === "authed") {
@@ -79,19 +79,19 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
               return;
             }
             if (m.id === "agenda") {
-              navigate("/agenda");
+              navigate("/events");
               return;
             }
             if (m.id === "noticias") {
-              navigate("/noticias");
+              navigate("/news");
               return;
             }
             if (m.id === "comerc") {
-              navigate("/comercos");
+              navigate("/merchants");
               return;
             }
             if (m.id === "premis") {
-              navigate("/premis");
+              navigate("/rewards");
               return;
             }
             toggleModule(m.id);
@@ -109,8 +109,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
 
   const goToProfile = () => navigate("/profile");
   const goToLogin = () => navigate("/login");
-  const goToPoints = () => navigate("/historial-punts");
-  const goToRewards = () => navigate("/premis-canjats");
+  const goToPoints = () => navigate("/points-history");
+  const goToRewards = () => navigate("/redeemed-rewards");
 
 
 
@@ -159,9 +159,9 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onRewards: goToRewards,
     showLogin,
     showPoints,
-    onSeeAllEvents: () => navigate("/agenda"),
-    onOpenEvent: (id: string) => navigate(`/evento?id=${id}`),
-    onOpenPointsHistory: () => navigate("/historial-punts"),
+    onSeeAllEvents: () => navigate("/events"),
+    onOpenEvent: (id: string) => navigate(`/event?id=${id}`),
+    onOpenPointsHistory: () => navigate("/points-history"),
 
   };
 
