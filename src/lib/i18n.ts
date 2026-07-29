@@ -413,11 +413,13 @@ const D = {
   "points.history.group.week": { ca: "Aquesta setmana", es: "Esta semana", en: "This week" } as Dict,
   "points.history.group.month": { ca: "Aquest mes", es: "Este mes", en: "This month" } as Dict,
   "points.history.group.earlier": { ca: "Anteriors", es: "Anteriores", en: "Earlier" } as Dict,
-  "points.history.type.signup": { ca: "Registre / benvinguda", es: "Registro / bienvenida", en: "Sign-up bonus" } as Dict,
-  "points.history.type.first_scan": { ca: "Primer escaneig del local", es: "Primer escaneo del local", en: "First scan" } as Dict,
-  "points.history.type.visit": { ca: "Visita amb QR", es: "Visita con QR", en: "QR visit" } as Dict,
-  "points.history.type.purchase": { ca: "Compra / reserva / servei", es: "Compra / reserva / servicio", en: "Purchase / booking" } as Dict,
-  "points.history.type.campaign": { ca: "Campanya especial", es: "Campaña especial", en: "Special campaign" } as Dict,
+  "points.history.type.signup": { ca: "Primer registre a l'app", es: "Primer registro en la app", en: "App sign-up" } as Dict,
+  "points.history.type.first_scan": { ca: "Primer escaneig d'un comerç", es: "Primer escaneo de un comercio", en: "First shop scan" } as Dict,
+  "points.history.type.scan": { ca: "Escaneig d'un comerç", es: "Escaneo de un comercio", en: "Shop scan" } as Dict,
+  "points.history.type.web_visit": { ca: "Visita web", es: "Visita web", en: "Web visit" } as Dict,
+  "points.history.type.event_signup": { ca: "Inscripció a esdeveniment", es: "Inscripción a evento", en: "Event sign-up" } as Dict,
+  "points.history.type.survey": { ca: "Enquesta de satisfacció", es: "Encuesta de satisfacción", en: "Satisfaction survey" } as Dict,
+  "points.history.type.suggestion": { ca: "Suggeriment enviat", es: "Sugerencia enviada", en: "Suggestion sent" } as Dict,
   "points.history.type.redeem": { ca: "Bescanvi per premi", es: "Canje por premio", en: "Reward redeemed" } as Dict,
 
 
