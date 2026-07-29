@@ -157,6 +157,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onProfile: goToProfile,
     onPoints: goToPoints,
     onRewards: goToRewards,
+    onActions: () => navigate("/points-actions"),
     showLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/events"),
@@ -164,6 +165,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onOpenPointsHistory: () => navigate("/points-history"),
 
   };
+
 
 
 

@@ -287,6 +287,8 @@ const PremisCanjats = () => {
   const goToPoints = () => navigate("/points-history");
   const goToProfile = () => navigate("/profile");
   const goToRewards = () => {};
+  const goToActions = () => navigate("/points-actions");
+
 
 
   const sorted = useMemo(
