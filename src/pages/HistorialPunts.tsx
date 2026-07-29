@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ChevronLeft,
-  Gift,
+  UserPlus,
+  Star,
   QrCode,
-  MapPin,
-  ShoppingBag,
-  Sparkles,
+  Globe,
+  CalendarCheck,
+  ClipboardList,
+  MessageSquarePlus,
   Tag,
   Coins,
   Gift as GiftIcon,
@@ -29,12 +31,14 @@ const TYPE_META: Record<
   PointsTxType,
   { Icon: LucideIcon; ring: string; text: string }
 > = {
-  signup:     { Icon: Gift,        ring: "bg-km0-teal-100",   text: "text-km0-teal-700"   },
-  first_scan: { Icon: QrCode,      ring: "bg-km0-blue-100",   text: "text-km0-blue-700"   },
-  visit:      { Icon: MapPin,      ring: "bg-km0-blue-100",   text: "text-km0-blue-700"   },
-  purchase:   { Icon: ShoppingBag, ring: "bg-km0-yellow-100", text: "text-km0-blue-800"   },
-  campaign:   { Icon: Sparkles,    ring: "bg-km0-teal-100",   text: "text-km0-teal-700"   },
-  redeem:     { Icon: Tag,         ring: "bg-km0-coral-100",  text: "text-km0-coral-500"  },
+  signup:       { Icon: UserPlus,           ring: "bg-km0-teal-100",   text: "text-km0-teal-700"  },
+  first_scan:   { Icon: Star,               ring: "bg-km0-yellow-100", text: "text-km0-blue-800"  },
+  scan:         { Icon: QrCode,             ring: "bg-km0-blue-100",   text: "text-km0-blue-700"  },
+  web_visit:    { Icon: Globe,              ring: "bg-km0-blue-100",   text: "text-km0-blue-700"  },
+  event_signup: { Icon: CalendarCheck,      ring: "bg-km0-teal-100",   text: "text-km0-teal-700"  },
+  survey:       { Icon: ClipboardList,      ring: "bg-km0-yellow-100", text: "text-km0-blue-800"  },
+  suggestion:   { Icon: MessageSquarePlus,  ring: "bg-km0-teal-100",   text: "text-km0-teal-700"  },
+  redeem:       { Icon: Tag,                ring: "bg-km0-coral-100",  text: "text-km0-coral-500" },
 };
 
 /* ─── Agrupación por rango ───────────────────────────────── */
