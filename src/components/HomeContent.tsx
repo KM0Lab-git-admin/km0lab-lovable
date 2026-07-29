@@ -110,23 +110,9 @@ const HomeContent = ({
           </section>
 
           {!isAuthed && (
-            <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-br from-km0-yellow-100/70 to-card/80 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-5 py-4 flex items-center gap-3">
-              <div className="flex-1 min-w-0">
-                <h2 className="font-brand font-black text-km0-blue-800 text-base leading-tight">
-                  {t("home.members.title", lang)}
-                </h2>
-                <p className="font-ui text-km0-blue-800/80 text-xs mt-1 leading-snug">
-                  {t("home.members.subtitle", lang)}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={onLogin}
-                className="shrink-0 font-ui font-bold text-white bg-km0-coral-400 rounded-full px-4 py-2 text-xs active:scale-95 transition-transform whitespace-nowrap"
-              >
-                {t("home.members.cta", lang)}
-              </button>
-            </section>
+            <p className="text-center font-ui text-sm text-km0-blue-800/80 px-4">
+              {t("home.members.teaser", lang)}
+            </p>
           )}
 
           <EarnPointsCard onSeeAll={onActions} locked={false} onLogin={onLogin} />

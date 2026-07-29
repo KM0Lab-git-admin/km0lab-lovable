@@ -272,20 +272,10 @@ const D = {
     es: "Regístrate para desbloquear",
     en: "Sign up to unlock",
   } as Dict,
-  "home.members.title": {
-    ca: "Només per a persones registrades",
-    es: "Solo para personas registradas",
-    en: "Members only",
-  } as Dict,
-  "home.members.subtitle": {
-    ca: "Pots explorar-ho tot, però per fer-ho servir cal registrar-se.",
-    es: "Puedes explorarlo todo, pero para usarlo necesitas registrarte.",
-    en: "You can browse everything, but you need to sign up to use it.",
-  } as Dict,
-  "home.members.cta": {
-    ca: "Registra't",
-    es: "Regístrate",
-    en: "Sign up",
+  "home.members.teaser": {
+    ca: "Registra't i podràs guanyar punts, bescanjar premis i gaudir de promocions.",
+    es: "Regístrate y podrás ganar puntos, canjear premios y disfrutar de promociones.",
+    en: "Sign up to earn points, redeem rewards and enjoy promotions.",
   } as Dict,
 
   // ── Home · Missió del barri (spec-home-c) ───────────────
