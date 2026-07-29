@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import chatMascot from "@/assets/chat-mascot.png";
-import agendaIcon from "@/assets/events-icon.png";
+import agendaIcon from "@/assets/agenda-icon.png";
 import cityHallIcon from "@/assets/cityhall-icon.png";
 import shopServicesIcon from "@/assets/shop-services-icon.png.asset.json";
 import newsIcon from "@/assets/news-icon.png";
