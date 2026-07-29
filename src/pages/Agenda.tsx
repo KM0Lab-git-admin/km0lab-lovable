@@ -506,7 +506,7 @@ const Agenda = () => {
                   <EventListCard
                     key={e.id_unico_evento}
                     evento={e}
-                    onOpen={(id) => navigate(`/evento?id=${encodeURIComponent(id)}`)}
+                    onOpen={(id) => navigate(`/event?id=${encodeURIComponent(id)}`)}
                   />
                 ))}
               </motion.div>

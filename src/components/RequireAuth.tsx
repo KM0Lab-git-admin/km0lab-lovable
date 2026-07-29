@@ -16,7 +16,7 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
     return null;
   }
 
-  // Preview: `/home-registrado` deja pasar sin sesión real para poder
+  // Preview: `/home-registered` deja pasar sin sesión real para poder
   // navegar por Els meus punts, Premis canjats y Perfil desde la demo.
   // En desarrollo (import.meta.env.DEV) también se salta el guard para
   // poder validar pantallas protegidas sin loguearse.

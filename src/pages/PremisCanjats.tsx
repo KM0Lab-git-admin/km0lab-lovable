@@ -284,7 +284,7 @@ const PremisCanjats = () => {
 
   const goToHome = () => navigate("/home");
   const goToLogin = () => navigate("/login");
-  const goToPoints = () => navigate("/historial-punts");
+  const goToPoints = () => navigate("/points-history");
   const goToProfile = () => navigate("/profile");
   const goToRewards = () => {};
 
