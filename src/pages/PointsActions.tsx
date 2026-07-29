@@ -96,7 +96,7 @@ const ActionRow = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index * 0.04, 0.25) }}
       className={cn(
-        "flex items-center gap-3 py-3",
+        "flex items-center gap-3 px-3 py-3 bg-white rounded-2xl border border-km0-blue-100",
         action.completed && "opacity-80"
       )}
     >
@@ -286,13 +286,11 @@ const PointsActions = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col gap-2 pt-2">
-                <ul className="bg-white rounded-2xl border border-km0-blue-100 divide-y divide-km0-beige-200 px-3">
-                  {filtered.map((action, i) => (
-                    <ActionRow key={action.id} action={action} lang={lang} index={i} />
-                  ))}
-                </ul>
-              </div>
+              <ul className="flex flex-col gap-3 pt-2">
+                {filtered.map((action, i) => (
+                  <ActionRow key={action.id} action={action} lang={lang} index={i} />
+                ))}
+              </ul>
             )}
           </div>
 
