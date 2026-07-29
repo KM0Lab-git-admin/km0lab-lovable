@@ -64,6 +64,7 @@ const HomeContent = ({
   onProfile,
   onPoints,
   onRewards,
+  onActions,
   showLogin,
   showPoints,
 
@@ -72,6 +73,7 @@ const HomeContent = ({
   onOpenPointsHistory,
 
 }: HomeContentProps) => {
+
 
   const { lang } = useLang();
 
