@@ -184,3 +184,36 @@ ser pública y actúa como punto de entrada para no registrados.
 - El icono `Sparkles` proviene de `lucide-react`, ya disponible en la lista de
   dependencias aprobadas.
 
+
+### N. Home: secciones siempre visibles con estado bloqueado para invitados
+
+**Qué:** las tres secciones de valor de la Home —**Cómo ganar puntos**,
+**Premis** y **Promocions de comerços**— se muestran siempre, tanto para
+usuarios registrados como invitados. Para invitados, cada sección aparece
+en modo `locked`: contenido con `pointer-events-none` + opacidad, chip
+"Bloquejat" con candado en la cabecera y CTA inferior "Registra't per
+desbloquejar" que navega a `/login`.
+
+**Archivos:**
+- `src/components/EarnPointsCard.tsx` (props `locked` + `onLogin`)
+- `src/components/RewardsPreview.tsx` (nuevo — carrusel horizontal compacto de `REWARDS`)
+- `src/components/MerchantPromosPreview.tsx` (nuevo — lista de promos derivadas de `COMERCIOS_DETALL`)
+- `src/components/HomeContent.tsx` (props `onSeeAllRewards`, `onSeeAllPromos`; render de las dos nuevas secciones)
+- `src/pages/Home.tsx` (handlers navegan a `/rewards` y `/rewards?tab=promos`)
+- `src/pages/Premis.tsx` (lee `?tab=promos` para abrir directamente esa pestaña)
+- `src/lib/i18n.ts` (claves `home.section.rewards`, `home.section.promos`, `home.locked.badge`, `home.locked.cta`)
+- `src/design-system/preview-manifest.ts` (notas de Home actualizadas)
+
+**Motivo:** garantizar que el invitado vea toda la propuesta de valor de la
+app (acciones, premios y promociones) antes de registrarse, y ofrecer un
+punto de conversión claro en cada bloque.
+
+**Notas de portabilidad:**
+- Las tarjetas de `RewardsPreview` y `MerchantPromosPreview` reutilizan el
+  estilo de `/rewards`; si el design-system del monorepo tiene primitivos
+  equivalentes (`RewardCardCompact`, `PromoRow`) usarlos directamente para
+  no duplicar CSS.
+- `REWARDS` y `COMERCIOS_DETALL` siguen siendo mocks. Al portar, conectar a
+  los endpoints reales de catálogo de premios y ficha de comercios.
+- El patrón `locked + onLogin` es reutilizable: preserva la misma API en
+  cualquier futura sección "gate" (candado + CTA registro).
