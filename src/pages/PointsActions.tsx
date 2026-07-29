@@ -96,7 +96,7 @@ const ActionRow = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index * 0.04, 0.25) }}
       className={cn(
-        "flex items-center gap-3 py-3",
+        "flex items-center gap-3 px-3 py-3 bg-white rounded-2xl border border-km0-blue-100",
         action.completed && "opacity-80"
       )}
     >
