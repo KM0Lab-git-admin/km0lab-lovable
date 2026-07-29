@@ -237,6 +237,8 @@ const Comercos = () => {
   const goToPoints = () => navigate("/points-history");
   const goToRewards = () => navigate("/redeemed-rewards");
   const goToProfile = () => navigate("/profile");
+  const goToActions = () => navigate("/points-actions");
+
 
   const forced = new URLSearchParams(window.location.search).get("state");
 
@@ -451,7 +453,9 @@ const Comercos = () => {
             onProfile={goToProfile}
             onPoints={goToPoints}
             onRewards={goToRewards}
+            onActions={goToActions}
           />
+
 
 
         </div>

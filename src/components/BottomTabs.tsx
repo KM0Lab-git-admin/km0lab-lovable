@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
-import { Home as HomeIcon, User, Coins, Gift } from "lucide-react";
+import { Home as HomeIcon, User, Coins, Gift, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 
-export type HomeTab = "home" | "puntos" | "rewards" | "perfil";
+export type HomeTab = "home" | "actions" | "puntos" | "rewards" | "perfil";
 
 export interface BottomTabsProps {
   activeTab: HomeTab;
@@ -15,6 +15,7 @@ export interface BottomTabsProps {
   onProfile: () => void;
   onPoints: () => void;
   onRewards: () => void;
+  onActions: () => void;
 }
 
 const BottomTabs = ({
@@ -25,22 +26,25 @@ const BottomTabs = ({
   onProfile,
   onPoints,
   onRewards,
+  onActions,
 }: BottomTabsProps) => {
   const { lang } = useLang();
 
   const handleClick = (tab: HomeTab, action: () => void) => {
-    if (!isAuthed && tab !== "home") {
+    // Actions e Inicio están disponibles para todos; el resto requiere sesión.
+    if (!isAuthed && tab !== "home" && tab !== "actions") {
       onLogin();
       return;
     }
     action();
   };
 
-  const isActive = (tab: HomeTab) => (isAuthed || tab === "home") && activeTab === tab;
+  const isActive = (tab: HomeTab) =>
+    (isAuthed || tab === "home" || tab === "actions") && activeTab === tab;
 
   return (
     <nav
-      className="shrink-0 bg-white border-t border-km0-beige-200 px-2 pt-2 pb-3 grid grid-cols-4"
+      className="shrink-0 bg-white border-t border-km0-beige-200 px-1 pt-2 pb-3 grid grid-cols-5"
       aria-label="Navegación principal"
     >
       <TabItem
@@ -48,6 +52,12 @@ const BottomTabs = ({
         label={t("tabs.home", lang)}
         active={isActive("home")}
         onClick={() => handleClick("home", onHome)}
+      />
+      <TabItem
+        icon={<Sparkles size={20} strokeWidth={2.2} />}
+        label={t("tabs.actions", lang)}
+        active={isActive("actions")}
+        onClick={() => handleClick("actions", onActions)}
       />
       <TabItem
         icon={<Coins size={20} strokeWidth={2.2} />}
@@ -89,8 +99,9 @@ const TabItem = ({ icon, label, active, onClick }: TabItemProps) => (
     )}
   >
     <span className="w-6 h-6 flex items-center justify-center">{icon}</span>
-    <span className="font-ui font-bold text-[10px] leading-tight">{label}</span>
+    <span className="font-ui font-bold text-[9px] leading-tight">{label}</span>
   </button>
 );
 
 export default BottomTabs;
+

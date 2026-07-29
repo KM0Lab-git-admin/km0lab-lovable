@@ -10,6 +10,38 @@ export type PointsTxType =
   | "suggestion"
   | "redeem";
 
+export type PointActionId =
+  | "birthday"
+  | "signup"
+  | "first_scan"
+  | "scan"
+  | "web_visit"
+  | "newsletter"
+  | "event_signup"
+  | "survey";
+
+export type PointActionIcon =
+  | "cake"
+  | "user-plus"
+  | "star"
+  | "qr"
+  | "globe"
+  | "mail"
+  | "calendar-check"
+  | "clipboard-list";
+
+export interface PointAction {
+  id: PointActionId;
+  titleKey: TKey;
+  descriptionKey: TKey;
+  typeKey: TKey;
+  points: number;
+  completed: boolean;
+  hidden?: boolean;
+  icon: PointActionIcon;
+}
+
+
 export interface PointsTransaction {
   id: string;
   type: PointsTxType;
