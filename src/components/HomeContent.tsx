@@ -117,7 +117,10 @@ const HomeContent = ({
 
           <EarnPointsCard onSeeAll={onActions} locked={false} onLogin={onLogin} />
 
-          <RewardsPreview onSeeAll={onSeeAllRewards} />
+          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
+            <SectionHeader title={t("home.section.rewards", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllRewards} />
+            <RewardsPreview onSeeAll={onSeeAllRewards} />
+          </section>
 
           <MerchantPromosPreview onSeeAll={onSeeAllPromos} locked={false} onLogin={onLogin} />
         </div>
