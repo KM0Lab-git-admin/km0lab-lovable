@@ -73,6 +73,8 @@ const HomeContent = ({
   showPoints,
 
   onSeeAllEvents,
+  onSeeAllRewards,
+  onSeeAllPromos,
   onOpenEvent,
   onOpenPointsHistory,
 
