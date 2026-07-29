@@ -263,9 +263,9 @@ const D = {
     en: "Merchant promos",
   } as Dict,
   "home.locked.badge": {
-    ca: "Bloquejat",
-    es: "Bloqueado",
-    en: "Locked",
+    ca: "Registra't",
+    es: "Regístrate",
+    en: "Sign up",
   } as Dict,
   "home.locked.cta": {
     ca: "Registra't per desbloquejar",
