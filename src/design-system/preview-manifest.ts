@@ -238,11 +238,12 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "default",
         label: "Por defecto",
         src: "/redeemed-rewards",
-        notes: "Mock con todos los estados: pending, redeemed y expired. Incluye BottomTabs con tab 'Premis canjats' activo.",
+        notes: "Mock con todos los estados: pending, redeemed y expired. Incluye BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil; tab 'Premis canjats' activo.",
       },
 
     ],
   },
+
   {
     id: "scanner",
     label: "Scanner",
