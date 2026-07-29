@@ -286,13 +286,11 @@ const PointsActions = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col gap-2 pt-2">
-                <ul className="bg-white rounded-2xl border border-km0-blue-100 divide-y divide-km0-beige-200 px-3">
-                  {filtered.map((action, i) => (
-                    <ActionRow key={action.id} action={action} lang={lang} index={i} />
-                  ))}
-                </ul>
-              </div>
+              <ul className="flex flex-col gap-3 pt-2">
+                {filtered.map((action, i) => (
+                  <ActionRow key={action.id} action={action} lang={lang} index={i} />
+                ))}
+              </ul>
             )}
           </div>
 
