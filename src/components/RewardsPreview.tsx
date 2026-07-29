@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ArrowRight, Gift, Ticket, Percent, ShoppingBag, Coins, type LucideIcon } from "lucide-react";
+import { ChevronRight, Gift, Ticket, Percent, ShoppingBag, Coins, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -8,9 +8,12 @@ import { REWARDS } from "@/data/rewards";
 import type { Reward, RewardKind } from "@/types/reward";
 
 /**
- * RewardsPreview — hero de "Premis" en la Home, con el mismo formato visual
- * que EventHeroCarousel: imagen/portada arriba, panel inferior con título,
- * metadatos y CTA circular de "siguiente", más dots externos de paginación.
+ * RewardsPreview — hero de "Premis" en la Home. Mismo formato visual
+ * que EventHeroCarousel: portada arriba, panel inferior con título,
+ * metadatos y CTA circular, más dots externos de paginación.
+ *
+ * El wrapper (section + SectionHeader) lo aporta HomeContent para que
+ * sea idéntico al de "Eventos destacados".
  */
 export interface RewardsPreviewProps {
   onSeeAll?: () => void;
@@ -53,23 +56,7 @@ const RewardsPreview = ({ onSeeAll, className }: RewardsPreviewProps) => {
   const gradient = KIND_GRADIENT[reward.kind];
 
   return (
-    <section className={cn("w-full space-y-2", className)}>
-      <div className="flex items-center justify-between gap-2 px-1">
-        <h2 className="font-brand font-black text-km0-blue-800 text-base">
-          {t("home.section.rewards", lang)}
-        </h2>
-        {onSeeAll && (
-          <button
-            type="button"
-            onClick={onSeeAll}
-            className="font-ui font-bold text-km0-coral-400 active:scale-95 transition-transform underline underline-offset-4 text-xs flex items-center whitespace-nowrap shrink-0"
-          >
-            {t("home.action.see_all_m", lang)}
-            <ArrowRight size={13} strokeWidth={2.4} />
-          </button>
-        )}
-      </div>
-
+    <div className={cn("w-full", className)}>
       <div className="relative w-full rounded-2xl overflow-hidden bg-card shadow-[0_12px_28px_-14px_hsl(var(--km0-blue-900)/0.35)] ring-1 ring-km0-beige-200">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
@@ -159,7 +146,7 @@ const RewardsPreview = ({ onSeeAll, className }: RewardsPreviewProps) => {
           />
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 
