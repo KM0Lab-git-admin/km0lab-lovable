@@ -49,7 +49,7 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/postal-code" element={<PostalCode />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/check-email" element={<CheckEmail />} />
+            <Route path="/email/otp" element={<EmailOtpTemplate />} />
             
             <Route path="/home" element={<Home />} />
             <Route path="/home-registered" element={<Home forceAuthState="authed" />} />
