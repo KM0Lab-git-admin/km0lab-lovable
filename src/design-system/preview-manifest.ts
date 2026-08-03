@@ -115,6 +115,19 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     ],
   },
   {
+    id: "email-otp",
+    label: "Email OTP (plantilla de correo)",
+    path: "/email/otp",
+    states: [
+      {
+        id: "default",
+        label: "Por defecto",
+        src: "/email/otp?code=660111&minutes=10&email=preview%40km0lab.com",
+        notes: "Maqueta presentacional del email con el código de 6 dígitos y su validez.",
+      },
+    ],
+  },
+  {
     id: "home",
     label: "Home",
     path: "/home",

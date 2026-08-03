@@ -166,6 +166,43 @@ const D = {
     en: "We've sent you a code by email",
   } as Dict,
 
+  // ── Email OTP (plantilla de correo) ──────────────────────
+  "email_otp.title": {
+    ca: "El teu codi d'accés",
+    es: "Tu código de acceso",
+    en: "Your access code",
+  } as Dict,
+  "email_otp.intro": {
+    ca: "Fes servir aquest codi per entrar a KM0 LAB o recuperar la teva sessió.",
+    es: "Usa este código para entrar en KM0 LAB o recuperar tu sesión.",
+    en: "Use this code to sign in to KM0 LAB or recover your session.",
+  } as Dict,
+  "email_otp.code_label": {
+    ca: "Codi de 6 dígits",
+    es: "Código de 6 dígitos",
+    en: "6-digit code",
+  } as Dict,
+  "email_otp.validity": {
+    ca: "Vàlid durant {minutes} minuts",
+    es: "Válido durante {minutes} minutos",
+    en: "Valid for {minutes} minutes",
+  } as Dict,
+  "email_otp.security": {
+    ca: "Si no has demanat aquest codi, ignora aquest correu. No el comparteixis amb ningú.",
+    es: "Si no has pedido este código, ignora este correo. No lo compartas con nadie.",
+    en: "If you didn't request this code, ignore this email. Never share it.",
+  } as Dict,
+  "email_otp.footer_hint": {
+    ca: "No el trobes a la safata d'entrada? Mira a spam o promocions.",
+    es: "¿No lo encuentras en la bandeja de entrada? Mira en spam o promociones.",
+    en: "Can't find it in your inbox? Check spam or promotions.",
+  } as Dict,
+  "email_otp.footer_signature": {
+    ca: "KM0 LAB · Comerç local de proximitat",
+    es: "KM0 LAB · Comercio local de proximidad",
+    en: "KM0 LAB · Local neighbourhood commerce",
+  } as Dict,
+
   // ── OTP / Check email ────────────────────────────────────
   "otp.title": {
     ca: "Revisa el teu correu",

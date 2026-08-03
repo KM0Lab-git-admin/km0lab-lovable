@@ -22,6 +22,7 @@ import Scanner from "./pages/Scanner";
 import ScannerSuccess from "./pages/ScannerSuccess";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
+import EmailOtpTemplate from "./pages/EmailOtpTemplate";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/postal-code" element={<PostalCode />} />
             <Route path="/login" element={<Login />} />
             <Route path="/check-email" element={<CheckEmail />} />
+            <Route path="/email/otp" element={<EmailOtpTemplate />} />
             
             <Route path="/home" element={<Home />} />
             <Route path="/home-registered" element={<Home forceAuthState="authed" />} />
