@@ -22,6 +22,7 @@ import Scanner from "./pages/Scanner";
 import ScannerSuccess from "./pages/ScannerSuccess";
 import Login from "./pages/Login";
 import CheckEmail from "./pages/CheckEmail";
+import EmailOtpTemplate from "./pages/EmailOtpTemplate";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
