@@ -1,73 +1,55 @@
-# Welcome to your Lovable project
+# km0lab-lovable
 
-## Project info
+**Prototipo en Lovable de la app de vecinos de KM0 LAB.** Es la **fuente de
+verdad del diseño**: pantallas, componentes React y assets nacen aquí y se
+llevan a producción (repo `km0lab`, `apps/km0lab`) mediante sincronización
+mecánica.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+> Parte del ecosistema KM0 LAB (app del comercio y la vida de proximidad de un
+> municipio). Visión global del proyecto:
+> `km0lab/docs/PROYECTO-GLOBAL.md`.
 
-## How can I edit this code?
+## La frontera (Lovable ↔ producción)
 
-There are several ways of editing your application.
+Aquí vive **todo lo que el usuario experimenta contra mocks o APIs de solo
+lectura**: UI, pantallas, componentes, layout portrait-first, i18n. **No** vive
+aquí nada que toque el mundo real (auth, BD, secretos, lógica de negocio): eso
+se implementa en producción. El código se porta con `pnpm sync:lovable` desde
+el repo `km0lab` (ver `km0lab/docs/PORTING-FROM-LOVABLE.md` y el contrato de
+generación en [`docs/KNOWLEDGE.md`](docs/KNOWLEDGE.md)).
 
-**Use Lovableeeeeeeee**
+## Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Vite 5** + **React 18** + **TypeScript**
+- **Tailwind CSS 3** + **shadcn/ui**
+- **React Router DOM v6** — rutas en `src/App.tsx`
 
-Changes made via Lovable will be committed automatically to this repo.
+> Nota: producción (`apps/km0lab`) va un paso por delante (**React 19 + React
+> Router DOM v7**); el desfase lo absorbe el sync al portar.
 
-**Use your preferred IDE**
+## Estructura
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- `src/pages/` — pantallas (fuente de las rutas de producción).
+- `src/components/` — componentes específicos de pantalla.
+- `src/components/ui/` — primitivos shadcn (kebab-case).
+- `src/assets/` — imágenes/ilustraciones (source of truth de assets).
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Desarrollo
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
 npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Rama: `main` (Lovable commitea aquí automáticamente; **no despliega** UAT/prod).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Documentación
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- [`docs/KNOWLEDGE.md`](docs/KNOWLEDGE.md) — contrato de generación para Lovable
+  (frontera, estructura, deps aprobadas). Se pega en `Settings → Knowledge`.
+- [`docs/lovable-prompting-guide.md`](docs/lovable-prompting-guide.md) — cómo
+  promptear.
+- [`docs/spec-home-c.md`](docs/spec-home-c.md), `screen-states.md`,
+  `responsive-layout-process.md` — specs y proceso de layout.
+- [`docs/PORTABILITY-CHANGELOG.md`](docs/PORTABILITY-CHANGELOG.md) — histórico
+  de portabilidad hacia producción.
