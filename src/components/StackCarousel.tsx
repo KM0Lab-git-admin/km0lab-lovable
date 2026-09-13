@@ -241,7 +241,7 @@ function StackCarousel<T extends StackCarouselItem>({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.4 }}
       >
-        <span className="font-ui font-bold text-base text-primary-foreground w-12">
+        <span className="font-ui font-bold text-base text-km0-blue-700 w-12">
           {current + 1}/{total}
         </span>
         <div className="flex gap-2 items-center">
