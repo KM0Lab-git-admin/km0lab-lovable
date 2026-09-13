@@ -57,8 +57,6 @@ export interface StackCarouselProps<T extends StackCarouselItem> {
   nextLabel: string;
 }
 
-const SLOT = 350;
-
 function StackCarousel<T extends StackCarouselItem>({
   items,
   renderSlideContent,
@@ -115,7 +113,7 @@ function StackCarousel<T extends StackCarouselItem>({
     },
   };
 
-  const trackX = -(current * SLOT + SLOT / 2);
+  const trackX = -((current + 0.5) / total) * 100;
 
   const handleSkip = () => {
     onFinish?.();
@@ -124,7 +122,7 @@ function StackCarousel<T extends StackCarouselItem>({
   const buttonLabel = isLast ? finishLabel : skipLabel;
 
   return (
-    <div className="relative w-full h-full min-h-0 overflow-hidden bg-km0-blue-900">
+    <div className="relative w-full h-full min-h-0 overflow-hidden bg-background">
       <motion.div
         ref={carouselRef}
         className="absolute inset-0 overflow-visible select-none cursor-grab active:cursor-grabbing"
@@ -140,9 +138,9 @@ function StackCarousel<T extends StackCarouselItem>({
         <div
           className="absolute inset-y-0 left-1/2 flex items-stretch"
           style={{
-            transform: `translateX(${trackX + dragOffset}px)`,
+            transform: `translateX(calc(${trackX}% + ${dragOffset}px))`,
             transition: dragOffset !== 0 ? "none" : "transform 420ms cubic-bezier(0.4, 0, 0.2, 1)",
-            width: `${total * SLOT}px`,
+            width: `${total * 100}%`,
           }}
         >
           {items.map((item, i) => {
@@ -155,9 +153,7 @@ function StackCarousel<T extends StackCarouselItem>({
                 key={item.id}
                 onClick={() => !isActive && goTo(i)}
                 style={{
-                  width: `${SLOT}px`,
-                  paddingLeft: "4px",
-                  paddingRight: "4px",
+                  width: `${100 / total}%`,
                   transform: `scale(${scale})`,
                   opacity,
                   transition: "transform 420ms cubic-bezier(0.4,0,0.2,1), opacity 420ms ease",
@@ -169,7 +165,7 @@ function StackCarousel<T extends StackCarouselItem>({
                   height: "100%",
                 }}
               >
-                <div className={cn("h-full overflow-hidden bg-km0-blue-900", !isActive && "rounded-3xl my-4")}>
+                <div className={cn("h-full overflow-hidden bg-background", !isActive && "rounded-3xl my-4")}>
                   {renderSlideContent(item, { isActive, index: i })}
                 </div>
               </div>

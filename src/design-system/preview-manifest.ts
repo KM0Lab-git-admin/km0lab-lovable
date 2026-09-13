@@ -91,7 +91,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       id: "default",
       label: "Por defecto",
       src: "/onboarding",
-      notes: "Carrusel inmersivo con imágenes completas, sin filtros ni recortes, sobre fondo blanco y controles compactos.",
+      notes: "Carrusel centrado a ancho completo con imágenes enteras próximas a la cabecera, sin filtros ni recortes, sobre fondo blanco.",
     }],
   },
   {
