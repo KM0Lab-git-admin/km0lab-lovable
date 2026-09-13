@@ -35,16 +35,16 @@ const Language = () => {
 
   return (
     <BrandedFrame portraitContentClassName="!px-0 !pb-0 bg-background">
-      <div className="min-h-full w-full max-w-[390px] mx-auto flex flex-col overflow-hidden bg-background">
-        <div className="relative min-h-[180px] flex-1 overflow-hidden">
+      <div className="h-full w-full max-w-[390px] mx-auto flex flex-col overflow-y-auto overflow-x-hidden bg-background">
+        <div className="relative h-[500px] min-h-[150px] overflow-hidden">
           <img
             src={languageSelectionAsset.url}
             alt={t("language.image_alt", lang)}
-            className="h-full w-full object-cover object-center"
+            className="h-full w-full object-cover object-[center_70%]"
           />
         </div>
 
-        <div className="relative z-10 -mt-5 rounded-t-3xl bg-km0-beige-100 px-4 pb-5 pt-5 shadow-[0_-12px_30px_-24px_hsl(var(--foreground)/0.35)]">
+        <div className="relative z-10 -mt-5 flex-1 rounded-t-3xl bg-km0-beige-100 px-4 pb-8 pt-5 shadow-[0_-12px_30px_-24px_hsl(var(--foreground)/0.35)]">
           <h1 className="mb-4 text-center font-brand text-2xl font-black text-km0-blue-700">
             {t("language.title", lang)}
           </h1>
