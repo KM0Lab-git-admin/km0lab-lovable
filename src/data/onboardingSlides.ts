@@ -1,6 +1,6 @@
 import { HeartHandshake, CalendarDays, TicketPercent, BotMessageSquare, BarChart3, type LucideIcon } from "lucide-react";
-import slide1 from "@/assets/onboarding/onboarding-connecta-barri.png.asset.json";
-import slide2 from "@/assets/onboarding/02_agenda_avisos.jpg";
+import slide1 from "@/assets/onboarding/onboarding-neighborhood-shop.png.asset.json";
+import slide2 from "@/assets/onboarding/onboarding-local-updates.png.asset.json";
 import slide3 from "@/assets/onboarding/03_punts_recompenses.jpg";
 import slide4 from "@/assets/onboarding/04_assistent_247.jpg";
 import slide5 from "@/assets/onboarding/05_municipi_sostenible.jpg";
@@ -58,7 +58,7 @@ export const slides: Slide[] = [
     altEs: "Calendario local con actividades, mercado, cultura y deportes.",
     altEn: "Local calendar with activities, market, culture and sports.",
     color: "hsl(var(--km0-teal-100))",
-    image: slide2,
+    image: slide2.url,
     icon: CalendarDays,
   },
   {

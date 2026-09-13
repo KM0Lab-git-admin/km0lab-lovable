@@ -232,6 +232,8 @@ barri” sin modificar el archivo original.
 - `src/components/StackCarousel.tsx`
 - `src/data/onboardingSlides.ts`
 - `src/assets/onboarding/onboarding-connecta-barri.png.asset.json`
+- `src/assets/onboarding/onboarding-neighborhood-shop.png.asset.json`
+- `src/assets/onboarding/onboarding-local-updates.png.asset.json`
 - `src/design-system/preview-manifest.ts`
 
 **Motivo:** mejorar el aprovechamiento de la altura, la presencia de la imagen
@@ -244,6 +246,8 @@ portrait.
 - No se añaden dependencias; se reutilizan Framer Motion, Lucide y el primitivo
   `Button` existente.
 - El carrusel conserva swipe, flechas, miniaturas, indicadores y finalización.
+- Los pasos “Connecta amb el teu barri” y “No et perdis res important” usan,
+  respectivamente, las nuevas imágenes verticales OnBoarding1 y OnBoarding2.
 
 ---
 
