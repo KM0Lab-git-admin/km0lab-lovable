@@ -7,6 +7,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { TKey } from "@/lib/i18n";
+import step1 from "@/assets/how-it-works/step1.png.asset.json";
+import step2 from "@/assets/how-it-works/step2.png.asset.json";
+import step3 from "@/assets/how-it-works/step3.png.asset.json";
+import step4 from "@/assets/how-it-works/step4.png.asset.json";
 
 /**
  * howItWorksSteps — estructura del carrusel «Com funciona?»
