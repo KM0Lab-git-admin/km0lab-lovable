@@ -44,7 +44,7 @@ const Language = () => {
           />
         </div>
 
-        <div className="relative z-10 -mt-5 rounded-t-3xl bg-background px-4 pb-5 pt-5 shadow-[0_-12px_30px_-24px_hsl(var(--foreground)/0.35)]">
+        <div className="relative z-10 -mt-5 rounded-t-3xl bg-km0-beige-100 px-4 pb-5 pt-5 shadow-[0_-12px_30px_-24px_hsl(var(--foreground)/0.35)]">
           <h1 className="mb-4 text-center font-brand text-2xl font-black text-km0-blue-700">
             {t("language.title", lang)}
           </h1>
