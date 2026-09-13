@@ -45,7 +45,7 @@ export const howItWorksSteps: HowItWorksStep[] = [
     descKey: "how_it_works.step1.desc",
     panelClass: "bg-km0-blue-100",
     icon: UserPlus,
-    image: null,
+    image: step1.url,
   },
   {
     id: "visit_merchants",
@@ -54,7 +54,7 @@ export const howItWorksSteps: HowItWorksStep[] = [
     descKey: "how_it_works.step2.desc",
     panelClass: "bg-km0-beige-100",
     icon: Store,
-    image: null,
+    image: step2.url,
   },
   {
     id: "scan_qr",
@@ -63,7 +63,7 @@ export const howItWorksSteps: HowItWorksStep[] = [
     descKey: "how_it_works.step3.desc",
     panelClass: "bg-km0-teal-100",
     icon: ScanLine,
-    image: null,
+    image: step3.url,
   },
   {
     id: "keep_earning",
@@ -72,7 +72,7 @@ export const howItWorksSteps: HowItWorksStep[] = [
     descKey: "how_it_works.step4.desc",
     panelClass: "bg-km0-yellow-100",
     icon: Sparkles,
-    image: null,
+    image: step4.url,
   },
   {
     id: "enjoy_points",
