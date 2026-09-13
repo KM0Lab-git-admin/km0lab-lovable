@@ -1,3 +1,3 @@
 # Roadmap
 
-- [ ] Integrar LanguageSelection.png en las propuestas de idioma sin cambiar los colores de los botones.
+- [x] Integrar LanguageSelection.png en la pantalla de idioma sin cambiar los colores de los botones.

@@ -108,6 +108,17 @@ const D = {
 
   // ── Language screen ──────────────────────────────────────
   "language.title": { ca: "Tria el teu idioma", es: "Escoge tu idioma", en: "Choose your language" } as Dict,
+  "language.image_alt": {
+    ca: "Plaça d'un municipi mediterrani plena de vida",
+    es: "Plaza de un municipio mediterráneo llena de vida",
+    en: "A lively Mediterranean town square",
+  } as Dict,
+  "language.catalan": { ca: "Català", es: "Català", en: "Català" } as Dict,
+  "language.catalan_description": { ca: "Comença en català", es: "Comença en català", en: "Comença en català" } as Dict,
+  "language.spanish": { ca: "Español", es: "Español", en: "Español" } as Dict,
+  "language.spanish_description": { ca: "Empieza en español", es: "Empieza en español", en: "Empieza en español" } as Dict,
+  "language.english": { ca: "English", es: "English", en: "English" } as Dict,
+  "language.english_description": { ca: "Start in English", es: "Start in English", en: "Start in English" } as Dict,
 
   // ── Onboarding ───────────────────────────────────────────
   "onboarding.skip": { ca: "SALTAR", es: "SALTAR", en: "SKIP" } as Dict,
