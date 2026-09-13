@@ -107,7 +107,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       id: "default",
       label: "Por defecto",
       src: "/how-it-works",
-      notes: "Carrusel de 5 pasos («Com funciona?»): cabecera con logo, claim bajo el logo y botón volver; los pasos 1-4 muestran su ilustración completa (asset CDN) sobre el panel de color y el paso 5 aún pinta el marcador provisional con icono y número hasta que llegue su arte. Tarjeta de texto con badge «PAS n» y botón derecho a /login.",
+      notes: "Carrusel de 5 pasos («Com funciona?»): cabecera con logo, claim bajo el logo y botón volver; los cinco pasos muestran su ilustración completa (asset CDN) sobre el panel de color. Tarjeta de texto con badge «PAS n» y botón derecho a /login.",
     }],
   },
   {
