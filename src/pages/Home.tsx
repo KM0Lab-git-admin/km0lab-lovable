@@ -149,6 +149,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     activeTab: "home" as const,
     isAuthed,
     onLogin: goToLogin,
+    onHowItWorks: () => navigate("/onboarding"),
     onHome: () => {},
     onProfile: goToProfile,
     onPoints: goToPoints,
