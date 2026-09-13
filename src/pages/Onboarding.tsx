@@ -28,7 +28,7 @@ const Onboarding = () => {
 
   return (
     <BrandedFrame hideHeader portraitContentClassName="!p-0 !overflow-hidden">
-      <div className="relative h-full min-h-0 overflow-hidden bg-km0-blue-900">
+      <div className="relative h-full min-h-0 overflow-hidden bg-background">
         <div className="absolute inset-x-0 top-0 z-40 flex items-center justify-center px-5 pt-5">
           <Button
             type="button"
@@ -86,7 +86,7 @@ const OnboardingCard = ({
         src={slide.image}
         alt={getAlt(slide, lang)}
         loading={isActive ? "eager" : "lazy"}
-        className="absolute inset-0 h-full w-full object-contain object-center select-none pointer-events-none"
+        className="absolute inset-x-0 top-24 h-auto w-full object-contain select-none pointer-events-none"
         draggable={false}
       />
     </div>

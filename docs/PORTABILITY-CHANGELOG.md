@@ -251,6 +251,9 @@ portrait.
 - Las imágenes se muestran completas con `object-contain`, sin degradado ni
   filtro superpuesto y sobre fondo blanco; el texto usa una superficie blanca
   independiente para conservar la legibilidad sin alterar brillo ni contraste.
+- Cada slide ocupa ahora todo el ancho disponible del marco, sin laterales
+  azules, y la imagen comienza bajo la cabecera para evitar el gran hueco
+  superior manteniendo íntegra su proporción vertical.
 
 ---
 
