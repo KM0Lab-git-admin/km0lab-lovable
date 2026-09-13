@@ -87,7 +87,12 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     id: "onboarding",
     label: "Onboarding",
     path: "/onboarding",
-    states: [{ id: "default", label: "Por defecto", src: "/onboarding" }],
+    states: [{
+      id: "default",
+      label: "Por defecto",
+      src: "/onboarding",
+      notes: "Carrusel inmersivo a pantalla completa con imagen dominante, texto superpuesto y controles compactos.",
+    }],
   },
   {
     id: "postal-code",

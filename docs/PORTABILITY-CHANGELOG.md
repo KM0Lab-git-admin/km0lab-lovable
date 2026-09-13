@@ -218,6 +218,35 @@ ser pública y actúa como punto de entrada para no registrados.
 
 ---
 
+### 7. Onboarding inmersivo y sin huecos verticales
+
+**Qué:** el onboarding pasa a una composición de imagen dominante a pantalla
+completa dentro del marco portrait. El título y la descripción se superponen
+sobre un degradado de contraste; logo, navegación, miniaturas, progreso y CTA
+quedan integrados en la misma superficie, eliminando el espacio vacío superior
+e inferior. El primer paso usa la nueva imagen vertical de “Connecta amb el teu
+barri” sin modificar el archivo original.
+
+**Archivos:**
+- `src/pages/Onboarding.tsx`
+- `src/components/StackCarousel.tsx`
+- `src/data/onboardingSlides.ts`
+- `src/assets/onboarding/onboarding-connecta-barri.png.asset.json`
+- `src/design-system/preview-manifest.ts`
+
+**Motivo:** mejorar el aprovechamiento de la altura, la presencia de la imagen
+y la adaptación a distintas alturas de pantalla manteniendo un único layout
+portrait.
+
+**Notas de portabilidad:**
+- Copiar el nuevo asset mediante el mecanismo de assets del monorepo y conservar
+  su proporción vertical.
+- No se añaden dependencias; se reutilizan Framer Motion, Lucide y el primitivo
+  `Button` existente.
+- El carrusel conserva swipe, flechas, miniaturas, indicadores y finalización.
+
+---
+
 ### N. Home: secciones siempre visibles con estado bloqueado para invitados
 
 **Qué:** las tres secciones de valor de la Home —**Cómo ganar puntos**,

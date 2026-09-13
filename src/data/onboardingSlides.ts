@@ -1,5 +1,5 @@
 import { HeartHandshake, CalendarDays, TicketPercent, BotMessageSquare, BarChart3, type LucideIcon } from "lucide-react";
-import slide1 from "@/assets/onboarding/01_connecta_barri.jpg";
+import slide1 from "@/assets/onboarding/onboarding-connecta-barri.png.asset.json";
 import slide2 from "@/assets/onboarding/02_agenda_avisos.jpg";
 import slide3 from "@/assets/onboarding/03_punts_recompenses.jpg";
 import slide4 from "@/assets/onboarding/04_assistent_247.jpg";
@@ -41,7 +41,7 @@ export const slides: Slide[] = [
     altEs: "Dos personas saludándose delante de un comercio local de barrio.",
     altEn: "Two people high-fiving in front of a local neighborhood shop.",
     color: "hsl(var(--km0-beige-100))",
-    image: slide1,
+    image: slide1.url,
     icon: HeartHandshake,
   },
   {
