@@ -18,8 +18,9 @@ import step4 from "@/assets/how-it-works/step4.png.asset.json";
  * (`TKey`) del diccionario de `lib/i18n.ts`, más el orden, el icono y el
  * panel de color de cada paso.
  *
- * `image` queda `null` hasta que lleguen las ilustraciones definitivas:
- * mientras no haya arte, la card pinta un panel con el icono del paso.
+ * `image` apunta al asset CDN del paso cuando el arte ya existe; mientras
+ * no haya ilustración, queda `null` y la card pinta un panel con el icono
+ * del paso (así ocurre hoy con el paso 5).
  */
 export interface HowItWorksStep {
   /** Identificador estable (thumbnails y claves React). */
