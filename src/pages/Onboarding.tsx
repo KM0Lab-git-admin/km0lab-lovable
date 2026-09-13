@@ -79,7 +79,7 @@ const OnboardingCard = ({
   slide: OnboardingSlide;
   isActive: boolean;
   lang: Lang;
-) => (
+}) => (
   <article className="relative h-full overflow-hidden bg-km0-blue-900">
     <div className="absolute inset-0 bg-km0-beige-100">
       <img
