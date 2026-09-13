@@ -10,7 +10,7 @@ import { t } from "@/lib/i18n";
  */
 export interface JoinCardProps {
   onCreateAccount: () => void;
-  /** Enlace "Com funciona?" que lleva al carrusel explicativo (onboarding). */
+  /** Enlace "Com funciona?" que lleva al carrusel explicativo (`/how-it-works`). */
   onHowItWorks: () => void;
 }
 
