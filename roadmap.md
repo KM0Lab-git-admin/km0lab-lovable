@@ -6,5 +6,6 @@
 - [x] Reducir la foto de la pantalla de idioma, dar más margen inferior y recortar ligeramente la parte superior.
 - [x] Sustituir la ilustración de /postal-code por CP.png (asset en CDN, alt traducido).
 - [x] Crear la pantalla «¿Cómo funciona?» (/how-it-works) con el carrusel de 5 pasos; el enlace de la Home ya apunta ahí.
-- [ ] Añadir al carrusel «¿Cómo funciona?» las ilustraciones de los 5 pasos cuando lleguen (campo `image` de src/data/howItWorksSteps.ts).
+- [x] Añadir al carrusel «¿Cómo funciona?» las ilustraciones de los pasos 1-4 (assets CDN en src/assets/how-it-works/).
+- [ ] Añadir la ilustración del paso 5 de «¿Cómo funciona?» cuando llegue (campo `image` del paso `enjoy_points`).
 
