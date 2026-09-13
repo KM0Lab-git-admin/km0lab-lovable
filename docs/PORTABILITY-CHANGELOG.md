@@ -289,3 +289,33 @@ punto de conversión claro en cada bloque.
   los endpoints reales de catálogo de premios y ficha de comercios.
 - El patrón `locked + onLogin` es reutilizable: preserva la misma API en
   cualquier futura sección "gate" (candado + CTA registro).
+
+---
+
+## 8. Flechas del carrusel en alto contraste (onboarding)
+
+**Síntoma:** sobre slides con ilustración de fondo blanca, los controles
+laterales `prev`/`next` desaparecían: relleno `bg-card/90` (casi blanco)
+sobre fondo blanco y un borde fino amarillo como única pista. Además, el
+`variant="ghost"` del primitivo `Button` aportaba `hover:text-accent-
+foreground` (blanco), de modo que al pasar el ratón el chevron se volvía
+blanco sobre relleno claro.
+
+**Cambio:** los dos controles pasan a un disco blanco opaco con borde de
+2px en el azul de marca y chevron del mismo azul, tamaño 44px y sombra
+elevada; el estado deshabilitado usa azul claro en lugar de beige.
+
+**Archivos:**
+- `src/components/StackCarousel.tsx` (constantes `ARROW_BUTTON_BASE`,
+  `ARROW_BUTTON_ACTIVE`, `ARROW_BUTTON_DISABLED`; chevrons `!size-5`)
+
+**Motivo:** los controles deben leerse como tocables sobre cualquier
+ilustración, incluidas las PNG de fondo blanco del onboarding.
+
+**Notas de portabilidad:**
+- `hover:text-km0-blue-700` es necesario porque el primitivo `Button` en
+  `variant="ghost"` fija `hover:text-accent-foreground`; si el monorepo
+  añade una variante `icon-on-image`, sustituir estas clases por ella.
+- `[&_svg]:size-4` del primitivo limita el chevron: por eso se fuerza
+  `!size-5` en el SVG. Con un primitivo que exponga `iconSize` eliminar
+  ese `!important`.
