@@ -124,6 +124,71 @@ const D = {
   "onboarding.skip": { ca: "SALTAR", es: "SALTAR", en: "SKIP" } as Dict,
   "onboarding.finish": { ca: "INICI", es: "INICIO", en: "START" } as Dict,
 
+  // ── How it works (carrusel de 5 pasos) ───────────────────
+  "how_it_works.subtitle": {
+    ca: "Participa, suma punts i gaudeix de avantatges a prop teu.",
+    es: "Participa, suma puntos y disfruta de ventajas cerca de ti.",
+    en: "Take part, earn points and enjoy perks near you.",
+  } as Dict,
+  "how_it_works.badge": { ca: "PAS", es: "PASO", en: "STEP" } as Dict,
+  "how_it_works.skip": { ca: "SALTAR", es: "SALTAR", en: "SKIP" } as Dict,
+  "how_it_works.finish": {
+    ca: "CREA EL TEU COMPTE",
+    es: "CREA TU CUENTA",
+    en: "CREATE YOUR ACCOUNT",
+  } as Dict,
+  "how_it_works.step1.title": {
+    ca: "Registra't",
+    es: "Regístrate",
+    en: "Sign up",
+  } as Dict,
+  "how_it_works.step1.desc": {
+    ca: "Crea el teu compte a KM0 Lab i comença a formar part de la teva comunitat.",
+    es: "Crea tu cuenta en KM0 Lab y empieza a formar parte de tu comunidad.",
+    en: "Create your KM0 Lab account and start being part of your community.",
+  } as Dict,
+  "how_it_works.step2.title": {
+    ca: "Visita comerços adherits",
+    es: "Visita comercios adheridos",
+    en: "Visit participating shops",
+  } as Dict,
+  "how_it_works.step2.desc": {
+    ca: "Descobreix els comerços i serveis que formen part de KM0 Lab i visita'ls.",
+    es: "Descubre los comercios y servicios que forman parte de KM0 Lab y visítalos.",
+    en: "Discover the shops and services that are part of KM0 Lab and visit them.",
+  } as Dict,
+  "how_it_works.step3.title": {
+    ca: "Escaneja i suma punts",
+    es: "Escanea y suma puntos",
+    en: "Scan and earn points",
+  } as Dict,
+  "how_it_works.step3.desc": {
+    ca: "Busca el codi QR de l'establiment, escaneja'l des de l'app i aconsegueix punts per la teva visita.",
+    es: "Busca el código QR del establecimiento, escanéalo desde la app y consigue puntos por tu visita.",
+    en: "Find the venue's QR code, scan it from the app and earn points for your visit.",
+  } as Dict,
+  "how_it_works.step4.title": {
+    ca: "Segueix sumant",
+    es: "Sigue sumando",
+    en: "Keep earning",
+  } as Dict,
+  "how_it_works.step4.desc": {
+    ca: "Aconsegueix més punts participant en esdeveniments, respondent enquestes, completant accions o celebrant moments especials com el teu aniversari.",
+    es: "Consigue más puntos participando en eventos, respondiendo encuestas, completando acciones o celebrando momentos especiales como tu cumpleaños.",
+    en: "Earn more points by taking part in events, answering surveys, completing actions or celebrating special moments like your birthday.",
+  } as Dict,
+  "how_it_works.step5.title": {
+    ca: "Gaudeix dels teus punts",
+    es: "Disfruta tus puntos",
+    en: "Enjoy your points",
+  } as Dict,
+  "how_it_works.step5.desc": {
+    ca: "Bescanvia els teus punts per productes, experiències, promocions o vals descompte en comerços locals. Els teus punts, tu tries.",
+    es: "Canjea tus puntos por productos, experiencias, promociones o vales descuento en comercios locales. Tus puntos, tú eliges.",
+    en: "Redeem your points for products, experiences, promotions or discount vouchers in local shops. Your points, your choice.",
+  } as Dict,
+
+
   // ── Postal code ──────────────────────────────────────────
   "postal.title": {
     ca: "INTRODUEIX EL TEU CODI POSTAL",
