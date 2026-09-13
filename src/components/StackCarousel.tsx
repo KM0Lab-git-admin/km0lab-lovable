@@ -180,15 +180,10 @@ function StackCarousel<T extends StackCarouselItem>({
           onClick={prev}
           onPointerDown={(e) => e.stopPropagation()}
           disabled={isFirst}
-          className={cn(
-            "absolute left-3 top-[42%] -translate-y-1/2 rounded-full bg-card/90 border-[2px] shadow-lg transition-all duration-200 z-20",
-            isFirst
-              ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-              : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
-          )}
+          className={cn(ARROW_BUTTON_BASE, "left-3", isFirst ? ARROW_BUTTON_DISABLED : ARROW_BUTTON_ACTIVE)}
           aria-label={previousLabel}
         >
-          <ChevronLeft size={18} strokeWidth={2.5} />
+          <ChevronLeft className="!size-5" strokeWidth={2.5} />
         </Button>
         <Button
           type="button"
@@ -197,15 +192,10 @@ function StackCarousel<T extends StackCarouselItem>({
           onClick={next}
           onPointerDown={(e) => e.stopPropagation()}
           disabled={isLast}
-          className={cn(
-            "absolute right-3 top-[42%] -translate-y-1/2 rounded-full bg-card/90 border-[2px] shadow-lg transition-all duration-200 z-20",
-            isLast
-              ? "border-km0-beige-200 text-km0-beige-300 opacity-40 cursor-not-allowed"
-              : "border-km0-yellow-400 text-km0-blue-700 hover:bg-km0-yellow-50 hover:scale-110 cursor-pointer"
-          )}
+          className={cn(ARROW_BUTTON_BASE, "right-3", isLast ? ARROW_BUTTON_DISABLED : ARROW_BUTTON_ACTIVE)}
           aria-label={nextLabel}
         >
-          <ChevronRight size={18} strokeWidth={2.5} />
+          <ChevronRight className="!size-5" strokeWidth={2.5} />
         </Button>
       </motion.div>
 
