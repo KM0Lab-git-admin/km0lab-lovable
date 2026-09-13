@@ -81,7 +81,12 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     id: "language",
     label: "Language",
     path: "/",
-    states: [{ id: "default", label: "Por defecto", src: "/" }],
+    states: [{
+      id: "default",
+      label: "Por defecto",
+      src: "/",
+      notes: "Portada compacta con fotografía luminosa del municipio y las tres opciones de idioma conservando sus colores originales.",
+    }],
   },
   {
     id: "onboarding",
