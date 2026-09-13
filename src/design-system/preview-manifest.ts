@@ -85,7 +85,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       id: "default",
       label: "Por defecto",
       src: "/",
-      notes: "Portada compacta con fotografía luminosa del municipio y las tres opciones de idioma conservando sus colores originales.",
+      notes: "Portada compacta con fotografía luminosa sobre blanco y bloque de selección beige, conservando los colores originales de las tres opciones.",
     }],
   },
   {
