@@ -1,9 +1,9 @@
 import { HeartHandshake, CalendarDays, TicketPercent, BotMessageSquare, BarChart3, type LucideIcon } from "lucide-react";
 import slide1 from "@/assets/onboarding/onboarding-neighborhood-shop.png.asset.json";
 import slide2 from "@/assets/onboarding/onboarding-local-updates.png.asset.json";
-import slide3 from "@/assets/onboarding/03_punts_recompenses.jpg";
-import slide4 from "@/assets/onboarding/04_assistent_247.jpg";
-import slide5 from "@/assets/onboarding/05_municipi_sostenible.jpg";
+import slide3 from "@/assets/onboarding/onboarding-slide-3.png.asset.json";
+import slide4 from "@/assets/onboarding/onboarding-slide-4.png.asset.json";
+import slide5 from "@/assets/onboarding/onboarding-slide-5.png.asset.json";
 
 export interface Slide {
   id: string;
