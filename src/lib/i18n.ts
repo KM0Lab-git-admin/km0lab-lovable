@@ -135,6 +135,11 @@ const D = {
     es: "Descubre comercios y servicios en tu barrio",
     en: "Discover shops and services in your neighborhood",
   } as Dict,
+  "postal.image_alt": {
+    ca: "Maqueta isomètrica d'una plaça mediterrània amb font, comerços i ajuntament",
+    es: "Maqueta isométrica de una plaza mediterránea con fuente, comercios y ayuntamiento",
+    en: "Isometric model of a Mediterranean square with a fountain, shops and town hall",
+  } as Dict,
   "postal.placeholder": { ca: "08380", es: "08380", en: "08380" } as Dict,
   "postal.error_numeric": {
     ca: "Només es permeten números",

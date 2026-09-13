@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MapPin, MapPinOff, AlertTriangle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BrandedFrame from "@/components/BrandedFrame";
-import cityMap from "@/assets/km0_city_map.png";
+import postalCodeMapAsset from "@/assets/postal-code-map.png.asset.json";
 import { lookupTown } from "@/lib/postalCodes";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -70,7 +70,11 @@ const PostalCode = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.15 }}
         >
-          <img src={cityMap} alt="Isometric city map" className="w-full h-auto object-cover" />
+          <img
+            src={postalCodeMapAsset.url}
+            alt={t("postal.image_alt", lang)}
+            className="w-full h-auto object-cover"
+          />
         </motion.div>
 
         <motion.div

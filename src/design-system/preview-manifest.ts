@@ -103,7 +103,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     id: "postal-code",
     label: "PostalCode",
     path: "/postal-code",
-    states: [{ id: "default", label: "Por defecto", src: "/postal-code" }],
+    states: [{ id: "default", label: "Por defecto", src: "/postal-code", notes: "Ilustración isométrica de la plaza (fuente, ayuntamiento, panadería, farmacia, cafetería y frutería) a ancho completo y sin recortes; el resto de la pantalla no cambia." }],
   },
   {
     id: "login",
