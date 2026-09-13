@@ -35,8 +35,8 @@ const Language = () => {
 
   return (
     <BrandedFrame portraitContentClassName="!px-0 !pb-0 bg-background">
-      <div className="min-h-full w-full max-w-[390px] mx-auto flex flex-col justify-center overflow-hidden bg-background">
-        <div className="relative h-[280px] shrink-0 overflow-hidden">
+      <div className="min-h-full w-full max-w-[390px] mx-auto flex flex-col overflow-hidden bg-background">
+        <div className="relative min-h-[180px] flex-1 overflow-hidden">
           <img
             src={languageSelectionAsset.url}
             alt={t("language.image_alt", lang)}
