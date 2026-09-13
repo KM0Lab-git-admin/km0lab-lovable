@@ -64,7 +64,7 @@ export interface StackCarouselProps<T extends StackCarouselItem> {
 const ARROW_BUTTON_BASE =
   "absolute top-[42%] -translate-y-1/2 h-11 w-11 rounded-full bg-card border-[2px] shadow-xl transition-all duration-200 z-20 active:scale-90";
 const ARROW_BUTTON_ACTIVE =
-  "border-km0-blue-700 text-km0-blue-700 hover:bg-km0-blue-50 hover:scale-110 cursor-pointer";
+  "border-km0-blue-700 text-km0-blue-700 hover:bg-km0-blue-50 hover:text-km0-blue-700 hover:scale-110 cursor-pointer";
 const ARROW_BUTTON_DISABLED =
   "border-km0-blue-200 text-km0-blue-300 opacity-50 cursor-not-allowed";
 
