@@ -100,7 +100,19 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     }],
   },
   {
+    id: "how-it-works",
+    label: "HowItWorks",
+    path: "/how-it-works",
+    states: [{
+      id: "default",
+      label: "Por defecto",
+      src: "/how-it-works",
+      notes: "Carrusel de 5 pasos («Com funciona?»): cabecera con logo, claim bajo el logo y botón volver; cada slide tiene panel de color con ilustración (pendiente de arte: marcador con icono y número) y tarjeta de texto con badge «PAS n». El botón derecho lleva a /login.",
+    }],
+  },
+  {
     id: "postal-code",
+
     label: "PostalCode",
     path: "/postal-code",
     states: [{ id: "default", label: "Por defecto", src: "/postal-code", notes: "Ilustración isométrica de la plaza (fuente, ayuntamiento, panadería, farmacia, cafetería y frutería) a ancho completo y sin recortes; el resto de la pantalla no cambia." }],
