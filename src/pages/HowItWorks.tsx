@@ -94,7 +94,7 @@ const HowItWorksCard = ({
     <article className="flex h-full flex-col overflow-hidden bg-background pb-32 pt-28">
       <div
         className={cn(
-          "relative mx-5 min-h-0 flex-1 overflow-hidden rounded-3xl",
+          "relative mx-5 min-h-[150px] flex-1 overflow-hidden rounded-3xl",
           step.panelClass,
         )}
       >
