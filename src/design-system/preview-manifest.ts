@@ -85,7 +85,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       id: "default",
       label: "Por defecto",
       src: "/",
-      notes: "Portada compacta con fotografía luminosa sobre blanco y bloque de selección beige, conservando los colores originales de las tres opciones.",
+      notes: "Portada a altura completa: la fotografía ocupa todo el espacio disponible y el bloque beige de selección se ancla abajo, sin huecos, conservando los colores originales de las tres opciones.",
     }],
   },
   {
