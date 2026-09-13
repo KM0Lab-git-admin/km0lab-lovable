@@ -373,9 +373,9 @@ const D = {
     en: "You earned 100 welcome points",
   } as Dict,
   "home.join.title": {
-    ca: "Registra't i comença a guanyar 🎁",
-    es: "Regístrate y empieza a ganar 🎁",
-    en: "Sign up and start earning 🎁",
+    ca: "Registra't i comença a guanyar",
+    es: "Regístrate y empieza a ganar",
+    en: "Sign up and start earning",
   } as Dict,
   "home.join.body": {
     ca: "Acumula punts als comerços del poble i bescanvia'ls per vals i descomptes.",
