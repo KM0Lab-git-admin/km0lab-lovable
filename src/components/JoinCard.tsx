@@ -10,9 +10,11 @@ import { t } from "@/lib/i18n";
  */
 export interface JoinCardProps {
   onCreateAccount: () => void;
+  /** Enlace "Com funciona?" que lleva al carrusel explicativo (onboarding). */
+  onHowItWorks: () => void;
 }
 
-const JoinCard = ({ onCreateAccount }: JoinCardProps) => {
+const JoinCard = ({ onCreateAccount, onHowItWorks }: JoinCardProps) => {
   const { lang } = useLang();
 
   return (
