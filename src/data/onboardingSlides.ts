@@ -75,7 +75,7 @@ export const slides: Slide[] = [
     altEs: "Persona celebrando puntos, cupones y recompensas locales.",
     altEn: "Person celebrating local points, coupons and rewards.",
     color: "hsl(var(--km0-yellow-100))",
-    image: slide3,
+    image: slide3.url,
     icon: TicketPercent,
   },
   {
@@ -92,7 +92,7 @@ export const slides: Slide[] = [
     altEs: "Asistente virtual KM0 respondiendo preguntas desde un ordenador.",
     altEn: "KM0 virtual assistant answering questions from a laptop.",
     color: "hsl(var(--km0-blue-100))",
-    image: slide4,
+    image: slide4.url,
     icon: BotMessageSquare,
   },
   {
@@ -109,7 +109,7 @@ export const slides: Slide[] = [
     altEs: "Escena de municipio vivo con comercio local, servicios, salud y sostenibilidad.",
     altEn: "Lively town scene with local commerce, services, health and sustainability.",
     color: "hsl(var(--km0-coral-100))",
-    image: slide5,
+    image: slide5.url,
     icon: BarChart3,
   },
 ];
