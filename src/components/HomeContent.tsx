@@ -65,6 +65,7 @@ const HomeContent = ({
   activeTab,
   isAuthed,
   onLogin,
+  onHowItWorks,
   onHome,
   onProfile,
   onPoints,
