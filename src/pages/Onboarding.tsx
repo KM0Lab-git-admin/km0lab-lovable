@@ -80,27 +80,26 @@ const OnboardingCard = ({
   isActive: boolean;
   lang: Lang;
 }) => (
-  <article className="relative h-full overflow-hidden bg-km0-blue-900">
-    <div className="absolute inset-0 bg-km0-beige-100">
+  <article className="relative h-full overflow-hidden bg-background">
+    <div className="absolute inset-0 bg-background">
       <img
         src={slide.image}
         alt={getAlt(slide, lang)}
         loading={isActive ? "eager" : "lazy"}
-        className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+        className="absolute inset-0 h-full w-full object-contain object-center select-none pointer-events-none"
         draggable={false}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-km0-blue-900 via-km0-blue-900/55 via-40% to-transparent" />
     </div>
-    <div className="absolute inset-x-0 bottom-32 z-10 px-8 pb-8">
+    <div className="absolute inset-x-5 bottom-32 z-10 rounded-xl bg-background/95 px-3 py-3 shadow-md">
       {isActive && (
         <span className="mb-3 inline-flex rounded-xl bg-km0-yellow-500 px-3 py-1 font-ui text-xs font-bold text-km0-blue-900 shadow-md">
           +{slide.xp} XP
         </span>
       )}
-      <h2 className="max-w-[290px] font-brand text-3xl text-primary-foreground leading-tight">
+      <h2 className="max-w-[290px] font-brand text-3xl text-foreground leading-tight">
         {getTitle(slide, lang)}
       </h2>
-      <p className="mt-3 max-w-[290px] font-body text-sm font-medium text-km0-beige-100 leading-relaxed">
+      <p className="mt-3 max-w-[290px] font-body text-sm font-medium text-muted-foreground leading-relaxed">
         {getDesc(slide, lang)}
       </p>
     </div>

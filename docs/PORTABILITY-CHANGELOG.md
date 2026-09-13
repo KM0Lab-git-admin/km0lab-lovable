@@ -248,6 +248,9 @@ portrait.
 - El carrusel conserva swipe, flechas, miniaturas, indicadores y finalización.
 - Los pasos “Connecta amb el teu barri” y “No et perdis res important” usan,
   respectivamente, las nuevas imágenes verticales OnBoarding1 y OnBoarding2.
+- Las imágenes se muestran completas con `object-contain`, sin degradado ni
+  filtro superpuesto y sobre fondo blanco; el texto usa una superficie blanca
+  independiente para conservar la legibilidad sin alterar brillo ni contraste.
 
 ---
 
