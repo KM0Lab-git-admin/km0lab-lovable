@@ -313,10 +313,11 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category, when, lang]);
+  }, [category, lang]);
 
-  // Categoría, fechas y población ya las filtra el servidor; aquí solo el
-  // precio (Gratis / Pago), que no se envía a la API.
+  // Categoría y población ya las filtra el servidor; aquí solo el precio
+  // (Gratis / Pago), que no se envía a la API.
+
   const filtered = useMemo(() => {
     return eventos.filter((e) => {
       if (price === "gratis" && !e.es_gratuito) return false;
