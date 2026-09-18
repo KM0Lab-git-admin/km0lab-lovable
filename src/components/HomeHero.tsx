@@ -1,9 +1,12 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, CirclePlay } from "lucide-react";
 import Km0Logo from "./Km0Logo";
 import NotificationBell from "./NotificationBell";
 import UserGreeting from "./UserGreeting";
+import { Button } from "@/components/ui/button";
+import { useLang } from "@/contexts/LangContext";
+import { t } from "@/lib/i18n";
 import skylineMalgrat from "@/assets/skyline-malgrat.png";
 import coatMalgrat from "@/assets/coat-malgrat.png";
 
@@ -29,6 +32,8 @@ export interface HomeHeroProps {
   showGreeting?: boolean;
   /** Si se pasa, sustituye al UserGreeting manteniendo el mismo contenedor (misma altura/fondo). */
   greetingSlot?: ReactNode;
+  showHowItWorks?: boolean;
+  onHowItWorks?: () => void;
 }
 
 const HomeHero = ({
@@ -39,7 +44,11 @@ const HomeHero = ({
   backAriaLabel = "Volver",
   showGreeting = true,
   greetingSlot,
+  showHowItWorks = false,
+  onHowItWorks,
 }: HomeHeroProps) => {
+  const { lang } = useLang();
+
   return (
     <motion.section
       className="relative shrink-0 flex flex-col overflow-hidden bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 pb-0 aspect-[1920/716] w-full shadow-[0_10px_28px_-10px_hsl(var(--foreground)/0.22)]"
@@ -78,8 +87,19 @@ const HomeHero = ({
             <h1 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-left border-0 text-lg">
               {cityName}
             </h1>
-            <div className="flex items-center shrink-0">
+            <div className="flex items-center gap-2 shrink-0">
               <Km0Logo className="h-6 w-auto" />
+              {showHowItWorks && onHowItWorks && (
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={onHowItWorks}
+                  className="h-7 rounded-lg bg-km0-blue-700 px-2.5 font-ui text-[11px] font-bold text-primary-foreground shadow-sm hover:bg-km0-blue-800 active:scale-95"
+                >
+                  <CirclePlay aria-hidden />
+                  {t("home.join.how_it_works", lang)}
+                </Button>
+              )}
             </div>
           </div>
         </div>
