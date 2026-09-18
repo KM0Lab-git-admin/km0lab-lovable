@@ -211,6 +211,12 @@ const EventListCard = ({
   const time = formatTime(evento.hora_inicio ?? undefined);
   const timeEnd = formatTime(evento.hora_fin ?? undefined);
   const cat = evento.categorias?.[0];
+  const dateLabel = evento.fecha_inicio
+    ? new Date(evento.fecha_inicio).toLocaleDateString(LOCALE_FOR[lang], {
+        day: "numeric",
+        month: "short",
+      })
+    : null;
   return (
     <motion.article
       layout
@@ -225,42 +231,70 @@ const EventListCard = ({
           onOpen(evento.id_unico_evento);
         }
       }}
-      className="bg-white border border-km0-blue-100 rounded-2xl p-3 shadow-sm hover:border-km0-blue-300 hover:shadow-md active:scale-[0.99] transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-km0-blue-500"
+      className="bg-white border border-km0-blue-100 rounded-2xl overflow-hidden shadow-sm hover:border-km0-blue-300 hover:shadow-md active:scale-[0.99] transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-km0-blue-500"
     >
-      <h4 className="font-brand text-sm leading-tight text-km0-blue-900 mb-1">
-        {evento.titulo}
-      </h4>
-      <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] font-ui text-km0-blue-700/80 mb-1.5">
-        {time && (
-          <span className="inline-flex items-center gap-1">
-            <Clock size={11} />
-            {time}
-            {timeEnd && `–${timeEnd}`}
+      {evento.url_imagen && (
+        <div className="relative w-full aspect-[16/9] bg-km0-blue-50">
+          <img
+            src={evento.url_imagen}
+            alt={evento.titulo}
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
+          {evento.es_gratuito ? (
+            <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-teal-500 text-white shadow-sm">
+              {t("agenda.badge.free", lang)}
+            </span>
+          ) : evento.precio_euros != null ? (
+            <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-yellow-400 text-km0-blue-900 shadow-sm">
+              {evento.precio_euros.toFixed(2)} €
+            </span>
+          ) : null}
+        </div>
+      )}
+      <div className="p-3">
+        <h4 className="font-brand text-sm leading-tight text-km0-blue-900 mb-1">
+          {evento.titulo}
+        </h4>
+        <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] font-ui text-km0-blue-700/80 mb-1.5">
+          {dateLabel && (
+            <span className="inline-flex items-center gap-1">
+              <CalendarIcon size={11} />
+              {dateLabel}
+            </span>
+          )}
+          {time && (
+            <span className="inline-flex items-center gap-1">
+              <Clock size={11} />
+              {time}
+              {timeEnd && `–${timeEnd}`}
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1 truncate">
+            <MapPin size={11} />
+            <span className="truncate">
+              {evento.lugar_nombre}
+              {evento.poblacion_nombre && ` · ${evento.poblacion_nombre}`}
+            </span>
           </span>
-        )}
-        <span className="inline-flex items-center gap-1 truncate">
-          <MapPin size={11} />
-          <span className="truncate">
-            {evento.lugar_nombre}
-            {evento.poblacion_nombre && ` · ${evento.poblacion_nombre}`}
-          </span>
-        </span>
-      </div>
-      <div className="flex flex-wrap items-center gap-1">
-        {evento.es_gratuito ? (
-          <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-teal-100 text-km0-teal-700">
-            {t("agenda.badge.free", lang)}
-          </span>
-        ) : evento.precio_euros != null ? (
-          <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-yellow-100 text-km0-yellow-800">
-            {evento.precio_euros.toFixed(2)} €
-          </span>
-        ) : null}
-        {cat && (
-          <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui bg-km0-blue-50 text-km0-blue-700">
-            {cat}
-          </span>
-        )}
+        </div>
+        <div className="flex flex-wrap items-center gap-1">
+          {!evento.url_imagen && evento.es_gratuito && (
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-teal-100 text-km0-teal-700">
+              {t("agenda.badge.free", lang)}
+            </span>
+          )}
+          {!evento.url_imagen && !evento.es_gratuito && evento.precio_euros != null && (
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-yellow-100 text-km0-yellow-800">
+              {evento.precio_euros.toFixed(2)} €
+            </span>
+          )}
+          {cat && (
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] font-ui bg-km0-blue-50 text-km0-blue-700">
+              {cat}
+            </span>
+          )}
+        </div>
       </div>
     </motion.article>
   );
