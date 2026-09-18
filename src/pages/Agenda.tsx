@@ -279,7 +279,6 @@ const Agenda = () => {
   const navigate = useNavigate();
   const { hasUnread, markAllRead } = useNotifications();
   const { lang } = useLang();
-  const [when, setWhen] = useState<WhenKey>("semana");
   const [category, setCategory] = useState<Category>("todos");
   const [price, setPrice] = useState<Price>("todos");
 
@@ -288,22 +287,20 @@ const Agenda = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch — filtros estructurados al endpoint de lista /api/v1/events
-  // (mismo que usa la web de eventquery): categoría (slug) + rango de
-  // fechas del selector temporal + población.
+  // (mismo que usa la web de eventquery): categoría (slug) + población.
+  // Sin rango de fechas: se muestran siempre todos los eventos disponibles.
   useEffect(() => {
     const cat = CATEGORIES.find((c) => c.key === category);
-    const [from, to] = rangeFor(when);
     let cancelled = false;
     setLoading(true);
     setError(null);
     listEvents({
       categoria: cat?.slug,
       poblacion: "Malgrat de Mar",
-      fechaDesde: toISODate(from),
-      fechaHasta: toISODate(to),
       pageSize: 50,
       lang: lang === "ca" ? "ca" : "es",
     })
+
       .then((res) => {
         if (!cancelled) setEventos(res.eventos ?? []);
       })
@@ -367,10 +364,6 @@ const Agenda = () => {
       {/* ── Contenido no-hero: relative z-10 para pintarse SOBRE el
            HomeHero decorativo (que en landscape es absolute inset-0). ─── */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col gap-3">
-        {/* ── Selector de rango temporal ─── */}
-        <div className="shrink-0">
-          <WhenTabs value={when} onChange={setWhen} />
-        </div>
 
         {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
         <div className="grid grid-cols-4 gap-1 my-0 shrink-0">
