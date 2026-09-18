@@ -7,6 +7,6 @@
 - [x] Sustituir la ilustración de /postal-code por CP.png (asset en CDN, alt traducido).
 - [x] Crear la pantalla «¿Cómo funciona?» (/how-it-works) con el carrusel de 5 pasos; el enlace de la Home ya apunta ahí.
 - [x] Añadir al carrusel «¿Cómo funciona?» las ilustraciones de los pasos 1-4 (assets CDN en src/assets/how-it-works/).
-- [ ] Añadir la ilustración del paso 5 de «¿Cómo funciona?» cuando llegue (campo `image` del paso `enjoy_points`).
-- [ ] Destacar «Com funciona?» como botón en la cabecera de la Home para visitantes.
+- [x] Añadir la ilustración del paso 5 de «¿Cómo funciona?» (campo `image` del paso `enjoy_points`).
+- [x] Destacar «Com funciona?» como botón bajo el nombre del municipio en la cabecera de la Home para visitantes.
 

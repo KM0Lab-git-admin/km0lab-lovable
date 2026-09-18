@@ -92,12 +92,14 @@ const HomeContent = ({
         hasAlerts={hasAlerts}
         onToggleAlerts={onToggleAlerts}
         showGreeting={false}
+        showHowItWorks={showLogin}
+        onHowItWorks={onHowItWorks}
       />
 
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
         <div className="relative z-10 flex flex-col gap-5 px-2 pt-4 pb-6">
           <section className="flex flex-col gap-3 px-2">
-            {showLogin && <JoinCard onCreateAccount={onLogin} onHowItWorks={onHowItWorks} />}
+            {showLogin && <JoinCard onCreateAccount={onLogin} />}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} nextReward={nextReward} level={level} onClick={onOpenPointsHistory} />}
           </section>
 

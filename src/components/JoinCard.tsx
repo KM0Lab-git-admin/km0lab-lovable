@@ -10,11 +10,9 @@ import { t } from "@/lib/i18n";
  */
 export interface JoinCardProps {
   onCreateAccount: () => void;
-  /** Enlace "Com funciona?" que lleva al carrusel explicativo (`/how-it-works`). */
-  onHowItWorks: () => void;
 }
 
-const JoinCard = ({ onCreateAccount, onHowItWorks }: JoinCardProps) => {
+const JoinCard = ({ onCreateAccount }: JoinCardProps) => {
   const { lang } = useLang();
 
   return (
@@ -50,13 +48,6 @@ const JoinCard = ({ onCreateAccount, onHowItWorks }: JoinCardProps) => {
       <p className="font-body text-km0-blue-700/60 text-[11px] text-center">
         {t("home.join.mini", lang)}
       </p>
-      <button
-        type="button"
-        onClick={onHowItWorks}
-        className="font-ui font-bold text-xs text-km0-blue-700 underline underline-offset-4 active:scale-95 transition-transform self-center"
-      >
-        {t("home.join.how_it_works", lang)}
-      </button>
     </motion.div>
   );
 };

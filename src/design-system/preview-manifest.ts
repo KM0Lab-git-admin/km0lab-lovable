@@ -159,7 +159,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "LoginButton en el header; oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles con overlay bloqueado + CTA 'Registra't per desbloquejar'. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil. Sin sesión solo Inicio y Acciones están activos; los demás redirigen a /login.",
+        notes: "La cabecera muestra bajo el nombre del municipio el botón «Com funciona?» que abre el carrusel explicativo; la tarjeta de registro conserva solo su CTA principal. Oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "registered",
