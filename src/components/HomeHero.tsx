@@ -87,7 +87,7 @@ const HomeHero = ({
             <h1 className="font-brand font-black text-km0-blue-700 whitespace-nowrap text-left border-0 text-lg">
               {cityName}
             </h1>
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex flex-col items-start gap-1 shrink-0">
               <Km0Logo className="h-6 w-auto" />
               {showHowItWorks && onHowItWorks && (
                 <Button
