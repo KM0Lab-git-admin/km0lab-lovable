@@ -10,3 +10,4 @@
 - [x] Añadir la ilustración del paso 5 de «¿Cómo funciona?» (campo `image` del paso `enjoy_points`).
 - [x] Destacar «Com funciona?» como botón debajo del logo KM0 en la cabecera de la Home para visitantes.
 
+- [x] Ocultar el selector de rango temporal de la Agenda y mostrar siempre todos los eventos (sin filtro de fechas).

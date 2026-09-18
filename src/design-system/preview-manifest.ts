@@ -216,8 +216,17 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     label: "Agenda",
     path: "/events",
     dynamicContent: true, // eventos remotos (Supabase)
-    states: [{ id: "default", label: "Por defecto", src: "/events" }],
+    states: [
+      {
+        id: "default",
+        label: "Por defecto",
+        src: "/events",
+        notes:
+          "Sin selector de rango temporal: se piden y muestran todos los eventos disponibles.",
+      },
+    ],
   },
+
   {
     id: "evento",
     label: "Evento",
