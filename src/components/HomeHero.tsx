@@ -94,7 +94,7 @@ const HomeHero = ({
                   type="button"
                   size="sm"
                   onClick={onHowItWorks}
-                  className="h-7 rounded-lg bg-km0-blue-700 px-2.5 font-ui text-[11px] font-bold text-primary-foreground shadow-sm hover:bg-km0-blue-800 active:scale-95"
+                  className="mt-2 h-7 rounded-lg bg-km0-blue-700 px-2.5 font-ui text-[11px] font-bold text-primary-foreground shadow-sm hover:bg-km0-blue-800 active:scale-95"
                 >
                   <CirclePlay aria-hidden />
                   {t("home.join.how_it_works", lang)}
