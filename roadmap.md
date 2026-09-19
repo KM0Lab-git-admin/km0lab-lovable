@@ -11,3 +11,4 @@
 - [x] Destacar «Com funciona?» como botón debajo del logo KM0 en la cabecera de la Home para visitantes.
 - [x] Ocultar el selector de rango temporal de la Agenda y mostrar siempre todos los eventos (sin filtro de fechas).
 - [x] Recuperar el selector de rango temporal de la Agenda (Esta semana / Próximos 30 días) con filtro fecha_desde/fecha_hasta.
+- [x] Categorías de la Agenda desde `/api/v1/categories?poblacion=<población del usuario>` (solo categorías con eventos activos).
