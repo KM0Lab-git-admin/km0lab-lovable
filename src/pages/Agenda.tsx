@@ -19,6 +19,7 @@ import {
 import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
+import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang, type TKey } from "@/lib/i18n";
@@ -33,8 +34,8 @@ import { listEvents, type AgendaEvent as Evento } from "@/services/eventsApi";
  *   2. Grid 4×2 de categorías, cada una con su color e icono.
  *   3. Resultados agrupados por día.
  *
- * Sin filtro de rango temporal: de momento hay pocos eventos y se muestran
- * todos los que devuelve la API.
+ * Filtro de rango temporal (WhenTabs): "Esta semana" o "Próximos 30 días";
+ * se envía como fecha_desde/fecha_hasta al endpoint de lista.
 
  *
  * Sin búsqueda por texto. Sin filtros de "Lugares" ni "Tags".
@@ -163,6 +164,19 @@ const addDays = (d: Date, n: number) => {
   const x = new Date(d);
   x.setDate(x.getDate() + n);
   return x;
+};
+const toISODate = (d: Date) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+};
+
+/** Rango de fechas para el filtro WhenTabs. */
+const rangeFor = (when: WhenKey): { desde: string; hasta: string } => {
+  const today = startOfDay(new Date());
+  const days = when === "semana" ? 7 : 30;
+  return { desde: toISODate(today), hasta: toISODate(addDays(today, days)) };
 };
 
 const MONTHS_SHORT = [
@@ -315,22 +329,26 @@ const Agenda = () => {
   const { lang } = useLang();
   const [category, setCategory] = useState<Category>("todos");
   const [price, setPrice] = useState<Price>("todos");
+  const [when, setWhen] = useState<WhenKey>("mes");
 
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch — filtros estructurados al endpoint de lista /api/v1/events
-  // (mismo que usa la web de eventquery): categoría (slug) + población.
-  // Sin rango de fechas: se muestran siempre todos los eventos disponibles.
+  // (mismo que usa la web de eventquery): categoría (slug) + población +
+  // rango de fechas según el selector WhenTabs.
   useEffect(() => {
     const cat = CATEGORIES.find((c) => c.key === category);
+    const { desde, hasta } = rangeFor(when);
     let cancelled = false;
     setLoading(true);
     setError(null);
     listEvents({
       categoria: cat?.slug,
       poblacion: "Malgrat de Mar",
+      fechaDesde: desde,
+      fechaHasta: hasta,
       pageSize: 50,
       lang: lang === "ca" ? "ca" : "es",
     })
@@ -347,7 +365,7 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category, lang]);
+  }, [category, when, lang]);
 
   // Categoría y población ya las filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
@@ -399,6 +417,9 @@ const Agenda = () => {
       {/* ── Contenido no-hero: relative z-10 para pintarse SOBRE el
            HomeHero decorativo (que en landscape es absolute inset-0). ─── */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col gap-3">
+
+        {/* ── Rango temporal ─── */}
+        <WhenTabs value={when} onChange={setWhen} className="shrink-0" />
 
         {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
         <div className="grid grid-cols-4 gap-1 my-0 shrink-0">
