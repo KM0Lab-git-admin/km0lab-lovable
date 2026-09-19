@@ -24,7 +24,16 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { listEvents, type AgendaEvent as Evento } from "@/services/eventsApi";
+import {
+  getCategories,
+  listEvents,
+  type AgendaEvent as Evento,
+} from "@/services/eventsApi";
+import { useAppStore } from "@/stores/useAppStore";
+import { useQuery } from "@tanstack/react-query";
+
+/** Municipio por defecto si el usuario no tiene población guardada. */
+const DEFAULT_TOWN = "Malgrat de Mar";
 
 /* ──────────────────────────────────────────────────────────────
  * Agenda — diseño "Bold" (mockup aprobado).
