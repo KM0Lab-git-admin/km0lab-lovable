@@ -22,9 +22,18 @@ import ScreenTitle from "@/components/ScreenTitle";
 import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
-import { t, type Lang, type TKey } from "@/lib/i18n";
+import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { listEvents, type AgendaEvent as Evento } from "@/services/eventsApi";
+import {
+  getCategories,
+  listEvents,
+  type AgendaEvent as Evento,
+} from "@/services/eventsApi";
+import { useAppStore } from "@/stores/useAppStore";
+import { useQuery } from "@tanstack/react-query";
+
+/** Municipio por defecto si el usuario no tiene población guardada. */
+const DEFAULT_TOWN = "Malgrat de Mar";
 
 /* ──────────────────────────────────────────────────────────────
  * Agenda — diseño "Bold" (mockup aprobado).
@@ -41,118 +50,88 @@ import { listEvents, type AgendaEvent as Evento } from "@/services/eventsApi";
  * Sin búsqueda por texto. Sin filtros de "Lugares" ni "Tags".
  * ────────────────────────────────────────────────────────────── */
 
-type Category =
-  | "todos"
-  | "musica"
-  | "cultura"
-  | "infantil"
-  | "deporte"
-  | "talleres"
-  | "fiestas"
-  | "gastronomia";
+/** Slug de categoría de la API, o "todos" (sin filtro). */
+type CategoryKey = string;
 type Price = "todos" | "gratis" | "pago";
 
-interface CatDef {
-  key: Category;
-  slug?: string;
-  labelKey: TKey;
-  matches: string[];
+interface CatStyle {
   Icon: typeof Music2;
   activeBg: string;
   activeText: string;
   idleBg: string;
   idleText: string;
+  extra?: string;
 }
 
-const CATEGORIES: CatDef[] = [
-  {
-    key: "musica",
-    slug: "musica",
-    labelKey: "agenda.cat.musica",
-    matches: ["música", "musica", "concierto"],
+/** Paleta por slug de la API. Slugs nuevos usan `DEFAULT_CAT_STYLE`. */
+const CAT_STYLES: Record<string, CatStyle> = {
+  musica: {
     Icon: Music2,
     activeBg: "bg-km0-blue-900",
     activeText: "text-white",
     idleBg: "bg-km0-blue-900/90",
     idleText: "text-white",
   },
-  {
-    key: "cultura",
-    slug: "cultura",
-    labelKey: "agenda.cat.cultura",
-    matches: ["cultura", "exposición", "teatro", "cine"],
+  cultura: {
     Icon: Palette,
     activeBg: "bg-km0-yellow-500",
     activeText: "text-km0-blue-900",
     idleBg: "bg-km0-yellow-400",
     idleText: "text-km0-blue-900",
   },
-  {
-    key: "infantil",
-    slug: "infantil",
-    labelKey: "agenda.cat.infantil",
-    matches: ["infantil", "niños", "familia"],
+  infantil: {
     Icon: Baby,
     activeBg: "bg-white",
     activeText: "text-km0-blue-900",
     idleBg: "bg-white",
     idleText: "text-km0-blue-900",
+    extra: "border-km0-blue-200",
   },
-  {
-    key: "deporte",
-    slug: "deportes",
-    labelKey: "agenda.cat.deporte",
-    matches: ["deporte", "deport"],
+  deportes: {
     Icon: Trophy,
     activeBg: "bg-km0-teal-500",
     activeText: "text-white",
     idleBg: "bg-km0-teal-400",
     idleText: "text-white",
   },
-  {
-    key: "talleres",
-    slug: "formacion",
-    labelKey: "agenda.cat.talleres",
-    matches: ["taller", "workshop", "curso"],
+  formacion: {
     Icon: Hammer,
     activeBg: "bg-km0-coral-500",
     activeText: "text-white",
     idleBg: "bg-km0-coral-400",
     idleText: "text-white",
   },
-  {
-    key: "fiestas",
-    slug: "fiestas-mayores",
-    labelKey: "agenda.cat.fiestas",
-    matches: ["fiesta", "festa", "festival"],
+  "fiestas-mayores": {
     Icon: PartyPopper,
     activeBg: "bg-km0-blue-700",
     activeText: "text-white",
     idleBg: "bg-km0-blue-600",
     idleText: "text-white",
   },
-  {
-    key: "gastronomia",
-    slug: "gastronomia",
-    labelKey: "agenda.cat.gastronomia",
-    matches: ["gastro", "comida", "cocina", "vino"],
+  gastronomia: {
     Icon: UtensilsCrossed,
     activeBg: "bg-km0-coral-600",
     activeText: "text-white",
     idleBg: "bg-km0-coral-500",
     idleText: "text-white",
   },
-  {
-    key: "todos",
-    labelKey: "agenda.cat.todos",
-    matches: [],
-    Icon: Sparkles,
-    activeBg: "bg-km0-teal-600",
-    activeText: "text-white",
-    idleBg: "bg-km0-teal-500",
-    idleText: "text-white",
-  },
-];
+};
+
+const DEFAULT_CAT_STYLE: CatStyle = {
+  Icon: Sparkles,
+  activeBg: "bg-km0-blue-800",
+  activeText: "text-white",
+  idleBg: "bg-km0-blue-700",
+  idleText: "text-white",
+};
+
+const ALL_CAT_STYLE: CatStyle = {
+  Icon: Sparkles,
+  activeBg: "bg-km0-teal-600",
+  activeText: "text-white",
+  idleBg: "bg-km0-teal-500",
+  idleText: "text-white",
+};
 
 /* ─── Helpers de fecha ──────────────────────────────────────── */
 const startOfDay = (d: Date) => {
@@ -327,9 +306,20 @@ const Agenda = () => {
   const navigate = useNavigate();
   const { hasUnread, markAllRead } = useNotifications();
   const { lang } = useLang();
-  const [category, setCategory] = useState<Category>("todos");
+  const [category, setCategory] = useState<CategoryKey>("todos");
   const [price, setPrice] = useState<Price>("todos");
   const [when, setWhen] = useState<WhenKey>("mes");
+
+  // Población elegida por el usuario (CP → población), con fallback.
+  const town = useAppStore((s) => s.town) ?? DEFAULT_TOWN;
+
+  // Categorías reales de la API: solo las que tienen eventos activos en
+  // esta población (el endpoint ya filtra por Estado='ACTIVO').
+  const { data: apiCategories = [] } = useQuery({
+    queryKey: ["categories", town],
+    queryFn: () => getCategories(town),
+    staleTime: 5 * 60 * 1000,
+  });
 
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(false);
@@ -339,14 +329,13 @@ const Agenda = () => {
   // (mismo que usa la web de eventquery): categoría (slug) + población +
   // rango de fechas según el selector WhenTabs.
   useEffect(() => {
-    const cat = CATEGORIES.find((c) => c.key === category);
     const { desde, hasta } = rangeFor(when);
     let cancelled = false;
     setLoading(true);
     setError(null);
     listEvents({
-      categoria: cat?.slug,
-      poblacion: "Malgrat de Mar",
+      categoria: category === "todos" ? undefined : category,
+      poblacion: town,
       fechaDesde: desde,
       fechaHasta: hasta,
       pageSize: 50,
@@ -365,10 +354,27 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category, when, lang]);
+  }, [category, when, lang, town]);
 
   // Categoría y población ya las filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
+
+  // Chips: categorías devueltas por la API + "Tots" al final.
+  const chips = useMemo(() => {
+    const items = apiCategories.map((c) => ({
+      key: c.slug,
+      label: lang === "ca" ? c.nombre_cat : c.nombre_es,
+      style: CAT_STYLES[c.slug] ?? DEFAULT_CAT_STYLE,
+    }));
+    return [
+      ...items,
+      {
+        key: "todos",
+        label: t("agenda.cat.todos", lang),
+        style: ALL_CAT_STYLE,
+      },
+    ];
+  }, [apiCategories, lang]);
 
   const filtered = useMemo(() => {
     return eventos.filter((e) => {
@@ -423,9 +429,9 @@ const Agenda = () => {
 
         {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
         <div className="grid grid-cols-4 gap-1 my-0 shrink-0">
-          {CATEGORIES.map((c) => {
+          {chips.map((c) => {
             const active = category === c.key;
-            const Icon = c.Icon;
+            const Icon = c.style.Icon;
             return (
               <button
                 key={c.key}
@@ -434,9 +440,9 @@ const Agenda = () => {
                 className={cn(
                   "h-9 rounded-full inline-flex items-center justify-center gap-0.5 px-0.5 font-ui text-[10px] font-bold transition-all active:scale-95 border",
                   active
-                    ? `${c.activeBg} ${c.activeText} border-km0-blue-900 ring-2 ring-km0-blue-900/20 shadow-sm`
-                    : `${c.idleBg} ${c.idleText} border-transparent opacity-90 hover:opacity-100`,
-                  c.key === "infantil" && "border-km0-blue-200",
+                    ? `${c.style.activeBg} ${c.style.activeText} border-km0-blue-900 ring-2 ring-km0-blue-900/20 shadow-sm`
+                    : `${c.style.idleBg} ${c.style.idleText} border-transparent opacity-90 hover:opacity-100`,
+                  c.style.extra,
                 )}
               >
                 <Icon
@@ -444,7 +450,7 @@ const Agenda = () => {
                   strokeWidth={2.5}
                   className="shrink-0 hidden"
                 />
-                <span className="truncate">{t(c.labelKey, lang)}</span>
+                <span className="truncate">{c.label}</span>
               </button>
             );
           })}
