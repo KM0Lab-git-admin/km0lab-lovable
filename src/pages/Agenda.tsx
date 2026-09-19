@@ -350,6 +350,23 @@ const Agenda = () => {
   // Categoría y población ya las filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
 
+  // Chips: categorías devueltas por la API + "Tots" al final.
+  const chips = useMemo(() => {
+    const items = apiCategories.map((c) => ({
+      key: c.slug,
+      label: lang === "ca" ? c.nombre_cat : c.nombre_es,
+      style: CAT_STYLES[c.slug] ?? DEFAULT_CAT_STYLE,
+    }));
+    return [
+      ...items,
+      {
+        key: "todos",
+        label: t("agenda.cat.todos", lang),
+        style: ALL_CAT_STYLE,
+      },
+    ];
+  }, [apiCategories, lang]);
+
   const filtered = useMemo(() => {
     return eventos.filter((e) => {
       if (price === "gratis" && !e.es_gratuito) return false;
