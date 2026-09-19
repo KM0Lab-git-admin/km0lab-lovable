@@ -354,7 +354,7 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category, when, lang]);
+  }, [category, when, lang, town]);
 
   // Categoría y población ya las filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
