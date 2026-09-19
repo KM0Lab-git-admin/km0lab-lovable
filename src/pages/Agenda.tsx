@@ -365,7 +365,7 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category, lang]);
+  }, [category, when, lang]);
 
   // Categoría y población ya las filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
@@ -417,6 +417,9 @@ const Agenda = () => {
       {/* ── Contenido no-hero: relative z-10 para pintarse SOBRE el
            HomeHero decorativo (que en landscape es absolute inset-0). ─── */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col gap-3">
+
+        {/* ── Rango temporal ─── */}
+        <WhenTabs value={when} onChange={setWhen} className="shrink-0" />
 
         {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
         <div className="grid grid-cols-4 gap-1 my-0 shrink-0">
