@@ -222,7 +222,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Por defecto",
         src: "/events",
         notes:
-          "Sin selector de rango temporal: se piden y muestran todos los eventos disponibles. Tarjetas con imagen del evento arriba (badge de precio/gratis sobre ella), título, fecha/hora/lugar y etiqueta de categoría.",
+          "Selector de rango temporal (Esta semana / Próximos 30 días) que filtra por fecha_desde/fecha_hasta. Tarjetas con imagen del evento arriba (badge de precio/gratis sobre ella), título, fecha/hora/lugar y etiqueta de categoría.",
       },
     ],
   },
