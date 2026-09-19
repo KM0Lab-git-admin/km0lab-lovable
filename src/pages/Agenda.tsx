@@ -41,118 +41,88 @@ import { listEvents, type AgendaEvent as Evento } from "@/services/eventsApi";
  * Sin búsqueda por texto. Sin filtros de "Lugares" ni "Tags".
  * ────────────────────────────────────────────────────────────── */
 
-type Category =
-  | "todos"
-  | "musica"
-  | "cultura"
-  | "infantil"
-  | "deporte"
-  | "talleres"
-  | "fiestas"
-  | "gastronomia";
+/** Slug de categoría de la API, o "todos" (sin filtro). */
+type CategoryKey = string;
 type Price = "todos" | "gratis" | "pago";
 
-interface CatDef {
-  key: Category;
-  slug?: string;
-  labelKey: TKey;
-  matches: string[];
+interface CatStyle {
   Icon: typeof Music2;
   activeBg: string;
   activeText: string;
   idleBg: string;
   idleText: string;
+  extra?: string;
 }
 
-const CATEGORIES: CatDef[] = [
-  {
-    key: "musica",
-    slug: "musica",
-    labelKey: "agenda.cat.musica",
-    matches: ["música", "musica", "concierto"],
+/** Paleta por slug de la API. Slugs nuevos usan `DEFAULT_CAT_STYLE`. */
+const CAT_STYLES: Record<string, CatStyle> = {
+  musica: {
     Icon: Music2,
     activeBg: "bg-km0-blue-900",
     activeText: "text-white",
     idleBg: "bg-km0-blue-900/90",
     idleText: "text-white",
   },
-  {
-    key: "cultura",
-    slug: "cultura",
-    labelKey: "agenda.cat.cultura",
-    matches: ["cultura", "exposición", "teatro", "cine"],
+  cultura: {
     Icon: Palette,
     activeBg: "bg-km0-yellow-500",
     activeText: "text-km0-blue-900",
     idleBg: "bg-km0-yellow-400",
     idleText: "text-km0-blue-900",
   },
-  {
-    key: "infantil",
-    slug: "infantil",
-    labelKey: "agenda.cat.infantil",
-    matches: ["infantil", "niños", "familia"],
+  infantil: {
     Icon: Baby,
     activeBg: "bg-white",
     activeText: "text-km0-blue-900",
     idleBg: "bg-white",
     idleText: "text-km0-blue-900",
+    extra: "border-km0-blue-200",
   },
-  {
-    key: "deporte",
-    slug: "deportes",
-    labelKey: "agenda.cat.deporte",
-    matches: ["deporte", "deport"],
+  deportes: {
     Icon: Trophy,
     activeBg: "bg-km0-teal-500",
     activeText: "text-white",
     idleBg: "bg-km0-teal-400",
     idleText: "text-white",
   },
-  {
-    key: "talleres",
-    slug: "formacion",
-    labelKey: "agenda.cat.talleres",
-    matches: ["taller", "workshop", "curso"],
+  formacion: {
     Icon: Hammer,
     activeBg: "bg-km0-coral-500",
     activeText: "text-white",
     idleBg: "bg-km0-coral-400",
     idleText: "text-white",
   },
-  {
-    key: "fiestas",
-    slug: "fiestas-mayores",
-    labelKey: "agenda.cat.fiestas",
-    matches: ["fiesta", "festa", "festival"],
+  "fiestas-mayores": {
     Icon: PartyPopper,
     activeBg: "bg-km0-blue-700",
     activeText: "text-white",
     idleBg: "bg-km0-blue-600",
     idleText: "text-white",
   },
-  {
-    key: "gastronomia",
-    slug: "gastronomia",
-    labelKey: "agenda.cat.gastronomia",
-    matches: ["gastro", "comida", "cocina", "vino"],
+  gastronomia: {
     Icon: UtensilsCrossed,
     activeBg: "bg-km0-coral-600",
     activeText: "text-white",
     idleBg: "bg-km0-coral-500",
     idleText: "text-white",
   },
-  {
-    key: "todos",
-    labelKey: "agenda.cat.todos",
-    matches: [],
-    Icon: Sparkles,
-    activeBg: "bg-km0-teal-600",
-    activeText: "text-white",
-    idleBg: "bg-km0-teal-500",
-    idleText: "text-white",
-  },
-];
+};
+
+const DEFAULT_CAT_STYLE: CatStyle = {
+  Icon: Sparkles,
+  activeBg: "bg-km0-blue-800",
+  activeText: "text-white",
+  idleBg: "bg-km0-blue-700",
+  idleText: "text-white",
+};
+
+const ALL_CAT_STYLE: CatStyle = {
+  Icon: Sparkles,
+  activeBg: "bg-km0-teal-600",
+  activeText: "text-white",
+  idleBg: "bg-km0-teal-500",
+  idleText: "text-white",
+};
 
 /* ─── Helpers de fecha ──────────────────────────────────────── */
 const startOfDay = (d: Date) => {
