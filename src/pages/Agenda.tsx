@@ -297,9 +297,20 @@ const Agenda = () => {
   const navigate = useNavigate();
   const { hasUnread, markAllRead } = useNotifications();
   const { lang } = useLang();
-  const [category, setCategory] = useState<Category>("todos");
+  const [category, setCategory] = useState<CategoryKey>("todos");
   const [price, setPrice] = useState<Price>("todos");
   const [when, setWhen] = useState<WhenKey>("mes");
+
+  // Población elegida por el usuario (CP → población), con fallback.
+  const town = useAppStore((s) => s.town) ?? DEFAULT_TOWN;
+
+  // Categorías reales de la API: solo las que tienen eventos activos en
+  // esta población (el endpoint ya filtra por Estado='ACTIVO').
+  const { data: apiCategories = [] } = useQuery({
+    queryKey: ["categories", town],
+    queryFn: () => getCategories(town),
+    staleTime: 5 * 60 * 1000,
+  });
 
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(false);
@@ -309,14 +320,13 @@ const Agenda = () => {
   // (mismo que usa la web de eventquery): categoría (slug) + población +
   // rango de fechas según el selector WhenTabs.
   useEffect(() => {
-    const cat = CATEGORIES.find((c) => c.key === category);
     const { desde, hasta } = rangeFor(when);
     let cancelled = false;
     setLoading(true);
     setError(null);
     listEvents({
-      categoria: cat?.slug,
-      poblacion: "Malgrat de Mar",
+      categoria: category === "todos" ? undefined : category,
+      poblacion: town,
       fechaDesde: desde,
       fechaHasta: hasta,
       pageSize: 50,
