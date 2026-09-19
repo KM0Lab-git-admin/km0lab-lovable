@@ -10,16 +10,24 @@ import {
   Palette,
   Baby,
   Trophy,
-  Hammer,
   PartyPopper,
   UtensilsCrossed,
   Sparkles,
+  MessageCircle,
+  Clapperboard,
+  GraduationCap,
+  BookOpen,
+  Trees,
+  Gamepad2,
+  Theater,
+  LayoutGrid,
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
 import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
+import { Button } from "@/components/ui/button";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
@@ -40,7 +48,7 @@ const DEFAULT_TOWN = "Malgrat de Mar";
  *
  * Estructura visual:
  *   1. Título XL "Agenda" + número de día en mostaza.
- *   2. Grid 4×2 de categorías, cada una con su color e icono.
+ *   2. Fila de categorías con iconos y tratamiento cromático uniforme.
  *   3. Resultados agrupados por día.
  *
  * Filtro de rango temporal (WhenTabs): "Esta semana" o "Próximos 30 días";
@@ -54,84 +62,34 @@ const DEFAULT_TOWN = "Malgrat de Mar";
 type CategoryKey = string;
 type Price = "todos" | "gratis" | "pago";
 
-interface CatStyle {
+interface CategoryPresentation {
   Icon: typeof Music2;
-  activeBg: string;
-  activeText: string;
-  idleBg: string;
-  idleText: string;
-  extra?: string;
 }
 
-/** Paleta por slug de la API. Slugs nuevos usan `DEFAULT_CAT_STYLE`. */
-const CAT_STYLES: Record<string, CatStyle> = {
-  musica: {
-    Icon: Music2,
-    activeBg: "bg-km0-blue-900",
-    activeText: "text-white",
-    idleBg: "bg-km0-blue-900/90",
-    idleText: "text-white",
-  },
-  cultura: {
-    Icon: Palette,
-    activeBg: "bg-km0-yellow-500",
-    activeText: "text-km0-blue-900",
-    idleBg: "bg-km0-yellow-400",
-    idleText: "text-km0-blue-900",
-  },
-  infantil: {
-    Icon: Baby,
-    activeBg: "bg-white",
-    activeText: "text-km0-blue-900",
-    idleBg: "bg-white",
-    idleText: "text-km0-blue-900",
-    extra: "border-km0-blue-200",
-  },
-  deportes: {
-    Icon: Trophy,
-    activeBg: "bg-km0-teal-500",
-    activeText: "text-white",
-    idleBg: "bg-km0-teal-400",
-    idleText: "text-white",
-  },
-  formacion: {
-    Icon: Hammer,
-    activeBg: "bg-km0-coral-500",
-    activeText: "text-white",
-    idleBg: "bg-km0-coral-400",
-    idleText: "text-white",
-  },
-  "fiestas-mayores": {
-    Icon: PartyPopper,
-    activeBg: "bg-km0-blue-700",
-    activeText: "text-white",
-    idleBg: "bg-km0-blue-600",
-    idleText: "text-white",
-  },
-  gastronomia: {
-    Icon: UtensilsCrossed,
-    activeBg: "bg-km0-coral-600",
-    activeText: "text-white",
-    idleBg: "bg-km0-coral-500",
-    idleText: "text-white",
-  },
+/** Icono por slug de la API. Slugs nuevos usan `DEFAULT_CATEGORY_PRESENTATION`. */
+const CATEGORY_PRESENTATIONS: Record<string, CategoryPresentation> = {
+  xerrades: { Icon: MessageCircle },
+  cinema: { Icon: Clapperboard },
+  cultura: { Icon: Palette },
+  esports: { Icon: Trophy },
+  deportes: { Icon: Trophy },
+  "festes-majors": { Icon: PartyPopper },
+  "fiestas-mayores": { Icon: PartyPopper },
+  formacio: { Icon: GraduationCap },
+  formacion: { Icon: GraduationCap },
+  infantil: { Icon: Baby },
+  lectura: { Icon: BookOpen },
+  musica: { Icon: Music2 },
+  naturalesa: { Icon: Trees },
+  naturaleza: { Icon: Trees },
+  oci: { Icon: Gamepad2 },
+  teatre: { Icon: Theater },
+  teatro: { Icon: Theater },
+  gastronomia: { Icon: UtensilsCrossed },
 };
 
-const DEFAULT_CAT_STYLE: CatStyle = {
-  Icon: Sparkles,
-  activeBg: "bg-km0-blue-800",
-  activeText: "text-white",
-  idleBg: "bg-km0-blue-700",
-  idleText: "text-white",
-};
-
-const ALL_CAT_STYLE: CatStyle = {
-  Icon: Sparkles,
-  activeBg: "bg-km0-teal-600",
-  activeText: "text-white",
-  idleBg: "bg-km0-teal-500",
-  idleText: "text-white",
-};
+const DEFAULT_CATEGORY_PRESENTATION: CategoryPresentation = { Icon: Sparkles };
+const ALL_CATEGORY_PRESENTATION: CategoryPresentation = { Icon: LayoutGrid };
 
 /* ─── Helpers de fecha ──────────────────────────────────────── */
 const startOfDay = (d: Date) => {
@@ -359,19 +317,19 @@ const Agenda = () => {
   // Categoría y población ya las filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
 
-  // Chips: categorías devueltas por la API + "Tots" al final.
+  // Categorías devueltas por la API + "Tots" al final.
   const chips = useMemo(() => {
     const items = apiCategories.map((c) => ({
       key: c.slug,
       label: lang === "ca" ? c.nombre_cat : c.nombre_es,
-      style: CAT_STYLES[c.slug] ?? DEFAULT_CAT_STYLE,
+      presentation: CATEGORY_PRESENTATIONS[c.slug] ?? DEFAULT_CATEGORY_PRESENTATION,
     }));
     return [
       ...items,
       {
         key: "todos",
         label: t("agenda.cat.todos", lang),
-        style: ALL_CAT_STYLE,
+        presentation: ALL_CATEGORY_PRESENTATION,
       },
     ];
   }, [apiCategories, lang]);
@@ -427,31 +385,35 @@ const Agenda = () => {
         {/* ── Rango temporal ─── */}
         <WhenTabs value={when} onChange={setWhen} className="shrink-0" />
 
-        {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
-        <div className="grid grid-cols-4 gap-1 my-0 shrink-0">
+        {/* ── Categorías: fila desplazable, iconografía y color uniformes ─── */}
+        <div className="flex items-center gap-2 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain pb-1 shrink-0">
           {chips.map((c) => {
             const active = category === c.key;
-            const Icon = c.style.Icon;
+            const Icon = c.presentation.Icon;
             return (
-              <button
+              <Button
                 key={c.key}
                 type="button"
+                variant="outline"
                 onClick={() => setCategory(c.key)}
+                aria-pressed={active}
                 className={cn(
-                  "h-9 rounded-full inline-flex items-center justify-center gap-0.5 px-0.5 font-ui text-[10px] font-bold transition-all active:scale-95 border",
+                  "h-10 shrink-0 rounded-full border-2 px-4 font-ui text-xs transition-all active:scale-95",
                   active
-                    ? `${c.style.activeBg} ${c.style.activeText} border-km0-blue-900 ring-2 ring-km0-blue-900/20 shadow-sm`
-                    : `${c.style.idleBg} ${c.style.idleText} border-transparent opacity-90 hover:opacity-100`,
-                  c.style.extra,
+                    ? "border-km0-yellow-400 bg-km0-yellow-400 text-km0-blue-900 shadow-sm hover:bg-km0-yellow-500 hover:text-km0-blue-900"
+                    : "border-km0-blue-100 bg-white text-km0-blue-700 hover:border-km0-yellow-400 hover:bg-km0-yellow-50 hover:text-km0-blue-900",
                 )}
               >
                 <Icon
-                  size={10}
+                  size={16}
                   strokeWidth={2.5}
-                  className="shrink-0 hidden"
+                  className={cn(
+                    "shrink-0",
+                    active ? "text-km0-blue-900" : "text-km0-blue-500",
+                  )}
                 />
-                <span className="truncate">{c.label}</span>
-              </button>
+                <span>{c.label}</span>
+              </Button>
             );
           })}
         </div>
