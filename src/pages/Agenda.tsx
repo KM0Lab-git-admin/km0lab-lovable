@@ -403,9 +403,9 @@ const Agenda = () => {
 
         {/* ── Categorías (grid 4×2, sin scroll horizontal) ─── */}
         <div className="grid grid-cols-4 gap-1 my-0 shrink-0">
-          {CATEGORIES.map((c) => {
+          {chips.map((c) => {
             const active = category === c.key;
-            const Icon = c.Icon;
+            const Icon = c.style.Icon;
             return (
               <button
                 key={c.key}
@@ -414,9 +414,9 @@ const Agenda = () => {
                 className={cn(
                   "h-9 rounded-full inline-flex items-center justify-center gap-0.5 px-0.5 font-ui text-[10px] font-bold transition-all active:scale-95 border",
                   active
-                    ? `${c.activeBg} ${c.activeText} border-km0-blue-900 ring-2 ring-km0-blue-900/20 shadow-sm`
-                    : `${c.idleBg} ${c.idleText} border-transparent opacity-90 hover:opacity-100`,
-                  c.key === "infantil" && "border-km0-blue-200",
+                    ? `${c.style.activeBg} ${c.style.activeText} border-km0-blue-900 ring-2 ring-km0-blue-900/20 shadow-sm`
+                    : `${c.style.idleBg} ${c.style.idleText} border-transparent opacity-90 hover:opacity-100`,
+                  c.style.extra,
                 )}
               >
                 <Icon
@@ -424,7 +424,7 @@ const Agenda = () => {
                   strokeWidth={2.5}
                   className="shrink-0 hidden"
                 />
-                <span className="truncate">{t(c.labelKey, lang)}</span>
+                <span className="truncate">{c.label}</span>
               </button>
             );
           })}
