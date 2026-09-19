@@ -329,22 +329,26 @@ const Agenda = () => {
   const { lang } = useLang();
   const [category, setCategory] = useState<Category>("todos");
   const [price, setPrice] = useState<Price>("todos");
+  const [when, setWhen] = useState<WhenKey>("mes");
 
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch — filtros estructurados al endpoint de lista /api/v1/events
-  // (mismo que usa la web de eventquery): categoría (slug) + población.
-  // Sin rango de fechas: se muestran siempre todos los eventos disponibles.
+  // (mismo que usa la web de eventquery): categoría (slug) + población +
+  // rango de fechas según el selector WhenTabs.
   useEffect(() => {
     const cat = CATEGORIES.find((c) => c.key === category);
+    const { desde, hasta } = rangeFor(when);
     let cancelled = false;
     setLoading(true);
     setError(null);
     listEvents({
       categoria: cat?.slug,
       poblacion: "Malgrat de Mar",
+      fechaDesde: desde,
+      fechaHasta: hasta,
       pageSize: 50,
       lang: lang === "ca" ? "ca" : "es",
     })
