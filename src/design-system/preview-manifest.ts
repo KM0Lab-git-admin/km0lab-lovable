@@ -222,7 +222,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Por defecto",
         src: "/events",
         notes:
-          "Categorías dinámicas desde /api/v1/categories?poblacion=<población del usuario> (solo categorías con eventos activos) + chip 'Tots'. Selector de rango temporal (Esta semana / Próximos 30 días) que filtra por fecha_desde/fecha_hasta. Tarjetas con imagen del evento arriba (badge de precio/gratis sobre ella), título, fecha/hora/lugar y etiqueta de categoría.",
+          "Categorías dinámicas desde /api/v1/categories?poblacion=<población del usuario> (solo categorías con eventos activos) + chip 'Tots'. Fila horizontal con icono específico por categoría, base blanca uniforme y amarillo KM0 solo en la selección. Selector de rango temporal (Esta semana / Próximos 30 días) que filtra por fecha_desde/fecha_hasta. Tarjetas con imagen del evento arriba (badge de precio/gratis sobre ella), título, fecha/hora/lugar y etiqueta de categoría.",
       },
     ],
   },
