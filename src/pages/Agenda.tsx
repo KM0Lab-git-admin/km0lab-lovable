@@ -385,8 +385,8 @@ const Agenda = () => {
         {/* ── Rango temporal ─── */}
         <WhenTabs value={when} onChange={setWhen} className="shrink-0" />
 
-        {/* ── Categorías: fila desplazable, iconografía y color uniformes ─── */}
-        <div className="flex items-center gap-2 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain pb-1 shrink-0">
+        {/* ── Categorías: cuadrícula completa, iconografía y color uniformes ─── */}
+        <div className="grid grid-cols-4 gap-1.5 shrink-0">
           {chips.map((c) => {
             const active = category === c.key;
             const Icon = c.presentation.Icon;
@@ -398,21 +398,21 @@ const Agenda = () => {
                 onClick={() => setCategory(c.key)}
                 aria-pressed={active}
                 className={cn(
-                  "h-10 shrink-0 rounded-full border-2 px-4 font-ui text-xs transition-all active:scale-95",
+                  "h-11 min-w-0 rounded-lg border-2 px-1 font-ui text-[9px] leading-tight transition-all active:scale-95",
                   active
                     ? "border-km0-yellow-400 bg-km0-yellow-400 text-km0-blue-900 shadow-sm hover:bg-km0-yellow-500 hover:text-km0-blue-900"
                     : "border-km0-blue-100 bg-white text-km0-blue-700 hover:border-km0-yellow-400 hover:bg-km0-yellow-50 hover:text-km0-blue-900",
                 )}
               >
                 <Icon
-                  size={16}
+                  size={14}
                   strokeWidth={2.5}
                   className={cn(
                     "shrink-0",
                     active ? "text-km0-blue-900" : "text-km0-blue-500",
                   )}
                 />
-                <span>{c.label}</span>
+                <span className="min-w-0 truncate">{c.label}</span>
               </Button>
             );
           })}
