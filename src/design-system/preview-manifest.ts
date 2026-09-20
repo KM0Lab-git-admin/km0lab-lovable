@@ -181,7 +181,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     label: "Invite",
     path: "/invite",
     states: [
-      { id: "guest", label: "Sin sesión", src: "/invite", notes: "Explica que es necesario iniciar sesión y conserva el retorno a esta página." },
+      { id: "guest", label: "Sin sesión", src: "/invite", notes: "Compartir enlace público, copiar y QR sin registro, más bloque secundario para iniciar sesión o crear cuenta." },
       { id: "registered", label: "Con sesión", src: "/invite", seedSession: true, notes: "Selección Persona/Negocio, compartir nativo, copia manual y diálogo QR real." },
       { id: "loading", label: "Cargando", src: "/invite?state=loading", seedSession: true },
       { id: "empty", label: "Vacío", src: "/invite?state=empty", seedSession: true },
