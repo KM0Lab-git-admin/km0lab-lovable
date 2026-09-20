@@ -26,7 +26,6 @@ export const buildInviteLink = ({ kind, reference, town }: InviteLinkOptions): s
   const url = new URL(kind === "person" ? "/login" : "/business-signup", window.location.origin);
   url.searchParams.set("invite", kind);
   url.searchParams.set("ref", reference);
-  if (kind === "person") url.searchParams.set("returnTo", "/invite");
   if (kind === "business" && town) url.searchParams.set("town", town);
   return url.toString();
 };
