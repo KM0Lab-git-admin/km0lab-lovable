@@ -14,6 +14,7 @@ import { t } from "@/lib/i18n";
 
 import type { Promo } from "@/types/promo";
 import type { ApiReward } from "@/services/rewardsApi";
+import type { InvitationsSummary } from "@/types/invitation";
 
 
 export interface HomeContentProps {
@@ -43,6 +44,8 @@ export interface HomeContentProps {
   onRewards: () => void;
   onActions: () => void;
   onInvite: () => void;
+  onViewInvitations: () => void;
+  invitationSummary: InvitationsSummary | null;
 
   /** Solo se muestra PointsCard si hay sesión. */
   showLogin: boolean;
@@ -78,6 +81,8 @@ const HomeContent = ({
   onRewards,
   onActions,
   onInvite,
+  onViewInvitations,
+  invitationSummary,
   showLogin,
   showPoints,
 
@@ -116,7 +121,14 @@ const HomeContent = ({
           </section>
 
           <div className="px-2">
-            <InviteHomeCard isAuthed={isAuthed} onInvite={onInvite} onLogin={onLogin} onCreateAccount={onLogin} />
+            <InviteHomeCard
+              isAuthed={isAuthed}
+              onInvite={onInvite}
+              onLogin={onLogin}
+              onCreateAccount={onLogin}
+              onViewInvitations={onViewInvitations}
+              invitationSummary={invitationSummary}
+            />
           </div>
 
           <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">

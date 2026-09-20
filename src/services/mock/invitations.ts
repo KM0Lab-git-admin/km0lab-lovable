@@ -33,3 +33,6 @@ export const summarizeInvitations = (records: InvitationRecord[]): InvitationsSu
     },
     { personsRegistered: 0, businessesRegistered: 0, pointsEarned: 0, pointsPending: 0 },
   );
+
+/** Resumen único del piloto, compartido por Home, puntos y seguimiento. */
+export const INVITATIONS_MOCK_SUMMARY = summarizeInvitations(INVITATIONS_MOCK);

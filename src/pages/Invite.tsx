@@ -136,7 +136,9 @@ const Invite = () => {
 
       <button
         type="button"
-        onClick={() => navigate("/my-invitations")}
+        onClick={() =>
+          navigate("/my-invitations?from=actions", { state: { invitationOrigin: "actions" } })
+        }
         className="self-start font-ui text-xs font-bold text-km0-blue-700 underline underline-offset-2"
       >
         {t("invites.link", lang)}

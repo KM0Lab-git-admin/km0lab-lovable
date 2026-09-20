@@ -6,15 +6,25 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/contexts/LangContext";
 import { INVITE_REWARDS } from "@/data/inviteConfig";
 import { t } from "@/lib/i18n";
+import type { InvitationsSummary } from "@/types/invitation";
 
 interface InviteHomeCardProps {
   isAuthed: boolean;
   onInvite: () => void;
   onLogin: () => void;
   onCreateAccount: () => void;
+  onViewInvitations: () => void;
+  invitationSummary: InvitationsSummary | null;
 }
 
-const InviteHomeCard = ({ isAuthed, onInvite, onLogin, onCreateAccount }: InviteHomeCardProps) => {
+const InviteHomeCard = ({
+  isAuthed,
+  onInvite,
+  onLogin,
+  onCreateAccount,
+  onViewInvitations,
+  invitationSummary,
+}: InviteHomeCardProps) => {
   const { lang } = useLang();
   const [searchParams] = useSearchParams();
   // Al volver del acceso conservamos el contexto: ?share=1 reabre el panel.
@@ -47,12 +57,39 @@ const InviteHomeCard = ({ isAuthed, onInvite, onLogin, onCreateAccount }: Invite
               {t("invite.business.short", lang)} · +{INVITE_REWARDS.business} {t("common.points", lang)}
             </span>
           </div>
+          {invitationSummary &&
+          (invitationSummary.personsRegistered > 0 || invitationSummary.businessesRegistered > 0) ? (
+            <p className="mt-3 rounded-lg bg-km0-beige-100 px-3 py-2 text-center font-body text-xs leading-snug text-km0-blue-800/75">
+              {t(
+                invitationSummary.personsRegistered === 1
+                  ? "invites.compact.person.one"
+                  : "invites.compact.person.other",
+                lang,
+              ).replace("{count}", String(invitationSummary.personsRegistered))}{" "}
+              {t("invites.compact.and", lang)}{" "}
+              {t(
+                invitationSummary.businessesRegistered === 1
+                  ? "invites.compact.business.one"
+                  : "invites.compact.business.other",
+                lang,
+              ).replace("{count}", String(invitationSummary.businessesRegistered))}{" "}
+              · {invitationSummary.pointsEarned} {t("invites.compact.points", lang)}
+            </p>
+          ) : null}
           <Button
             type="button"
             onClick={onInvite}
             className="mt-3 w-full bg-km0-yellow-400 font-ui font-bold text-km0-blue-900 hover:bg-km0-yellow-500"
           >
             {t("invite.home.cta", lang)}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onViewInvitations}
+            className="mt-2 w-full border-km0-blue-200 bg-card font-ui font-bold text-km0-blue-800"
+          >
+            {t("invites.link", lang)}
           </Button>
           <p className="mt-2 text-center font-body text-[11px] text-km0-blue-800/60">{t("invite.home.note", lang)}</p>
         </>
