@@ -85,6 +85,7 @@ const CATEGORY_PRESENTATIONS: Record<string, CategoryPresentation> = {
   naturalesa: { Icon: Trees },
   naturaleza: { Icon: Trees },
   oci: { Icon: Gamepad2 },
+  ocio: { Icon: Gamepad2 },
   teatre: { Icon: Theater },
   teatro: { Icon: Theater },
   gastronomia: { Icon: UtensilsCrossed },
