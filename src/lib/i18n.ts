@@ -1243,6 +1243,11 @@ const D = {
   "invite.auth.description": { ca: "Necessites iniciar sessió per obtenir el teu enllaç personal.", es: "Necesitas iniciar sesión para obtener tu enlace personal.", en: "You need to sign in to get your personal link." } as Dict,
   "invite.auth.cta": { ca: "Iniciar sessió", es: "Iniciar sesión", en: "Sign in" } as Dict,
   "invite.applied": { ca: "Invitació aplicada", es: "Invitación aplicada", en: "Invitation applied" } as Dict,
+  "invite.empty.title": { ca: "Encara no hi ha cap invitació", es: "Todavía no hay ninguna invitación", en: "There are no invitations yet" } as Dict,
+  "invite.empty.description": { ca: "Quan estiguis a punt, podràs crear el teu enllaç personal aquí.", es: "Cuando estés listo, podrás crear tu enlace personal aquí.", en: "When you are ready, you can create your personal link here." } as Dict,
+  "invite.error.title": { ca: "No hem pogut preparar la invitació", es: "No hemos podido preparar la invitación", en: "We could not prepare the invitation" } as Dict,
+  "invite.error.description": { ca: "Torna-ho a provar per obtenir el teu enllaç personal.", es: "Vuelve a intentarlo para obtener tu enlace personal.", en: "Try again to get your personal link." } as Dict,
+  "invite.error.retry": { ca: "Tornar-ho a provar", es: "Reintentar", en: "Try again" } as Dict,
   "invite.action.description": { ca: "Convida persones o negocis i guanya punts quan completin el registre", es: "Invita a personas o negocios y gana puntos cuando completen el registro", en: "Invite people or businesses and earn points when they complete registration" } as Dict,
   "invite.action.type": { ca: "Invitacions", es: "Invitaciones", en: "Invitations" } as Dict,
 

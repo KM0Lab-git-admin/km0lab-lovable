@@ -183,6 +183,9 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     states: [
       { id: "guest", label: "Sin sesión", src: "/invite", notes: "Explica que es necesario iniciar sesión y conserva el retorno a esta página." },
       { id: "registered", label: "Con sesión", src: "/invite", seedSession: true, notes: "Selección Persona/Negocio, compartir nativo, copia manual y diálogo QR real." },
+      { id: "loading", label: "Cargando", src: "/invite?state=loading", seedSession: true },
+      { id: "empty", label: "Vacío", src: "/invite?state=empty", seedSession: true },
+      { id: "error", label: "Error", src: "/invite?state=error", seedSession: true },
     ],
   },
   {

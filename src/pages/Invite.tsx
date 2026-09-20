@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from "react";
-import { Building2, ChevronLeft, Copy, QrCode, Send, UserRound, LogIn } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { AlertCircle, Building2, ChevronLeft, Copy, Loader2, QrCode, RefreshCw, Send, UserRound, LogIn } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import DeviceShell from "@/components/DeviceShell";
 import BottomTabs from "@/components/BottomTabs";
@@ -15,12 +15,14 @@ import { t } from "@/lib/i18n";
 
 const Invite = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { lang } = useLang();
   const town = useAppStore((state) => state.town);
   const [kind, setKind] = useState<InviteKind>("person");
   const [qrOpen, setQrOpen] = useState(false);
   const [manualCopy, setManualCopy] = useState(false);
+  const forcedState = searchParams.get("state");
   const linkInputRef = useRef<HTMLInputElement | null>(null);
 
   const link = useMemo(() => {
@@ -51,9 +53,10 @@ const Invite = () => {
       return;
     }
     try {
-      await navigator.share({ title: t("invite.title", lang), text: shareText, url: link });
+      await navigator.share({ title: t("invite.title", lang), text: shareText });
     } catch (error: unknown) {
       if (error instanceof DOMException && error.name === "AbortError") return;
+      await copyLink();
     }
   };
 
@@ -76,7 +79,13 @@ const Invite = () => {
           </header>
 
           <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 py-4">
-            {!isAuthed ? (
+            {forcedState === "loading" ? (
+              <div className="flex min-h-full items-center justify-center"><Loader2 className="animate-spin text-km0-blue-700" aria-label={t("common.loading", lang)} /></div>
+            ) : forcedState === "empty" ? (
+              <section className="flex min-h-full flex-col items-center justify-center text-center"><h2 className="font-brand text-xl font-black text-km0-blue-900">{t("invite.empty.title", lang)}</h2><p className="mt-2 font-body text-sm text-km0-blue-800/70">{t("invite.empty.description", lang)}</p></section>
+            ) : forcedState === "error" ? (
+              <section className="flex min-h-full flex-col items-center justify-center text-center"><AlertCircle className="text-km0-coral-400" size={40} aria-hidden /><h2 className="mt-3 font-brand text-xl font-black text-km0-blue-900">{t("invite.error.title", lang)}</h2><p className="mt-2 font-body text-sm text-km0-blue-800/70">{t("invite.error.description", lang)}</p><Button type="button" variant="outline" onClick={() => navigate("/invite", { replace: true })} className="mt-4"><RefreshCw aria-hidden />{t("invite.error.retry", lang)}</Button></section>
+            ) : !isAuthed ? (
               <section className="flex min-h-full flex-col items-center justify-center text-center">
                 <span className="flex h-16 w-16 items-center justify-center rounded-full bg-km0-yellow-100 text-km0-blue-800"><LogIn size={28} aria-hidden /></span>
                 <h2 className="mt-4 font-brand text-xl font-black text-km0-blue-900">{t("invite.auth.title", lang)}</h2>
@@ -92,9 +101,10 @@ const Invite = () => {
                     const selected = kind === option;
                     const Icon = option === "person" ? UserRound : Building2;
                     return (
-                      <button
+                      <Button
                         key={option}
                         type="button"
+                        variant="outline"
                         role="radio"
                         aria-checked={selected}
                         onClick={() => setKind(option)}
@@ -113,7 +123,7 @@ const Invite = () => {
                           </span>
                           <span className="mt-1 block font-body text-xs leading-snug text-km0-blue-800/65">{t(`invite.${option}.description`, lang)}</span>
                         </span>
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>
