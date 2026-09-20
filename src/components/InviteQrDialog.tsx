@@ -18,9 +18,10 @@ interface InviteQrDialogProps {
   onOpenChange: (open: boolean) => void;
   link: string;
   onCopy: () => void;
+  titleKey?: string;
 }
 
-const InviteQrDialog = ({ open, onOpenChange, link, onCopy }: InviteQrDialogProps) => {
+const InviteQrDialog = ({ open, onOpenChange, link, onCopy, titleKey = "invite.qr.title" }: InviteQrDialogProps) => {
   const { lang } = useLang();
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
 
