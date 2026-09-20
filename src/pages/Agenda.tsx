@@ -371,26 +371,36 @@ const Agenda = () => {
     ];
   }, [apiCategories, availableSlugs, lang]);
 
-  // Si la categoría elegida deja de tener eventos en el rango, volvemos a «Tots».
+  // Si una categoría seleccionada deja de tener eventos en el rango
+  // vigente, se retira de la selección (el resto se conserva).
   useEffect(() => {
-    if (category !== "todos" && availableSlugs && !availableSlugs.has(category)) {
-      setCategory("todos");
-    }
-  }, [category, availableSlugs]);
+    if (!availableSlugs) return;
+    setSelected((prev) => {
+      const next = prev.filter((s) => availableSlugs.has(s));
+      return next.length === prev.length ? prev : next;
+    });
+  }, [availableSlugs]);
 
-  /** Chip activo mostrado en la cabecera plegable («Tots» está siempre). */
-  const activeChip =
-    chips.find((c) => c.key === category) ?? chips[chips.length - 1] ?? null;
+  /**
+   * Chip de cabecera plegable: con selección vacía muestra «Tots»; con
+   * selección múltiple muestra la primera categoría y «+n».
+   */
+  const selectedChips = chips.filter((c) => selected.includes(c.key));
+  const allChip = chips[chips.length - 1] ?? null;
+  const activeChip = selectedChips[0] ?? allChip;
+  const extraCount = Math.max(0, selectedChips.length - 1);
   const ActiveIcon = activeChip ? activeChip.presentation.Icon : Sparkles;
 
 
   const filtered = useMemo(() => {
     return eventos.filter((e) => {
+      if (selected.length > 0 && !e.tags.some((s) => selected.includes(s)))
+        return false;
       if (price === "gratis" && !e.es_gratuito) return false;
       if (price === "pago" && e.es_gratuito) return false;
       return true;
     });
-  }, [eventos, price]);
+  }, [eventos, selected, price]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, { date: Date; items: Evento[] }>();
