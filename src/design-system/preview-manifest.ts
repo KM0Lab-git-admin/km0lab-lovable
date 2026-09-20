@@ -222,7 +222,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Por defecto",
         src: "/events",
         notes:
-          "Categorías dinámicas desde /api/v1/categories?poblacion=<población del usuario> (solo categorías con eventos activos) + chip 'Tots'. Cuadrícula completa sin scroll horizontal, con icono específico por categoría, base blanca uniforme y amarillo KM0 solo en la selección. La cuadrícula se pliega/despliega con el enlace Ocultar/Mostrar de la cabecera; al plegar queda visible un chip amarillo con el icono y nombre de la categoría activa (clic para reabrir). Selector de rango temporal (Esta semana / Próximos 30 días / Todos) que filtra por fecha_desde/fecha_hasta; 'Todos' no envía fecha límite. Tarjetas con imagen del evento arriba (badge de precio/gratis sobre ella), título, fecha/hora/lugar y etiqueta de categoría.",
+          "Categorías dinámicas desde /api/v1/categories?poblacion=<población del usuario>, depuradas contra los eventos del rango vigente (se ocultan las categorías cuyo recuento solo incluye eventos pasados; si la activa desaparece, vuelve a 'Tots') + chip 'Tots'. Cuadrícula completa sin scroll horizontal, con icono específico por categoría, base blanca uniforme y amarillo KM0 solo en la selección. La cuadrícula se pliega/despliega con el enlace Ocultar/Mostrar de la cabecera; al plegar queda visible un chip amarillo con el icono y nombre de la categoría activa (clic para reabrir). Selector de rango temporal (Esta semana / Próximos 30 días / Todos) que filtra por fecha_desde/fecha_hasta; 'Todos' no envía fecha límite. Tarjetas con imagen del evento arriba (badge de precio/gratis sobre ella), título, fecha/hora/lugar y etiqueta de categoría.",
       },
     ],
   },
