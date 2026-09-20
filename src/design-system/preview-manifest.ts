@@ -166,7 +166,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas (sin overlay). RewardsPreview consume la API real de premios (UAT) con imágenes; fallback al mock local si falla. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
+        notes: "Oculta LoginButton; muestra PointsCard. La tarjeta «Invita i guanya punts» incluye el resumen mock 2 persones + 1 negoci = 700 punts, el CTA principal «Invitar» y el botón secundario «Les meves invitacions». Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "notifications",
