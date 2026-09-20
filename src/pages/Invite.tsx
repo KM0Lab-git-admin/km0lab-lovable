@@ -21,46 +21,25 @@ const Invite = () => {
   const town = useAppStore((state) => state.town);
   const [kind, setKind] = useState<InviteKind>("person");
   const [qrOpen, setQrOpen] = useState(false);
-  const [manualCopy, setManualCopy] = useState(false);
   const forcedState = searchParams.get("state");
-  const linkInputRef = useRef<HTMLTextAreaElement | null>(null);
+  const isAuthed = Boolean(user);
 
   const link = useMemo(() => {
-    if (!user || typeof window === "undefined") return "";
+    if (typeof window === "undefined") return "";
+    if (!isAuthed) return buildPublicShareLink(town);
     return buildInviteLink({ kind, reference: getOrCreateReferralReference(), town });
-  }, [kind, town, user]);
+  }, [isAuthed, kind, town]);
 
-  const shareText = t(kind === "person" ? "invite.share.person_text" : "invite.share.business_text", lang).replace("{link}", link);
+  const shareText = t(
+    isAuthed ? (kind === "person" ? "invite.share.person_text" : "invite.share.business_text") : "share.public_text",
+    lang,
+  ).replace("{link}", link);
 
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(link);
-      setManualCopy(false);
-      toast.success(t("invite.copied", lang));
-    } catch {
-      setManualCopy(true);
-      window.setTimeout(() => {
-        linkInputRef.current?.focus();
-        linkInputRef.current?.select();
-      }, 0);
-      toast.error(t("invite.copy_failed", lang));
-    }
-  };
-
-  const share = async () => {
-    if (!navigator.share) {
-      await copyLink();
-      return;
-    }
-    try {
-      await navigator.share({ title: t("invite.title", lang), text: shareText });
-    } catch (error: unknown) {
-      if (error instanceof DOMException && error.name === "AbortError") return;
-      await copyLink();
-    }
-  };
-
-  const isAuthed = Boolean(user);
+  const { manualCopy, linkRef, copyLink, share } = useShareLink({
+    link,
+    text: shareText,
+    title: t(isAuthed ? "invite.title" : "share.title", lang),
+  });
 
   return (
     <DeviceShell>
