@@ -11,6 +11,7 @@ import {
   Mail,
   CalendarCheck,
   ClipboardList,
+  Share2,
   CheckCircle2,
   Circle,
   type LucideIcon,
@@ -24,6 +25,8 @@ import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { POINTS_ACTIONS } from "@/data/pointsActions";
 import type { PointAction, PointActionIcon } from "@/types/points";
+import { Button } from "@/components/ui/button";
+import { INVITE_REWARDS } from "@/data/inviteConfig";
 
 /* ─── Filtros ────────────────────────────────────────────── */
 type Filter = "all" | "pending" | "completed";
@@ -287,6 +290,24 @@ const PointsActions = () => {
               </div>
             ) : (
               <ul className="flex flex-col gap-3 pt-2">
+                {filter !== "completed" && (
+                  <li>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => navigate(isAuthed ? "/invite" : "/login?returnTo=%2Finvite")}
+                      className="h-auto w-full justify-start gap-3 rounded-2xl border-km0-blue-100 bg-card px-3 py-3 text-left"
+                    >
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-km0-coral-100 text-km0-coral-400"><Share2 size={20} aria-hidden /></span>
+                      <span className="min-w-0 flex-1 whitespace-normal">
+                        <span className="block font-ui text-sm font-bold text-km0-blue-900">{t("invite.title", lang)}</span>
+                        <span className="mt-0.5 block font-body text-xs font-normal leading-snug text-km0-blue-800/60">{t("invite.action.description", lang)}</span>
+                        <span className="mt-1.5 inline-flex rounded-full bg-km0-blue-100 px-2 py-0.5 font-ui text-[10px] font-bold uppercase text-km0-blue-800">{t("invite.action.type", lang)}</span>
+                      </span>
+                      <span className="shrink-0 whitespace-normal rounded-full bg-km0-yellow-400/90 px-2 py-1 text-center font-ui text-[10px] font-black text-km0-blue-900">+{INVITE_REWARDS.person}<br />+{INVITE_REWARDS.business}</span>
+                    </Button>
+                  </li>
+                )}
                 {filtered.map((action, i) => (
                   <ActionRow key={action.id} action={action} lang={lang} index={i} />
                 ))}

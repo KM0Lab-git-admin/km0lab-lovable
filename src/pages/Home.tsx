@@ -176,6 +176,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onPoints: goToPoints,
     onRewards: goToRewards,
     onActions: () => navigate("/points-actions"),
+    onInvite: () => navigate("/invite"),
     showLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/events"),

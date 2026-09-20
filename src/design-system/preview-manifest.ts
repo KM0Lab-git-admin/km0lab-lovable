@@ -177,6 +177,28 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     ],
   },
   {
+    id: "invite",
+    label: "Invite",
+    path: "/invite",
+    states: [
+      { id: "guest", label: "Sin sesión", src: "/invite", notes: "Explica que es necesario iniciar sesión y conserva el retorno a esta página." },
+      { id: "registered", label: "Con sesión", src: "/invite", seedSession: true, notes: "Selección Persona/Negocio, compartir nativo, copia manual y diálogo QR real." },
+    ],
+  },
+  {
+    id: "business-signup",
+    label: "BusinessSignup",
+    path: "/business-signup",
+    states: [
+      { id: "ready", label: "Formulario", src: "/business-signup?ref=pilot-preview&town=Malgrat%20de%20Mar" },
+      { id: "loading", label: "Cargando", src: "/business-signup?state=loading" },
+      { id: "empty", label: "Vacío", src: "/business-signup?state=empty" },
+      { id: "error", label: "Error", src: "/business-signup?state=error" },
+      { id: "already", label: "Ya registrado", src: "/business-signup?state=already" },
+      { id: "success", label: "Confirmación", src: "/business-signup?state=success" },
+    ],
+  },
+  {
     id: "points-actions",
     label: "PointsActions",
     path: "/points-actions",
