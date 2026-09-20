@@ -12,6 +12,7 @@ import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 
 import type { Promo } from "@/types/promo";
+import type { ApiReward } from "@/services/rewardsApi";
 
 
 export interface HomeContentProps {
@@ -28,6 +29,8 @@ export interface HomeContentProps {
   level?: number;
   modules: HomeModule[];
   promos: Promo[];
+  /** Premios públicos (API UAT); Home resuelve fallback mock si falla. */
+  rewards: ApiReward[];
 
   activeTab: HomeTab;
   isAuthed: boolean;
