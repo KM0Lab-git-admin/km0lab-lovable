@@ -60,8 +60,7 @@ const DEFAULT_TOWN = "Malgrat de Mar";
  * Sin búsqueda por texto. Sin filtros de "Lugares" ni "Tags".
  * ────────────────────────────────────────────────────────────── */
 
-/** Slug de categoría de la API, o "todos" (sin filtro). */
-type CategoryKey = string;
+/** Selección de categorías: slugs de la API. Lista vacía = «Tots» (sin filtro). */
 type Price = "todos" | "gratis" | "pago";
 
 interface CategoryPresentation {
