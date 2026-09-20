@@ -29,3 +29,9 @@ export const buildInviteLink = ({ kind, reference, town }: InviteLinkOptions): s
   if (kind === "business" && town) url.searchParams.set("town", town);
   return url.toString();
 };
+
+export const buildPublicShareLink = (town?: string | null): string => {
+  const url = new URL("/home", window.location.origin);
+  if (town) url.searchParams.set("town", town);
+  return url.toString();
+};
