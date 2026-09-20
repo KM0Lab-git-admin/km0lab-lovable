@@ -337,3 +337,9 @@ ilustración, incluidas las PNG de fondo blanco del onboarding.
 - `[&_svg]:size-4` del primitivo limita el chevron: por eso se fuerza
   `!size-5` en el SVG. Con un primitivo que exponga `iconSize` eliminar
   ese `!important`.
+
+## Compartir sin sesión (corrección piloto)
+- `buildPublicShareLink(town)` genera el enlace público a la home del municipio, sin identificador personal.
+- `useShareLink` centraliza compartir nativo, copia con fallback manual y aviso «Enlace copiado».
+- `InviteHomeCard` cambia de variante según sesión; `/invite` permite compartir el enlace público sin login y ofrece bloque secundario para iniciar sesión o crear cuenta.
+- Compartir, copiar o mostrar QR no concede puntos; la recompensa sigue pendiente del backend.

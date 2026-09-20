@@ -295,7 +295,7 @@ const PointsActions = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => navigate(isAuthed ? "/invite" : "/login?returnTo=%2Finvite")}
+                      onClick={() => navigate("/invite")}
                       className="h-auto w-full justify-start gap-3 rounded-2xl border-km0-blue-100 bg-card px-3 py-3 text-left"
                     >
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-km0-coral-100 text-km0-coral-400"><Share2 size={20} aria-hidden /></span>

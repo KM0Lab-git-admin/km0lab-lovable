@@ -11,16 +11,17 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useLang } from "@/contexts/LangContext";
-import { t } from "@/lib/i18n";
+import { t, type TKey } from "@/lib/i18n";
 
 interface InviteQrDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   link: string;
   onCopy: () => void;
+  titleKey?: TKey;
 }
 
-const InviteQrDialog = ({ open, onOpenChange, link, onCopy }: InviteQrDialogProps) => {
+const InviteQrDialog = ({ open, onOpenChange, link, onCopy, titleKey = "invite.qr.title" }: InviteQrDialogProps) => {
   const { lang } = useLang();
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
 
@@ -40,7 +41,7 @@ const InviteQrDialog = ({ open, onOpenChange, link, onCopy }: InviteQrDialogProp
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[calc(100%-2rem)] max-w-sm rounded-2xl border-km0-blue-100 bg-card p-5">
         <DialogHeader className="text-left">
-          <DialogTitle className="font-brand text-xl text-km0-blue-900">{t("invite.qr.title", lang)}</DialogTitle>
+          <DialogTitle className="font-brand text-xl text-km0-blue-900">{t(titleKey, lang)}</DialogTitle>
           <DialogDescription className="font-body text-xs text-km0-blue-800/70">{t("invite.qr.description", lang)}</DialogDescription>
         </DialogHeader>
         <div className="flex aspect-square w-full items-center justify-center rounded-xl border border-km0-blue-100 bg-background p-4">
