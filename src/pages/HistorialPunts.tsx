@@ -20,6 +20,7 @@ import {
 
 import DeviceShell from "@/components/DeviceShell";
 import BottomTabs from "@/components/BottomTabs";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
