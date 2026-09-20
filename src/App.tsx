@@ -59,6 +59,8 @@ const App = () => (
             <Route path="/check-email" element={<CheckEmail />} />
             <Route path="/email/otp" element={<EmailOtpTemplate />} />
             <Route path="/invite" element={<Invite />} />
+            <Route path="/my-invitations" element={<RequireAuth><MyInvitations /></RequireAuth>} />
+
             <Route path="/business-signup" element={<BusinessSignup />} />
             
             <Route path="/home" element={<Home />} />
