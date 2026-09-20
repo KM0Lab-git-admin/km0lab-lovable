@@ -1039,6 +1039,17 @@ const D = {
   "agenda.cat.fiestas": { ca: "Festes", es: "Fiestas", en: "Parties" } as Dict,
   "agenda.cat.gastronomia": { ca: "Gastro", es: "Gastro", en: "Food" } as Dict,
   "agenda.cat.todos": { ca: "Tots", es: "Todos", en: "All" } as Dict,
+  "agenda.cats.label": {
+    ca: "Categories",
+    es: "Categorías",
+    en: "Categories",
+  } as Dict,
+  "agenda.cats.hide": { ca: "Ocultar", es: "Ocultar", en: "Hide" } as Dict,
+  "agenda.cats.show": {
+    ca: "Mostrar",
+    es: "Mostrar",
+    en: "Show",
+  } as Dict,
   "agenda.searching": { ca: "Cercant…", es: "Buscando…", en: "Searching…" } as Dict,
   "agenda.count.one": { ca: "esdeveniment", es: "evento", en: "event" } as Dict,
   "agenda.count.many": { ca: "esdeveniments", es: "eventos", en: "events" } as Dict,
