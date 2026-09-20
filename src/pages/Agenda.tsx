@@ -382,14 +382,12 @@ const Agenda = () => {
   }, [availableSlugs]);
 
   /**
-   * Chip de cabecera plegable: con selección vacía muestra «Tots»; con
-   * selección múltiple muestra la primera categoría y «+n».
+   * Chips de cabecera plegable: muestran todas las categorías
+   * seleccionadas una al lado de la otra; con selección vacía, «Tots».
    */
   const selectedChips = chips.filter((c) => selected.includes(c.key));
   const allChip = chips[chips.length - 1] ?? null;
-  const activeChip = selectedChips[0] ?? allChip;
-  const extraCount = Math.max(0, selectedChips.length - 1);
-  const ActiveIcon = activeChip ? activeChip.presentation.Icon : Sparkles;
+  const headerChips = selectedChips.length > 0 ? selectedChips : allChip ? [allChip] : [];
 
 
   const filtered = useMemo(() => {
@@ -452,27 +450,34 @@ const Agenda = () => {
               <span className="font-ui text-[9px] font-bold uppercase tracking-[0.14em] text-km0-blue-500">
                 {t("agenda.cats.label", lang)}
               </span>
-              {activeChip ? (
+              {headerChips.length > 0 ? (
                 <button
                   type="button"
                   onClick={() => setCatsOpen((v) => !v)}
                   aria-expanded={catsOpen}
-                  aria-label={`${t("agenda.cats.label", lang)}: ${activeChip.label}`}
-                  className="inline-flex h-8 w-fit max-w-full items-center gap-1.5 self-start rounded-lg border-2 border-km0-yellow-400 bg-km0-yellow-400 px-2.5 shadow-sm transition-all hover:bg-km0-yellow-500 active:scale-95"
+                  aria-label={`${t("agenda.cats.label", lang)}: ${headerChips
+                    .map((c) => c.label)
+                    .join(", ")}`}
+                  className="flex min-w-0 flex-wrap items-center gap-1 self-start"
                 >
-                  <ActiveIcon
-                    size={14}
-                    strokeWidth={2.5}
-                    className="shrink-0 text-km0-blue-900"
-                  />
-                  <span className="min-w-0 truncate font-ui text-[11px] font-bold text-km0-blue-900">
-                    {activeChip.label}
-                  </span>
-                  {extraCount > 0 && (
-                    <span className="shrink-0 rounded-full bg-km0-blue-900 px-1.5 py-px font-ui text-[9px] font-bold leading-none text-km0-yellow-400">
-                      +{extraCount}
-                    </span>
-                  )}
+                  {headerChips.map((c) => {
+                    const Icon = c.presentation.Icon;
+                    return (
+                      <span
+                        key={c.key}
+                        className="inline-flex h-8 max-w-full items-center gap-1.5 rounded-lg border-2 border-km0-yellow-400 bg-km0-yellow-400 px-2.5 shadow-sm transition-all hover:bg-km0-yellow-500"
+                      >
+                        <Icon
+                          size={14}
+                          strokeWidth={2.5}
+                          className="shrink-0 text-km0-blue-900"
+                        />
+                        <span className="min-w-0 truncate font-ui text-[11px] font-bold text-km0-blue-900">
+                          {c.label}
+                        </span>
+                      </span>
+                    );
+                  })}
                 </button>
               ) : null}
             </div>
