@@ -69,7 +69,9 @@ interface CategoryPresentation {
 /** Icono por slug de la API. Slugs nuevos usan `DEFAULT_CATEGORY_PRESENTATION`. */
 const CATEGORY_PRESENTATIONS: Record<string, CategoryPresentation> = {
   xerrades: { Icon: MessageCircle },
+  charlas: { Icon: MessageCircle },
   cinema: { Icon: Clapperboard },
+  cine: { Icon: Clapperboard },
   cultura: { Icon: Palette },
   esports: { Icon: Trophy },
   deportes: { Icon: Trophy },
@@ -83,6 +85,7 @@ const CATEGORY_PRESENTATIONS: Record<string, CategoryPresentation> = {
   naturalesa: { Icon: Trees },
   naturaleza: { Icon: Trees },
   oci: { Icon: Gamepad2 },
+  ocio: { Icon: Gamepad2 },
   teatre: { Icon: Theater },
   teatro: { Icon: Theater },
   gastronomia: { Icon: UtensilsCrossed },
