@@ -1,0 +1,1 @@
+- [Higiene de dependencias](mem://proceso/higiene-dependencias) — Nunca añadir deps sin importarlas en el mismo cambio; eliminar las que dejen de usarse
