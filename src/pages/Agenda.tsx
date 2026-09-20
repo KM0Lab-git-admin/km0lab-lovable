@@ -60,8 +60,7 @@ const DEFAULT_TOWN = "Malgrat de Mar";
  * Sin búsqueda por texto. Sin filtros de "Lugares" ni "Tags".
  * ────────────────────────────────────────────────────────────── */
 
-/** Slug de categoría de la API, o "todos" (sin filtro). */
-type CategoryKey = string;
+/** Selección de categorías: slugs de la API. Lista vacía = «Tots» (sin filtro). */
 type Price = "todos" | "gratis" | "pago";
 
 interface CategoryPresentation {
@@ -270,7 +269,8 @@ const Agenda = () => {
   const navigate = useNavigate();
   const { hasUnread, markAllRead } = useNotifications();
   const { lang } = useLang();
-  const [category, setCategory] = useState<CategoryKey>("todos");
+  /** Selección múltiple y acumulativa; [] equivale a «Tots». */
+  const [selected, setSelected] = useState<string[]>([]);
   /** La cuadrícula de categorías empieza visible; se puede plegar. */
   const [catsOpen, setCatsOpen] = useState(true);
   const [price, setPrice] = useState<Price>("todos");
@@ -292,19 +292,19 @@ const Agenda = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch — filtros estructurados al endpoint de lista /api/v1/events
-  // (mismo que usa la web de eventquery): categoría (slug) + población +
-  // rango de fechas según el selector WhenTabs.
+  // (mismo que usa la web de eventquery): población + rango de fechas
+  // según el selector WhenTabs. Las categorías son selección múltiple y
+  // se aplican en cliente (unión de slugs sobre `tags`).
   useEffect(() => {
     const { desde, hasta } = rangeFor(when);
     let cancelled = false;
     setLoading(true);
     setError(null);
     listEvents({
-      categoria: category === "todos" ? undefined : category,
       poblacion: town,
       fechaDesde: desde,
       fechaHasta: hasta,
-      pageSize: 50,
+      pageSize: 100,
       lang: lang === "ca" ? "ca" : "es",
     })
 
@@ -320,10 +320,16 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category, when, lang, town]);
+  }, [when, lang, town]);
 
-  // Categoría y población ya las filtra el servidor; aquí solo el precio
+  // Población ya la filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
+
+  /** Alterna una categoría en la selección múltiple. */
+  const toggleCategory = (slug: string) =>
+    setSelected((prev) =>
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug],
+    );
 
   // El endpoint de categorías cuenta TODOS los eventos activos, incluidos
   // los ya celebrados. Para no mostrar categorías vacías consultamos los
@@ -365,26 +371,36 @@ const Agenda = () => {
     ];
   }, [apiCategories, availableSlugs, lang]);
 
-  // Si la categoría elegida deja de tener eventos en el rango, volvemos a «Tots».
+  // Si una categoría seleccionada deja de tener eventos en el rango
+  // vigente, se retira de la selección (el resto se conserva).
   useEffect(() => {
-    if (category !== "todos" && availableSlugs && !availableSlugs.has(category)) {
-      setCategory("todos");
-    }
-  }, [category, availableSlugs]);
+    if (!availableSlugs) return;
+    setSelected((prev) => {
+      const next = prev.filter((s) => availableSlugs.has(s));
+      return next.length === prev.length ? prev : next;
+    });
+  }, [availableSlugs]);
 
-  /** Chip activo mostrado en la cabecera plegable («Tots» está siempre). */
-  const activeChip =
-    chips.find((c) => c.key === category) ?? chips[chips.length - 1] ?? null;
+  /**
+   * Chip de cabecera plegable: con selección vacía muestra «Tots»; con
+   * selección múltiple muestra la primera categoría y «+n».
+   */
+  const selectedChips = chips.filter((c) => selected.includes(c.key));
+  const allChip = chips[chips.length - 1] ?? null;
+  const activeChip = selectedChips[0] ?? allChip;
+  const extraCount = Math.max(0, selectedChips.length - 1);
   const ActiveIcon = activeChip ? activeChip.presentation.Icon : Sparkles;
 
 
   const filtered = useMemo(() => {
     return eventos.filter((e) => {
+      if (selected.length > 0 && !e.tags.some((s) => selected.includes(s)))
+        return false;
       if (price === "gratis" && !e.es_gratuito) return false;
       if (price === "pago" && e.es_gratuito) return false;
       return true;
     });
-  }, [eventos, price]);
+  }, [eventos, selected, price]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, { date: Date; items: Evento[] }>();
@@ -452,6 +468,11 @@ const Agenda = () => {
                   <span className="min-w-0 truncate font-ui text-[11px] font-bold text-km0-blue-900">
                     {activeChip.label}
                   </span>
+                  {extraCount > 0 && (
+                    <span className="shrink-0 rounded-full bg-km0-blue-900 px-1.5 py-px font-ui text-[9px] font-bold leading-none text-km0-yellow-400">
+                      +{extraCount}
+                    </span>
+                  )}
                 </button>
               ) : null}
             </div>
@@ -482,14 +503,19 @@ const Agenda = () => {
             <div className="min-h-0 overflow-hidden">
               <div className="grid grid-cols-4 gap-1.5 pt-2">
                 {chips.map((c) => {
-                  const active = category === c.key;
+                  const active =
+                    c.key === "todos"
+                      ? selected.length === 0
+                      : selected.includes(c.key);
                   const Icon = c.presentation.Icon;
                   return (
                     <Button
                       key={c.key}
                       type="button"
                       variant="outline"
-                      onClick={() => setCategory(c.key)}
+                      onClick={() =>
+                        c.key === "todos" ? setSelected([]) : toggleCategory(c.key)
+                      }
                       aria-pressed={active}
                       className={cn(
                         "h-11 min-w-0 rounded-lg border-2 px-1 font-ui text-[9px] leading-tight transition-all active:scale-95",
