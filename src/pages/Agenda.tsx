@@ -21,6 +21,8 @@ import {
   Gamepad2,
   Theater,
   LayoutGrid,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
@@ -269,6 +271,8 @@ const Agenda = () => {
   const { hasUnread, markAllRead } = useNotifications();
   const { lang } = useLang();
   const [category, setCategory] = useState<CategoryKey>("todos");
+  /** La cuadrícula de categorías empieza visible; se puede plegar. */
+  const [catsOpen, setCatsOpen] = useState(true);
   const [price, setPrice] = useState<Price>("todos");
   const [when, setWhen] = useState<WhenKey>("mes");
 
@@ -337,6 +341,12 @@ const Agenda = () => {
       },
     ];
   }, [apiCategories, lang]);
+
+  /** Chip activo mostrado en la cabecera plegable («Tots» está siempre). */
+  const activeChip =
+    chips.find((c) => c.key === category) ?? chips[chips.length - 1] ?? null;
+  const ActiveIcon = activeChip ? activeChip.presentation.Icon : Sparkles;
+
 
   const filtered = useMemo(() => {
     return eventos.filter((e) => {
