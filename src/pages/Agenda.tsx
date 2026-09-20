@@ -269,7 +269,8 @@ const Agenda = () => {
   const navigate = useNavigate();
   const { hasUnread, markAllRead } = useNotifications();
   const { lang } = useLang();
-  const [category, setCategory] = useState<CategoryKey>("todos");
+  /** Selección múltiple y acumulativa; [] equivale a «Tots». */
+  const [selected, setSelected] = useState<string[]>([]);
   /** La cuadrícula de categorías empieza visible; se puede plegar. */
   const [catsOpen, setCatsOpen] = useState(true);
   const [price, setPrice] = useState<Price>("todos");
