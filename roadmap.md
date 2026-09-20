@@ -17,4 +17,4 @@
 - [x] Home: sección Premis alimentada por la API real UAT (/api/v1/rewards/public?postal_code=&lang=) vía proxy rewards-api, con imágenes; fallback mock local.
 - [x] Añadir la opción «Todos» al selector de rango temporal de la Agenda (sin fecha límite en la consulta).
 - [x] Agenda: la cuadrícula de categorías se puede ocultar y desocultar; la cabecera muestra un chip amarillo con la categoría activa.
-- [x] Agenda: selección de categorías múltiple y acumulativa (unión de slugs en cliente); «Tots» limpia la selección; cabecera con «+n».
+- [x] Agenda: selección de categorías múltiple y acumulativa (unión de slugs en cliente); «Tots» limpia la selección; la cabecera muestra todas las seleccionadas en chips amarillos lado a lado.
