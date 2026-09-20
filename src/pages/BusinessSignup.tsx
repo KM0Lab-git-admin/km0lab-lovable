@@ -110,7 +110,21 @@ const BusinessSignup = () => {
       return;
     }
     setScreenState("ready");
-    const input: BusinessRegistrationInput = { ...parsed.data, logoName, referralReference };
+    const input: BusinessRegistrationInput = {
+      businessName: values.businessName,
+      taxId: values.taxId,
+      category: values.category,
+      description: values.description,
+      website: values.website,
+      address: values.address,
+      town: values.town,
+      contactName: values.contactName,
+      email: values.email,
+      phone: values.phone,
+      acceptedTerms: values.acceptedTerms,
+      logoName,
+      referralReference,
+    };
     try {
       const result = await createBusinessRegistration(input);
       setScreenState(result.status === "created" ? "success" : "already");
