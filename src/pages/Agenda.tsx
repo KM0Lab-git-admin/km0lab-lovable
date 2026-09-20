@@ -112,9 +112,10 @@ const toISODate = (d: Date) => {
   return `${y}-${m}-${day}`;
 };
 
-/** Rango de fechas para el filtro WhenTabs. */
-const rangeFor = (when: WhenKey): { desde: string; hasta: string } => {
+/** Rango de fechas para el filtro WhenTabs. "todos" = sin fecha límite. */
+const rangeFor = (when: WhenKey): { desde: string; hasta?: string } => {
   const today = startOfDay(new Date());
+  if (when === "todos") return { desde: toISODate(today) };
   const days = when === "semana" ? 7 : 30;
   return { desde: toISODate(today), hasta: toISODate(addDays(today, days)) };
 };

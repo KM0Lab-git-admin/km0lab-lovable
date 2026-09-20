@@ -1,3 +1,5 @@
+// ============= Full file contents =============
+
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -7,9 +9,9 @@ import { t } from "@/lib/i18n";
  * Labels vía i18n.
  */
 
-export type WhenKey = "semana" | "proxima-semana" | "mes" | "trimestre";
+export type WhenKey = "semana" | "mes" | "todos";
 
-export const WHEN_KEYS: WhenKey[] = ["semana", "mes"];
+export const WHEN_KEYS: WhenKey[] = ["semana", "mes", "todos"];
 
 interface WhenTabsProps {
   value: WhenKey;
@@ -17,17 +19,18 @@ interface WhenTabsProps {
   className?: string;
 }
 
+const labelKeyFor = (k: WhenKey) =>
+  k === "semana" ? "agenda.when.week" : k === "mes" ? "agenda.when.month" : "agenda.when.all";
+
 const WhenTabs = ({ value, onChange, className = "" }: WhenTabsProps) => {
   const { lang } = useLang();
-  const labelFor = (k: WhenKey) =>
-    k === "semana" ? t("agenda.when.week", lang) : t("agenda.when.month", lang);
 
   return (
     <div
       role="tablist"
       aria-label={t("agenda.when.aria", lang)}
       className={cn(
-        "grid grid-cols-2 gap-1.5 bg-km0-beige-50 border border-km0-blue-700/20 rounded-2xl p-1.5",
+        "grid grid-cols-3 gap-1.5 bg-km0-beige-50 border border-km0-blue-700/20 rounded-2xl p-1.5",
         className,
       )}
     >
@@ -47,7 +50,7 @@ const WhenTabs = ({ value, onChange, className = "" }: WhenTabsProps) => {
                 : "text-km0-blue-700 hover:bg-km0-beige-100",
             )}
           >
-            {labelFor(key)}
+            {t(labelKeyFor(key), lang)}
           </button>
         );
       })}

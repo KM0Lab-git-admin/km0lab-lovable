@@ -1029,6 +1029,7 @@ const D = {
   "agenda.back": { ca: "Anar a l'inici", es: "Ir al inicio", en: "Go home" } as Dict,
   "agenda.when.week": { ca: "Aquesta setmana", es: "Esta semana", en: "This week" } as Dict,
   "agenda.when.month": { ca: "Pròxims 30 dies", es: "Próximos 30 días", en: "Next 30 days" } as Dict,
+  "agenda.when.all": { ca: "Tots", es: "Todos", en: "All" } as Dict,
   "agenda.when.aria": { ca: "Rang temporal", es: "Rango temporal", en: "Time range" } as Dict,
   "agenda.cat.musica": { ca: "Música", es: "Música", en: "Music" } as Dict,
   "agenda.cat.cultura": { ca: "Cultura", es: "Cultura", en: "Culture" } as Dict,
