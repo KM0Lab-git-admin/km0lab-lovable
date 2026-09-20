@@ -19,6 +19,9 @@ import {
   type AppUser,
 } from "@/stores/useAppStore";
 
+/** Código de demostración válido para cualquier email en el prototipo. */
+export const DEMO_OTP_CODE = "123456";
+
 export type MockUser = AppUser;
 export type MockSession = AppSession;
 
@@ -45,7 +48,9 @@ export const verifyOtp = async (
   email: string,
   code: string,
 ): Promise<{ error: { message: string } | null }> => {
-  if (!/^\d{4}$/.test(code)) return { error: { message: "Código no válido" } };
+  // Prototipo: no se envían correos reales. Cualquier email entra con el
+  // código de demostración DEMO_OTP_CODE.
+  if (code !== DEMO_OTP_CODE) return { error: { message: "Código no válido" } };
   await new Promise((r) => setTimeout(r, 200));
 
   const store = useAppStore.getState();
