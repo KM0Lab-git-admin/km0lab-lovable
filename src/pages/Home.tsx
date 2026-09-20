@@ -18,6 +18,23 @@ import { PROMOS } from "@/data/promos";
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 
 import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
+import { usePublicRewards } from "@/hooks/usePublicRewards";
+import { REWARDS } from "@/data/rewards";
+import type { ApiReward } from "@/services/rewardsApi";
+
+/** Fallback mock mientras la API carga o si falla: catálogo local activo. */
+const MOCK_REWARDS: ApiReward[] = REWARDS.filter((r) => r.status === "active").map(
+  (r) => ({
+    id: r.id,
+    title: r.title,
+    description: r.description,
+    kind: r.kind,
+    costPoints: r.costPoints,
+    valueLabel: r.valueLabel,
+    stock: r.stock,
+    imageUrl: null,
+  }),
+);
 
 type HomeProps = {
   /** Forzar estado para previews (`/home-registered`, `/home-no-registrado`). */
@@ -57,6 +74,9 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
 
   const { promos: apiPromos } = useFeaturedPromos(4);
   const promos = apiPromos.length > 0 ? apiPromos : PROMOS;
+
+  const { rewards: apiRewards } = usePublicRewards();
+  const rewards = apiRewards.length > 0 ? apiRewards : MOCK_REWARDS;
 
   const toggleModule = (id: HomeModuleId) => {
     setModuleSeeds((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
@@ -146,6 +166,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     level,
     modules: modulesWithHandlers,
     promos,
+    rewards,
     activeTab: "home" as const,
     isAuthed,
     onLogin: goToLogin,
