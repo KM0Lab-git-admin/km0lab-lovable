@@ -189,6 +189,19 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     ],
   },
   {
+    id: "my-invitations",
+    label: "MyInvitations",
+    path: "/my-invitations",
+    dynamicContent: true,
+    states: [
+      { id: "default", label: "Con registros", src: "/my-invitations", seedSession: true, notes: "Datos simulados: 2 persones + 1 negoci = 700 punts. Resumen, filtros Totes/Persones/Negocis, filas por registro atribuible (no por mensaje enviado) y detalle con hitos." },
+      { id: "pending", label: "Punts pendents", src: "/my-invitations?state=pending", seedSession: true, notes: "Incluye un registro completado con recompensa procesándose; los punts pendents no suman a «Punts guanyats»." },
+      { id: "loading", label: "Cargando", src: "/my-invitations?state=loading", seedSession: true },
+      { id: "empty", label: "Sin registros", src: "/my-invitations?state=empty", seedSession: true, notes: "Mensaje vacío + CTA «Invitar» y aclaración de que compartir no confirma envío ni registro." },
+      { id: "error", label: "Error", src: "/my-invitations?state=error", seedSession: true, notes: "Error con «Tornar-ho a provar»." },
+    ],
+  },
+  {
     id: "business-signup",
     label: "BusinessSignup",
     path: "/business-signup",
