@@ -1,58 +1,39 @@
-## Objetivo
+# Plan: Invita y gana
 
-En la Home, las tres secciones de valor —**Cómo ganar puntos**, **Promocions de comerços** y **Premis**— deben mostrarse siempre con el mismo formato tanto si el usuario está registrado como si no. Cuando el usuario es invitado, cada sección aparece con un overlay de candado + CTA de registro; el contenido sigue siendo visible pero no interactivo.
+## Resultado
+Crear un flujo frontend navegable, integrado con la Home, Acciones, el acceso existente y el sistema de idioma de KM0 Lab. Todo funcionará con datos simulados: compartir y copiar serán reales en el dispositivo, pero ninguna acción concederá puntos ni escribirá en servicios reales.
 
-## Cambios de UI
+## Cambios de experiencia
+- Añadir una tarjeta compacta «Invita i guanya» en la Home solo para ciudadanos con sesión, entre Accesos rápidos y Eventos destacados.
+- Añadir una acción navegable «Invita i guanya» dentro de Acciones.
+- Crear `/invite` con selección Persona/Negocio, recompensas configurables compartidas (100/500), compartir del sistema, copia con alternativa manual y diálogo accesible con QR real.
+- Si no hay sesión, `/invite` mostrará un aviso y llevará al acceso; tras validar el código, regresará automáticamente a `/invite`.
+- Los enlaces distinguirán claramente sus destinos y usarán una referencia opaca, sin datos personales:
+  - persona → acceso ciudadano existente con invitación aplicada;
+  - negocio → alta web responsive con municipio y referencia conservados.
+- Mostrar «Invitación aplicada» discretamente durante el acceso ciudadano cuando corresponda.
 
-### 1. `EarnPointsCard` (ya existente, siempre visible)
-- Añadir prop `locked?: boolean`.
-- Cuando `locked`, envolver la lista de acciones en un contenedor con `pointer-events-none` + ligera opacidad, y superponer un badge/candado en la esquina superior derecha (junto al "Verlos todos") con texto "Registra't per activar" (i18n).
-- El botón "Verlos todos" en modo `locked` navega a `/login` en vez de `/points-actions`.
+## Alta de negocio
+- Crear una única página KM0 centrada y de una columna, también en escritorio, según la opción elegida.
+- Incluir todos los campos solicitados, etiquetas visibles, validación con Zod y React Hook Form, categoría obligatoria, aceptación de condiciones y privacidad, y logo opcional con previsualización, sustitución y eliminación.
+- Reutilizar la sesión existente cuando exista; si no existe, pedir correo para asociar posteriormente al gestor sin crear autenticación real nueva.
+- Implementar mediante un servicio mock tipado los estados: carga inicial, formulario vacío, listo, enviando, error recuperable, negocio ya registrado y confirmación.
+- La confirmación llevará a un acceso simulado al espacio del negocio; no se sumarán puntos ni se alterará el saldo o historial.
 
-### 2. Nueva sección **Premis destacats** en Home
-- Componente `RewardsPreview` (nuevo, `src/components/RewardsPreview.tsx`).
-- Reutiliza el mismo estilo visual que las tarjetas de `/rewards` pero en versión compacta: carrusel horizontal (scroll-snap) con las 3-4 primeras `REWARDS` activas.
-- Cabecera con título "Premis" y acción "Veure tots" → `/rewards`.
-- Prop `locked` idem que EarnPointsCard: overlay candado + CTA registro, navegación a `/login`.
+## Integración y consistencia
+- Añadir un único archivo de configuración para recompensas y construcción de enlaces, reutilizado en todas las pantallas.
+- Añadir las traducciones en catalán, español e inglés en el diccionario existente.
+- Mantener la navegación inferior donde corresponde, el marco móvil, los tokens, tipografías, botones y patrones accesibles existentes.
+- Registrar las pantallas y estados nuevos en el catálogo de vistas y actualizar la hoja de ruta.
+- Añadir la dependencia aprobada `qrcode` para generar el QR exactamente desde el enlace seleccionado.
 
-### 3. Nueva sección **Promocions de comerços** en Home
-- Componente `MerchantPromosPreview` (nuevo, `src/components/MerchantPromosPreview.tsx`).
-- Deriva las promos de `COMERCIOS_DETALL` (mismo mapeo que hace `Premis.tsx` en la tab "promos") y muestra las 3-4 primeras con la misma `PromoCard` compacta.
-- Cabecera "Promocions" con acción "Veure totes" → `/rewards?tab=promos`.
-- Soporta `locked` con overlay + CTA registro.
+## Verificación
+- Comprobar tipos y pruebas relevantes.
+- Verificar navegación, regreso tras acceso, selección Persona/Negocio, compartir/cancelación, copia y alternativa manual, QR, validaciones, conservación del formulario, bloqueo de doble envío y estados simulados.
+- Validar 375×667, 390×844 y el marco centrado en vistas anchas, sin desbordamiento horizontal.
 
-### 4. Integración en `HomeContent.tsx`
-Orden dentro del scroll (mobile-first, portrait):
-1. `JoinCard` (solo invitado) / `PointsCard` (solo registrado) — sin cambios.
-2. `HomeModules` — sin cambios.
-3. `EventHeroCarousel` — sin cambios.
-4. `EarnPointsCard` con `locked={!isAuthed}`.
-5. `RewardsPreview` con `locked={!isAuthed}`.
-6. `MerchantPromosPreview` con `locked={!isAuthed}`.
-
-### 5. Overlay reutilizable de bloqueo
-Un pequeño helper interno (mismo patrón usado en cada uno de los tres componentes, sin nuevo componente compartido para no proliferar API) con:
-- Ícono `Lock` de lucide-react sobre un chip pill con fondo `bg-km0-blue-800/85 text-white`, esquina superior derecha de la cabecera.
-- Botón CTA en la parte inferior de la sección: "Registra't per activar" que llama al handler `onLogin`.
-
-## Cambios técnicos
-
-- `src/components/EarnPointsCard.tsx`: nueva prop `locked` + `onLogin`.
-- `src/components/RewardsPreview.tsx` (nuevo).
-- `src/components/MerchantPromosPreview.tsx` (nuevo).
-- `src/components/HomeContent.tsx`: pasar handlers y renderizar las dos nuevas secciones siempre.
-- `src/pages/Home.tsx`: pasar `onRewards={() => navigate('/rewards')}`, `onPromos={() => navigate('/rewards?tab=promos')}`, `onLogin={goToLogin}` a las nuevas props.
-- `src/pages/Premis.tsx`: leer `?tab=promos` del querystring para abrir directamente la pestaña de promocions cuando se navega desde la Home.
-- `src/lib/i18n.ts`: nuevas claves
-  - `home.section.rewards` — "Premis" / "Premios" / "Rewards"
-  - `home.section.promos` — "Promocions dels comerços" / "Promociones de los comercios" / "Merchant promos"
-  - `home.locked.badge` — "Bloquejat" / "Bloqueado" / "Locked"
-  - `home.locked.cta` — "Registra't per desbloquejar" / "Regístrate para desbloquear" / "Sign up to unlock"
-- `src/design-system/preview-manifest.ts`: actualizar la ficha de `/home` para reflejar las nuevas secciones (títulos y estado guest vs registered).
-- `docs/PORTABILITY-CHANGELOG.md`: añadir entrada bajo **v1.0 — En curso** describiendo las nuevas secciones y el patrón `locked` + CTA.
-
-## Fuera de alcance
-
-- No se cambian rutas, no se toca RLS, no se añaden dependencias.
-- No se rediseñan las tarjetas de `/rewards`; solo se reutiliza su estilo en versión compacta horizontal.
-- No se cambia la lógica de puntos ni de canje.
+## Conexiones pendientes fuera del prototipo
+- Generación segura de referencias personales y enlaces canónicos.
+- Persistencia y validación real del alta de negocio.
+- Confirmación del registro válido y concesión de recompensas en saldo e historial.
+- Acceso real al espacio del negocio y gestión legal de los enlaces de condiciones y privacidad.
