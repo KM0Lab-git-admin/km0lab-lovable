@@ -181,11 +181,11 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     label: "Invite",
     path: "/invite",
     states: [
-      { id: "guest", label: "Sin sesión", src: "/invite", notes: "Compartir enlace público, copiar y QR sin registro, más bloque secundario para iniciar sesión o crear cuenta." },
-      { id: "registered", label: "Con sesión", src: "/invite", seedSession: true, notes: "Selección Persona/Negocio, compartir nativo, copia manual y diálogo QR real." },
+      { id: "guest", label: "Sin sesión", src: "/invite", notes: "Enlace público del municipio: aviso de que sin sesión no hay puntos, accesos a crear cuenta / iniciar sesión y canales WhatsApp · Correu · Facebook · Més opcions · Copia l'enllaç. Sin QR." },
+      { id: "registered", label: "Con sesión", src: "/invite", seedSession: true, notes: "Cabecera «Invita i guanya punts», selector Una persona (+100) / Un negoci (+500) con explicación contextual y canales de envío con enlace atribuido. Sin QR ni bloque de registro." },
       { id: "loading", label: "Cargando", src: "/invite?state=loading", seedSession: true },
-      { id: "empty", label: "Vacío", src: "/invite?state=empty", seedSession: true },
-      { id: "error", label: "Error", src: "/invite?state=error", seedSession: true },
+      { id: "expired", label: "Sesión caducada", src: "/invite?state=expired", notes: "Estado excepcional: invita a recuperar la sesión antes de generar invitaciones con puntos." },
+      { id: "error", label: "Error", src: "/invite?state=error", seedSession: true, notes: "El enlace personal no se ha podido preparar; ofrece «Torna-ho a provar» y no cae a un enlace sin atribución." },
     ],
   },
   {

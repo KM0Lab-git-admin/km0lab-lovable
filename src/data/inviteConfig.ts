@@ -5,28 +5,38 @@ export const INVITE_REWARDS = {
 
 export type InviteKind = keyof typeof INVITE_REWARDS;
 
-const REFERRAL_STORAGE_KEY = "km0_invite_reference";
-
-export const getOrCreateReferralReference = (): string => {
-  const stored = window.localStorage.getItem(REFERRAL_STORAGE_KEY);
-  if (stored) return stored;
-
-  const reference = `pilot-${window.crypto.randomUUID()}`;
-  window.localStorage.setItem(REFERRAL_STORAGE_KEY, reference);
-  return reference;
+/**
+ * Referencia de invitación asociada al usuario identificado.
+ *
+ * Es determinista y opaca: no contiene datos personales ni el id en claro,
+ * de modo que el mismo usuario genera siempre el mismo código.
+ *
+ * PENDIENTE DE BACKEND: el código definitivo debe emitirlo y resolverlo el
+ * backend (tabla de referidos) para poder atribuir el registro y conceder
+ * los puntos. Mientras no exista, esta función solo prepara el frontend.
+ */
+export const getReferralReferenceForUser = (userId: string): string => {
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < userId.length; index += 1) {
+    hash ^= userId.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return `km0-${hash.toString(36)}${userId.length.toString(36)}`;
 };
 
 interface InviteLinkOptions {
   kind: InviteKind;
   reference: string;
   town?: string | null;
+  lang?: string | null;
 }
 
-export const buildInviteLink = ({ kind, reference, town }: InviteLinkOptions): string => {
-  const url = new URL(kind === "person" ? "/login" : "/business-signup", window.location.origin);
+export const buildInviteLink = ({ kind, reference, town, lang }: InviteLinkOptions): string => {
+  const url = new URL(kind === "person" ? "/home" : "/business-signup", window.location.origin);
   url.searchParams.set("invite", kind);
   url.searchParams.set("ref", reference);
-  if (kind === "business" && town) url.searchParams.set("town", town);
+  if (town) url.searchParams.set("town", town);
+  if (lang) url.searchParams.set("lang", lang);
   return url.toString();
 };
 
