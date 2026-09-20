@@ -1268,6 +1268,23 @@ const D = {
   "share.points_block.title": { ca: "Guanya punts amb les teves invitacions", es: "Gana puntos por tus invitaciones", en: "Earn points for your invitations" } as Dict,
   "share.points_block.description": { ca: "Inicia sessió o crea el teu compte per obtenir el teu enllaç personal i guanyar punts quan algú es registri.", es: "Inicia sesión o crea tu cuenta para obtener tu enlace personal y ganar puntos cuando alguien se registre.", en: "Sign in or create your account to get your personal link and earn points when someone registers." } as Dict,
   "invite.home.description_authed": { ca: "Comparteix KM0 Lab i guanya punts quan una persona o un negoci es registri amb la teva invitació", es: "Comparte KM0 Lab y gana puntos cuando una persona o un negocio se registre con tu invitación", en: "Share KM0 Lab and earn points when a person or a business registers with your invitation" } as Dict,
+  "share.panel.notice": {
+    ca: "Com que no has iniciat sessió, aquesta invitació no et donarà punts. Si vols guanyar-ne quan algú es registri amb la teva invitació, crea un compte o inicia sessió abans de compartir.",
+    es: "Como no has iniciado sesión, esta invitación no te dará puntos. Si quieres ganarlos cuando alguien se registre con tu invitación, crea una cuenta o inicia sesión antes de compartir.",
+    en: "As you are not signed in, this invitation will not earn you points. To earn them when someone registers with your invitation, create an account or sign in before sharing.",
+  } as Dict,
+  "share.panel.how": { ca: "Com ho vols compartir?", es: "¿Cómo quieres compartirlo?", en: "How do you want to share it?" } as Dict,
+  "share.channel.whatsapp": { ca: "WhatsApp", es: "WhatsApp", en: "WhatsApp" } as Dict,
+  "share.channel.email": { ca: "Correu electrònic", es: "Correo electrónico", en: "Email" } as Dict,
+  "share.channel.facebook": { ca: "Facebook", es: "Facebook", en: "Facebook" } as Dict,
+  "share.channel.more": { ca: "Més opcions", es: "Más opciones", en: "More options" } as Dict,
+  "share.message": {
+    ca: "Descobreix l'agenda, les notícies, els comerços i els serveis de {town} a KM0 Lab. Pots consultar-ho sense registrar-te: {link}",
+    es: "Descubre la agenda, las noticias, los comercios y los servicios de {town} en KM0 Lab. Puedes consultarlo sin registrarte: {link}",
+    en: "Discover the events, news, shops and services of {town} on KM0 Lab. You can browse it without signing up: {link}",
+  } as Dict,
+  "share.email_subject": { ca: "Descobreix KM0 Lab a {town}", es: "Descubre KM0 Lab en {town}", en: "Discover KM0 Lab in {town}" } as Dict,
+  "share.town_fallback": { ca: "el teu municipi", es: "tu municipio", en: "your town" } as Dict,
 
   // ── Business registration ─────────────────────────────────
   "business.title": { ca: "Dona d'alta el teu negoci", es: "Da de alta tu negocio", en: "Register your business" } as Dict,
