@@ -67,45 +67,12 @@ const InviteHomeCard = ({ isAuthed, onInvite, onLogin, onCreateAccount }: Invite
         <>
           <Button
             type="button"
-            onClick={() => void share()}
+            onClick={() => setShareOpen(true)}
             className="mt-3 w-full bg-km0-yellow-400 font-ui font-bold text-km0-blue-900 hover:bg-km0-yellow-500"
           >
             <Share2 aria-hidden />
             {t("share.cta", lang)}
           </Button>
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void copyLink()}
-              className="border-km0-blue-100 font-ui text-xs font-bold text-km0-blue-800"
-            >
-              <Copy aria-hidden />
-              {t("share.copy", lang)}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setQrOpen(true)}
-              className="border-km0-blue-100 font-ui text-xs font-bold text-km0-blue-800"
-            >
-              <QrCode aria-hidden />
-              {t("share.qr", lang)}
-            </Button>
-          </div>
-          {manualCopy && (
-            <label className="mt-3 block font-ui text-xs font-bold text-km0-blue-800">
-              {t("invite.copy_failed", lang)}
-              <textarea
-                ref={linkRef}
-                readOnly
-                rows={2}
-                value={link}
-                onFocus={(event) => event.currentTarget.select()}
-                className="mt-1 w-full resize-none break-all rounded-lg border border-km0-blue-200 bg-background px-3 py-2 font-body text-xs leading-snug text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-            </label>
-          )}
           <p className="mt-3 font-body text-[11px] text-km0-blue-800/60">{t("share.points_question", lang)}</p>
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
             <button
@@ -123,13 +90,7 @@ const InviteHomeCard = ({ isAuthed, onInvite, onLogin, onCreateAccount }: Invite
               {t("share.login", lang)}
             </button>
           </div>
-          <InviteQrDialog
-            open={qrOpen}
-            onOpenChange={setQrOpen}
-            link={link}
-            onCopy={() => void copyLink()}
-            titleKey="share.qr.title"
-          />
+          <ShareChannelsSheet open={shareOpen} onOpenChange={setShareOpen} returnTo="/home?share=1" />
         </>
       )}
     </section>

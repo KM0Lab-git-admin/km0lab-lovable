@@ -30,8 +30,9 @@ export const buildInviteLink = ({ kind, reference, town }: InviteLinkOptions): s
   return url.toString();
 };
 
-export const buildPublicShareLink = (town?: string | null): string => {
+export const buildPublicShareLink = (town?: string | null, lang?: string | null): string => {
   const url = new URL("/home", window.location.origin);
   if (town) url.searchParams.set("town", town);
+  if (lang) url.searchParams.set("lang", lang);
   return url.toString();
 };
