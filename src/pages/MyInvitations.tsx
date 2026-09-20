@@ -12,10 +12,10 @@ import {
   UserRound,
   type LucideIcon,
 } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import DeviceShell from "@/components/DeviceShell";
-import BottomTabs from "@/components/BottomTabs";
+import BottomTabs, { type HomeTab } from "@/components/BottomTabs";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
@@ -30,6 +30,7 @@ import type { InvitationRecord, InvitationStatus } from "@/types/invitation";
 
 /* ─── Filtros ─────────────────────────────────────────────── */
 type Filter = "all" | "person" | "business";
+type InvitationOrigin = "home" | "points" | "actions";
 const FILTERS: { key: Filter; labelKey: TKey }[] = [
   { key: "all", labelKey: "invites.filter.all" },
   { key: "person", labelKey: "invites.filter.persons" },
@@ -67,11 +68,27 @@ interface SummaryTileProps {
 
 const MyInvitations = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const { lang } = useLang();
   const { loading: authLoading } = useAuth();
 
   const forcedState = searchParams.get("state");
+  const requestedOrigin = searchParams.get("from");
+  const origin: InvitationOrigin =
+    requestedOrigin === "home" || requestedOrigin === "actions" || requestedOrigin === "points"
+      ? requestedOrigin
+      : "points";
+  const originPath: Record<InvitationOrigin, string> = {
+    home: "/home",
+    points: "/points-history",
+    actions: "/points-actions",
+  };
+  const originTab: Record<InvitationOrigin, HomeTab> = {
+    home: "home",
+    points: "puntos",
+    actions: "actions",
+  };
   const variant: InvitationsVariant =
     forcedState === "empty" ? "empty" : forcedState === "pending" ? "pending" : "default";
 
@@ -110,6 +127,13 @@ const MyInvitations = () => {
   }, [records, filter]);
 
   const goInvite = () => navigate("/invite");
+  const goBack = () => {
+    if (location.state !== null) {
+      navigate(-1);
+      return;
+    }
+    navigate(originPath[origin]);
+  };
 
   const renderSummaryTile = ({ labelKey, value, Icon }: SummaryTileProps) => (
     <div key={labelKey} className="rounded-2xl bg-card px-3 py-3 border border-km0-blue-100">
@@ -357,7 +381,7 @@ const MyInvitations = () => {
                 type="button"
                 variant="outline"
                 size="icon"
-                onClick={() => navigate(-1)}
+                onClick={goBack}
                 aria-label={t("common.back", lang)}
                 className="shrink-0 rounded-xl border-km0-blue-100"
               >
@@ -386,7 +410,7 @@ const MyInvitations = () => {
           </main>
 
           <BottomTabs
-            activeTab="actions"
+            activeTab={originTab[origin]}
             isAuthed
             onLogin={() => navigate("/login")}
             onHome={() => navigate("/home")}

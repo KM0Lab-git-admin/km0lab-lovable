@@ -21,6 +21,7 @@ import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
 import { usePublicRewards } from "@/hooks/usePublicRewards";
 import { REWARDS } from "@/data/rewards";
 import type { ApiReward } from "@/services/rewardsApi";
+import { INVITATIONS_MOCK_SUMMARY } from "@/services/mock/invitations";
 
 /** Fallback mock mientras la API carga o si falla: catálogo local activo. */
 const MOCK_REWARDS: ApiReward[] = REWARDS.filter((r) => r.status === "active").map(
@@ -177,6 +178,9 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onRewards: goToRewards,
     onActions: () => navigate("/points-actions"),
     onInvite: () => navigate("/invite"),
+    onViewInvitations: () =>
+      navigate("/my-invitations?from=home", { state: { invitationOrigin: "home" } }),
+    invitationSummary: isAuthed ? INVITATIONS_MOCK_SUMMARY : null,
     showLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/events"),

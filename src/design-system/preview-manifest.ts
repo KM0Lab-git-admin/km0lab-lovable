@@ -166,7 +166,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas (sin overlay). RewardsPreview consume la API real de premios (UAT) con imágenes; fallback al mock local si falla. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
+        notes: "Oculta LoginButton; muestra PointsCard. La tarjeta «Invita i guanya punts» incluye el resumen mock 2 persones + 1 negoci = 700 punts, el CTA principal «Invitar» y el botón secundario «Les meves invitacions». Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "notifications",
@@ -194,7 +194,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     path: "/my-invitations",
     dynamicContent: true,
     states: [
-      { id: "default", label: "Con registros", src: "/my-invitations", seedSession: true, notes: "Datos simulados: 2 persones + 1 negoci = 700 punts. Resumen, filtros Totes/Persones/Negocis, filas por registro atribuible (no por mensaje enviado) y detalle con hitos." },
+      { id: "default", label: "Con registros", src: "/my-invitations", seedSession: true, notes: "Datos simulados compartidos con Home y Els meus punts: 2 persones + 1 negoci = 700 punts. El acceso directo vuelve por defecto a Els meus punts; ?from=home|points|actions conserva la sección de origen." },
       { id: "pending", label: "Punts pendents", src: "/my-invitations?state=pending", seedSession: true, notes: "Incluye un registro completado con recompensa procesándose; los punts pendents no suman a «Punts guanyats»." },
       { id: "loading", label: "Cargando", src: "/my-invitations?state=loading", seedSession: true },
       { id: "empty", label: "Sin registros", src: "/my-invitations?state=empty", seedSession: true, notes: "Mensaje vacío + CTA «Invitar» y aclaración de que compartir no confirma envío ni registro." },
@@ -244,7 +244,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Registrado",
         src: "/points-history",
         seedSession: true,
-        notes: "Historial de transacciones con filtros y resumen de saldo. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil; tab 'Els meus punts' activo.",
+        notes: "Historial de transacciones con filtros y resumen de saldo. Incluye la fila «Punts per invitacions» con el total histórico concedido y acceso al seguimiento. BottomTabs con 5 tabs; «Els meus punts» activo.",
       },
     ],
   },

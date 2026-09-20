@@ -13,17 +13,21 @@ import {
   Tag,
   Coins,
   Gift as GiftIcon,
+  ChevronRight,
+  Share2,
   type LucideIcon,
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
 import BottomTabs from "@/components/BottomTabs";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { POINTS_HISTORY } from "@/data/pointsHistory";
 import type { PointsTransaction, PointsTxType } from "@/types/points";
+import { INVITATIONS_MOCK_SUMMARY } from "@/services/mock/invitations";
 
 /* ─── Filtros ────────────────────────────────────────────── */
 type Filter = "all" | "earned" | "spent";
@@ -267,6 +271,38 @@ const HistorialPunts = () => {
                 </div>
               </div>
             </motion.div>
+          </section>
+
+          <section className="shrink-0 px-4 pb-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                navigate("/my-invitations?from=points", { state: { invitationOrigin: "points" } })
+              }
+              className="h-auto w-full justify-start gap-3 whitespace-normal rounded-2xl border-km0-blue-100 bg-card px-3 py-3 text-left"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-km0-yellow-100 text-km0-blue-900">
+                <Share2 aria-hidden size={18} />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-ui text-sm font-bold text-km0-blue-900">
+                  {t("invites.points.title", lang)}
+                </span>
+                <span className="block font-body text-xs leading-snug text-km0-blue-800/65">
+                  {INVITATIONS_MOCK_SUMMARY.pointsEarned > 0
+                    ? t("invites.points.earned", lang).replace(
+                        "{points}",
+                        fmtInt(INVITATIONS_MOCK_SUMMARY.pointsEarned),
+                      )
+                    : t("invites.points.empty", lang)}
+                </span>
+              </span>
+              <span className="flex shrink-0 items-center gap-1 font-ui text-[11px] font-bold text-km0-blue-700">
+                {t("invites.points.action", lang)}
+                <ChevronRight aria-hidden size={15} />
+              </span>
+            </Button>
           </section>
 
           {/* Filtros */}
