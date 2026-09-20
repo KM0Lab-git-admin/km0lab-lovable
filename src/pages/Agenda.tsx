@@ -292,19 +292,19 @@ const Agenda = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch — filtros estructurados al endpoint de lista /api/v1/events
-  // (mismo que usa la web de eventquery): categoría (slug) + población +
-  // rango de fechas según el selector WhenTabs.
+  // (mismo que usa la web de eventquery): población + rango de fechas
+  // según el selector WhenTabs. Las categorías son selección múltiple y
+  // se aplican en cliente (unión de slugs sobre `tags`).
   useEffect(() => {
     const { desde, hasta } = rangeFor(when);
     let cancelled = false;
     setLoading(true);
     setError(null);
     listEvents({
-      categoria: category === "todos" ? undefined : category,
       poblacion: town,
       fechaDesde: desde,
       fechaHasta: hasta,
-      pageSize: 50,
+      pageSize: 100,
       lang: lang === "ca" ? "ca" : "es",
     })
 
@@ -320,10 +320,16 @@ const Agenda = () => {
     return () => {
       cancelled = true;
     };
-  }, [category, when, lang, town]);
+  }, [when, lang, town]);
 
-  // Categoría y población ya las filtra el servidor; aquí solo el precio
+  // Población ya la filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
+
+  /** Alterna una categoría en la selección múltiple. */
+  const toggleCategory = (slug: string) =>
+    setSelected((prev) =>
+      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug],
+    );
 
   // El endpoint de categorías cuenta TODOS los eventos activos, incluidos
   // los ya celebrados. Para no mostrar categorías vacías consultamos los
