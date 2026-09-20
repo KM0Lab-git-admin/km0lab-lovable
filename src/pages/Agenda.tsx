@@ -325,13 +325,36 @@ const Agenda = () => {
   // Categoría y población ya las filtra el servidor; aquí solo el precio
   // (Gratis / Pago), que no se envía a la API.
 
+  // El endpoint de categorías cuenta TODOS los eventos activos, incluidos
+  // los ya celebrados. Para no mostrar categorías vacías consultamos los
+  // eventos del rango vigente (sin filtro de categoría) y nos quedamos con
+  // los slugs realmente presentes.
+  const { desde: rangeDesde, hasta: rangeHasta } = rangeFor(when);
+  const { data: availableSlugs } = useQuery({
+    queryKey: ["category-availability", town, rangeDesde, rangeHasta ?? "open"],
+    queryFn: async () => {
+      const res = await listEvents({
+        poblacion: town,
+        fechaDesde: rangeDesde,
+        fechaHasta: rangeHasta,
+        pageSize: 100,
+        lang: lang === "ca" ? "ca" : "es",
+      });
+      return new Set(res.eventos.flatMap((e) => e.tags));
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   // Categorías devueltas por la API + "Tots" al final.
   const chips = useMemo(() => {
-    const items = apiCategories.map((c) => ({
-      key: c.slug,
-      label: lang === "ca" ? c.nombre_cat : c.nombre_es,
-      presentation: CATEGORY_PRESENTATIONS[c.slug] ?? DEFAULT_CATEGORY_PRESENTATION,
-    }));
+    const items = apiCategories
+      .filter((c) => !availableSlugs || availableSlugs.has(c.slug))
+      .map((c) => ({
+        key: c.slug,
+        label: lang === "ca" ? c.nombre_cat : c.nombre_es,
+        presentation:
+          CATEGORY_PRESENTATIONS[c.slug] ?? DEFAULT_CATEGORY_PRESENTATION,
+      }));
     return [
       ...items,
       {
