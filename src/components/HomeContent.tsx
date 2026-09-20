@@ -6,6 +6,7 @@ import JoinCard from "./JoinCard";
 import EarnPointsCard from "./EarnPointsCard";
 import RewardsPreview from "./RewardsPreview";
 import MerchantPromosPreview from "./MerchantPromosPreview";
+import InviteHomeCard from "./InviteHomeCard";
 import BottomTabs, { type HomeTab } from "./BottomTabs";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
@@ -41,6 +42,7 @@ export interface HomeContentProps {
   onPoints: () => void;
   onRewards: () => void;
   onActions: () => void;
+  onInvite: () => void;
 
   /** Solo se muestra PointsCard si hay sesión. */
   showLogin: boolean;
@@ -75,6 +77,7 @@ const HomeContent = ({
   onPoints,
   onRewards,
   onActions,
+  onInvite,
   showLogin,
   showPoints,
 
@@ -111,6 +114,8 @@ const HomeContent = ({
             <SectionHeader title={t("home.section.quick", lang)} />
             <HomeModules modules={modules} />
           </section>
+
+          {isAuthed && <InviteHomeCard onInvite={onInvite} />}
 
           <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
             <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />

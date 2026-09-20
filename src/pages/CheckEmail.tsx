@@ -14,6 +14,8 @@ const CODE_LENGTH = 6;
 interface LocationState {
   email?: string;
   mode?: "signup" | "login";
+  returnTo?: string | null;
+  referralReference?: string | null;
 }
 
 /**
@@ -59,7 +61,10 @@ const CheckEmail = () => {
       return;
     }
     toast.success(t("otp.welcome", lang));
-    navigate("/home?welcome=1", { replace: true });
+    const safeReturnTo = state.returnTo?.startsWith("/") && !state.returnTo.startsWith("//")
+      ? state.returnTo
+      : "/home?welcome=1";
+    navigate(safeReturnTo, { replace: true });
   };
 
   const handleChange = (idx: number, value: string) => {

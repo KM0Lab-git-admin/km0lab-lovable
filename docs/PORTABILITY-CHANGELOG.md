@@ -15,6 +15,24 @@ portarse **manualmente** al monorepo de producción KM0 LAB.
 
 ## v1.0 — En curso
 
+### Invita y gana (piloto frontend)
+
+**Qué:** flujo navegable para invitar personas o negocios, con recompensas configurables de 100/500 puntos, tarjeta en Home para usuarios con sesión, acceso desde Acciones, enlaces diferenciados, compartir nativo, copia alternativa, QR real y alta web de negocio con validación y estados simulados.
+
+**Archivos principales:**
+- `src/pages/Invite.tsx`, `src/pages/BusinessSignup.tsx`
+- `src/components/InviteHomeCard.tsx`, `src/components/InviteQrDialog.tsx`
+- `src/data/inviteConfig.ts`, `src/services/mock/businessRegistration.ts`, `src/types/business.ts`
+- `src/App.tsx`, `src/pages/Home.tsx`, `src/components/HomeContent.tsx`, `src/pages/PointsActions.tsx`
+- `src/pages/Login.tsx`, `src/pages/CheckEmail.tsx`, `src/lib/i18n.ts`, `src/design-system/preview-manifest.ts`
+
+**Notas de portabilidad:**
+- Añade `qrcode` y `@types/qrcode` para generar códigos reales en el navegador.
+- El alta, la comprobación de duplicados, la referencia y la confirmación son simuladas. No se escriben negocios ni se conceden puntos reales.
+- Producción debe sustituir `services/mock/businessRegistration.ts` y la referencia local por los contratos del backend, sin premiar compartir, copiar ni envíos fallidos.
+
+---
+
 ### 1. Bypass de `RequireAuth` en desarrollo
 
 **Qué:** el guard `RequireAuth` deja pasar sin sesión cuando

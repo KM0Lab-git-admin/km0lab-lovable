@@ -18,3 +18,4 @@
 - [x] Añadir la opción «Todos» al selector de rango temporal de la Agenda (sin fecha límite en la consulta).
 - [x] Agenda: la cuadrícula de categorías se puede ocultar y desocultar; la cabecera muestra un chip amarillo con la categoría activa.
 - [x] Agenda: selección de categorías múltiple y acumulativa (unión de slugs en cliente); «Tots» limpia la selección; la cabecera muestra todas las seleccionadas en chips amarillos lado a lado.
+- [x] Implementar el frontend navegable «Invita y gana»: Home, Acciones, compartir/QR, acceso con retorno, alta de negocio mock y confirmación.
