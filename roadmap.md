@@ -16,3 +16,4 @@
 - [x] Mostrar todas las categorías de la Agenda en una cuadrícula sin scroll horizontal.
 - [x] Home: sección Premis alimentada por la API real UAT (/api/v1/rewards/public?postal_code=&lang=) vía proxy rewards-api, con imágenes; fallback mock local.
 - [x] Añadir la opción «Todos» al selector de rango temporal de la Agenda (sin fecha límite en la consulta).
+- [x] Agenda: la cuadrícula de categorías se puede ocultar y desocultar; la cabecera muestra un chip amarillo con la categoría activa.

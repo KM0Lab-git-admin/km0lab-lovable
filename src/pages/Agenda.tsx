@@ -412,7 +412,7 @@ const Agenda = () => {
                   onClick={() => setCatsOpen((v) => !v)}
                   aria-expanded={catsOpen}
                   aria-label={`${t("agenda.cats.label", lang)}: ${activeChip.label}`}
-                  className="inline-flex h-8 max-w-[65%] shrink-0 items-center gap-1.5 self-start rounded-lg border-2 border-km0-yellow-400 bg-km0-yellow-400 px-2.5 shadow-sm transition-all hover:bg-km0-yellow-500 active:scale-95"
+                  className="inline-flex h-8 w-fit max-w-full items-center gap-1.5 self-start rounded-lg border-2 border-km0-yellow-400 bg-km0-yellow-400 px-2.5 shadow-sm transition-all hover:bg-km0-yellow-500 active:scale-95"
                 >
                   <ActiveIcon
                     size={14}
