@@ -166,6 +166,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     level,
     modules: modulesWithHandlers,
     promos,
+    rewards,
     activeTab: "home" as const,
     isAuthed,
     onLogin: goToLogin,
