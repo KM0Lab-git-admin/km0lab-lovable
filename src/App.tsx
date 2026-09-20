@@ -27,6 +27,7 @@ import CheckEmail from "./pages/CheckEmail";
 import EmailOtpTemplate from "./pages/EmailOtpTemplate";
 import Profile from "./pages/Profile";
 import Invite from "./pages/Invite";
+import MyInvitations from "./pages/MyInvitations";
 import BusinessSignup from "./pages/BusinessSignup";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
