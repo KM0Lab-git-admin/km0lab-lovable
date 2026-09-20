@@ -3,13 +3,50 @@
  *
  * Solo LECTURA: GET /api/v1/rewards/public?postal_code=&lang=. Las
  * pantallas consumen estas funciones vía React Query; nunca hacen fetch
- * directamente. Las imágenes relativas se absolutizan al host de la API
- * (los <img> no necesitan proxy CORS).
+ * directamente. Las llamadas se enrutan por la edge function
+ * `rewards-api` (proxy CORS), igual que `event-query` para eventos; las
+ * imágenes relativas se absolutizan al host de la API (los <img> no
+ * necesitan proxy).
+ *
+ * NOTA: no usa `apiClient.ts` (contrato intocable de events-query);
+ * replica su patrón de validación zod con base propia.
  */
 import { z } from "zod";
-import { apiFetch } from "@/services/apiClient";
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as
+  | string
+  | undefined;
+const BASE_URL: string = SUPABASE_URL
+  ? `${SUPABASE_URL}/functions/v1/rewards-api`
+  : "";
+
+/** Host público de la API: para absolutizar imágenes servidas por ella. */
 const REWARDS_HOST = "https://api.uat.km0lab.com";
+
+export class RewardsApiError extends Error {
+  constructor(
+    public readonly status: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = "RewardsApiError";
+  }
+}
+
+export class RewardsApiContractError extends Error {
+  constructor(
+    public readonly endpoint: string,
+    public readonly issues: z.ZodIssue[],
+  ) {
+    super(
+      `La respuesta de ${endpoint} no cumple el contrato: ${issues
+        .map((i) => `${i.path.join(".")}: ${i.message}`)
+        .join("; ")}`,
+    );
+    this.name = "RewardsApiContractError";
+  }
+}
 
 const i18nMapSchema = z.record(z.string(), z.string()).nullable().optional();
 
@@ -94,15 +131,25 @@ export async function listPublicRewards(
   if (params.postalCode) search.set("postal_code", params.postalCode);
   if (params.lang) search.set("lang", params.lang);
   const qs = search.toString();
+  const path = `/api/v1/rewards/public${qs ? `?${qs}` : ""}`;
 
-  const res = await apiFetch(
-    `/api/v1/rewards/public${qs ? `?${qs}` : ""}`,
-    publicRewardsResponseSchema,
-    undefined,
-    "rewards-api",
-  );
+  const authHeaders: Record<string, string> = SUPABASE_KEY
+    ? { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    : {};
+  const res = await fetch(`${BASE_URL}${path}`, {
+    headers: { "Content-Type": "application/json", ...authHeaders },
+  });
+  if (!res.ok) {
+    throw new RewardsApiError(res.status, `API ${path} respondió ${res.status}`);
+  }
+  const json: unknown = await res.json();
+  const parsed = publicRewardsResponseSchema.safeParse(json);
+  if (!parsed.success) {
+    throw new RewardsApiContractError(path, parsed.error.issues);
+  }
+
   const lang = params.lang ?? "ca";
-  return res
+  return parsed.data
     .filter((r) => r.status === "active")
     .map((r) => adaptReward(r, lang));
 }
