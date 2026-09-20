@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { AlertCircle, CheckCircle2, ImagePlus, Loader2, RefreshCw, Trash2 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -17,6 +17,20 @@ import type { BusinessRegistrationInput } from "@/types/business";
 
 type ScreenState = "loading" | "empty" | "error" | "ready" | "already" | "success";
 
+interface BusinessFormValues {
+  businessName: string;
+  taxId: string;
+  category: string;
+  description: string;
+  website: string;
+  address: string;
+  town: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  acceptedTerms: boolean;
+}
+
 const inputClass = "h-11 w-full rounded-xl border-2 border-km0-blue-100 bg-background px-3 font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring";
 
 const BusinessSignup = () => {
@@ -31,7 +45,7 @@ const BusinessSignup = () => {
   const referralReference = searchParams.get("ref");
   const invitedTown = searchParams.get("town") ?? "";
 
-  const schema = useMemo(() => z.object({
+  const schema = useMemo<z.ZodType<BusinessFormValues>>(() => z.object({
     businessName: z.string().trim().min(1, t("business.error.required", lang)).max(120),
     taxId: z.string().trim().min(5, t("business.error.required", lang)).max(20),
     category: z.string().min(1, t("business.error.required", lang)),
@@ -42,11 +56,10 @@ const BusinessSignup = () => {
     contactName: z.string().trim().min(1, t("business.error.required", lang)).max(100),
     email: z.string().trim().email(t("business.error.email", lang)).max(255),
     phone: z.string().trim().regex(/^[+\d][\d\s]{5,19}$|^$/, t("profile.error_phone", lang)),
-    acceptedTerms: z.literal(true, { errorMap: () => ({ message: t("business.error.terms", lang) }) }),
+    acceptedTerms: z.boolean().refine((value) => value, t("business.error.terms", lang)),
   }), [lang]);
 
-  type FormValues = z.infer<typeof schema>;
-  const form = useForm<FormValues>({
+  const form = useForm<BusinessFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       businessName: "",
@@ -86,7 +99,7 @@ const BusinessSignup = () => {
     setLogoName(null);
   };
 
-  const submit = async (values: FormValues) => {
+  const submit = async (values: BusinessFormValues) => {
     if (form.formState.isSubmitting) return;
     setScreenState("ready");
     const input: BusinessRegistrationInput = { ...values, logoName, referralReference };
@@ -193,7 +206,7 @@ const BusinessSignup = () => {
 };
 
 interface TextFieldProps {
-  form: ReturnType<typeof useForm<z.infer<ReturnType<typeof createSchemaPlaceholder>>>>;
+  form: UseFormReturn<BusinessFormValues>;
   name: keyof z.infer<ReturnType<typeof createSchemaPlaceholder>>;
   label: string;
   multiline?: boolean;
@@ -201,12 +214,7 @@ interface TextFieldProps {
   disabled?: boolean;
 }
 
-const createSchemaPlaceholder = () => z.object({
-  businessName: z.string(), taxId: z.string(), category: z.string(), description: z.string(), website: z.string(), address: z.string(), town: z.string(), contactName: z.string(), email: z.string(), phone: z.string(), acceptedTerms: z.boolean(),
-});
-type BusinessFormValues = z.infer<ReturnType<typeof createSchemaPlaceholder>>;
-
-const TextField = ({ form, name, label, multiline = false, inputMode = "text", disabled = false }: Omit<TextFieldProps, "form"> & { form: ReturnType<typeof useForm<BusinessFormValues>> }) => (
+const TextField = ({ form, name, label, multiline = false, inputMode = "text", disabled = false }: TextFieldProps) => (
   <FormField control={form.control} name={name} render={({ field }) => <FormItem><FormLabel>{label}</FormLabel><FormControl>{multiline ? <textarea {...field} rows={3} disabled={disabled} className="w-full rounded-xl border-2 border-km0-blue-100 bg-background px-3 py-2 font-body text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring" /> : <input {...field} type={inputMode === "email" ? "email" : inputMode === "tel" ? "tel" : "text"} inputMode={inputMode} disabled={disabled} className={inputClass} />}</FormControl><FormMessage /></FormItem>} />
 );
 
