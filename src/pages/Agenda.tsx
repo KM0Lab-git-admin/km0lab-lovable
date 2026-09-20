@@ -389,37 +389,90 @@ const Agenda = () => {
         {/* ── Rango temporal ─── */}
         <WhenTabs value={when} onChange={setWhen} className="shrink-0" />
 
-        {/* ── Categorías: cuadrícula completa, iconografía y color uniformes ─── */}
-        <div className="grid grid-cols-4 gap-1.5 shrink-0">
-          {chips.map((c) => {
-            const active = category === c.key;
-            const Icon = c.presentation.Icon;
-            return (
-              <Button
-                key={c.key}
-                type="button"
-                variant="outline"
-                onClick={() => setCategory(c.key)}
-                aria-pressed={active}
-                className={cn(
-                  "h-11 min-w-0 rounded-lg border-2 px-1 font-ui text-[9px] leading-tight transition-all active:scale-95",
-                  active
-                    ? "border-km0-yellow-400 bg-km0-yellow-400 text-km0-blue-900 shadow-sm hover:bg-km0-yellow-500 hover:text-km0-blue-900"
-                    : "border-km0-blue-100 bg-white text-km0-blue-700 hover:border-km0-yellow-400 hover:bg-km0-yellow-50 hover:text-km0-blue-900",
-                )}
-              >
-                <Icon
-                  size={14}
-                  strokeWidth={2.5}
-                  className={cn(
-                    "shrink-0",
-                    active ? "text-km0-blue-900" : "text-km0-blue-500",
-                  )}
-                />
-                <span className="min-w-0 truncate">{c.label}</span>
-              </Button>
-            );
-          })}
+        {/* ── Categorías: cabecera con la selección activa + cuadrícula plegable ─── */}
+        <div className="shrink-0">
+          <div className="flex items-end justify-between gap-2 px-0.5">
+            <div className="flex min-w-0 flex-col gap-1">
+              <span className="font-ui text-[9px] font-bold uppercase tracking-[0.14em] text-km0-blue-500">
+                {t("agenda.cats.label", lang)}
+              </span>
+              {activeChip ? (
+                <button
+                  type="button"
+                  onClick={() => setCatsOpen((v) => !v)}
+                  aria-expanded={catsOpen}
+                  aria-label={`${t("agenda.cats.label", lang)}: ${activeChip.label}`}
+                  className="inline-flex h-8 max-w-[65%] shrink-0 items-center gap-1.5 self-start rounded-lg border-2 border-km0-yellow-400 bg-km0-yellow-400 px-2.5 shadow-sm transition-all hover:bg-km0-yellow-500 active:scale-95"
+                >
+                  <ActiveIcon
+                    size={14}
+                    strokeWidth={2.5}
+                    className="shrink-0 text-km0-blue-900"
+                  />
+                  <span className="min-w-0 truncate font-ui text-[11px] font-bold text-km0-blue-900">
+                    {activeChip.label}
+                  </span>
+                </button>
+              ) : null}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setCatsOpen((v) => !v)}
+              aria-expanded={catsOpen}
+              className="inline-flex shrink-0 items-center gap-1 pb-1.5"
+            >
+              <span className="font-ui text-[10px] font-bold uppercase underline underline-offset-4 text-km0-blue-700">
+                {t(catsOpen ? "agenda.cats.hide" : "agenda.cats.show", lang)}
+              </span>
+              {catsOpen ? (
+                <ChevronUp size={13} className="shrink-0 text-km0-blue-700" />
+              ) : (
+                <ChevronDown size={13} className="shrink-0 text-km0-blue-700" />
+              )}
+            </button>
+          </div>
+
+          <div
+            className={cn(
+              "grid transition-all duration-300 ease-out",
+              catsOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+            )}
+          >
+            <div className="min-h-0 overflow-hidden">
+              <div className="grid grid-cols-4 gap-1.5 pt-2">
+                {chips.map((c) => {
+                  const active = category === c.key;
+                  const Icon = c.presentation.Icon;
+                  return (
+                    <Button
+                      key={c.key}
+                      type="button"
+                      variant="outline"
+                      onClick={() => setCategory(c.key)}
+                      aria-pressed={active}
+                      className={cn(
+                        "h-11 min-w-0 rounded-lg border-2 px-1 font-ui text-[9px] leading-tight transition-all active:scale-95",
+                        active
+                          ? "border-km0-yellow-400 bg-km0-yellow-400 text-km0-blue-900 shadow-sm hover:bg-km0-yellow-500 hover:text-km0-blue-900"
+                          : "border-km0-blue-100 bg-white text-km0-blue-700 hover:border-km0-yellow-400 hover:bg-km0-yellow-50 hover:text-km0-blue-900",
+                      )}
+                    >
+                      <Icon
+                        size={14}
+                        strokeWidth={2.5}
+                        className={cn(
+                          "shrink-0",
+                          active ? "text-km0-blue-900" : "text-km0-blue-500",
+                        )}
+                      />
+                      <span className="min-w-0 truncate">{c.label}</span>
+                    </Button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* ── Contador ─── */}
