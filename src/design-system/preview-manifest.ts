@@ -159,14 +159,14 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "La cabecera muestra bajo el nombre del municipio el botón «Com funciona?» que abre el carrusel explicativo; la tarjeta de registro conserva solo su CTA principal. Oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
+        notes: "La cabecera muestra bajo el nombre del municipio el botón «Com funciona?» que abre el carrusel explicativo; la tarjeta de registro conserva solo su CTA principal. Oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles. RewardsPreview consume la API real de premios (UAT, /api/v1/rewards/public?postal_code=&lang=) con imágenes; fallback al mock local si falla. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "registered",
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas (sin overlay). BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
+        notes: "Oculta LoginButton; muestra PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas (sin overlay). RewardsPreview consume la API real de premios (UAT) con imágenes; fallback al mock local si falla. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "notifications",
