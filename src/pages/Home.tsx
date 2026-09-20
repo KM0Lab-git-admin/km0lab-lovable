@@ -75,6 +75,9 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const { promos: apiPromos } = useFeaturedPromos(4);
   const promos = apiPromos.length > 0 ? apiPromos : PROMOS;
 
+  const { rewards: apiRewards } = usePublicRewards();
+  const rewards = apiRewards.length > 0 ? apiRewards : MOCK_REWARDS;
+
   const toggleModule = (id: HomeModuleId) => {
     setModuleSeeds((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
   };
