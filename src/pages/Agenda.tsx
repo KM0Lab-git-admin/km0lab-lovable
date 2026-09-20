@@ -468,6 +468,11 @@ const Agenda = () => {
                   <span className="min-w-0 truncate font-ui text-[11px] font-bold text-km0-blue-900">
                     {activeChip.label}
                   </span>
+                  {extraCount > 0 && (
+                    <span className="shrink-0 rounded-full bg-km0-blue-900 px-1.5 py-px font-ui text-[9px] font-bold leading-none text-km0-yellow-400">
+                      +{extraCount}
+                    </span>
+                  )}
                 </button>
               ) : null}
             </div>
