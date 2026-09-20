@@ -363,7 +363,14 @@ const Agenda = () => {
         presentation: ALL_CATEGORY_PRESENTATION,
       },
     ];
-  }, [apiCategories, lang]);
+  }, [apiCategories, availableSlugs, lang]);
+
+  // Si la categoría elegida deja de tener eventos en el rango, volvemos a «Tots».
+  useEffect(() => {
+    if (category !== "todos" && availableSlugs && !availableSlugs.has(category)) {
+      setCategory("todos");
+    }
+  }, [category, availableSlugs]);
 
   /** Chip activo mostrado en la cabecera plegable («Tots» está siempre). */
   const activeChip =
