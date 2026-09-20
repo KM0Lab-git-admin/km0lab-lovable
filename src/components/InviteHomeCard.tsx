@@ -1,11 +1,10 @@
-import { useMemo, useState } from "react";
-import { Copy, QrCode, Share2 } from "lucide-react";
-import InviteQrDialog from "@/components/InviteQrDialog";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Share2 } from "lucide-react";
+import ShareChannelsSheet from "@/components/ShareChannelsSheet";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/contexts/LangContext";
-import { useShareLink } from "@/hooks/useShareLink";
-import { buildPublicShareLink, INVITE_REWARDS } from "@/data/inviteConfig";
-import { useAppStore } from "@/stores/useAppStore";
+import { INVITE_REWARDS } from "@/data/inviteConfig";
 import { t } from "@/lib/i18n";
 
 interface InviteHomeCardProps {
@@ -17,16 +16,10 @@ interface InviteHomeCardProps {
 
 const InviteHomeCard = ({ isAuthed, onInvite, onLogin, onCreateAccount }: InviteHomeCardProps) => {
   const { lang } = useLang();
-  const town = useAppStore((state) => state.town);
-  const [qrOpen, setQrOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  // Al volver del acceso conservamos el contexto: ?share=1 reabre el panel.
+  const [shareOpen, setShareOpen] = useState(() => searchParams.get("share") === "1");
 
-  const link = useMemo(() => (typeof window === "undefined" ? "" : buildPublicShareLink(town)), [town]);
-  const shareText = t("share.public_text", lang).replace("{link}", link);
-  const { manualCopy, linkRef, copyLink, share } = useShareLink({
-    link,
-    text: shareText,
-    title: t("share.title", lang),
-  });
 
   return (
     <section className="rounded-2xl border border-km0-blue-100 bg-card px-4 py-4 shadow-sm">
