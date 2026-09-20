@@ -41,7 +41,7 @@ const InviteQrDialog = ({ open, onOpenChange, link, onCopy, titleKey = "invite.q
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[calc(100%-2rem)] max-w-sm rounded-2xl border-km0-blue-100 bg-card p-5">
         <DialogHeader className="text-left">
-          <DialogTitle className="font-brand text-xl text-km0-blue-900">{t("invite.qr.title", lang)}</DialogTitle>
+          <DialogTitle className="font-brand text-xl text-km0-blue-900">{t(titleKey, lang)}</DialogTitle>
           <DialogDescription className="font-body text-xs text-km0-blue-800/70">{t("invite.qr.description", lang)}</DialogDescription>
         </DialogHeader>
         <div className="flex aspect-square w-full items-center justify-center rounded-xl border border-km0-blue-100 bg-background p-4">
