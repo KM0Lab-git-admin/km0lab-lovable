@@ -23,7 +23,7 @@ const Invite = () => {
   const [qrOpen, setQrOpen] = useState(false);
   const [manualCopy, setManualCopy] = useState(false);
   const forcedState = searchParams.get("state");
-  const linkInputRef = useRef<HTMLInputElement | null>(null);
+  const linkInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const link = useMemo(() => {
     if (!user || typeof window === "undefined") return "";
@@ -95,7 +95,7 @@ const Invite = () => {
                 </Button>
               </section>
             ) : (
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-6">
                 <div className="grid grid-cols-1 gap-3" role="radiogroup" aria-label={t("invite.title", lang)}>
                   {(["person", "business"] as const).map((option) => {
                     const selected = kind === option;
@@ -109,7 +109,7 @@ const Invite = () => {
                         aria-checked={selected}
                         onClick={() => setKind(option)}
                         className={cn(
-                          "flex w-full items-start gap-3 rounded-2xl border-2 bg-card p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          "flex h-auto w-full items-start gap-3 whitespace-normal rounded-2xl border-2 bg-card p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                           selected ? "border-km0-yellow-400" : "border-km0-blue-100",
                         )}
                       >
@@ -145,7 +145,7 @@ const Invite = () => {
                   {manualCopy && (
                     <label className="mt-3 block font-ui text-xs font-bold text-km0-blue-800">
                       {t("invite.copy_failed", lang)}
-                      <input ref={linkInputRef} readOnly value={link} onFocus={(event) => event.currentTarget.select()} className="mt-1 h-10 w-full rounded-lg border border-km0-blue-200 bg-background px-3 font-body text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-ring" />
+                      <textarea ref={linkInputRef} readOnly rows={2} value={link} onFocus={(event) => event.currentTarget.select()} className="mt-1 w-full resize-none break-all rounded-lg border border-km0-blue-200 bg-background px-3 py-2 font-body text-xs leading-snug text-foreground focus:outline-none focus:ring-2 focus:ring-ring" />
                     </label>
                   )}
                 </section>
