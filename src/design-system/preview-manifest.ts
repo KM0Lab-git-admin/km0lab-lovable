@@ -159,7 +159,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "La cabecera muestra bajo el nombre del municipio el botón «Com funciona?» que abre el carrusel explicativo; la tarjeta de registro conserva solo su CTA principal. Oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles. RewardsPreview consume la API real de premios (UAT, /api/v1/rewards/public?postal_code=&lang=) con imágenes; fallback al mock local si falla. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
+        notes: "La tarjeta «Comparteix KM0 Lab» conserva un único botón «Compartir» que abre el panel de canales (drawer en móvil, modal en escritorio) con aviso de que sin sesión no hay puntos, accesos a crear cuenta / iniciar sesión, WhatsApp · Correu · Facebook · Més opcions (solo con menú nativo) y «Copia l'enllaç»; sin QR en esta fase. Vista directa del panel en /home?share=1. La cabecera muestra bajo el nombre del municipio el botón «Com funciona?» que abre el carrusel explicativo; la tarjeta de registro conserva solo su CTA principal. Oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles. RewardsPreview consume la API real de premios (UAT, /api/v1/rewards/public?postal_code=&lang=) con imágenes; fallback al mock local si falla. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "registered",

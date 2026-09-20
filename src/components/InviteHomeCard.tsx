@@ -1,11 +1,10 @@
-import { useMemo, useState } from "react";
-import { Copy, QrCode, Share2 } from "lucide-react";
-import InviteQrDialog from "@/components/InviteQrDialog";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Share2 } from "lucide-react";
+import ShareChannelsSheet from "@/components/ShareChannelsSheet";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/contexts/LangContext";
-import { useShareLink } from "@/hooks/useShareLink";
-import { buildPublicShareLink, INVITE_REWARDS } from "@/data/inviteConfig";
-import { useAppStore } from "@/stores/useAppStore";
+import { INVITE_REWARDS } from "@/data/inviteConfig";
 import { t } from "@/lib/i18n";
 
 interface InviteHomeCardProps {
@@ -17,16 +16,10 @@ interface InviteHomeCardProps {
 
 const InviteHomeCard = ({ isAuthed, onInvite, onLogin, onCreateAccount }: InviteHomeCardProps) => {
   const { lang } = useLang();
-  const town = useAppStore((state) => state.town);
-  const [qrOpen, setQrOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  // Al volver del acceso conservamos el contexto: ?share=1 reabre el panel.
+  const [shareOpen, setShareOpen] = useState(() => searchParams.get("share") === "1");
 
-  const link = useMemo(() => (typeof window === "undefined" ? "" : buildPublicShareLink(town)), [town]);
-  const shareText = t("share.public_text", lang).replace("{link}", link);
-  const { manualCopy, linkRef, copyLink, share } = useShareLink({
-    link,
-    text: shareText,
-    title: t("share.title", lang),
-  });
 
   return (
     <section className="rounded-2xl border border-km0-blue-100 bg-card px-4 py-4 shadow-sm">
@@ -67,45 +60,12 @@ const InviteHomeCard = ({ isAuthed, onInvite, onLogin, onCreateAccount }: Invite
         <>
           <Button
             type="button"
-            onClick={() => void share()}
+            onClick={() => setShareOpen(true)}
             className="mt-3 w-full bg-km0-yellow-400 font-ui font-bold text-km0-blue-900 hover:bg-km0-yellow-500"
           >
             <Share2 aria-hidden />
             {t("share.cta", lang)}
           </Button>
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => void copyLink()}
-              className="border-km0-blue-100 font-ui text-xs font-bold text-km0-blue-800"
-            >
-              <Copy aria-hidden />
-              {t("share.copy", lang)}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setQrOpen(true)}
-              className="border-km0-blue-100 font-ui text-xs font-bold text-km0-blue-800"
-            >
-              <QrCode aria-hidden />
-              {t("share.qr", lang)}
-            </Button>
-          </div>
-          {manualCopy && (
-            <label className="mt-3 block font-ui text-xs font-bold text-km0-blue-800">
-              {t("invite.copy_failed", lang)}
-              <textarea
-                ref={linkRef}
-                readOnly
-                rows={2}
-                value={link}
-                onFocus={(event) => event.currentTarget.select()}
-                className="mt-1 w-full resize-none break-all rounded-lg border border-km0-blue-200 bg-background px-3 py-2 font-body text-xs leading-snug text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-            </label>
-          )}
           <p className="mt-3 font-body text-[11px] text-km0-blue-800/60">{t("share.points_question", lang)}</p>
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
             <button
@@ -123,13 +83,7 @@ const InviteHomeCard = ({ isAuthed, onInvite, onLogin, onCreateAccount }: Invite
               {t("share.login", lang)}
             </button>
           </div>
-          <InviteQrDialog
-            open={qrOpen}
-            onOpenChange={setQrOpen}
-            link={link}
-            onCopy={() => void copyLink()}
-            titleKey="share.qr.title"
-          />
+          <ShareChannelsSheet open={shareOpen} onOpenChange={setShareOpen} returnTo="/home?share=1" />
         </>
       )}
     </section>
