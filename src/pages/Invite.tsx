@@ -133,6 +133,14 @@ const Invite = () => {
           <ShareChannelList link={link} message={message} subject={subject} />
         </div>
       </section>
+
+      <button
+        type="button"
+        onClick={() => navigate("/my-invitations")}
+        className="self-start font-ui text-xs font-bold text-km0-blue-700 underline underline-offset-2"
+      >
+        {t("invites.link", lang)}
+      </button>
     </div>
   );
 
