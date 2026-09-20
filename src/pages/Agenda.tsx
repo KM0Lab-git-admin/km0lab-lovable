@@ -498,14 +498,19 @@ const Agenda = () => {
             <div className="min-h-0 overflow-hidden">
               <div className="grid grid-cols-4 gap-1.5 pt-2">
                 {chips.map((c) => {
-                  const active = category === c.key;
+                  const active =
+                    c.key === "todos"
+                      ? selected.length === 0
+                      : selected.includes(c.key);
                   const Icon = c.presentation.Icon;
                   return (
                     <Button
                       key={c.key}
                       type="button"
                       variant="outline"
-                      onClick={() => setCategory(c.key)}
+                      onClick={() =>
+                        c.key === "todos" ? setSelected([]) : toggleCategory(c.key)
+                      }
                       aria-pressed={active}
                       className={cn(
                         "h-11 min-w-0 rounded-lg border-2 px-1 font-ui text-[9px] leading-tight transition-all active:scale-95",
