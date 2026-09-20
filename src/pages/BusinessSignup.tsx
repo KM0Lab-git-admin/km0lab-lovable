@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { AlertCircle, CheckCircle2, ImagePlus, Loader2, RefreshCw, Trash2 } from "lucide-react";
@@ -45,7 +44,7 @@ const BusinessSignup = () => {
   const referralReference = searchParams.get("ref");
   const invitedTown = searchParams.get("town") ?? "";
 
-  const schema = useMemo<z.ZodType<BusinessFormValues>>(() => z.object({
+  const schema = useMemo(() => z.object({
     businessName: z.string().trim().min(1, t("business.error.required", lang)).max(120),
     taxId: z.string().trim().min(5, t("business.error.required", lang)).max(20),
     category: z.string().min(1, t("business.error.required", lang)),
@@ -60,7 +59,6 @@ const BusinessSignup = () => {
   }), [lang]);
 
   const form = useForm<BusinessFormValues>({
-    resolver: zodResolver(schema),
     defaultValues: {
       businessName: "",
       taxId: "",
@@ -101,8 +99,18 @@ const BusinessSignup = () => {
 
   const submit = async (values: BusinessFormValues) => {
     if (form.formState.isSubmitting) return;
+    const parsed = schema.safeParse(values);
+    if (!parsed.success) {
+      parsed.error.issues.forEach((issue) => {
+        const field = issue.path[0];
+        if (typeof field === "string" && field in values) {
+          form.setError(field as keyof BusinessFormValues, { message: issue.message });
+        }
+      });
+      return;
+    }
     setScreenState("ready");
-    const input: BusinessRegistrationInput = { ...values, logoName, referralReference };
+    const input: BusinessRegistrationInput = { ...parsed.data, logoName, referralReference };
     try {
       const result = await createBusinessRegistration(input);
       setScreenState(result.status === "created" ? "success" : "already");
@@ -207,7 +215,7 @@ const BusinessSignup = () => {
 
 interface TextFieldProps {
   form: UseFormReturn<BusinessFormValues>;
-  name: keyof z.infer<ReturnType<typeof createSchemaPlaceholder>>;
+  name: Exclude<keyof BusinessFormValues, "acceptedTerms">;
   label: string;
   multiline?: boolean;
   inputMode?: "text" | "email" | "tel" | "url";
