@@ -335,6 +335,11 @@ const D = {
     es: "¿No lo encuentras? Mira en spam o promociones.",
     en: "Can't find it? Check spam or promotions.",
   } as Dict,
+  "otp.demo_hint": {
+    ca: "Prototip: encara no s'envien correus. Fes servir el codi 123456.",
+    es: "Prototipo: aún no se envían correos. Usa el código 123456.",
+    en: "Prototype: emails aren't sent yet. Use the code 123456.",
+  } as Dict,
 
   // ── Home ─────────────────────────────────────────────────
   "home.hello": { ca: "Hola", es: "Hola", en: "Hi" } as Dict,

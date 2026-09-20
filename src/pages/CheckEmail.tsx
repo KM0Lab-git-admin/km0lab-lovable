@@ -168,6 +168,10 @@ const CheckEmail = () => {
             : t("otp.resend", lang)}
         </button>
 
+        <p className="rounded-xl bg-km0-teal-100 px-3 py-2 font-ui text-xs font-bold text-km0-teal-700 text-center mx-4">
+          {t("otp.demo_hint", lang)}
+        </p>
+
         <p className="font-body text-xs text-muted-foreground text-center px-4">
           {t("otp.footer_hint", lang)}
         </p>
