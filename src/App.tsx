@@ -27,6 +27,7 @@ import CheckEmail from "./pages/CheckEmail";
 import EmailOtpTemplate from "./pages/EmailOtpTemplate";
 import Profile from "./pages/Profile";
 import Invite from "./pages/Invite";
+import MyInvitations from "./pages/MyInvitations";
 import BusinessSignup from "./pages/BusinessSignup";
 import NotFound from "./pages/NotFound";
 import DesignSystem from "./pages/DesignSystem";
@@ -58,6 +59,8 @@ const App = () => (
             <Route path="/check-email" element={<CheckEmail />} />
             <Route path="/email/otp" element={<EmailOtpTemplate />} />
             <Route path="/invite" element={<Invite />} />
+            <Route path="/my-invitations" element={<RequireAuth><MyInvitations /></RequireAuth>} />
+
             <Route path="/business-signup" element={<BusinessSignup />} />
             
             <Route path="/home" element={<Home />} />
