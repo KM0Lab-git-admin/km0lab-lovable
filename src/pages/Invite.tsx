@@ -18,6 +18,10 @@ import { useAppStore } from "@/stores/useAppStore";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 
+/** Identificador de la demo: `/home-registered` fuerza el estado registrado
+ *  sin sesión real (misma convención que RequireAuth y las otras pantallas). */
+const PREVIEW_USER_ID = "preview-user";
+
 const Invite = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -26,7 +30,18 @@ const Invite = () => {
   const town = useAppStore((state) => state.town);
   const [kind, setKind] = useState<InviteKind>("person");
   const forcedState = searchParams.get("state");
-  const isAuthed = Boolean(user);
+
+  const previewAuthed = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      sessionStorage.getItem("km0_preview_authed") === "1",
+    [],
+  );
+
+  // Quién invita: sesión real o, en la demo, el usuario simulado de
+  // `/home-registered`. Nunca un valor aleatorio sin asociación.
+  const userId = user?.id ?? (previewAuthed ? PREVIEW_USER_ID : null);
+  const isAuthed = Boolean(userId);
   const loginPath = "/login?returnTo=%2Finvite";
 
   const townLabel = town ?? t("share.town_fallback", lang);
@@ -34,9 +49,9 @@ const Invite = () => {
   /** Enlace personal con atribución (sesión) o enlace público (sin sesión). */
   const link = useMemo(() => {
     if (typeof window === "undefined") return "";
-    if (!user) return buildPublicShareLink(town, lang);
-    return buildInviteLink({ kind, reference: getReferralReferenceForUser(user.id), town, lang });
-  }, [user, kind, town, lang]);
+    if (!userId) return buildPublicShareLink(town, lang);
+    return buildInviteLink({ kind, reference: getReferralReferenceForUser(userId), town, lang });
+  }, [userId, kind, town, lang]);
 
   const message = isAuthed
     ? t(kind === "person" ? "invite.share.person_text" : "invite.share.business_text", lang).replace("{link}", link)
