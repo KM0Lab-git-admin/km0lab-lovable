@@ -402,7 +402,7 @@ const Agenda = () => {
         {/* ── Categorías: cabecera con la selección activa + cuadrícula plegable ─── */}
         <div className="shrink-0">
           <div className="flex items-end justify-between gap-2 px-0.5">
-            <div className="flex min-w-0 flex-col gap-1">
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
               <span className="font-ui text-[9px] font-bold uppercase tracking-[0.14em] text-km0-blue-500">
                 {t("agenda.cats.label", lang)}
               </span>
