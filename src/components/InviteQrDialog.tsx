@@ -11,14 +11,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useLang } from "@/contexts/LangContext";
-import { t } from "@/lib/i18n";
+import { t, type TKey } from "@/lib/i18n";
 
 interface InviteQrDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   link: string;
   onCopy: () => void;
-  titleKey?: string;
+  titleKey?: TKey;
 }
 
 const InviteQrDialog = ({ open, onOpenChange, link, onCopy, titleKey = "invite.qr.title" }: InviteQrDialogProps) => {
