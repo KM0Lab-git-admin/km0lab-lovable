@@ -85,7 +85,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       id: "default",
       label: "Por defecto",
       src: "/",
-      notes: "Portada con fotografía de altura contenida (recorte ligero en la parte superior) y bloque beige de selección que ocupa el resto con más margen inferior, sin huecos ni scroll, conservando los colores originales de las tres opciones.",
+      notes: "Ilustración centrada a todo el ancho del marco que absorbe la altura sobrante. Hoja beige ajustada a su contenido, título en los tres idiomas y tres tarjetas compactas de 60px mínimos, sin elevación ni saltos. Validar sin scroll en 375×667, 390×844 y 412×915; logo, imágenes, colores y navegación a 300ms conservados.",
     }],
   },
   {

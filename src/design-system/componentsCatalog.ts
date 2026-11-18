@@ -556,11 +556,12 @@ export const componentsCatalog: ComponentSpec[] = [
     category: "idioma",
     importPath: "@/components/LanguageCard",
     description:
-      "Card de selección de idioma. Bandera (emoji o imagen) + nombre + descripción + flecha. Estados: idle, selected (borde amarillo), disabled (gris).",
+      "Card de selección de idioma de 60px mínimos, borde fino y sombra suave. Bandera decorativa + texto identificado por idioma + ChevronRight. Selección amarilla sin elevación ni escala; pulsación compacta de 120ms y foco visible.",
     usedIn: ["Language (Index)"],
     props: [
       { name: "flag", type: "string", required: true, description: "Emoji o URL de bandera (según flagIsImage)." },
       { name: "flagIsImage", type: "boolean", defaultValue: "false", description: "Si true, flag se renderiza como <img>; si no, como emoji." },
+      { name: "lang", type: '"ca" | "es" | "en"', required: true, description: "Idioma del texto de la tarjeta para accesibilidad." },
       { name: "name", type: "string", required: true, description: "Nombre del idioma." },
       { name: "description", type: "string", required: true, description: "Línea secundaria (p.ej. 'Català')." },
       { name: "selected", type: "boolean", defaultValue: "false", description: "Estado seleccionado." },
@@ -569,7 +570,7 @@ export const componentsCatalog: ComponentSpec[] = [
       { name: "style", type: "CSSProperties", description: "Override puntual de estilos inline (p.ej. animation-delay para stagger)." },
     ],
     responsive: [
-      { breakpoint: "vertical-mobile", behavior: "Card completo ancho disponible, bandera 12×12, nombre text-lg." },
+      { breakpoint: "vertical-mobile", behavior: "Ancho completo, mínimo 60px; círculo 40px, bandera 28px, nombre text-base y descripción text-xs. Sin saltos al pasar el cursor." },
       { breakpoint: "vertical-tablet", behavior: "Igual." },
       { breakpoint: "horizontal-mobile", behavior: "Igual." },
       { breakpoint: "horizontal-desktop", behavior: "Igual." },
