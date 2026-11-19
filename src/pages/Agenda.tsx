@@ -1,43 +1,24 @@
+import NotificationsOverlay from "@/components/NotificationsOverlay";
+import { useNotificationsPanel } from "@/hooks/use-notifications-panel";
+import { useLocationContext } from "@/hooks/use-location-context";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
+import { listMunicipalEvents } from "@/services/municipalListings";
+import { Button } from "@/components/ui/button";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Calendar as CalendarIcon,
-  MapPin,
-  Clock,
-  Loader2,
-  Music2,
-  Palette,
-  Baby,
-  Trophy,
-  PartyPopper,
-  UtensilsCrossed,
-  Sparkles,
-  MessageCircle,
-  Clapperboard,
-  GraduationCap,
-  BookOpen,
-  Trees,
-  Gamepad2,
-  Theater,
-  LayoutGrid,
-} from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Clock, Loader2, Music2, Palette, Baby, Trophy, PartyPopper, UtensilsCrossed, Sparkles, MessageCircle, Clapperboard, GraduationCap, BookOpen, Trees, Gamepad2, Theater, LayoutGrid } from "lucide-react";
 
-import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
 import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
 import CategoryFilterMenu, { type CategoryFilterOption } from "@/components/CategoryFilterMenu";
-import { useNotifications } from "@/hooks/useNotifications";
+
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
-import {
-  getCategories,
-  listEvents,
-  type AgendaEvent as Evento,
-} from "@/services/eventsApi";
-import { useAppStore } from "@/stores/useAppStore";
+
+import { getCategories, type AgendaEvent as Evento } from "@/services/eventsApi";
+
 import { useQuery } from "@tanstack/react-query";
 
 /** Municipio por defecto si el usuario no tiene población guardada. */
@@ -185,7 +166,7 @@ const EventListCard = ({
           onOpen(evento.id_unico_evento);
         }
       }}
-      className="bg-white border border-km0-blue-100 rounded-2xl overflow-hidden shadow-sm hover:border-km0-blue-300 hover:shadow-md active:scale-[0.99] transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-km0-blue-500"
+      className="bg-card border border-km0-blue-100 rounded-2xl overflow-hidden shadow-sm hover:border-km0-blue-300 hover:shadow-md active:scale-[0.99] transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-km0-blue-500"
     >
       {evento.url_imagen && (
         <div className="relative w-full aspect-[16/9] bg-km0-blue-50">
@@ -196,7 +177,7 @@ const EventListCard = ({
             className="w-full h-full object-cover"
           />
           {evento.es_gratuito ? (
-            <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-teal-500 text-white shadow-sm">
+            <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-ui font-bold bg-km0-teal-500 text-primary-foreground shadow-sm">
               {t("agenda.badge.free", lang)}
             </span>
           ) : evento.precio_euros != null ? (
@@ -255,7 +236,7 @@ const EventListCard = ({
 };
 
 const SkeletonCard = () => (
-  <div className="bg-white border border-km0-blue-100 rounded-2xl p-3 animate-pulse">
+  <div className="bg-card border border-km0-blue-100 rounded-2xl p-3 animate-pulse">
     <div className="h-4 w-2/3 bg-km0-blue-100/70 rounded mb-2" />
     <div className="h-3 w-1/2 bg-km0-blue-100/50 rounded mb-1.5" />
     <div className="h-3 w-1/3 bg-km0-blue-100/50 rounded" />
@@ -265,7 +246,8 @@ const SkeletonCard = () => (
 /* ─── Página ─────────────────────────────────────────────────── */
 const Agenda = () => {
   const navigate = useNavigate();
-  const { hasUnread, markAllRead } = useNotifications();
+  const notifications = useNotificationsPanel();
+  const scrollRef = useDragScroll("vertical");
   const { lang } = useLang();
   /** Selección múltiple y acumulativa; [] equivale a «Tots». */
   const [selected, setSelected] = useState<string[]>([]);
@@ -273,7 +255,7 @@ const Agenda = () => {
   const [when, setWhen] = useState<WhenKey>("mes");
 
   // Población elegida por el usuario (CP → población), con fallback.
-  const town = useAppStore((s) => s.town) ?? DEFAULT_TOWN;
+  const { town } = useLocationContext();
 
   // Categorías reales de la API: solo las que tienen eventos activos en
   // esta población (el endpoint ya filtra por Estado='ACTIVO').
@@ -283,69 +265,19 @@ const Agenda = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  const [eventos, setEventos] = useState<Evento[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Fetch — filtros estructurados al endpoint de lista /api/v1/events
-  // (mismo que usa la web de eventquery): población + rango de fechas
-  // según el selector WhenTabs. Las categorías son selección múltiple y
-  // se aplican en cliente (unión de slugs sobre `tags`).
-  useEffect(() => {
-    const { desde, hasta } = rangeFor(when);
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-    listEvents({
-      poblacion: town,
-      fechaDesde: desde,
-      fechaHasta: hasta,
-      pageSize: 100,
-      lang: lang === "ca" ? "ca" : "es",
-    })
-
-      .then((res) => {
-        if (!cancelled) setEventos(res.eventos ?? []);
-      })
-      .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Error");
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [when, lang, town]);
-
-  // Población ya la filtra el servidor; aquí solo el precio
-  // (Gratis / Pago), que no se envía a la API.
+  const { desde: rangeDesde, hasta: rangeHasta } = rangeFor(when);
+  const query = useQuery({ queryKey: ["municipal-events", town, rangeDesde, rangeHasta ?? "open", lang],
+    queryFn: () => listMunicipalEvents({ poblacion: town, fechaDesde: rangeDesde, fechaHasta: rangeHasta, lang: lang === "ca" ? "ca" : "es" }), staleTime: 300000 });
+  const eventos = query.data ?? [];
+  const loading = query.isLoading;
+  const error = query.error;
+  const availableSlugs = useMemo(() => new Set(eventos.flatMap(event => event.tags)), [query.data]);
 
   /** Alterna una categoría en la selección múltiple. */
   const toggleCategory = (slug: string) =>
     setSelected((prev) =>
       prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug],
     );
-
-  // El endpoint de categorías cuenta TODOS los eventos activos, incluidos
-  // los ya celebrados. Para no mostrar categorías vacías consultamos los
-  // eventos del rango vigente (sin filtro de categoría) y nos quedamos con
-  // los slugs realmente presentes.
-  const { desde: rangeDesde, hasta: rangeHasta } = rangeFor(when);
-  const { data: availableSlugs } = useQuery({
-    queryKey: ["category-availability", town, rangeDesde, rangeHasta ?? "open"],
-    queryFn: async () => {
-      const res = await listEvents({
-        poblacion: town,
-        fechaDesde: rangeDesde,
-        fechaHasta: rangeHasta,
-        pageSize: 100,
-        lang: lang === "ca" ? "ca" : "es",
-      });
-      return new Set(res.eventos.flatMap((e) => e.tags));
-    },
-    staleTime: 5 * 60 * 1000,
-  });
 
   // Conteos por categoría sobre los eventos del rango vigente (el mismo
   // listado que ve el usuario), así el número del menú coincide con lo que
@@ -384,12 +316,12 @@ const Agenda = () => {
   // Si una categoría seleccionada deja de tener eventos en el rango
   // vigente, se retira de la selección (el resto se conserva).
   useEffect(() => {
-    if (!availableSlugs) return;
+    if (loading || error) return;
     setSelected((prev) => {
       const next = prev.filter((s) => availableSlugs.has(s));
       return next.length === prev.length ? prev : next;
     });
-  }, [availableSlugs]);
+  }, [availableSlugs, loading, error]);
 
   /**
    * Chips de cabecera plegable: muestran todas las categorías
@@ -429,7 +361,7 @@ const Agenda = () => {
         const d = startOfDay(new Date(e.fecha_inicio ?? 0));
         const k = d.toISOString();
         if (!map.has(k)) map.set(k, { date: d, items: [] });
-        map.get(k)!.items.push(e);
+        map.get(k)?.items.push(e);
       });
     return Array.from(map.values());
   }, [filtered]);
@@ -444,9 +376,9 @@ const Agenda = () => {
       {/* ── Hero superior reutilizado del Home ─── */}
       <div className="-mx-4 -mt-5 shrink-0">
         <HomeHero
-          cityName="Malgrat de Mar"
-          hasAlerts={hasUnread}
-          onToggleAlerts={markAllRead}
+          cityName={town}
+          hasAlerts={notifications.hasUnread}
+          onToggleAlerts={notifications.show}
           onBack={() => navigate("/home")}
           backAriaLabel={t("agenda.back", lang)}
           showGreeting={false}
@@ -497,7 +429,7 @@ const Agenda = () => {
         {/* ── Resultados (única zona scrollable, touch nativo móvil) ─── */}
         <section
           className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain space-y-3 -mx-4 px-4 pb-4"
-          style={{ WebkitOverflowScrolling: "touch" }}
+          ref={scrollRef}
         >
           {loading && eventos.length === 0 && (
             <>
@@ -509,12 +441,12 @@ const Agenda = () => {
 
           {!loading && error && (
             <div className="bg-km0-coral-50 border border-km0-coral-200 rounded-2xl p-4 text-xs font-ui text-km0-coral-700">
-              {t("agenda.error", lang)} {error}
+              {t("agenda.error", lang)}<Button variant="bubbleTertiary" onClick={() => { void query.refetch(); }}>{t("merchants.error.retry", lang)}</Button>
             </div>
           )}
 
           {!loading && !error && grouped.length === 0 && (
-            <div className="bg-white border border-km0-blue-100 rounded-2xl p-5 text-center">
+            <div className="bg-card border border-km0-blue-100 rounded-2xl p-5 text-center">
               <CalendarIcon
                 size={28}
                 className="mx-auto text-km0-blue-700/50 mb-2"
@@ -557,15 +489,16 @@ const Agenda = () => {
   );
 
   return (
-    <DeviceShell>
+    <>
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
-        <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
+        <div ref={notifications.setContainer} className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           <div className="flex-1 min-h-0 w-full flex flex-col px-4 pt-5 pb-0 overflow-y-auto overflow-x-hidden">
             {content}
           </div>
+          <NotificationsOverlay open={notifications.open} items={notifications.items} loading={notifications.loading} error={notifications.error} lang={lang} onClose={notifications.close} onReload={notifications.reload} container={notifications.container} />
         </div>
       </div>
-    </DeviceShell>
+    </>
   );
 };
 

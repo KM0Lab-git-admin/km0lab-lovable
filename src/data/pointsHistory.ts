@@ -1,3 +1,4 @@
+import { MOCK_POINTS } from "@/data/mockPointsConfig";
 import type { PointsTransaction } from "@/types/points";
 
 /**
@@ -19,7 +20,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.scan",
     place: "Forn Rovira",
     date: iso(0, 9, 15),
-    points: 20,
+    points: MOCK_POINTS.scan,
   },
   {
     id: "tx-02",
@@ -35,7 +36,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.web_visit",
     place: "Turisme Malgrat",
     date: iso(1, 18, 5),
-    points: 15,
+    points: MOCK_POINTS.webVisit,
   },
   {
     id: "tx-04",
@@ -43,7 +44,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.first_scan",
     place: "Floristeria Nom",
     date: iso(2, 12, 10),
-    points: 50,
+    points: MOCK_POINTS.firstScan,
   },
   {
     id: "tx-05",
@@ -51,7 +52,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.scan",
     place: "Cafè del Mar",
     date: iso(3, 17, 30),
-    points: 20,
+    points: MOCK_POINTS.scan,
   },
   {
     id: "tx-06",
@@ -59,7 +60,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.event_signup",
     place: "Festa Major",
     date: iso(5, 10, 0),
-    points: 75,
+    points: MOCK_POINTS.eventSignup,
   },
   {
     id: "tx-07",
@@ -67,7 +68,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.scan",
     place: "Forn Rovira",
     date: iso(6, 9, 20),
-    points: 20,
+    points: MOCK_POINTS.scan,
   },
   {
     id: "tx-08",
@@ -83,7 +84,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.survey",
     place: "Enquesta KM0 LAB",
     date: iso(12, 11, 45),
-    points: 30,
+    points: MOCK_POINTS.survey,
   },
   {
     id: "tx-10",
@@ -91,7 +92,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.scan",
     place: "Cal Sastre",
     date: iso(18, 16, 10),
-    points: 20,
+    points: MOCK_POINTS.scan,
   },
   {
     id: "tx-11",
@@ -99,7 +100,7 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     conceptKey: "points.history.type.web_visit",
     place: "Ajuntament de Malgrat",
     date: iso(25, 10, 30),
-    points: 15,
+    points: MOCK_POINTS.webVisit,
   },
   {
     id: "tx-12",
@@ -122,6 +123,6 @@ export const POINTS_HISTORY: PointsTransaction[] = [
     type: "signup",
     conceptKey: "points.history.type.signup",
     date: iso(60, 9, 0),
-    points: 100,
+    points: MOCK_POINTS.signup,
   },
 ];

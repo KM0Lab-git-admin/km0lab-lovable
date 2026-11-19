@@ -1,3 +1,8 @@
+import { useAppStore } from "@/stores/useAppStore";
+import { useMockAccountStore } from "@/stores/useMockAccountStore";
+import { loadMockAccount } from "@/services/mock/account";
+import { accountTotals } from "@/types/mockAccount";
+import { MOCK_POINTS } from "@/data/mockPointsConfig";
 /**
  * scannerMockService — Mock del escaneig de QR de comerç.
  *
@@ -58,13 +63,23 @@ export const scannerMockService = {
       case "OK_FORN_ROVIRA":
       default: {
         const forn = COMERCIOS_ADHERITS.find((c) => c.id === "forn-rovira");
+        const userId = useAppStore.getState().session?.user.id;
+        if (!userId) return { ok: false, kind: "codi_no_valid" };
+        await loadMockAccount(userId);
+        const account = useMockAccountStore.getState().accounts[userId];
+        if (!account) return { ok: false, kind: "sense_connexio" };
+        const transactionId = `scan-${forn?.id ?? "forn-rovira"}`;
+        if (account.transactions.some(tx => tx.id === transactionId)) return { ok: false, kind: "ja_visitat", comercNom: forn?.nom };
+        const transactions = [{ id: transactionId, type: "scan" as const, conceptKey: "points.history.type.scan" as const, place: forn?.nom, date: new Date().toISOString(), points: MOCK_POINTS.scan }, ...account.transactions];
+        useMockAccountStore.getState().putAccount(userId, { ...account, transactions });
+        const total = accountTotals(transactions).balance;
         return {
           ok: true,
           comercId: forn?.id ?? "forn-rovira",
           comercNom: forn?.nom ?? "Forn Rovira",
-          puntsGuanyats: forn?.punts ?? 20,
-          totalPunts: 1260,
-          nivell: 4,
+          puntsGuanyats: MOCK_POINTS.scan,
+          totalPunts: total,
+          nivell: Math.floor(total / 1000) + 1,
         };
       }
     }

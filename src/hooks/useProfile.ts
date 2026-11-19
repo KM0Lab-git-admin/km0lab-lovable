@@ -23,7 +23,7 @@ export const useProfile = () => {
   const profile = useAppStore((s) => (userId ? s.profiles[userId] ?? null : null));
 
   return {
-    profile: profile as Profile | null,
+    profile,
     loading: false,
     refetch: () => {/* no-op: el store es la fuente de verdad */},
   };

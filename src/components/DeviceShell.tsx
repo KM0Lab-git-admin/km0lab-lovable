@@ -1,50 +1,8 @@
-import { cn } from '@/lib/utils'
-
-import type { ReactNode } from 'react'
-
-/**
- * DeviceShell — Marco "teléfono" reutilizable SIN header de marca.
- *
- * KM0 LAB es una app mobile-first (Capacitor). En desarrollo local se
- * presenta como un teléfono centrado con borde azul (útil para maquetar
- * en desktop). En producción (Vercel / build) el marco desaparece y la
- * app ocupa el viewport a pantalla completa.
- *
- * El contenido recibe 100% del alto/ancho del frame y gestiona su propio
- * scroll interno si lo necesita.
- */
-interface DeviceShellProps {
-  children: ReactNode
-}
-
-/** Marco "teléfono" siempre visible (dev y prod) hasta que exista layout landscape propio. */
-const showDeviceChrome = true
-
-const DeviceShell = ({ children }: DeviceShellProps) => {
-  return (
-    <div className="min-h-[100dvh] w-full bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden flex items-center justify-center p-0">
-      <div
-        data-bp="vertical-mobile portrait"
-        className={cn(
-          'relative flex flex-col bg-km0-beige-50 overflow-hidden',
-          showDeviceChrome
-            ? 'rounded-3xl border-2 border-km0-blue-700/80 shadow-device-frame'
-            : 'h-dvh w-full max-w-none rounded-none border-0 shadow-none'
-        )}
-        style={
-          showDeviceChrome
-            ? {
-                width: 'min(100vw, 420px)',
-                height:
-                  'min(calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)), 920px)',
-              }
-            : undefined
-        }
-      >
-        {children}
-      </div>
-    </div>
-  )
-}
-
-export default DeviceShell
+import type { ReactNode } from "react";
+/** Lovable-only chrome. Product pages receive their frame from App. */
+const DeviceShell = ({ children }: { children: ReactNode }) => (
+  <div className="flex min-h-dvh w-full items-center justify-center overflow-hidden bg-km0-beige-50">
+    <div data-bp="vertical-mobile portrait" className="relative flex h-[min(calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)),920px)] w-[min(100vw,420px)] flex-col overflow-hidden rounded-3xl border-2 border-km0-blue-700/80 bg-km0-beige-50 shadow-device-frame">{children}</div>
+  </div>
+);
+export default DeviceShell;

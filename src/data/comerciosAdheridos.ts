@@ -1,8 +1,5 @@
-import type {
-  CategoriaAdherit,
-  ComercAdherit,
-  ComercDetall,
-} from "@/types/comercAdherit";
+import { MOCK_POINTS } from "@/data/mockPointsConfig";
+import type { CategoriaAdherit, ComercAdherit, ComercDetall } from "@/types/comercAdherit";
 import shopBakery from "@/assets/shop-logos/shop-bakery.png";
 import shopCafe from "@/assets/shop-logos/shop-cafe.png";
 import shopFashion from "@/assets/shop-logos/shop-fashion.png";
@@ -23,7 +20,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
     categoriaNom: { ca: "Alimentació", es: "Alimentación" },
     adreca: "C. de Mar, 14",
     distanciaM: 240,
-    punts: 20,
+    punts: MOCK_POINTS.scan,
     teQR: true,
     emoji: "🥐",
     imatge: shopBakery,
@@ -36,7 +33,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
     categoriaNom: { ca: "Restauració", es: "Restauración" },
     adreca: "Pg. Marítim, 3",
     distanciaM: 310,
-    punts: 15,
+    punts: MOCK_POINTS.scan,
     teQR: true,
     emoji: "☕",
     imatge: shopCafe,
@@ -49,7 +46,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
     categoriaNom: { ca: "Moda", es: "Moda" },
     adreca: "C. Girona, 22",
     distanciaM: 480,
-    punts: 25,
+    punts: MOCK_POINTS.scan,
     teQR: true,
     emoji: "👕",
     imatge: shopFashion,
@@ -62,7 +59,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
     categoriaNom: { ca: "Serveis", es: "Servicios" },
     adreca: "Pl. Catalunya, 1",
     distanciaM: 520,
-    punts: 20,
+    punts: MOCK_POINTS.scan,
     teQR: false,
     emoji: "💐",
     imatge: shopFlorist,
@@ -75,7 +72,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
     categoriaNom: { ca: "Alimentació", es: "Alimentación" },
     adreca: "C. Bruc, 8",
     distanciaM: 610,
-    punts: 30,
+    punts: MOCK_POINTS.scan,
     teQR: true,
     emoji: "🍷",
     imatge: shopWine,
@@ -88,7 +85,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
     categoriaNom: { ca: "Salut i bellesa", es: "Salud y belleza" },
     adreca: "Av. Costa Brava, 45",
     distanciaM: 680,
-    punts: 10,
+    punts: MOCK_POINTS.scan,
     teQR: true,
     emoji: "💊",
     imatge: shopPharmacy,
@@ -101,7 +98,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
     categoriaNom: { ca: "Llar i decoració", es: "Hogar y decoración" },
     adreca: "C. Indústria, 12",
     distanciaM: 730,
-    punts: 15,
+    punts: MOCK_POINTS.scan,
     teQR: false,
     emoji: "🔧",
     imatge: shopHardware,
@@ -114,7 +111,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
     categoriaNom: { ca: "Cultura i lleure", es: "Cultura y ocio" },
     adreca: "Rbla. dels Pins, 5",
     distanciaM: 820,
-    punts: 20,
+    punts: MOCK_POINTS.scan,
     teQR: true,
     emoji: "📚",
     bg: "bg-km0-blue-100",
@@ -125,7 +122,7 @@ export const COMERCIOS_ADHERITS: ComercAdherit[] = [
  * Mock de categories amb comptador. Total (32) coincideix amb la suma
  * teòrica del programa (encara que aquí només tinguem 8 comerços mock).
  */
-export const CATEGORIES_ADHERITS: CategoriaAdherit[] = [
+const CATEGORY_SEEDS: CategoriaAdherit[] = [
   { slug: "totes", nom: { ca: "Totes les categories", es: "Todas las categorías" }, count: 32, emoji: "🗂️" },
   { slug: "alimentacio", nom: { ca: "Alimentació", es: "Alimentación" }, count: 8, emoji: "🥐" },
   { slug: "restauracio", nom: { ca: "Restauració", es: "Restauración" }, count: 6, emoji: "☕" },
@@ -137,6 +134,10 @@ export const CATEGORIES_ADHERITS: CategoriaAdherit[] = [
   { slug: "esports", nom: { ca: "Esports", es: "Deportes" }, count: 1, emoji: "⚽" },
   { slug: "tecnologia", nom: { ca: "Tecnologia", es: "Tecnología" }, count: 1, emoji: "💻" },
 ];
+
+export const CATEGORIES_ADHERITS: CategoriaAdherit[] = CATEGORY_SEEDS.map(category => ({ ...category,
+  count: category.slug === "totes" ? COMERCIOS_ADHERITS.length : COMERCIOS_ADHERITS.filter(shop => shop.categoriaSlug === category.slug).length,
+})).filter(category => category.count > 0);
 
 /* ─────────────────────────────────────────────────────────────
  * Detall de comerços — MOCK. Claus per id de `COMERCIOS_ADHERITS`.
@@ -165,7 +166,7 @@ export const COMERCIOS_DETALL: Record<string, ComercDetall> = {
       ca: "Fleca artesanal de tota la vida. Pa fet cada matí amb massa mare, coques de temporada i brioixeria feta a mà. Cafè per emportar de 07 a 12 h.",
       es: "Panadería artesanal de toda la vida. Pan hecho cada mañana con masa madre, cocas de temporada y bollería hecha a mano. Café para llevar de 07 a 12 h.",
     },
-    punts: 20,
+    punts: MOCK_POINTS.scan,
     visitat: false,
     promocions: [
       {
@@ -211,7 +212,7 @@ export const COMERCIOS_DETALL: Record<string, ComercDetall> = {
       ca: "Cafeteria davant del mar amb esmorzars, dinars lleugers i coctelleria al capvespre. Terrassa i vistes a la platja.",
       es: "Cafetería frente al mar con desayunos, comidas ligeras y coctelería al atardecer. Terraza y vistas a la playa.",
     },
-    punts: 15,
+    punts: MOCK_POINTS.scan,
     visitat: true,
     promocions: [
       {

@@ -1,20 +1,8 @@
+import { useDragScroll } from "@/hooks/use-drag-scroll";
 import { useEffect, useMemo, useState } from "react";
-import {
-  AlertCircle,
-  Building2,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  Coins,
-  Loader2,
-  RefreshCw,
-  Share2,
-  UserRound,
-  type LucideIcon,
-} from "lucide-react";
+import { AlertCircle, Building2, ChevronLeft, ChevronRight, Clock, Coins, Loader2, RefreshCw, Share2, UserRound, type LucideIcon } from "lucide-react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-import DeviceShell from "@/components/DeviceShell";
 import BottomTabs from "@/components/AccountBottomTabs";
 import type { HomeTab } from "@/components/BottomTabs";
 import { Button } from "@/components/ui/button";
@@ -22,11 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import {
-  fetchInvitations,
-  summarizeInvitations,
-  type InvitationsVariant,
-} from "@/services/mock/invitations";
+import { fetchInvitations, summarizeInvitations, type InvitationsVariant } from "@/services/mock/invitations";
 import type { InvitationRecord, InvitationStatus } from "@/types/invitation";
 
 /* ─── Filtros ─────────────────────────────────────────────── */
@@ -69,6 +53,7 @@ interface SummaryTileProps {
 
 const MyInvitations = () => {
   const navigate = useNavigate();
+  const scrollRef = useDragScroll("vertical");
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const { lang } = useLang();
@@ -165,7 +150,7 @@ const MyInvitations = () => {
 
     return (
       <li key={record.id} className="overflow-hidden rounded-2xl border border-km0-blue-100 bg-card">
-        <button
+        <Button variant="bubbleSurface"
           type="button"
           onClick={() => setOpenId(open ? null : record.id)}
           aria-expanded={open}
@@ -208,7 +193,7 @@ const MyInvitations = () => {
               className={cn("text-km0-blue-700/60 transition-transform", open && "rotate-90")}
             />
           </span>
-        </button>
+        </Button>
 
         {open ? (
           <div className="border-t border-km0-blue-100 bg-km0-beige-50/60 px-3 py-3">
@@ -340,7 +325,7 @@ const MyInvitations = () => {
           {FILTERS.map(({ key, labelKey }) => {
             const active = filter === key;
             return (
-              <button
+              <Button variant="bubbleSurface"
                 key={key}
                 type="button"
                 role="tab"
@@ -354,7 +339,7 @@ const MyInvitations = () => {
                 )}
               >
                 {t(labelKey, lang)}
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -373,7 +358,7 @@ const MyInvitations = () => {
   };
 
   return (
-    <DeviceShell>
+    <>
       <div className="flex h-full w-full justify-center overflow-hidden bg-km0-beige-50">
         <div className="relative flex h-full w-full max-w-[430px] flex-col overflow-hidden bg-km0-beige-50">
           <header className="shrink-0 border-b border-km0-blue-100 bg-card px-3 pb-3 pt-4">
@@ -406,7 +391,7 @@ const MyInvitations = () => {
             </div>
           </header>
 
-          <main className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 py-4">
+          <main ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 py-4">
             {renderContent()}
           </main>
 
@@ -422,7 +407,7 @@ const MyInvitations = () => {
           />
         </div>
       </div>
-    </DeviceShell>
+    </>
   );
 };
 

@@ -1,20 +1,15 @@
+import { useLocationContext } from "@/hooks/use-location-context";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
 import { useMemo, useState } from "react";
 import { AlertCircle, Building2, ChevronLeft, Loader2, RefreshCw, UserRound } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import DeviceShell from "@/components/DeviceShell";
 import BottomTabs from "@/components/AccountBottomTabs";
 import ShareChannelList from "@/components/ShareChannelList";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
-import {
-  buildInviteLink,
-  buildPublicShareLink,
-  getReferralReferenceForUser,
-  INVITE_REWARDS,
-  type InviteKind,
-} from "@/data/inviteConfig";
-import { useAppStore } from "@/stores/useAppStore";
+import { buildInviteLink, buildPublicShareLink, getReferralReferenceForUser, INVITE_REWARDS, type InviteKind } from "@/data/inviteConfig";
+
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 
@@ -24,10 +19,11 @@ const PREVIEW_USER_ID = "preview-user";
 
 const Invite = () => {
   const navigate = useNavigate();
+  const scrollRef = useDragScroll("vertical");
   const [searchParams] = useSearchParams();
   const { user, loading } = useAuth();
   const { lang } = useLang();
-  const town = useAppStore((state) => state.town);
+  const { town } = useLocationContext();
   const [kind, setKind] = useState<InviteKind>("person");
   const forcedState = searchParams.get("state");
 
@@ -134,7 +130,7 @@ const Invite = () => {
         </div>
       </section>
 
-      <button
+      <Button variant="bubbleSurface"
         type="button"
         onClick={() =>
           navigate("/my-invitations?from=actions", { state: { invitationOrigin: "actions" } })
@@ -142,7 +138,7 @@ const Invite = () => {
         className="self-start font-ui text-xs font-bold text-km0-blue-700 underline underline-offset-2"
       >
         {t("invites.link", lang)}
-      </button>
+      </Button>
     </div>
   );
 
@@ -152,20 +148,20 @@ const Invite = () => {
         {t("share.panel.notice", lang)}
       </p>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-        <button
+        <Button variant="bubbleSurface"
           type="button"
           onClick={() => navigate(loginPath)}
           className="font-ui text-xs font-bold text-km0-blue-700 underline underline-offset-2"
         >
           {t("share.create_account", lang)}
-        </button>
-        <button
+        </Button>
+        <Button variant="bubbleSurface"
           type="button"
           onClick={() => navigate(loginPath)}
           className="font-ui text-xs font-bold text-km0-blue-800/70 underline underline-offset-2"
         >
           {t("share.login", lang)}
-        </button>
+        </Button>
       </div>
       <section>
         <h2 className="font-ui text-sm font-bold text-km0-blue-900">{t("share.panel.how", lang)}</h2>
@@ -185,7 +181,7 @@ const Invite = () => {
   };
 
   return (
-    <DeviceShell>
+    <>
       <div className="flex h-full w-full justify-center overflow-hidden bg-km0-beige-50">
         <div className="relative flex h-full w-full max-w-[430px] flex-col overflow-hidden bg-km0-beige-50">
           <header className="shrink-0 border-b border-km0-blue-100 bg-card px-3 pb-3 pt-4">
@@ -211,7 +207,7 @@ const Invite = () => {
             </div>
           </header>
 
-          <main className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 py-4">{renderMain()}</main>
+          <main ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 py-4">{renderMain()}</main>
 
           <BottomTabs
             activeTab="actions"
@@ -225,7 +221,7 @@ const Invite = () => {
           />
         </div>
       </div>
-    </DeviceShell>
+    </>
   );
 };
 

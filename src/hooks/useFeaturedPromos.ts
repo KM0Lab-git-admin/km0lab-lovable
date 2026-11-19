@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useLocationContext } from "@/hooks/use-location-context";
+
 import { listEvents, type AgendaEvent } from "@/services/eventsApi";
 import type { Promo } from "@/types/promo";
 import { useAppStore } from "@/stores/useAppStore";
@@ -52,7 +54,7 @@ function toPromo(ev: AgendaEvent, index: number, lang: "es" | "ca" | "en"): Prom
     badge: {
       text: ev.categorias?.[0] ?? "",
       bg: "bg-km0-blue-700",
-      text_color: "text-white",
+      text_color: "text-primary-foreground",
     },
     gradient: GRADIENTS[index % GRADIENTS.length] ?? "",
     images: ev.url_imagen ? [ev.url_imagen] : [],
@@ -65,36 +67,11 @@ export function useFeaturedPromos(limit = 4): {
   error: string | null;
 } {
   const lang = useAppStore((s) => s.lang);
-  const [promos, setPromos] = useState<Promo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    setError(null);
-    listEvents({
-      pageSize: limit,
-      page: 1,
-      lang: lang === "ca" ? "ca" : "es",
-    })
-      .then((res) => {
-        if (cancelled) return;
-        const mapped = (res.eventos ?? [])
-          .slice(0, limit)
-          .map((ev, i) => toPromo(ev, i, lang));
-        setPromos(mapped);
-      })
-      .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Error");
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [limit, lang]);
-
-  return { promos, loading, error };
+  const { town } = useLocationContext();
+  const today = new Date();
+  const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const query = useQuery({ queryKey: ["featured-events", town, lang, limit, date],
+    queryFn: () => listEvents({ poblacion: town, fechaDesde: date, pageSize: limit, lang: lang === "ca" ? "ca" : "es" }), staleTime: 300000 });
+  return { promos: (query.data?.eventos ?? []).map((ev, i) => toPromo(ev, i, lang)), loading: query.isLoading,
+    error: query.isError ? "events_error" : null };
 }

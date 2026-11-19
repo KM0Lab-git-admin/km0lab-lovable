@@ -58,8 +58,8 @@ export function useAccountAccess(isAuthed: boolean) {
     try {
       const { postalCode, town } = useAppStore.getState();
       const result = await requestOtp(email, {
-        postal_code: postalCode ?? localStorage.getItem("km0_postal_code") ?? undefined,
-        town: town ?? localStorage.getItem("km0_town") ?? undefined,
+        postal_code: postalCode ?? undefined,
+        town: town ?? undefined,
       });
       if (version !== requestVersion.current) return;
       if (result.error) {

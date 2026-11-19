@@ -1,29 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
+import { listMockActions } from "@/services/mock/actions";
+import { usePreviewState } from "@/hooks/use-preview-state";
+import ScreenStatus from "@/components/ScreenStatus";
+import ScreenHeader from "@/components/ScreenHeader";
+import FilterChip from "@/components/FilterChip";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  ChevronLeft,
-  Cake,
-  UserPlus,
-  Star,
-  QrCode,
-  Globe,
-  Mail,
-  CalendarCheck,
-  ClipboardList,
-  Share2,
-  CheckCircle2,
-  Circle,
-  type LucideIcon,
-} from "lucide-react";
+import { Cake, UserPlus, Star, QrCode, Globe, Mail, CalendarCheck, ClipboardList, Share2, CheckCircle2, Circle, type LucideIcon } from "lucide-react";
 
-import DeviceShell from "@/components/DeviceShell";
 import BottomTabs from "@/components/AccountBottomTabs";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { POINTS_ACTIONS } from "@/data/pointsActions";
+
 import type { PointAction, PointActionIcon } from "@/types/points";
 import { Button } from "@/components/ui/button";
 import { INVITE_REWARDS } from "@/data/inviteConfig";
@@ -56,30 +48,6 @@ const ICON_META: Record<PointActionIcon, { ring: string; text: string }> = {
 
 const fmtInt = (n: number) => n.toLocaleString("es-ES");
 
-/* ─── Chip filtro ────────────────────────────────────────── */
-const FilterChip = ({
-  active,
-  onClick,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={cn(
-      "px-3 py-1.5 rounded-full text-xs font-ui font-bold transition-colors",
-      active
-        ? "bg-km0-blue-800 text-white"
-        : "bg-white text-km0-blue-800 border border-km0-blue-100"
-    )}
-  >
-    {label}
-  </button>
-);
-
 /* ─── Fila de acción ─────────────────────────────────────── */
 const ActionRow = ({
   action,
@@ -99,7 +67,7 @@ const ActionRow = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, delay: Math.min(index * 0.04, 0.25) }}
       className={cn(
-        "flex items-center gap-3 px-3 py-3 bg-white rounded-2xl border border-km0-blue-100",
+        "flex items-center gap-3 px-3 py-3 bg-card rounded-2xl border border-km0-blue-100",
         action.completed && "opacity-80"
       )}
     >
@@ -163,91 +131,78 @@ const PointsActions = () => {
   const { lang } = useLang();
   const { user } = useAuth();
   const [filter, setFilter] = useState<Filter>("all");
-  const [loading, setLoading] = useState(true);
+  const query = useQuery({ queryKey: ["mock-actions"], queryFn: listMockActions, staleTime: Infinity });
+  const actions = (query.data ?? []).map(action => ({ ...action, completed: !!user && action.completed }));
+  const scrollRef = useDragScroll("vertical");
 
   const isAuthed =
     !!user ||
     (typeof window !== "undefined" &&
       sessionStorage.getItem("km0_preview_authed") === "1");
 
-  // Simulación de carga para respetar los 4 estados de UI.
-  useMemo(() => {
-    const timer = setTimeout(() => setLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, []);
-
   const { completedCount, pendingCount, totalPoints } = useMemo(() => {
-    const completed = POINTS_ACTIONS.filter((a) => a.completed).length;
-    const pending = POINTS_ACTIONS.length - completed;
-    const points = POINTS_ACTIONS.filter((a) => !a.completed).reduce(
+    const completed = actions.filter((a) => a.completed).length;
+    const pending = actions.length - completed;
+    const points = actions.filter((a) => !a.completed).reduce(
       (sum, a) => sum + a.points,
       0
     );
     return { completedCount: completed, pendingCount: pending, totalPoints: points };
-  }, []);
+  }, [query.data, user]);
 
   const filtered = useMemo(() => {
-    if (filter === "completed") return POINTS_ACTIONS.filter((a) => a.completed);
-    if (filter === "pending") return POINTS_ACTIONS.filter((a) => !a.completed);
-    return POINTS_ACTIONS;
-  }, [filter]);
+    if (filter === "completed") return actions.filter((a) => a.completed);
+    if (filter === "pending") return actions.filter((a) => !a.completed);
+    return actions;
+  }, [query.data, user, filter]);
+
+  const preview = usePreviewState(query.isLoading, query.isError, filtered.length === 0);
 
   return (
-    <DeviceShell>
+    <>
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
         <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           {/* Header */}
-          <header className="shrink-0 flex items-center gap-2 px-3 pt-4 pb-3 bg-km0-beige-50">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              aria-label={t("common.back", lang)}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-km0-blue-100 active:scale-95 transition-transform"
-            >
-              <ChevronLeft size={20} className="text-km0-blue-800" />
-            </button>
-            <h1 className="flex-1 text-center font-brand font-black text-base text-km0-blue-900 pr-10">
-              {t("points.actions.title", lang)}
-            </h1>
-          </header>
-
+          <ScreenHeader title={t("points.actions.title", lang)} />
+          {/* Lista */}
+          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-6">
           {/* Resumen */}
           <section className="shrink-0 px-4 pb-3">
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-4 shadow-[0_12px_28px_-12px_hsl(var(--km0-blue-900)/0.45)]"
+              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-4 shadow-[var(--shadow-bubble)]"
             >
               <Globe
-                className="absolute -bottom-3 -right-3 w-24 h-24 text-white/5 rotate-12 pointer-events-none"
+                className="absolute -bottom-3 -right-3 w-24 h-24 text-primary-foreground/5 rotate-12 pointer-events-none"
                 strokeWidth={1}
               />
-              <p className="relative z-10 font-body text-xs text-white/70 uppercase tracking-wide">
+              <p className="relative z-10 font-body text-xs text-primary-foreground/70 uppercase tracking-wide">
                 {t("points.actions.subtitle", lang)}
               </p>
               <div className="relative z-10 mt-3 grid grid-cols-3 gap-2">
-                <div className="rounded-xl bg-white/10 px-2 py-2 text-center">
+                <div className="rounded-xl bg-card/10 px-2 py-2 text-center">
                   <p className="font-brand font-black text-km0-teal-300 text-lg tabular-nums">
                     {completedCount}
                   </p>
-                  <p className="font-body text-[10px] text-white/60 uppercase tracking-wide">
+                  <p className="font-body text-[10px] text-primary-foreground/60 uppercase tracking-wide">
                     {t("points.actions.completed", lang)}
                   </p>
                 </div>
-                <div className="rounded-xl bg-white/10 px-2 py-2 text-center">
+                <div className="rounded-xl bg-card/10 px-2 py-2 text-center">
                   <p className="font-brand font-black text-km0-yellow-400 text-lg tabular-nums">
                     {pendingCount}
                   </p>
-                  <p className="font-body text-[10px] text-white/60 uppercase tracking-wide">
+                  <p className="font-body text-[10px] text-primary-foreground/60 uppercase tracking-wide">
                     {t("points.actions.pending", lang)}
                   </p>
                 </div>
-                <div className="rounded-xl bg-white/10 px-2 py-2 text-center">
-                  <p className="font-brand font-black text-white text-lg tabular-nums">
+                <div className="rounded-xl bg-card/10 px-2 py-2 text-center">
+                  <p className="font-brand font-black text-primary-foreground text-lg tabular-nums">
                     +{fmtInt(totalPoints)}
                   </p>
-                  <p className="font-body text-[10px] text-white/60 uppercase tracking-wide">
+                  <p className="font-body text-[10px] text-primary-foreground/60 uppercase tracking-wide">
                     {t("common.points", lang)}
                   </p>
                 </div>
@@ -274,20 +229,9 @@ const PointsActions = () => {
             />
           </div>
 
-          {/* Lista */}
-          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-6">
-            {loading ? (
-              <div className="h-full flex items-center justify-center">
-                <p className="font-body text-sm text-km0-blue-800/60">
-                  {t("common.loading", lang)}
-                </p>
-              </div>
-            ) : filtered.length === 0 ? (
-              <div className="h-full flex items-center justify-center text-center px-6">
-                <p className="font-body text-sm text-km0-blue-800/60">
-                  {t("points.actions.empty", lang)}
-                </p>
-              </div>
+
+            {preview.state !== "ready" ? (
+              <ScreenStatus state={preview.state} emptyKey="points.actions.empty" onRetry={() => preview.retry(() => { void query.refetch(); })} />
             ) : (
               <ul className="flex flex-col gap-3 pt-2">
                 {filter !== "completed" && (
@@ -327,7 +271,7 @@ const PointsActions = () => {
           />
         </div>
       </div>
-    </DeviceShell>
+    </>
   );
 };
 

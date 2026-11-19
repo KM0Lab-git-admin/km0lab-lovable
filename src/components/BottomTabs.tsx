@@ -8,7 +8,7 @@ import { t } from "@/lib/i18n";
 export type HomeTab = "home" | "actions" | "puntos" | "rewards" | "perfil";
 
 export interface BottomTabsProps {
-  activeTab: HomeTab;
+  activeTab: HomeTab | null;
   /** Si hay sesión, los tabs no-home responden con su handler real; si no, redirigen a login. */
   isAuthed: boolean;
   onLogin: (tab?: HomeTab) => void;

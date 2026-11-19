@@ -12,12 +12,7 @@
  *  - `getSession()` / `onAuthChange()`: utilitarios legacy basados en
  *    el store; preferir `useAuth()` en componentes.
  */
-import {
-  useAppStore,
-  ensureProfileSeed,
-  type AppSession,
-  type AppUser,
-} from "@/stores/useAppStore";
+import { useAppStore, ensureProfileSeed, type AppSession, type AppUser } from "@/stores/useAppStore";
 
 /** Código de demostración válido para cualquier email en el prototipo. */
 export const DEMO_OTP_CODE = "123456";
@@ -67,8 +62,8 @@ export const verifyOtp = async (
   store.setSession(session);
   store.setPendingOtp(null);
   ensureProfileSeed(session.user, {
-    postal_code: pending?.postal_code,
-    town: pending?.town,
+    postal_code: pending?.postal_code ?? store.postalCode ?? undefined,
+    town: pending?.town ?? store.town ?? undefined,
   });
   return { error: null };
 };

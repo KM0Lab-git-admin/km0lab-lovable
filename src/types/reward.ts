@@ -1,3 +1,4 @@
+import type { Lang } from "@/lib/i18n";
 /**
  * Reward — premio del catálogo canjeable por puntos.
  *
@@ -10,7 +11,9 @@ export type RewardStatus = "active" | "sold_out" | "inactive";
 export type RewardKind = "voucher" | "ticket" | "product" | "discount";
 
 export interface Reward {
+  translations?: Partial<Record<Lang, { title: string; description: string }>>;
   id: string;
+  imageUrl?: string | null;
   title: string;
   description: string;
   category: RewardCategory;

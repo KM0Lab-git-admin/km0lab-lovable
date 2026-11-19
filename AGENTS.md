@@ -6,3 +6,11 @@
 - Use useDragScroll for mouse dragging on nested scroll regions; each region owns one axis and suppresses drag-generated clicks while preserving native touch, wheel and keyboard scrolling.
 - Use additive Bubble Button variants for consistent hover/press feedback without replacing foreground colors, so navigation remains visible on pointer entry and exit.
 - Compose overlays with BubbleSheet inside their portrait frame; AccountBottomTabs and useAccountAccess own the shared locked-tab mock OTP flow so Home and interiors preserve the requested destination without duplicated account logic.
+
+- Keep reward artwork and card framing in RewardArtwork/RewardCardFrame, and common filtering in FilterChip, so catalogue, redemptions and confirmation cannot drift visually.
+- Keep the simulated ledger and redemptions per user in useMockAccountStore behind services/mock/account; every local redemption must atomically add its matching signed transaction.
+- Use useLocationContext for municipality-aware views and municipalListings for complete, validated pagination; never modify the verified API contracts to fix callers.
+- Compose Lovable-only DeviceShell in App, never product pages; product pages own a height-constrained portrait column supplied by the host.
+- Keep pilot point examples in mockPointsConfig; production reward amounts and expiry decisions remain backend-owned.
+
+- Preserve API-provided reward translations in local redemption snapshots, so changing language never rewrites the redeemed item or its cost.

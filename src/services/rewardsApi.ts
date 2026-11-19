@@ -11,6 +11,8 @@
  * NOTA: no usa `apiClient.ts` (contrato intocable de events-query);
  * replica su patrón de validación zod con base propia.
  */
+import { t, type Lang } from "@/lib/i18n";
+import type { RewardCategory, RewardStatus } from "@/types/reward";
 import { z } from "zod";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
@@ -70,6 +72,10 @@ export type PublicReward = z.infer<typeof publicRewardSchema>;
 
 /** Premio adaptado para la UI (Home preview, catálogo). */
 export interface ApiReward {
+  translations?: Partial<Record<Lang, { title: string; description: string }>>;
+  category: RewardCategory;
+  status: RewardStatus;
+  scope: string;
   id: string;
   title: string;
   description: string;
@@ -104,6 +110,13 @@ function toAbsolute(url?: string | null): string | null {
 
 function adaptReward(raw: PublicReward, lang: string): ApiReward {
   return {
+    translations: Object.fromEntries((["ca", "es", "en"] as const).map(language => [language, {
+      title: pickI18n(raw.name, raw.name_i18n, language),
+      description: pickI18n(raw.description ?? "", raw.description_i18n, language),
+    }])),
+    category: raw.type === "balance" ? "balance" : raw.type === "experience" ? "experience" : raw.type === "discount" ? "discount" : "merchandising",
+    status: raw.status === "active" ? "active" : "inactive",
+    scope: t("catalog.scope", lang === "es" || lang === "en" ? lang : "ca"),
     id: raw.id,
     title: pickI18n(raw.name, raw.name_i18n, lang),
     description: pickI18n(raw.description ?? "", raw.description_i18n, lang),

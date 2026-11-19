@@ -1,3 +1,4 @@
+import { t, type Lang } from "@/lib/i18n";
 import type { Reward } from "@/types/reward";
 
 /**
@@ -12,7 +13,7 @@ export const REWARDS: Reward[] = [
     category: "balance",
     status: "active",
     kind: "voucher",
-    costPoints: 1000,
+    costPoints: 50,
     valueLabel: "5 €",
     stock: null,
     scope: "Tots els comerços adherits",
@@ -24,7 +25,7 @@ export const REWARDS: Reward[] = [
     category: "balance",
     status: "active",
     kind: "voucher",
-    costPoints: 2000,
+    costPoints: 100,
     valueLabel: "10 €",
     stock: null,
     scope: "Tots els comerços adherits",
@@ -36,7 +37,7 @@ export const REWARDS: Reward[] = [
     category: "experience",
     status: "active",
     kind: "ticket",
-    costPoints: 1500,
+    costPoints: 200,
     valueLabel: "1 entrada",
     stock: 20,
     scope: "1 comerç",
@@ -48,7 +49,7 @@ export const REWARDS: Reward[] = [
     category: "merchandising",
     status: "active",
     kind: "product",
-    costPoints: 600,
+    costPoints: 180,
     valueLabel: "1 unitat",
     stock: 45,
     scope: "Tots els comerços adherits",
@@ -60,9 +61,19 @@ export const REWARDS: Reward[] = [
     category: "merchandising",
     status: "sold_out",
     kind: "product",
-    costPoints: 800,
+    costPoints: 300,
     valueLabel: "1 unitat",
     stock: 0,
     scope: "Tots els comerços adherits",
   },
 ];
+
+export function getMockRewards(lang: Lang): Reward[] {
+  const titleKeys = { "val-5eur": "reward.mock.voucher5", "val-10eur": "reward.mock.voucher10", "entrada-cinema": "reward.mock.cinema.title", "gorra-km0": "reward.mock.cap.title", "samarreta-km0": "reward.mock.shirt.title" } as const;
+  const descriptionKeys = { voucher: "reward.mock.voucher.description", ticket: "reward.mock.cinema.description", product: "reward.mock.cap.description", discount: "reward.mock.voucher.description" } as const;
+  return REWARDS.map(reward => ({ ...reward,
+    title: t(titleKeys[reward.id as keyof typeof titleKeys], lang),
+    description: t(reward.id === "samarreta-km0" ? "reward.mock.shirt.description" : descriptionKeys[reward.kind], lang),
+    scope: t("catalog.scope", lang), valueLabel: reward.kind === "product" ? t("reward.mock.unit", lang) : reward.kind === "ticket" ? t("reward.mock.ticket", lang) : reward.valueLabel,
+  }));
+}

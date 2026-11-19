@@ -1,3 +1,6 @@
+import { useMockAccount } from "@/hooks/use-mock-account";
+import { useLocationContext } from "@/hooks/use-location-context";
+import { MOCK_POINTS } from "@/data/mockPointsConfig";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -11,32 +14,17 @@ import HomeContent from "@/components/HomeContent";
 
 import NotificationsOverlay from "@/components/NotificationsOverlay";
 import PointsRewardOverlay from "@/components/PointsRewardOverlay";
-import DeviceShell from "@/components/DeviceShell";
 import { type HomeModule, type HomeModuleId } from "@/components/HomeModules";
 
 
-import { PROMOS } from "@/data/promos";
+
 import { INITIAL_MODULES, type HomeModuleSeed } from "@/data/homeModules";
 
 import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
 import { usePublicRewards } from "@/hooks/usePublicRewards";
-import { REWARDS } from "@/data/rewards";
-import type { ApiReward } from "@/services/rewardsApi";
-import { INVITATIONS_MOCK_SUMMARY } from "@/services/mock/invitations";
 
-/** Fallback mock mientras la API carga o si falla: catálogo local activo. */
-const MOCK_REWARDS: ApiReward[] = REWARDS.filter((r) => r.status === "active").map(
-  (r) => ({
-    id: r.id,
-    title: r.title,
-    description: r.description,
-    kind: r.kind,
-    costPoints: r.costPoints,
-    valueLabel: r.valueLabel,
-    stock: r.stock,
-    imageUrl: null,
-  }),
-);
+
+import { INVITATIONS_MOCK_SUMMARY } from "@/services/mock/invitations";
 
 type HomeProps = {
   /** Forzar estado para previews (`/home-registered`, `/home-no-registrado`). */
@@ -47,6 +35,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const { items: notifications, hasUnread, loading: notifLoading, error: notifError, reload: reloadNotifs, markAllSeen } = useNotifications();
   const { user, loading: authLoading } = useAuth();
   const { profile } = useProfile();
+  const account = useMockAccount();
+  const { town: cityName, postalCode } = useLocationContext();
   const { lang } = useLang();
   const navigate = useNavigate();
 
@@ -75,11 +65,9 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const [moduleSeeds, setModuleSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [sheetContainer, setSheetContainer] = useState<HTMLDivElement | null>(null);
 
-  const { promos: apiPromos } = useFeaturedPromos(4);
-  const promos = apiPromos.length > 0 ? apiPromos : PROMOS;
+  const { promos, loading: eventsLoading, error: eventsError } = useFeaturedPromos(4);
 
-  const { rewards: apiRewards } = usePublicRewards();
-  const rewards = apiRewards.length > 0 ? apiRewards : MOCK_REWARDS;
+  const { rewards, loading: rewardsLoading, error: rewardsError, reload: reloadRewards } = usePublicRewards();
 
   const toggleModule = (id: HomeModuleId) => {
     setModuleSeeds((prev) => prev.map((m) => (m.id === id ? { ...m, active: !m.active } : m)));
@@ -144,33 +132,31 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     ? t("home.subtitle.guest", lang)
     : t("home.subtitle.registered", lang);
 
-  // Ciudad: prioriza perfil → localStorage → fallback.
-  const storedTown = (() => {
-    try { return localStorage.getItem("km0_town"); } catch { return null; }
-  })();
-  const cityName = profile?.town || storedTown || "Malgrat de Mar";
-
-  // Puntos mock: registrado empieza con 100 pts de bienvenida (nivel 1,
-  // barra de progreso al 10% hacia el nivel 2 en 1.000 pts).
-  const points = isAuthed ? 100 : 0;
-  const level = isAuthed ? 1 : 1;
-  const nextLevel = 1000;
-  const nextReward = isAuthed ? "Val de 5€ al Forn Rovira" : undefined;
+  const points = isAuthed ? account.balance : 0;
+  const level = Math.floor(points / 1000) + 1;
+  const nextLevel = level * 1000;
+  const nextReward = rewards.find(reward => reward.costPoints > points)?.title;
 
   const sharedProps = {
     cityName,
-    townArtSrc: getTownArt(profile?.postal_code ?? localStorage.getItem("km0_postal_code")),
+    townArtSrc: getTownArt(postalCode),
     hasAlerts: hasUnread,
     onToggleAlerts: openNotifications,
     greeting,
     subtitle,
     points,
+    accountLoading: account.loading,
     nextLevel,
     nextReward,
     level,
     modules: modulesWithHandlers,
     promos,
+    eventsLoading,
+    eventsError: !!eventsError,
     rewards,
+    rewardsLoading,
+    rewardsError,
+    reloadRewards,
     activeTab: "home" as const,
     isAuthed,
     onLogin: goToLogin,
@@ -198,7 +184,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
 
 
   return (
-    <DeviceShell>
+    <>
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
         <div ref={setSheetContainer} className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           <HomeContent {...sharedProps} />
@@ -214,8 +200,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
           />
           {rewardOpen && isAuthed && (
             <PointsRewardOverlay
-              points={100}
-              message="Per registrar-te a KM0 LAB"
+              points={MOCK_POINTS.signup}
+              message={t("home.welcome.reason", lang)}
               contained
               onClose={() => {
                 setRewardOpen(false);
@@ -229,7 +215,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
           )}
         </div>
       </div>
-    </DeviceShell>
+    </>
   );
 };
 

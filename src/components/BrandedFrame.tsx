@@ -1,9 +1,13 @@
-import { ChevronLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button';
+import { useLang } from '@/contexts/LangContext';
+import { t } from '@/lib/i18n';
+import { useDragScroll } from '@/hooks/use-drag-scroll';
+import { ChevronLeft } from 'lucide-react';
 
-import Km0Logo from '@/components/Km0Logo'
-import { cn } from '@/lib/utils'
+import Km0Logo from '@/components/Km0Logo';
+import { cn } from '@/lib/utils';
 
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 
 /**
  * BrandedFrame — Envoltorio compartido para pantallas "con marca".
@@ -18,8 +22,7 @@ import type { ReactNode } from 'react'
  *   horizontal-mobile   (≤1279 landscape)  → 667×375
  *   horizontal-desktop  (≥1280 landscape)  → 1280×550
  *
- * En desarrollo local se muestra el marco azul “teléfono”. En producción
- * (Vercel / build) el marco desaparece y la pantalla ocupa el viewport.
+ * The branded portrait frame is shared by entry screens in every environment.
  *
  * Las pantallas de chat u otras que necesiten pantalla completa NO
  * usan este componente: tienen su propio layout (FullBleed).
@@ -47,33 +50,30 @@ const frameChromeClass = showDeviceChrome
 const BrandedFrame = ({
   children,
   onBack,
-  backAriaLabel = 'Back',
+  backAriaLabel,
   hideHeader = false,
   portraitContentClassName = '',
   landscapeContentClassName = '',
 }: BrandedFrameProps) => {
+  const { lang } = useLang()
+  const scrollRef = useDragScroll("vertical")
   const renderBackButton = (sizeClasses: string, iconSize: number) => {
     if (!onBack) return null
     return (
-      <button
+      <Button variant="bubbleSurface"
         onClick={onBack}
         className={`absolute top-1/2 -translate-y-1/2 ${sizeClasses} flex items-center justify-center rounded-xl border-[2px] border-dashed border-km0-yellow-500 text-km0-yellow-600 hover:bg-km0-yellow-50 transition-all duration-200 hover:scale-105`}
-        aria-label={backAriaLabel}
+        aria-label={backAriaLabel ?? t("common.back", lang)}
       >
         <ChevronLeft size={iconSize} strokeWidth={2.5} />
-      </button>
+      </Button>
     )
   }
 
   return (
     <div
       className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-b from-km0-beige-50 to-km0-beige-100"
-      style={{
-        paddingTop: 'env(safe-area-inset-top)',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        paddingLeft: 'env(safe-area-inset-left)',
-        paddingRight: 'env(safe-area-inset-right)',
-      }}
+
     >
       {/* Frame único (portrait mobile). Mientras la app prioriza solo
           portrait, todas las pantallas se ven al mismo tamaño en
@@ -81,19 +81,11 @@ const BrandedFrame = ({
       <div
         data-bp="vertical-mobile portrait"
         className={cn(
-          'flex flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden',
+          'flex h-[min(calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)),920px)] w-[min(100vw,420px)] flex-col bg-gradient-to-b from-km0-beige-50 to-km0-beige-100 overflow-hidden',
           frameChromeClass,
           !showDeviceChrome && 'h-dvh w-full'
         )}
-        style={
-          showDeviceChrome
-            ? {
-                width: 'min(100vw, 420px)',
-                height:
-                  'min(calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)), 920px)',
-              }
-            : undefined
-        }
+
       >
         {!hideHeader && (
           <header className="relative shrink-0 flex items-center justify-center pt-5 pb-4 px-16">
@@ -103,6 +95,7 @@ const BrandedFrame = ({
         )}
 
         <div
+          ref={scrollRef}
           className={`flex-1 min-h-0 flex flex-col w-full px-4 pb-6 overflow-y-auto overflow-x-hidden ${hideHeader ? 'pt-5' : ''} ${portraitContentClassName} ${landscapeContentClassName}`}
         >
           {children}

@@ -1,4 +1,5 @@
-import type { RewardCategory, RewardKind } from "./reward";
+import type { RewardCategory, RewardKind } from "@/types/reward";
+import type { Lang } from "@/lib/i18n";
 
 /**
  * Redemption — registro de un premio canjeado por un usuario.
@@ -13,6 +14,7 @@ export type RedemptionStatus =
   | "expired";  // Codi no utilitzat dins del termini
 
 export interface Redemption {
+  translations?: Partial<Record<Lang, { title: string; description: string }>>;
   id: string;
   rewardId: string;
   rewardTitle: string;

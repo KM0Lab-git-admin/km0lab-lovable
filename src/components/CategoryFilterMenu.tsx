@@ -66,13 +66,13 @@ const CategoryFilterMenu = ({
 
   const renderOption = (o: CategoryFilterOption, active: boolean, key: string | null) => (
     <li key={o.key}>
-      <button
+      <Button variant="bubbleSurface"
         type="button"
         role="menuitemcheckbox"
         aria-checked={active}
         onClick={() => pick(key)}
         className={cn(
-          "flex w-full items-center gap-2.5 px-3 py-2.5 text-left font-ui text-sm transition-colors",
+          "h-auto min-h-11 justify-start whitespace-normal flex w-full items-center gap-2.5 px-3 py-2.5 text-left font-ui text-sm transition-colors",
           active ? "bg-km0-yellow-100 text-km0-blue-900" : "text-km0-blue-800 hover:bg-km0-beige-50",
         )}
       >
@@ -92,7 +92,7 @@ const CategoryFilterMenu = ({
         >
           {active && <Check size={12} strokeWidth={3} />}
         </span>
-      </button>
+      </Button>
     </li>
   );
 
@@ -125,7 +125,7 @@ const CategoryFilterMenu = ({
           id={panelId}
           role="menu"
           aria-label={title}
-          className="absolute right-0 top-full z-30 mt-2 flex max-h-80 w-72 max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-km0-blue-100 bg-white shadow-lg"
+          className="absolute right-0 top-full z-30 mt-2 flex max-h-80 w-72 max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-km0-blue-100 bg-card shadow-lg"
         >
           <p className="shrink-0 border-b border-km0-blue-100 px-3 py-2 font-ui text-[10px] font-bold uppercase tracking-[0.14em] text-km0-blue-500">
             {title}

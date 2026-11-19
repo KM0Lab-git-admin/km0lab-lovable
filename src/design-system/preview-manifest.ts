@@ -78,6 +78,17 @@ export const PREVIEW_SESSION = {
 
 export const PREVIEW_SCREENS: PreviewScreen[] = [
   {
+    id: "rewards", label: "Premis", path: "/rewards", dynamicContent: true,
+    states: [
+      { id: "guest", label: "Público", src: "/rewards", notes: "Catálogo público UAT compartido con Home; tarjetas de una columna con imágenes completas y fallback de icono solo sin imagen. Sin saldo de invitado ni pestaña Canjes activa; confirmación requiere sesión." },
+      { id: "registered", label: "Cuenta demo", src: "/rewards", seedSession: true, notes: "Saldo compartido con Home/historial/canjes; confirmación en BubbleSheet y escritura solo en el ledger local simulado. Navegación inferior, teclado y arrastre." },
+      { id: "promos", label: "Promociones", src: "/rewards?tab=promos" },
+      { id: "loading", label: "Carga", src: "/rewards?state=loading" },
+      { id: "empty", label: "Vacío", src: "/rewards?state=empty" },
+      { id: "error", label: "Error", src: "/rewards?state=error" },
+    ],
+  },
+  {
     id: "language",
     label: "Language",
     path: "/",
@@ -121,7 +132,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     id: "login",
     label: "Login",
     path: "/login",
-    states: [{ id: "default", label: "Por defecto", src: "/login" }],
+    states: [{ id: "default", label: "Por defecto", src: "/login", notes: "Acceso simulado, cualquier correo con 123456, sin promesa de envío; retorno contextual desde ruta privada." }],
   },
   {
     id: "check-email",
@@ -223,6 +234,10 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     label: "PointsActions",
     path: "/points-actions",
     states: [
+      { id: "loading", label: "loading", src: "/points-actions?state=loading" },
+      { id: "empty", label: "empty", src: "/points-actions?state=empty" },
+      { id: "error", label: "error", src: "/points-actions?state=error" },
+
       {
         id: "guest",
         label: "No registrado",
@@ -234,7 +249,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Registrado",
         src: "/points-actions",
         seedSession: true,
-        notes: "Lista de acciones para ganar puntos con sesión simulada. El tab 'Accions' está activo.",
+        notes: "Lista de acciones para ganar puntos con sesión simulada. El tab 'Accions' está activo; ejemplos unificados 500 cumpleaños, 20 escaneo y 50 primer escaneo, no puntos reales.",
       },
       { id: "account-points", label: "Acceso a puntos sin sesión", src: "/points-actions?access=points" },
       { id: "account-rewards", label: "Acceso a canjes sin sesión", src: "/points-actions?access=rewards" },
@@ -246,12 +261,16 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     label: "HistorialPunts",
     path: "/points-history",
     states: [
+      { id: "loading", label: "loading", src: "/points-history?state=loading", seedSession: true },
+      { id: "empty", label: "empty", src: "/points-history?state=empty", seedSession: true },
+      { id: "error", label: "error", src: "/points-history?state=error", seedSession: true },
+
       {
         id: "registered",
         label: "Registrado",
         src: "/points-history",
         seedSession: true,
-        notes: "Historial de transacciones con filtros y resumen de saldo. Incluye la fila «Punts per invitacions» con el total histórico concedido y acceso al seguimiento. AccountBottomTabs comparte el acceso contextual sin sesión y abre destinos directamente con sesión; «Els meus punts» activo.",
+        notes: "Cuenta simulada persistida por usuario, saldo con signo y canjes vinculados al mismo historial. Cabecera común y arrastre vertical; estados explícitos. Historial de transacciones con filtros y resumen de saldo. Incluye la fila «Punts per invitacions» con el total histórico concedido y acceso al seguimiento. AccountBottomTabs comparte el acceso contextual sin sesión y abre destinos directamente con sesión; «Els meus punts» activo.",
       },
     ],
   },
@@ -266,8 +285,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "default",
         label: "Por defecto",
         src: "/events",
-        notes:
-          "Categorías dinámicas desde /api/v1/categories?poblacion=<población del usuario>, depuradas contra los eventos del rango vigente (se ocultan las categorías cuyo recuento solo incluye eventos pasados; las seleccionadas que desaparecen se retiran de la selección) + chip 'Tots'. Selección MÚLTIPLE y acumulativa: cada toque suma o quita la categoría y los eventos se filtran en cliente por unión de slugs; 'Tots' limpia la selección. Cuadrícula completa sin scroll horizontal, con icono específico por categoría, base blanca uniforme y amarillo KM0 en las seleccionadas. La cuadrícula se pliega/despliega con el enlace Ocultar/Mostrar de la cabecera; al plegar quedan visibles chips amarillos con TODAS las categorías seleccionadas, una al lado de la otra (o 'Tots' si no hay selección; clic para reabrir). Selector de rango temporal (Esta semana / Próximos 30 días / Todos) que filtra por fecha_desde/fecha_hasta; 'Todos' no envía fecha límite. Tarjetas con imagen del evento arriba (badge de precio/gratis sobre ella), título, fecha/hora/lugar y etiqueta de categoría.",
+        notes: "Una sola consulta paginada completa por municipio/rango/idioma. Categorías y conteos derivados de esa lista, selección múltiple y menú junto a fechas. Campana abre el panel compartido y marca leído al abrir; arrastre vertical.",
       },
     ],
   },
@@ -291,7 +309,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     label: "Noticias",
     path: "/news",
     states: [
-      { id: "happy", label: "Feliz", src: "/news" },
+      { id: "happy", label: "Feliz", src: "/news", notes: "Municipio único, noticias completas paginadas y caché compartida con campanas. Campana abre NotificationsOverlay contenido en el marco; arrastre vertical." },
       { id: "loading", label: "Loading", src: "/news?state=loading" },
       { id: "empty", label: "Vacío", src: "/news?state=empty" },
       { id: "error", label: "Error", src: "/news?state=error" },
@@ -307,7 +325,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "anonymous",
         label: "Sin sesión",
         src: "/profile",
-        notes: "Formulario vacío (modo testing sin user).",
+        notes: "Sin sesión se redirige al acceso simulado conservando el destino; los accesos de navegación usan el panel contextual.",
       },
       {
         id: "registered",
@@ -323,11 +341,16 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     label: "PremisCanjats",
     path: "/redeemed-rewards",
     states: [
+      { id: "loading", label: "loading", src: "/redeemed-rewards?state=loading", seedSession: true },
+      { id: "empty", label: "empty", src: "/redeemed-rewards?state=empty", seedSession: true },
+      { id: "error", label: "error", src: "/redeemed-rewards?state=error", seedSession: true },
+
       {
         id: "default",
         label: "Por defecto",
         src: "/redeemed-rewards",
-        notes: "Mock con todos los estados: pending, redeemed y expired. AccountBottomTabs con 5 tabs y panel de cuenta compartido para accesos sin sesión; tab 'Premis canjats' activo.",
+        seedSession: true,
+        notes: "Tarjetas compartidas con catálogo, imágenes, arrastre, copia confirmada y cuenta simulada persistida. Pendientes reúne pending/ready, filtro caducados y fechas relativas coherentes; ca/es/en. Mock con todos los estados: pending, ready, redeemed y expired. AccountBottomTabs con 5 tabs y panel de cuenta compartido para accesos sin sesión; tab 'Premis canjats' activo.",
       },
 
     ],
@@ -347,7 +370,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     id: "scanner",
     label: "Scanner",
     path: "/scanner",
-    states: [{ id: "default", label: "Lectura", src: "/scanner" }],
+    states: [{ id: "default", label: "Lectura", src: "/scanner", notes: "Escaneo mock suma 20 solo en la cuenta simulada; total deriva del ledger compartido." }],
   },
 ];
 

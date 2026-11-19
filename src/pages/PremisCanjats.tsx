@@ -1,50 +1,30 @@
+import { localizeRedemption, isPendingRedemption } from "@/services/mock/account";
+import { useMockAccount } from "@/hooks/use-mock-account";
+import { usePreviewState } from "@/hooks/use-preview-state";
+import ScreenStatus from "@/components/ScreenStatus";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  ChevronLeft,
-  Gift,
-  Ticket,
-  ShoppingBag,
-  Percent,
-  PackageCheck,
-  Clock,
-  AlertCircle,
-  CheckCircle2,
-  Copy,
-  Check,
-  type LucideIcon,
-} from "lucide-react";
+import { Gift, PackageCheck, Clock, AlertCircle, CheckCircle2, Copy, Check, type LucideIcon } from "lucide-react";
 
-import DeviceShell from "@/components/DeviceShell";
+import RewardCardFrame from "@/components/RewardCardFrame";
+import FilterChip from "@/components/FilterChip";
+import ScreenHeader from "@/components/ScreenHeader";
+import { Button } from "@/components/ui/button";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
+import { toast } from "sonner";
 import BottomTabs from "@/components/AccountBottomTabs";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { REDEMPTIONS } from "@/data/redemptions";
+
 import type { Redemption, RedemptionStatus } from "@/types/redemption";
-import type { RewardKind } from "@/types/reward";
+
 
 /* ─── Filtros ────────────────────────────────────────────── */
 type Filter = "all" | RedemptionStatus;
-
-/* ─── Mapa tipo → icono ──────────────────────────────────── */
-const KIND_ICON: Record<RewardKind, LucideIcon> = {
-  voucher: Gift,
-  ticket: Ticket,
-  product: ShoppingBag,
-  discount: Percent,
-};
-
-/** Fondos suaves por tipo, coherentes con el carrusel de premios de Home. */
-const KIND_BACKGROUND: Record<RewardKind, string> = {
-  voucher: "bg-km0-yellow-100",
-  ticket: "bg-km0-teal-100",
-  product: "bg-km0-coral-50",
-  discount: "bg-km0-blue-100",
-};
 
 const STATUS_META: Record<
   RedemptionStatus,
@@ -91,30 +71,6 @@ const isFutureOrToday = (iso: string) => {
   return d.getTime() >= today.getTime();
 };
 
-/* ─── Chip filtro ────────────────────────────────────────── */
-const FilterChip = ({
-  active,
-  onClick,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={cn(
-      "shrink-0 px-3 py-1.5 rounded-full text-xs font-ui font-bold transition-colors",
-      active
-        ? "bg-km0-blue-800 text-white"
-        : "bg-white text-km0-blue-800 border border-km0-blue-100",
-    )}
-  >
-    {label}
-  </button>
-);
-
 /* ─── Tarjeta de bescanvi ────────────────────────────────── */
 const RedemptionCard = ({
   redemption,
@@ -126,81 +82,21 @@ const RedemptionCard = ({
   const { lang } = useLang();
   const [copied, setCopied] = useState(false);
 
-  const KindIcon = KIND_ICON[redemption.rewardKind];
   const status = STATUS_META[redemption.status];
   const StatusIcon = status.Icon;
 
   const showCode =
     redemption.status === "pending" || redemption.status === "ready";
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (!redemption.code) return;
-    void navigator.clipboard.writeText(redemption.code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try { await navigator.clipboard.writeText(redemption.code); setCopied(true); }
+    catch { setCopied(false); toast.error(t("clipboard.error", lang)); }
   };
-
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
-      className="rounded-2xl bg-white border border-km0-blue-100 overflow-hidden shadow-[0_8px_20px_-14px_hsl(var(--km0-blue-900)/0.35)]"
-    >
-      {/* Cabecera con imagen del premio (o icono del tipo si no tiene) */}
-      <div
-        className={cn(
-          "relative h-28 flex items-center justify-center",
-          KIND_BACKGROUND[redemption.rewardKind],
-          redemption.status === "expired" && "opacity-60",
-        )}
-      >
-        <span
-          className={cn(
-            "absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-ui font-bold uppercase tracking-wide flex items-center gap-1",
-            status.cls,
-          )}
-        >
-          <StatusIcon size={12} />
-          {t(status.labelKey, lang)}
-        </span>
-        {redemption.imageUrl ? (
-          <img
-            src={redemption.imageUrl}
-            alt=""
-            loading="lazy"
-            className={cn(
-              "h-full w-full object-contain p-3",
-              redemption.status === "expired" && "grayscale-[0.4]",
-            )}
-          />
-        ) : (
-          <KindIcon
-            size={48}
-            strokeWidth={1.8}
-            className={cn(
-              "text-km0-blue-900",
-              redemption.status === "expired" && "grayscale-[0.4]",
-            )}
-          />
-        )}
-      </div>
-
+    <RewardCardFrame title={redemption.rewardTitle} description={redemption.rewardDescription} kind={redemption.rewardKind} imageUrl={redemption.imageUrl} points={redemption.costPoints}
+      badge={<span className={cn("flex items-center gap-1 rounded-full px-3 py-1 font-ui text-[10px] font-bold", status.cls)}><StatusIcon size={12} />{t(status.labelKey, lang)}</span>}>
       {/* Cuerpo */}
-      <div className="p-4 flex flex-col gap-3">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-brand font-black text-sm text-km0-blue-900 leading-tight">
-            {redemption.rewardTitle}
-          </h3>
-          <span className="shrink-0 rounded-full bg-km0-yellow-400 px-2.5 py-1 text-[11px] font-ui font-black tabular-nums text-km0-blue-900">
-            {t("rewards.cost", lang).replace("{n}", fmtInt(redemption.costPoints))}
-          </span>
-        </div>
-
-        <p className="font-body text-xs text-km0-blue-800/70 leading-snug">
-          {redemption.rewardDescription}
-        </p>
-
         <div className="grid grid-cols-2 gap-3">
           <div>
             <p className="font-body text-[10px] uppercase tracking-wide text-km0-blue-800/50">
@@ -241,10 +137,10 @@ const RedemptionCard = ({
                 {redemption.code}
               </p>
             </div>
-            <button
+            <Button variant="bubbleSurface"
               type="button"
               onClick={handleCopy}
-              className="shrink-0 w-9 h-9 rounded-full bg-white border border-km0-blue-100 flex items-center justify-center active:scale-95 transition-transform"
+              className="shrink-0 w-9 h-9 rounded-full bg-card border border-km0-blue-100 flex items-center justify-center active:scale-95 transition-transform"
               aria-label={t("redeem.copy_code", lang)}
             >
               {copied ? (
@@ -252,7 +148,7 @@ const RedemptionCard = ({
               ) : (
                 <Copy size={16} className="text-km0-blue-800" />
               )}
-            </button>
+            </Button>
           </div>
         )}
 
@@ -289,17 +185,18 @@ const RedemptionCard = ({
             )}
           </p>
         )}
-      </div>
-    </motion.article>
+    </RewardCardFrame>
   );
 };
 
 /* ─── Pantalla ───────────────────────────────────────────── */
 const PremisCanjats = () => {
   const navigate = useNavigate();
+  const account = useMockAccount();
   const { lang } = useLang();
   const { user } = useAuth();
   const isAuthed = !!user;
+  const scrollRef = useDragScroll("vertical");
   const [filter, setFilter] = useState<Filter>("all");
 
   const goToHome = () => navigate("/home");
@@ -313,21 +210,21 @@ const PremisCanjats = () => {
 
   const sorted = useMemo(
     () =>
-      [...REDEMPTIONS].sort(
+      [...account.redemptions].map(redemption => localizeRedemption(redemption, lang)).sort(
         (a, b) => new Date(b.redeemedAt).getTime() - new Date(a.redeemedAt).getTime(),
       ),
-    [],
+    [account.redemptions, lang],
   );
 
   const filtered = useMemo(() => {
     if (filter === "all") return sorted;
-    return sorted.filter((r) => r.status === filter);
+    return sorted.filter((r) => filter === "pending" ? isPendingRedemption(r) : r.status === filter);
   }, [sorted, filter]);
 
   const counts = useMemo(() => {
     const total = sorted.length;
     const active = sorted.filter(
-      (r) => r.status === "pending" || r.status === "ready",
+      (r) => isPendingRedemption(r),
     ).length;
     return { total, active };
   }, [sorted]);
@@ -336,47 +233,40 @@ const PremisCanjats = () => {
     { key: "all", labelKey: "redemptions.filter.all" },
     { key: "pending", labelKey: "redemptions.filter.pending" },
     { key: "redeemed", labelKey: "redemptions.filter.redeemed" },
+    { key: "expired", labelKey: "redemptions.filter.expired" },
   ];
 
+  const preview = usePreviewState(account.loading, account.error, filtered.length === 0);
+
   return (
-    <DeviceShell>
+    <>
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
         <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           {/* Header */}
-          <header className="shrink-0 flex items-center gap-2 px-3 pt-4 pb-3 bg-km0-beige-50">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              aria-label={t("common.back", lang)}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-km0-blue-100 active:scale-95 transition-transform"
-            >
-              <ChevronLeft size={20} className="text-km0-blue-800" />
-            </button>
-            <h1 className="flex-1 text-center font-brand font-black text-base text-km0-blue-900 pr-10">
-              {t("redemptions.title", lang)}
-            </h1>
-          </header>
+          <ScreenHeader title={t("redemptions.title", lang)} />
 
+          {/* Lista */}
+          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-6">
           {/* Resumen */}
           <section className="shrink-0 px-4 pb-3">
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-4 shadow-[0_12px_28px_-12px_hsl(var(--km0-blue-900)/0.45)]"
+              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-4 shadow-[var(--shadow-bubble)]"
             >
               <Gift
-                className="absolute -bottom-3 -right-3 w-24 h-24 text-white/5 rotate-12 pointer-events-none"
+                className="absolute -bottom-3 -right-3 w-24 h-24 text-primary-foreground/5 rotate-12 pointer-events-none"
                 strokeWidth={1}
               />
-              <p className="relative z-10 font-body text-xs text-white/70 uppercase tracking-wide">
+              <p className="relative z-10 font-body text-xs text-primary-foreground/70 uppercase tracking-wide">
                 {t("redemptions.summary", lang)}
               </p>
               <div className="relative z-10 mt-0.5 flex items-baseline gap-1.5">
-                <span className="font-brand font-black text-white text-3xl tabular-nums">
+                <span className="font-brand font-black text-primary-foreground text-3xl tabular-nums">
                   {counts.total}
                 </span>
-                <span className="font-body text-white/70 text-sm">
+                <span className="font-body text-primary-foreground/70 text-sm">
                   {counts.total === 1
                     ? t("redemptions.reward_one", lang)
                     : t("redemptions.reward_many", lang)}
@@ -393,7 +283,7 @@ const PremisCanjats = () => {
           </section>
 
           {/* Filtros */}
-          <div className="shrink-0 px-4 pb-2 flex items-center gap-2 overflow-x-auto no-scrollbar">
+          <div className="shrink-0 px-4 pb-2 flex items-center gap-2 flex-wrap">
             {filters.map((f) => (
               <FilterChip
                 key={f.key}
@@ -404,14 +294,10 @@ const PremisCanjats = () => {
             ))}
           </div>
 
-          {/* Lista */}
-          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-6">
-            {filtered.length === 0 ? (
-              <div className="h-full flex items-center justify-center text-center px-6">
-                <p className="font-body text-sm text-km0-blue-800/60">
-                  {t("redemptions.empty", lang)}
-                </p>
-              </div>
+
+          <p className="mb-3 font-body text-[11px] text-muted-foreground">{t("account.demo", lang)}</p>
+            {preview.state !== "ready" ? (
+              <ScreenStatus state={preview.state} emptyKey="redemptions.empty" onRetry={() => preview.retry(account.reload)} />
             ) : (
               <div className="flex flex-col gap-3 pt-1">
                 {filtered.map((r, i) => (
@@ -435,7 +321,7 @@ const PremisCanjats = () => {
         </div>
 
       </div>
-    </DeviceShell>
+    </>
   );
 };
 

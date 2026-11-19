@@ -1,31 +1,21 @@
+import FilterChip from "@/components/FilterChip";
+import ScreenHeader from "@/components/ScreenHeader";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
+import { useMockAccount } from "@/hooks/use-mock-account";
+import { usePreviewState } from "@/hooks/use-preview-state";
+import ScreenStatus from "@/components/ScreenStatus";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  ChevronLeft,
-  UserPlus,
-  Star,
-  QrCode,
-  Globe,
-  CalendarCheck,
-  ClipboardList,
-  MessageSquarePlus,
-  Tag,
-  Coins,
-  Gift as GiftIcon,
-  ChevronRight,
-  Share2,
-  type LucideIcon,
-} from "lucide-react";
+import { UserPlus, Star, QrCode, Globe, CalendarCheck, ClipboardList, MessageSquarePlus, Tag, Coins, Gift as GiftIcon, ChevronRight, Share2, type LucideIcon } from "lucide-react";
 
-import DeviceShell from "@/components/DeviceShell";
 import BottomTabs from "@/components/AccountBottomTabs";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { POINTS_HISTORY } from "@/data/pointsHistory";
+
 import type { PointsTransaction, PointsTxType } from "@/types/points";
 import { INVITATIONS_MOCK_SUMMARY } from "@/services/mock/invitations";
 
@@ -44,6 +34,8 @@ const TYPE_META: Record<
   event_signup: { Icon: CalendarCheck,      ring: "bg-km0-teal-100",   text: "text-km0-teal-700"  },
   survey:       { Icon: ClipboardList,      ring: "bg-km0-yellow-100", text: "text-km0-blue-800"  },
   suggestion:   { Icon: MessageSquarePlus,  ring: "bg-km0-teal-100",   text: "text-km0-teal-700"  },
+  invitation:   { Icon: Share2, ring: "bg-km0-teal-100", text: "text-km0-teal-700" },
+  demo_credit: { Icon: Coins, ring: "bg-km0-yellow-100", text: "text-km0-blue-800" },
   redeem:       { Icon: Tag,                ring: "bg-km0-coral-100",  text: "text-km0-coral-500" },
 };
 
@@ -82,7 +74,7 @@ const formatDate = (iso: string, lang: Lang): string => {
     .replace(/\.$/, "");
 };
 
-const fmtInt = (n: number) => Math.abs(n).toLocaleString("es-ES");
+const fmtInt = (n: number) => n.toLocaleString("es-ES");
 
 /* ─── Fila de movimiento ─────────────────────────────────── */
 const TxRow = ({ tx, lang, index }: { tx: PointsTransaction; lang: Lang; index: number }) => {
@@ -118,39 +110,16 @@ const TxRow = ({ tx, lang, index }: { tx: PointsTransaction; lang: Lang; index: 
         )}
       >
         {positive ? "+" : "−"}
-        {fmtInt(tx.points)}
+        {fmtInt(Math.abs(tx.points))}
       </span>
     </motion.li>
   );
 };
 
-/* ─── Chip filtro ────────────────────────────────────────── */
-const FilterChip = ({
-  active,
-  onClick,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  label: string;
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={cn(
-      "px-3 py-1.5 rounded-full text-xs font-ui font-bold transition-colors",
-      active
-        ? "bg-km0-blue-800 text-white"
-        : "bg-white text-km0-blue-800 border border-km0-blue-100"
-    )}
-  >
-    {label}
-  </button>
-);
-
 /* ─── Pantalla ───────────────────────────────────────────── */
 const HistorialPunts = () => {
   const navigate = useNavigate();
+  const account = useMockAccount();
   const { lang } = useLang();
   const { user } = useAuth();
   const [filter, setFilter] = useState<Filter>("all");
@@ -162,21 +131,14 @@ const HistorialPunts = () => {
 
   const sorted = useMemo(
     () =>
-      [...POINTS_HISTORY].sort(
+      [...account.transactions].sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       ),
-    []
+    [account.transactions]
   );
 
-  const { balance, earned, spent } = useMemo(() => {
-    let e = 0;
-    let s = 0;
-    for (const tx of sorted) {
-      if (tx.points >= 0) e += tx.points;
-      else s += -tx.points;
-    }
-    return { balance: e - s, earned: e, spent: s };
-  }, [sorted]);
+  const { balance, earned, spent } = account;
+  const scrollRef = useDragScroll("vertical");
 
   const filtered = useMemo(() => {
     if (filter === "earned") return sorted.filter((tx) => tx.points >= 0);
@@ -194,49 +156,40 @@ const HistorialPunts = () => {
     }
     return GROUP_ORDER.filter((g) => map.has(g)).map((g) => ({
       group: g,
-      items: map.get(g)!,
+      items: map.get(g) ?? [],
     }));
   }, [filtered]);
 
+  const preview = usePreviewState(account.loading, account.error, groups.length === 0);
+
   return (
-    <DeviceShell>
+    <>
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
         <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           {/* Header fijo */}
-          <header className="shrink-0 flex items-center gap-2 px-3 pt-4 pb-3 bg-km0-beige-50">
-            <button
-              type="button"
-              onClick={() => navigate(-1)}
-              aria-label={t("common.back", lang)}
-              className="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-km0-blue-100 active:scale-95 transition-transform"
-            >
-              <ChevronLeft size={20} className="text-km0-blue-800" />
-            </button>
-            <h1 className="flex-1 text-center font-brand font-black text-base text-km0-blue-900 pr-10">
-              {t("points.history.title", lang)}
-            </h1>
-          </header>
-
+          <ScreenHeader title={t("points.history.title", lang)} />
+          {/* Lista */}
+          <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-6">
           {/* Resumen de saldo */}
           <section className="shrink-0 px-4 pb-3">
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
-              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-4 shadow-[0_12px_28px_-12px_hsl(var(--km0-blue-900)/0.45)]"
+              className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 px-4 py-4 shadow-[var(--shadow-bubble)]"
             >
               <Coins
-                className="absolute -bottom-3 -right-3 w-24 h-24 text-white/5 rotate-12 pointer-events-none"
+                className="absolute -bottom-3 -right-3 w-24 h-24 text-primary-foreground/5 rotate-12 pointer-events-none"
                 strokeWidth={1}
               />
-              <p className="relative z-10 font-body text-xs text-white/70 uppercase tracking-wide">
+              <p className="relative z-10 font-body text-xs text-primary-foreground/70 uppercase tracking-wide">
                 {t("points.history.balance", lang)}
               </p>
               <div className="relative z-10 mt-0.5 flex items-baseline gap-1.5">
-                <span className="font-brand font-black text-white text-3xl tabular-nums">
+                <span className="font-brand font-black text-primary-foreground text-3xl tabular-nums">
                   {fmtInt(balance)}
                 </span>
-                <span className="font-body text-white/70 text-sm">
+                <span className="font-body text-primary-foreground/70 text-sm">
                   {t("common.points", lang)}
                 </span>
               </div>
@@ -244,25 +197,25 @@ const HistorialPunts = () => {
               <button
                 type="button"
                 onClick={() => navigate("/redeemed-rewards")}
-                className="relative z-10 mt-3 flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 active:scale-[0.98] transition-transform w-fit"
+                className="relative z-10 mt-3 flex items-center gap-2 rounded-full bg-card/15 px-3 py-2 active:scale-[0.98] transition-transform w-fit"
               >
                 <GiftIcon size={14} className="text-km0-yellow-100" />
-                <span className="font-ui font-bold text-xs text-white">
+                <span className="font-ui font-bold text-xs text-primary-foreground">
                   {t("redemptions.see_list", lang)}
                 </span>
               </button>
 
               <div className="relative z-10 mt-3 grid grid-cols-2 gap-2">
-                <div className="rounded-xl bg-white/10 px-3 py-2">
-                  <p className="font-body text-[10px] text-white/60 uppercase tracking-wide">
+                <div className="rounded-xl bg-card/10 px-3 py-2">
+                  <p className="font-body text-[10px] text-primary-foreground/60 uppercase tracking-wide">
                     {t("points.history.earned", lang)}
                   </p>
                   <p className="font-brand font-black text-km0-teal-300 text-lg tabular-nums">
                     +{fmtInt(earned)}
                   </p>
                 </div>
-                <div className="rounded-xl bg-white/10 px-3 py-2">
-                  <p className="font-body text-[10px] text-white/60 uppercase tracking-wide">
+                <div className="rounded-xl bg-card/10 px-3 py-2">
+                  <p className="font-body text-[10px] text-primary-foreground/60 uppercase tracking-wide">
                     {t("points.history.spent", lang)}
                   </p>
                   <p className="font-brand font-black text-km0-coral-300 text-lg tabular-nums">
@@ -324,14 +277,10 @@ const HistorialPunts = () => {
             />
           </div>
 
-          {/* Lista */}
-          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-6">
-            {groups.length === 0 ? (
-              <div className="h-full flex items-center justify-center text-center px-6">
-                <p className="font-body text-sm text-km0-blue-800/60">
-                  {t("points.history.empty", lang)}
-                </p>
-              </div>
+
+          <p className="mb-3 font-body text-[11px] text-muted-foreground">{t("account.demo", lang)}</p>
+            {preview.state !== "ready" ? (
+              <ScreenStatus state={preview.state} emptyKey="points.history.empty" onRetry={() => preview.retry(account.reload)} />
             ) : (
               <div className="flex flex-col gap-4 pt-2">
                 {groups.map(({ group, items }, gi) => (
@@ -339,7 +288,7 @@ const HistorialPunts = () => {
                     <h2 className="font-ui font-bold text-[11px] uppercase tracking-wide text-km0-blue-800/60 mb-1">
                       {t(GROUP_KEY[group], lang)}
                     </h2>
-                    <ul className="bg-white rounded-2xl border border-km0-blue-100 divide-y divide-km0-beige-200 px-3">
+                    <ul className="bg-card rounded-2xl border border-km0-blue-100 divide-y divide-km0-beige-200 px-3">
                       {items.map((tx, i) => (
                         <TxRow
                           key={tx.id}
@@ -368,7 +317,7 @@ const HistorialPunts = () => {
 
         </div>
       </div>
-    </DeviceShell>
+    </>
   );
 };
 

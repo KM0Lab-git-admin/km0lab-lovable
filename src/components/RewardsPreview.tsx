@@ -1,3 +1,4 @@
+import RewardArtwork from "@/components/RewardArtwork";
 import { Gift, Ticket, Percent, ShoppingBag, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ const RewardsPreview = ({ items, onSeeAll, className }: RewardsPreviewProps) => 
       const Icon = ICONS[reward.kind];
       return <Button key={reward.id} variant="bubbleSurface" onClick={onSeeAll} className="h-auto min-w-0 basis-[44%] shrink-0 snap-start flex-col items-stretch justify-start gap-2 whitespace-normal rounded-3xl bg-card p-2.5 text-left shadow-[var(--shadow-bubble)]">
         <span className={cn("flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl", BACKGROUNDS[reward.kind])}>
-          {reward.imageUrl ? <img src={reward.imageUrl} alt="" loading="lazy" className="h-full w-full object-contain p-2" /> : <Icon className="!h-16 !w-16 text-km0-blue-700" aria-hidden />}
+          <RewardArtwork kind={reward.kind} imageUrl={reward.imageUrl} className="h-full" />
         </span>
         <span className="line-clamp-2 min-h-9 font-ui text-[13px] font-bold leading-snug text-km0-blue-800">{reward.title}</span>
         <PointsCoin points={reward.costPoints} className="self-start" />

@@ -24,7 +24,7 @@ const RequireAuth = ({ children }: { children: ReactNode }) => {
     typeof window !== "undefined" &&
     sessionStorage.getItem("km0_preview_authed") === "1";
 
-  if (!session && !previewAuthed && !import.meta.env.DEV) {
+  if (!session && !previewAuthed) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 

@@ -16,6 +16,29 @@ export const LANGS: Lang[] = ["ca", "es", "en"];
 type Dict = Record<Lang, string>;
 
 const D = {
+  "catalog.error": { ca: "No s’han pogut carregar els premis.", es: "No se han podido cargar los premios.", en: "Rewards could not be loaded." } as Dict,
+  "catalog.scope": { ca: "Comerços adherits del municipi", es: "Comercios adheridos del municipio", en: "Participating shops in your town" } as Dict,
+  "clipboard.error": { ca: "No s’ha pogut copiar. Torna-ho a provar.", es: "No se ha podido copiar. Inténtalo de nuevo.", en: "Could not copy. Please try again." } as Dict,
+  "account.error": { ca: "No s’han pogut carregar les dades.", es: "No se han podido cargar los datos.", en: "Could not load your data." } as Dict,
+  "account.demo": { ca: "Compte de demostració · punts i bescanvis simulats", es: "Cuenta de demostración · puntos y canjes simulados", en: "Demo account · simulated points and redemptions" } as Dict,
+  "points.history.type.invitation": { ca: "Registre per invitació", es: "Registro por invitación", en: "Invitation registration" } as Dict,
+  "points.history.type.demo_credit": { ca: "Saldo inicial de demostració", es: "Saldo inicial de demostración", en: "Opening demo credit" } as Dict,
+  "catalog.sample": { ca: "Exemples de demostració", es: "Ejemplos de demostración", en: "Demo examples" } as Dict,
+  "reward.mock.voucher.description": { ca: "Val bescanviable als comerços adherits.", es: "Vale canjeable en los comercios adheridos.", en: "Voucher redeemable at participating shops." } as Dict,
+  "reward.mock.cinema.title": { ca: "Entrada de cinema", es: "Entrada de cine", en: "Cinema ticket" } as Dict,
+  "reward.mock.cinema.description": { ca: "Una entrada per a una sessió no premium.", es: "Una entrada para una sesión no premium.", en: "One ticket for a non-premium screening." } as Dict,
+  "reward.mock.cap.title": { ca: "Gorra KM0 LAB", es: "Gorra KM0 LAB", en: "KM0 LAB cap" } as Dict,
+  "reward.mock.cap.description": { ca: "Gorra oficial de KM0 LAB.", es: "Gorra oficial de KM0 LAB.", en: "Official KM0 LAB cap." } as Dict,
+  "reward.mock.shirt.title": { ca: "Samarreta KM0 LAB", es: "Camiseta KM0 LAB", en: "KM0 LAB T-shirt" } as Dict,
+  "reward.mock.shirt.description": { ca: "Samarreta oficial de KM0 LAB.", es: "Camiseta oficial de KM0 LAB.", en: "Official KM0 LAB T-shirt." } as Dict,
+  "reward.mock.unit": { ca: "1 unitat", es: "1 unidad", en: "1 item" } as Dict,
+  "reward.mock.ticket": { ca: "1 entrada", es: "1 entrada", en: "1 ticket" } as Dict,
+  "reward.mock.voucher5": { ca: "Val de 5€", es: "Vale de 5€", en: "€5 voucher" } as Dict,
+  "reward.mock.voucher10": { ca: "Val de 10€", es: "Vale de 10€", en: "€10 voucher" } as Dict,
+  "reward.mock.voucher20": { ca: "Val de 20€", es: "Vale de 20€", en: "€20 voucher" } as Dict,
+  "brand.google": { ca: "Google", es: "Google", en: "Google" } as Dict,
+  "brand.apple": { ca: "Apple", es: "Apple", en: "Apple" } as Dict,
+  "home.welcome.reason": { ca: "Per registrar-te a KM0 LAB", es: "Por registrarte en KM0 LAB", en: "For joining KM0 LAB" } as Dict,
   "account.sheet.title": { ca: "Crea el teu compte", es: "Crea tu cuenta", en: "Create your account" } as Dict,
   "account.sheet.points": { ca: "Aquí veuràs els teus punts i d’on venen.", es: "Aquí verás tus puntos y de dónde vienen.", en: "Here you’ll see your points and where they come from." } as Dict,
   "account.sheet.rewards": { ca: "Aquí veuràs els premis que has bescanviat.", es: "Aquí verás los premios que has canjeado.", en: "Here you’ll see the rewards you’ve redeemed." } as Dict,
@@ -237,29 +260,17 @@ const D = {
     es: "Entra o regístrate",
     en: "Sign in or sign up",
   } as Dict,
-  "login.subtitle": {
-    ca: "T'enviarem un codi al teu correu",
-    es: "Te enviaremos un código a tu correo",
-    en: "We'll send a code to your email",
-  } as Dict,
+  "login.subtitle": { ca: "Prototip: entra amb qualsevol correu i el codi 123456.", es: "Prototipo: entra con cualquier correo y el código 123456.", en: "Prototype: use any email and code 123456." } as Dict,
   "login.email_placeholder": { ca: "Correu electrònic", es: "Email", en: "Email" } as Dict,
   "login.submit": { ca: "Continuar", es: "Continuar", en: "Continue" } as Dict,
-  "login.submitting": {
-    ca: "Enviant codi…",
-    es: "Enviando código…",
-    en: "Sending code…",
-  } as Dict,
+  "login.submitting": { ca: "Preparant accés…", es: "Preparando acceso…", en: "Preparing access…" } as Dict,
   "login.divider": { ca: "pròximament", es: "próximamente", en: "coming soon" } as Dict,
   "login.error_email": {
     ca: "Introdueix el teu correu.",
     es: "Introduce tu email.",
     en: "Enter your email.",
   } as Dict,
-  "login.toast_sent": {
-    ca: "T'hem enviat un codi per correu",
-    es: "Te hemos enviado un código por email",
-    en: "We've sent you a code by email",
-  } as Dict,
+  "login.toast_sent": { ca: "Accés de demostració preparat", es: "Acceso de demostración preparado", en: "Demo access ready" } as Dict,
 
   // ── Email OTP (plantilla de correo) ──────────────────────
   "email_otp.title": {
@@ -299,36 +310,12 @@ const D = {
   } as Dict,
 
   // ── OTP / Check email ────────────────────────────────────
-  "otp.title": {
-    ca: "Revisa el teu correu",
-    es: "Revisa tu correo",
-    en: "Check your email",
-  } as Dict,
-  "otp.subtitle": {
-    ca: "Hem enviat un codi de 6 dígits a",
-    es: "Hemos enviado un código de 6 dígitos a",
-    en: "We sent a 6-digit code to",
-  } as Dict,
-  "otp.resend": {
-    ca: "Reenviar codi",
-    es: "Reenviar código",
-    en: "Resend code",
-  } as Dict,
-  "otp.resending": {
-    ca: "Reenviant…",
-    es: "Reenviando…",
-    en: "Resending…",
-  } as Dict,
-  "otp.resend_in": {
-    ca: "Reenviar codi en",
-    es: "Reenviar código en",
-    en: "Resend code in",
-  } as Dict,
-  "otp.toast_resent": {
-    ca: "Codi reenviat",
-    es: "Código reenviado",
-    en: "Code resent",
-  } as Dict,
+  "otp.title": { ca: "Introdueix el codi", es: "Introduce el código", en: "Enter the code" } as Dict,
+  "otp.subtitle": { ca: "Accés de demostració amb el correu", es: "Acceso de demostración con el correo", en: "Demo access with email" } as Dict,
+  "otp.resend": { ca: "Tornar a preparar el codi", es: "Volver a preparar el código", en: "Prepare code again" } as Dict,
+  "otp.resending": { ca: "Preparant…", es: "Preparando…", en: "Preparing…" } as Dict,
+  "otp.resend_in": { ca: "Torna-ho a provar en", es: "Vuelve a intentarlo en", en: "Try again in" } as Dict,
+  "otp.toast_resent": { ca: "Accés de demostració preparat", es: "Acceso de demostración preparado", en: "Demo access ready" } as Dict,
   "otp.toast_wrong": {
     ca: "Codi incorrecte. Torna-ho a provar.",
     es: "Código incorrecto. Inténtalo de nuevo.",
@@ -344,11 +331,7 @@ const D = {
     es: "¡Bienvenido!",
     en: "Welcome!",
   } as Dict,
-  "otp.footer_hint": {
-    ca: "No el trobes? Mira a la carpeta de spam o promocions.",
-    es: "¿No lo encuentras? Mira en spam o promociones.",
-    en: "Can't find it? Check spam or promotions.",
-  } as Dict,
+  "otp.footer_hint": { ca: "Fes servir 123456. No s’envia cap correu.", es: "Usa 123456. No se envía ningún correo.", en: "Use 123456. No email is sent." } as Dict,
   "otp.demo_hint": {
     ca: "Prototip: encara no s'envien correus. Fes servir el codi 123456.",
     es: "Prototipo: aún no se envían correos. Usa el código 123456.",
@@ -614,9 +597,9 @@ const D = {
   "points.actions.first_scan.title": { ca: "Primer escaneig d'un comerç", es: "Primer escaneo de un comercio", en: "First shop scan" } as Dict,
   "points.actions.first_scan.description": { ca: "Bonificació única la primera vegada que el veí escaneja el QR d'un comerç KM0 LAB.", es: "Bonificación única la primera vez que el vecino escanea el QR de un comercio KM0 LAB.", en: "One-time bonus the first time a neighbour scans a KM0 LAB shop QR." } as Dict,
   "points.actions.scan.title": { ca: "Escaneig d'un comerç", es: "Escaneo de un comercio", en: "Shop scan" } as Dict,
-  "points.actions.scan.description": { ca: "Bonificació la primera vegada que s'escaneja un QR de comerç.", es: "Bonificación la primera vez que se escanea un QR de comercio.", en: "Bonus the first time a shop QR is scanned." } as Dict,
+  "points.actions.scan.description": { ca: "Bonificació en escanejar el QR d’un comerç.", es: "Bonificación al escanear el QR de un comercio.", en: "Bonus for scanning a shop QR code." } as Dict,
   "points.actions.web_visit.title": { ca: "Visita la web de turisme", es: "Visita la web de turismo", en: "Visit the tourism website" } as Dict,
-  "points.actions.web_visit.description": { ca: "Descobreix els punts d'interès de Malgrat.", es: "Descubre los puntos de interés de Malgrat.", en: "Discover Malgrat's points of interest." } as Dict,
+  "points.actions.web_visit.description": { ca: "Descobreix els punts d’interès del teu municipi.", es: "Descubre los puntos de interés de tu municipio.", en: "Discover places of interest in your town." } as Dict,
   "points.actions.newsletter.title": { ca: "Registre al butlletí municipal", es: "Registro al boletín municipal", en: "Sign up to the municipal newsletter" } as Dict,
   "points.actions.newsletter.description": { ca: "Rep les novetats del teu ajuntament al correu.", es: "Recibe las novedades de tu ayuntamiento en el correo.", en: "Get the latest news from your town hall by email." } as Dict,
   "points.actions.event_signup.title": { ca: "Inscripció a la Festa Major", es: "Inscripción a la Festa Major", en: "Sign up for the Festa Major" } as Dict,
@@ -891,7 +874,7 @@ const D = {
  "profile.phone": { ca: "Telèfon", es: "Teléfono", en: "Phone" } as Dict,
  "profile.phone_ph": { ca: "+34 600 000 000", es: "+34 600 000 000", en: "+34 600 000 000" } as Dict,
  "profile.birth_date": { ca: "Data de naixement", es: "Fecha de nacimiento", en: "Birth date" } as Dict,
- "profile.birth_date_hint": { ca: "Rebràs 500 punts pel teu aniversari 🎂", es: "Recibirás 500 puntos por tu cumpleaños 🎂", en: "You'll get 500 points on your birthday 🎂" } as Dict,
+ "profile.birth_date_hint": { ca: "Rebràs {n} punts pel teu aniversari", es: "Recibirás {n} puntos por tu cumpleaños", en: "You will receive {n} points on your birthday" } as Dict,
 
   "profile.error_phone": {
     ca: "Telèfon no vàlid",
@@ -1322,7 +1305,7 @@ const D = {
   "business.contact_name": { ca: "Nom de la persona de contacte", es: "Nombre de la persona de contacto", en: "Contact person name" } as Dict,
   "business.email": { ca: "Correu electrònic", es: "Correo electrónico", en: "Email" } as Dict,
   "business.email.session_hint": { ca: "Utilitzarem el correu del teu compte actual.", es: "Usaremos el correo de tu cuenta actual.", en: "We will use your current account email." } as Dict,
-  "business.email.access_hint": { ca: "T'enviarem les instruccions per accedir a l'espai del negoci.", es: "Te enviaremos las instrucciones para acceder al espacio del negocio.", en: "We will send instructions to access the business area." } as Dict,
+  "business.email.access_hint": { ca: "Prototip: no s’envien instruccions per correu.", es: "Prototipo: no se envían instrucciones por correo.", en: "Prototype: no instructions are emailed." } as Dict,
   "business.phone": { ca: "Telèfon (opcional)", es: "Teléfono (opcional)", en: "Phone (optional)" } as Dict,
   "business.terms": { ca: "Accepto les condicions d'ús i la política de privacitat", es: "Acepto las condiciones de uso y la política de privacidad", en: "I accept the terms of use and privacy policy" } as Dict,
   "business.submit": { ca: "Crear el meu negoci", es: "Crear mi negocio", en: "Create my business" } as Dict,

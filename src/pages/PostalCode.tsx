@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { useAppStore } from "@/stores/useAppStore";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, MapPinOff, AlertTriangle, Loader2 } from "lucide-react";
@@ -52,6 +54,7 @@ const PostalCode = () => {
 
   const handleSubmit = () => {
     if (!isComplete || !cityName) return;
+    useAppStore.getState().setLocation(value, cityName);
     // localStorage para que sobreviva recargas y se pueda leer desde Home/Login.
     try {
       localStorage.setItem("km0_postal_code", value);
@@ -132,13 +135,13 @@ const PostalCode = () => {
         </motion.div>
 
         <motion.div className="px-2" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.35 }}>
-          <button
+          <Button variant="bubblePrimary"
             onClick={handleSubmit}
             disabled={!cityName || isValidating}
             className="w-full bg-primary text-primary-foreground font-ui font-semibold text-sm px-5 py-2.5 rounded-2xl hover:bg-km0-blue-600 hover:scale-[1.03] transition-all duration-200 active:scale-95 disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center gap-2"
           >
             {isValidating ? <Loader2 size={18} className="animate-spin" /> : t("common.continue", lang)}
-          </button>
+          </Button>
         </motion.div>
       </div>
     </BrandedFrame>

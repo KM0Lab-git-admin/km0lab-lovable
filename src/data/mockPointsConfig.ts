@@ -1,0 +1,2 @@
+/** Values for the frontend pilot only; production rules belong to its backend. */
+export const MOCK_POINTS = { signup: 100, birthday: 500, scan: 20, firstScan: 50, webVisit: 20, eventSignup: 40, survey: 15, sampleCredit: 1000 } as const;

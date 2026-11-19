@@ -100,15 +100,26 @@ export const useAppStore = create<AppState>()(
         if (!(LANGS as string[]).includes(l)) return;
         set({ lang: l });
       },
-      setLocation: (postalCode, town) => set({ postalCode, town }),
+      setLocation: (postalCode, town) => set(state => {
+        const userId = state.session?.user.id;
+        const profile = userId ? state.profiles[userId] : null;
+        return { postalCode, town, ...(userId && profile ? { profiles: { ...state.profiles, [userId]: { ...profile, postal_code: postalCode, town } } } : {}) };
+      }),
 
-      setSession: (s) => set({ session: s }),
+      setSession: (s) => set(state => {
+        const profile = s ? state.profiles[s.user.id] : null;
+        return { session: s, ...(profile?.postal_code && profile.town ? { postalCode: profile.postal_code, town: profile.town } : {}) };
+      }),
       setPendingOtp: (p) => set({ pendingOtp: p }),
 
       upsertProfile: (userId, patch) =>
         set((state) => {
           const current = state.profiles[userId] ?? emptyProfile();
-          return { profiles: { ...state.profiles, [userId]: { ...current, ...patch } } };
+          return {
+            profiles: { ...state.profiles, [userId]: { ...current, ...patch } },
+            ...(state.session?.user.id === userId && ("postal_code" in patch || "town" in patch)
+              ? { postalCode: patch.postal_code ?? current.postal_code, town: patch.town ?? current.town } : {}),
+          };
         }),
       getProfile: (userId) => get().profiles[userId] ?? null,
 

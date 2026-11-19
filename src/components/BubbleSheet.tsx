@@ -1,3 +1,4 @@
+import { useDragScroll } from "@/hooks/use-drag-scroll";
 import type { ReactNode } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
@@ -14,7 +15,9 @@ interface BubbleSheetProps {
   children: ReactNode;
 }
 
-const BubbleSheet = ({ open, onClose, title, lang, container, children }: BubbleSheetProps) => (
+const BubbleSheet = ({ open, onClose, title, lang, container, children }: BubbleSheetProps) => {
+  const scrollRef = useDragScroll("vertical");
+  return (
   <DialogPrimitive.Root open={open} onOpenChange={(value) => { if (!value) onClose(); }}>
     <DialogPrimitive.Portal container={container}>
       <DialogPrimitive.Overlay className={cn("inset-0 z-40 bg-km0-blue-900/45", container ? "absolute" : "fixed")} />
@@ -23,10 +26,11 @@ const BubbleSheet = ({ open, onClose, title, lang, container, children }: Bubble
           <DialogPrimitive.Title className="font-brand text-xl font-black text-km0-blue-800">{title}</DialogPrimitive.Title>
           <DialogPrimitive.Close asChild><Button variant="bubbleSurface" size="icon" className="h-11 w-11 shrink-0 rounded-full bg-card text-km0-blue-800" aria-label={t("common.close", lang)}><X aria-hidden className="!h-6 !w-6" /></Button></DialogPrimitive.Close>
         </header>
-        <div className="min-h-0 overflow-y-auto px-5 pb-6">{children}</div>
+        <div ref={scrollRef} className="min-h-0 overflow-y-auto px-5 pb-6">{children}</div>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>
   </DialogPrimitive.Root>
-);
+  );
+};
 
 export default BubbleSheet;

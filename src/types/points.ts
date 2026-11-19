@@ -8,6 +8,8 @@ export type PointsTxType =
   | "event_signup"
   | "survey"
   | "suggestion"
+  | "invitation"
+  | "demo_credit"
   | "redeem";
 
 export type PointActionId =

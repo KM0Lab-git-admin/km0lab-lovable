@@ -10,6 +10,13 @@ const rewardImg = (id: string, v: string) =>
  *
  * Inclou els exemples demanats: gorra, samarreta, entrada de cinema i val de 20€.
  */
+
+const scenarioDate = (days: number) => {
+  const date = new Date();
+  date.setDate(date.getDate() + days);
+  return date.toISOString();
+};
+
 export const REDEMPTIONS: Redemption[] = [
   {
     id: "rdm-val-20",
@@ -19,14 +26,14 @@ export const REDEMPTIONS: Redemption[] = [
     rewardCategory: "balance",
     rewardKind: "voucher",
     imageUrl: rewardImg("28f86ca8c4ecdc2c7d36aa9e13e06724", "1789768136"),
-    costPoints: 4000,
+    costPoints: 200,
     valueLabel: "20 €",
     status: "redeemed",
     code: "38421",
     shopName: "Forn Rovira",
-    redeemedAt: "2026-07-25T10:30:00Z",
-    expiresAt: "2026-08-25T23:59:59Z",
-    completedAt: "2026-07-25T11:15:00Z",
+    redeemedAt: scenarioDate(-20),
+    expiresAt: scenarioDate(-10),
+    completedAt: scenarioDate(-19),
   },
   {
     id: "rdm-entrada-cinema",
@@ -36,13 +43,13 @@ export const REDEMPTIONS: Redemption[] = [
     rewardCategory: "experience",
     rewardKind: "ticket",
     imageUrl: rewardImg("d4a51753cb7262631277bd736e3336af", "1789768137"),
-    costPoints: 1500,
+    costPoints: 200,
     valueLabel: "1 entrada",
     status: "ready",
     code: "19283",
     shopName: "Cinebaix Malgrat",
-    redeemedAt: "2026-07-27T09:00:00Z",
-    expiresAt: "2026-08-27T23:59:59Z",
+    redeemedAt: scenarioDate(-3),
+    expiresAt: scenarioDate(27),
   },
   {
     id: "rdm-gorra",
@@ -52,12 +59,12 @@ export const REDEMPTIONS: Redemption[] = [
     rewardCategory: "merchandising",
     rewardKind: "product",
     imageUrl: rewardImg("869c2bc2bbd6a0250aef5aa3d377572d", "1789768136"),
-    costPoints: 600,
+    costPoints: 180,
     valueLabel: "1 unitat",
     status: "pending",
     code: "74561",
     shopName: "Llibreria Lola",
-    redeemedAt: "2026-07-28T16:20:00Z",
+    redeemedAt: scenarioDate(-1),
   },
   {
     id: "rdm-samarreta",
@@ -67,13 +74,13 @@ export const REDEMPTIONS: Redemption[] = [
     rewardCategory: "merchandising",
     rewardKind: "product",
     imageUrl: rewardImg("4ab8890c66736e1c017a0698ad73939d", "1789768136"),
-    costPoints: 800,
+    costPoints: 300,
     valueLabel: "1 unitat",
     status: "redeemed",
     code: "50192",
     shopName: "Llibreria Lola",
-    redeemedAt: "2026-07-15T12:00:00Z",
-    completedAt: "2026-07-16T10:00:00Z",
+    redeemedAt: scenarioDate(-30),
+    completedAt: scenarioDate(-29),
   },
   {
     id: "rdm-val-5-expired",
@@ -83,12 +90,12 @@ export const REDEMPTIONS: Redemption[] = [
     rewardCategory: "balance",
     rewardKind: "voucher",
     imageUrl: rewardImg("2f8dd9364967685f775293693a94defe", "1789768136"),
-    costPoints: 1000,
+    costPoints: 50,
     valueLabel: "5 €",
     status: "expired",
     code: "99841",
     shopName: "Forn Rovira",
-    redeemedAt: "2026-06-01T08:00:00Z",
-    expiresAt: "2026-06-30T23:59:59Z",
+    redeemedAt: scenarioDate(-60),
+    expiresAt: scenarioDate(-31),
   },
 ];

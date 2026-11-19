@@ -1,19 +1,14 @@
+import { toast } from "sonner";
+import BubbleSheet from "@/components/BubbleSheet";
+import RewardArtwork from "@/components/RewardArtwork";
+import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  X,
-  Gift,
-  Coins,
-  Store,
-  PackageCheck,
-  Ticket,
-  ShoppingBag,
-  type LucideIcon,
-} from "lucide-react";
+import { Gift, Coins, Store, PackageCheck, Ticket, ShoppingBag, type LucideIcon } from "lucide-react";
 
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
+
 import type { Reward, RewardKind } from "@/types/reward";
 
 /**
@@ -26,10 +21,11 @@ import type { Reward, RewardKind } from "@/types/reward";
  *               al punt de recollida. No es mostra codi de 5 dígits en pantalla.
  */
 export interface RedeemMerchandiseOverlayProps {
+  container?: HTMLElement | null;
   reward: Reward;
   currentPoints: number;
   onClose: () => void;
-  onConfirmed?: (payload: { code: string; costPoints: number }) => void;
+  onConfirmed?: (payload: { code: string; costPoints: number }) => void | Promise<void>;
 }
 
 const KIND_ICON: Record<RewardKind, LucideIcon> = {
@@ -46,11 +42,14 @@ const generateCode = () =>
 
 const RedeemMerchandiseOverlay = ({
   reward,
+  container,
   currentPoints,
   onClose,
   onConfirmed,
 }: RedeemMerchandiseOverlayProps) => {
   const { lang } = useLang();
+  const [code, setCode] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState<"confirm" | "pending">("confirm");
 
   const KindIcon = KIND_ICON[reward.kind];
@@ -60,51 +59,17 @@ const RedeemMerchandiseOverlay = ({
     [currentPoints, reward.costPoints],
   );
 
-  const handleRequest = () => {
-    const newCode = generateCode();
-    setStep("pending");
-    onConfirmed?.({ code: newCode, costPoints: reward.costPoints });
+  const handleRequest = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    try { const newCode = generateCode(); await onConfirmed?.({ code: newCode, costPoints: reward.costPoints }); setCode(newCode); setStep("pending"); }
+    catch { toast.error(t("account.error", lang)); }
+    finally { setSubmitting(false); }
   };
 
   return (
-    <div className="absolute inset-0 z-50 flex items-end justify-center">
-      <motion.button
-        type="button"
-        aria-label={t("common.close", lang)}
-        onClick={onClose}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="absolute inset-0 bg-km0-blue-900/50 backdrop-blur-sm"
-      />
-
-      <motion.div
-        role="dialog"
-        aria-modal="true"
-        initial={{ y: "100%" }}
-        animate={{ y: 0 }}
-        exit={{ y: "100%" }}
-        transition={{ type: "spring", damping: 28, stiffness: 260 }}
-        className="relative w-full max-w-[430px] max-h-[92%] overflow-y-auto rounded-t-3xl bg-km0-beige-50 shadow-2xl"
-      >
-        <div className="sticky top-0 z-10 flex items-center justify-between px-4 pt-3 pb-2 bg-km0-beige-50">
-          <div className="w-10 h-1.5 rounded-full bg-km0-blue-100 mx-auto absolute left-1/2 -translate-x-1/2 top-2" />
-          <span className="w-8" aria-hidden />
-          <h2 className="font-brand font-black text-sm text-km0-blue-900 pt-2">
-            {step === "confirm"
-              ? t("redeem_merch.title_confirm", lang)
-              : t("redeem_merch.title_pending", lang)}
-          </h2>
-          <button
-            type="button"
-            aria-label={t("common.close", lang)}
-            onClick={onClose}
-            className="w-8 h-8 rounded-full flex items-center justify-center bg-white border border-km0-blue-100 active:scale-95 transition-transform"
-          >
-            <X size={16} className="text-km0-blue-800" />
-          </button>
-        </div>
-
+    <BubbleSheet open onClose={onClose} title={step === "confirm" ? t("redeem_merch.title_confirm", lang) : t("redeem_merch.title_pending", lang)} lang={lang} container={container}>
+        <p className="mb-3 font-body text-[11px] text-muted-foreground">{t("account.demo", lang)}</p>
         <AnimatePresence mode="wait">
           {step === "confirm" ? (
             <motion.div
@@ -115,12 +80,12 @@ const RedeemMerchandiseOverlay = ({
               transition={{ duration: 0.2 }}
               className="px-4 pb-5 flex flex-col gap-4"
             >
-              <div className="rounded-2xl border border-km0-blue-100 bg-white p-4 flex items-center gap-3">
+              <div className="rounded-2xl border border-km0-blue-100 bg-card p-4 flex items-center gap-3">
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-km0-yellow-100 to-km0-yellow-300 flex items-center justify-center shrink-0">
-                  <KindIcon size={28} className="text-km0-blue-900" strokeWidth={1.8} />
+                  <RewardArtwork kind={reward.kind} imageUrl={reward.imageUrl} className="h-full rounded-xl" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-brand font-black text-base text-km0-blue-900 leading-tight truncate">
+                  <p className="font-brand font-black text-base text-km0-blue-900 leading-tight break-words">
                     {reward.title}
                   </p>
                   <p className="font-body text-xs text-km0-blue-800/70">
@@ -132,7 +97,7 @@ const RedeemMerchandiseOverlay = ({
                 </span>
               </div>
 
-              <div className="rounded-2xl border border-km0-blue-100 bg-white p-4">
+              <div className="rounded-2xl border border-km0-blue-100 bg-card p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Coins size={16} className="text-km0-yellow-500" />
@@ -155,11 +120,11 @@ const RedeemMerchandiseOverlay = ({
                 </div>
               </div>
 
-              <ol className="rounded-2xl border border-km0-blue-100 bg-white p-4 space-y-3">
+              <ol className="rounded-2xl border border-km0-blue-100 bg-card p-4 space-y-3">
                 {["redeem_merch.step1", "redeem_merch.step2", "redeem_merch.step3"].map(
                   (key, idx) => (
                     <li key={key} className="flex items-start gap-3">
-                      <span className="mt-0.5 w-6 h-6 rounded-full bg-km0-blue-800 text-white text-[11px] font-ui font-black flex items-center justify-center shrink-0">
+                      <span className="mt-0.5 w-6 h-6 rounded-full bg-km0-blue-800 text-primary-foreground text-[11px] font-ui font-black flex items-center justify-center shrink-0">
                         {idx + 1}
                       </span>
                       <p className="font-body text-xs text-km0-blue-900">
@@ -171,20 +136,20 @@ const RedeemMerchandiseOverlay = ({
               </ol>
 
               <div className="flex flex-col gap-2 pt-1">
-                <button
+                <Button variant="bubbleSurface"
                   type="button"
-                  onClick={handleRequest}
+                  disabled={submitting} onClick={handleRequest}
                   className="w-full rounded-full bg-km0-yellow-400 hover:bg-km0-yellow-500 text-km0-blue-900 font-ui font-black text-sm py-3.5 active:scale-[0.98] transition-transform"
                 >
                   {t("redeem_merch.cta_request", lang)}
-                </button>
-                <button
+                </Button>
+                <Button variant="bubbleSurface"
                   type="button"
                   onClick={onClose}
                   className="w-full rounded-full bg-transparent text-km0-blue-800/70 font-ui font-bold text-xs py-2"
                 >
                   {t("common.cancel", lang)}
-                </button>
+                </Button>
               </div>
             </motion.div>
           ) : (
@@ -196,21 +161,21 @@ const RedeemMerchandiseOverlay = ({
               transition={{ duration: 0.2 }}
               className="px-4 pb-5 flex flex-col gap-4"
             >
-              <div className="rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 p-5 text-center">
-                <p className="font-ui font-bold text-[11px] uppercase tracking-widest text-white/60">
+              <div className="rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 p-5 text-center"><p className="font-ui text-xs text-primary-foreground">{t("redemptions.code", lang)}</p><p className="mt-2 font-brand text-3xl font-black text-primary-foreground">{code}</p>
+                <p className="font-ui font-bold text-[11px] uppercase tracking-widest text-primary-foreground/60">
                   {t("redeem_merch.status_pending", lang)}
                 </p>
-                <p className="mt-2 font-body text-sm text-white">
+                <p className="mt-2 font-body text-sm text-primary-foreground">
                   {t("redeem_merch.pending_hint", lang)}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-km0-blue-100 bg-white p-4 flex items-center gap-3">
+              <div className="rounded-2xl border border-km0-blue-100 bg-card p-4 flex items-center gap-3">
                 <div className="w-11 h-11 rounded-xl bg-km0-yellow-100 flex items-center justify-center shrink-0">
-                  <KindIcon size={22} className="text-km0-blue-900" strokeWidth={1.8} />
+                  <RewardArtwork kind={reward.kind} imageUrl={reward.imageUrl} className="h-full rounded-xl" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-brand font-black text-sm text-km0-blue-900 leading-tight truncate">
+                  <p className="font-brand font-black text-sm text-km0-blue-900 leading-tight break-words">
                     {reward.title}
                   </p>
                   <p className="font-body text-[11px] text-km0-blue-800/60">
@@ -222,7 +187,7 @@ const RedeemMerchandiseOverlay = ({
                 </span>
               </div>
 
-              <div className="rounded-2xl border border-km0-blue-100 bg-white p-4 space-y-3">
+              <div className="rounded-2xl border border-km0-blue-100 bg-card p-4 space-y-3">
                 <div className="flex items-start gap-3">
                   <Store size={18} className="text-km0-blue-800 mt-0.5 shrink-0" />
                   <p className="font-body text-xs text-km0-blue-900">
@@ -237,18 +202,17 @@ const RedeemMerchandiseOverlay = ({
                 </div>
               </div>
 
-              <button
+              <Button variant="bubbleSurface"
                 type="button"
                 onClick={onClose}
-                className="w-full rounded-full bg-km0-blue-800 text-white font-ui font-black text-sm py-3.5 active:scale-[0.98] transition-transform"
+                className="w-full rounded-full bg-km0-blue-800 text-primary-foreground font-ui font-black text-sm py-3.5 active:scale-[0.98] transition-transform"
               >
                 {t("redeem.cta_done", lang)}
-              </button>
+              </Button>
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
-    </div>
+    </BubbleSheet>
   );
 };
 

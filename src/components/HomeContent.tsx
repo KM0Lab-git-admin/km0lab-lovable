@@ -30,13 +30,19 @@ export interface HomeContentProps {
   /** Subtítulo ya localizado según estado (guest vs registered). */
   subtitle: string;
   points: number;
+  accountLoading?: boolean;
   nextLevel: number;
   nextReward?: string;
   level?: number;
   modules: HomeModule[];
   promos: Promo[];
+  eventsLoading?: boolean;
+  eventsError?: boolean;
   /** Premios públicos (API UAT); Home resuelve fallback mock si falla. */
   rewards: ApiReward[];
+  rewardsLoading?: boolean;
+  rewardsError?: boolean;
+  reloadRewards?: () => void;
 
   activeTab: HomeTab;
   isAuthed: boolean;
@@ -69,12 +75,18 @@ const HomeContent = ({
   hasAlerts,
   onToggleAlerts,
   points,
+  accountLoading,
   nextLevel,
   nextReward,
   level,
   modules,
   promos,
+  eventsLoading,
+  eventsError,
   rewards,
+  rewardsLoading,
+  rewardsError,
+  reloadRewards,
 
   activeTab,
   isAuthed,
@@ -117,7 +129,8 @@ const HomeContent = ({
         <div className="relative z-10 flex flex-col gap-5 px-4 pt-4 pb-7">
           <section className="flex flex-col gap-3">
             {showLogin && <JoinCard onCreateAccount={onLogin} onLogin={onLogin} onHowItWorks={onHowItWorks} />}
-            {showPoints && <PointsCard points={points} nextLevel={nextLevel} nextReward={nextReward} level={level} onClick={onOpenPointsHistory} />}
+            {showPoints && accountLoading && <div aria-busy className="h-20 animate-pulse rounded-3xl bg-muted" />}
+            {showPoints && !accountLoading && <PointsCard points={points} nextLevel={nextLevel} nextReward={nextReward} level={level} onClick={onOpenPointsHistory} />}
           </section>
 
           <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-bubble)] space-y-3">
@@ -128,14 +141,14 @@ const HomeContent = ({
 
           <section className="space-y-3">
             <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
-            <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
+            {eventsLoading ? <div aria-busy className="h-40 animate-pulse rounded-3xl bg-muted" /> : eventsError ? <p role="alert" className="font-body text-xs text-destructive">{t("agenda.error", lang)}</p> : promos.length === 0 ? <p className="font-body text-xs text-muted-foreground">{t("agenda.empty.title", lang)}</p> : <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />}
           </section>
 
           <EarnPointsCard onSeeAll={onActions} locked={false} onLogin={onLogin} isAuthed={isAuthed} />
 
           <section className="space-y-3">
             <SectionHeader title={t("home.section.rewards", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllRewards} />
-            <RewardsPreview items={rewards} onSeeAll={onSeeAllRewards} />
+            {rewardsLoading ? <div aria-busy className="h-40 animate-pulse rounded-3xl bg-muted" /> : rewardsError ? <div role="alert"><p className="font-body text-xs text-destructive">{t("catalog.error", lang)}</p><Button variant="bubbleLink" onClick={reloadRewards}>{t("merchants.error.retry", lang)}</Button></div> : rewards.length === 0 ? <p className="font-body text-xs text-muted-foreground">{t("rewards.empty", lang)}</p> : <RewardsPreview items={rewards} onSeeAll={onSeeAllRewards} />}
           </section>
 
           <MerchantPromosPreview onSeeAll={onSeeAllPromos} locked={false} onLogin={onLogin} />

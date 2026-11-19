@@ -5,7 +5,7 @@
  */
 import { useQuery } from "@tanstack/react-query";
 import { listPublicRewards, type ApiReward } from "@/services/rewardsApi";
-import { useAppStore } from "@/stores/useAppStore";
+import { useLocationContext } from "@/hooks/use-location-context";
 import { useLang } from "@/contexts/LangContext";
 
 const DEFAULT_POSTAL_CODE = "08380";
@@ -14,8 +14,9 @@ export function usePublicRewards(): {
   rewards: ApiReward[];
   loading: boolean;
   error: boolean;
+  reload: () => void;
 } {
-  const postalCode = useAppStore((s) => s.postalCode) ?? DEFAULT_POSTAL_CODE;
+  const { postalCode } = useLocationContext();
   const { lang } = useLang();
 
   const query = useQuery({
@@ -28,5 +29,6 @@ export function usePublicRewards(): {
     rewards: query.data ?? [],
     loading: query.isLoading,
     error: query.isError,
+    reload: () => { void query.refetch(); },
   };
 }

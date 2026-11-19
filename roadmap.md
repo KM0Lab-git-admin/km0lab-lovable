@@ -1,12 +1,17 @@
 # Roadmap
 
 - [x] Revisar `/rewards`, `/redeemed-rewards` y patrones de interfaz del resto de la aplicación; diagnóstico en `.lovable/reviews/rewards-interface-consistency.md`.
-- [ ] Alinear la presentación de premios y canjes (una columna, imágenes y controles coherentes); pendiente de confirmación de la propuesta visual.
-- [ ] Corregir los demás hallazgos del repaso de interfaz; pendiente de aprobación por etapas y de los importes vigentes.
+- [x] Alinear premios y canjes: tarjetas, imágenes, filtros, confirmación accesible y navegación.
+- [x] Unificar campanas, copia, arrastre y contexto municipal.
+- [x] Compartir catálogo y cuenta simulada; verificar canje en saldo, historial y canjes.
+- [x] Completar estados, traducciones y preparación para Cursor; validar flujos y dependencias.
+- [x] Unificar ejemplos autorizados: cumpleaños 500, escaneo 20, primer escaneo 50; solo simulación, sin abonos reales.
 
 - [x] Revisar consistencia de navegación, municipio, puntos, catálogos y portabilidad; diagnóstico confirmado en `.lovable/reviews/application-consistency.md`.
 - [x] Unificar accesos con candado de Home e interiores; panel contextual compartido, cancelación sin salir y OTP simulado con retorno a puntos/canjes/perfil comprobados.
-- [ ] Aplicar el resto de correcciones de consistencia; pendiente de aprobación de las siguientes etapas y confirmación de importes vigentes.
+- [x] Aplicar el informe de consistencia aprobado dentro de la frontera frontend/mock; contratos reales intactos.
+- [ ] Análisis profundo de seguridad: requiere ejecutarlo desde la pestaña Seguridad.
+- [ ] Adaptar contratos e integración de producción: depende del monorepo/Cursor; aquí quedan servicios mock y APIs de solo lectura.
 
 - [x] Home: panel contextual de cuenta para accesos con candado, notificaciones dentro del marco y moneda SVG con relieve.
 
@@ -26,7 +31,7 @@
 - [x] Categorías de la Agenda desde `/api/v1/categories?poblacion=<población del usuario>` (solo categorías con eventos activos).
 - [x] Unificar visualmente las categorías de la Agenda con iconos propios y amarillo KM0 para la selección.
 - [x] Mostrar todas las categorías de la Agenda en una cuadrícula sin scroll horizontal.
-- [x] Home: sección Premis alimentada por la API real UAT (/api/v1/rewards/public?postal_code=&lang=) vía proxy rewards-api, con imágenes; fallback mock local.
+- [x] Home: sección Premis alimentada por la API real UAT (/api/v1/rewards/public?postal_code=&lang=) vía proxy rewards-api, con imágenes y estados explícitos, sin fallback mock silencioso.
 - [x] Añadir la opción «Todos» al selector de rango temporal de la Agenda (sin fecha límite en la consulta).
 - [x] Agenda: la cuadrícula de categorías se puede ocultar y desocultar; la cabecera muestra un chip amarillo con la categoría activa.
 - [x] Agenda: selección de categorías múltiple y acumulativa (unión de slugs en cliente); «Tots» limpia la selección; la cabecera muestra todas las seleccionadas en chips amarillos lado a lado.

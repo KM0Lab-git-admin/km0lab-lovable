@@ -1,28 +1,23 @@
+import { Button } from "@/components/ui/button";
+import NotificationsOverlay from "@/components/NotificationsOverlay";
+import { useNotificationsPanel } from "@/hooks/use-notifications-panel";
+import { useLocationContext } from "@/hooks/use-location-context";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
+import { MOCK_POINTS } from "@/data/mockPointsConfig";
 import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  QrCode,
-  MapPin,
-  ScanLine,
-  X,
-  RefreshCw,
-  BadgeCheck,
-} from "lucide-react";
+import { QrCode, MapPin, ScanLine, X, RefreshCw, BadgeCheck } from "lucide-react";
 
-import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
 import BottomTabs from "@/components/AccountBottomTabs";
 import CategoryFilterMenu, { type CategoryFilterOption } from "@/components/CategoryFilterMenu";
 import { useLang } from "@/contexts/LangContext";
 import { useAuth } from "@/hooks/useAuth";
-import { useNotifications } from "@/hooks/useNotifications";
+
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import {
-  COMERCIOS_ADHERITS,
-  CATEGORIES_ADHERITS,
-} from "@/data/comerciosAdheridos";
+import { COMERCIOS_ADHERITS, CATEGORIES_ADHERITS } from "@/data/comerciosAdheridos";
 import type { ComercAdherit, CategoriaAdherit } from "@/types/comercAdherit";
 
 /* ─────────────────────────────────────────────────────────────
@@ -49,12 +44,12 @@ const ComercCard = ({ c, lang, onOpen }: CardProps) => (
     layout
     initial={{ opacity: 0, y: 6 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-white border border-km0-blue-100 rounded-2xl overflow-hidden shadow-sm active:scale-[0.99] transition-transform"
+    className="bg-card border border-km0-blue-100 rounded-2xl overflow-hidden shadow-sm active:scale-[0.99] transition-transform"
   >
-    <button
+    <Button variant="bubbleSurface"
       type="button"
       onClick={onOpen}
-      className="w-full text-left flex items-stretch gap-3 p-3"
+      className="h-auto w-full whitespace-normal text-left flex items-stretch justify-start gap-3 p-3"
     >
       {/* Miniatura */}
       <div className="relative shrink-0">
@@ -82,7 +77,7 @@ const ComercCard = ({ c, lang, onOpen }: CardProps) => (
         </div>
         {/* Segell adherit */}
         <span
-          className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-km0-teal-500 border-2 border-white flex items-center justify-center text-white"
+          className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-km0-teal-500 border-2 border-card flex items-center justify-center text-primary-foreground"
           aria-label={t("merchants.card.member", lang)}
         >
           <BadgeCheck size={14} strokeWidth={2.6} />
@@ -118,13 +113,13 @@ const ComercCard = ({ c, lang, onOpen }: CardProps) => (
           </div>
         )}
       </div>
-    </button>
+    </Button>
   </motion.article>
 );
 
 /* ─── Skeleton ──────────────────────────────────────────────── */
 const CardSkeleton = () => (
-  <div className="bg-white border border-km0-blue-100 rounded-2xl p-3 flex gap-3 animate-pulse">
+  <div className="bg-card border border-km0-blue-100 rounded-2xl p-3 flex gap-3 animate-pulse">
     <div className="w-20 h-20 rounded-xl bg-km0-blue-100/60 shrink-0" />
     <div className="flex-1 space-y-2 py-1">
       <div className="h-3 w-1/3 bg-km0-blue-100/60 rounded" />
@@ -140,7 +135,9 @@ const Comercos = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
   const { user } = useAuth();
-  const { hasUnread, markAllSeen } = useNotifications();
+  const notifications = useNotificationsPanel();
+  const { town } = useLocationContext();
+  const scrollRef = useDragScroll("vertical");
   const isAuthed = !!user;
   const goToHome = () => navigate("/home");
   const goToLogin = () => navigate("/login");
@@ -179,9 +176,7 @@ const Comercos = () => {
     return COMERCIOS_ADHERITS.filter((c) => c.categoriaSlug === selected);
   }, [selected, forced]);
 
-  const totalPrograma =
-    CATEGORIES_ADHERITS.find((c) => c.slug === "totes")?.count ??
-    COMERCIOS_ADHERITS.length;
+  const totalPrograma = COMERCIOS_ADHERITS.length;
 
   const selectedCat = CATEGORIES_ADHERITS.find((c) => c.slug === selected);
   const selectedLabel =
@@ -194,7 +189,7 @@ const Comercos = () => {
     key: c.slug,
     label: c.nom[lang === "en" ? "es" : lang],
     icon: <span className="text-base">{c.emoji ?? "🏷️"}</span>,
-    count: c.count,
+    count: c.slug === "totes" ? COMERCIOS_ADHERITS.length : COMERCIOS_ADHERITS.filter(shop => shop.categoriaSlug === c.slug).length,
   });
   const allCategory: CategoriaAdherit =
     CATEGORIES_ADHERITS.find((c) => c.slug === "totes") ?? {
@@ -211,16 +206,13 @@ const Comercos = () => {
   };
 
   return (
-    <DeviceShell>
+    <>
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
-        <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
+        <div ref={notifications.setContainer} className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           <HomeHero
-            cityName="Malgrat de Mar"
-            hasAlerts={hasUnread}
-            onToggleAlerts={() => {
-              setNotifOpen((v) => !v);
-              markAllSeen();
-            }}
+            cityName={town}
+            hasAlerts={notifications.hasUnread}
+            onToggleAlerts={notifications.show}
             onBack={() => navigate("/home")}
             showGreeting={false}
           />
@@ -235,9 +227,9 @@ const Comercos = () => {
               <p className="font-ui text-xs text-km0-blue-700/70 mt-0.5">
                 {interpolate(t("merchants.subtitle", lang), { count: totalPrograma })}
               </p>
-              <p className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-km0-coral-500 text-white text-[11px] font-ui font-bold">
+              <p className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-km0-coral-500 text-primary-foreground text-[11px] font-ui font-bold">
                 <QrCode size={12} strokeWidth={2.4} />
-                {interpolate(t("merchants.points_notice", lang), { n: 20 })}
+                {interpolate(t("merchants.points_notice", lang), { n: MOCK_POINTS.scan })}
               </p>
             </header>
 
@@ -266,7 +258,7 @@ const Comercos = () => {
             {/* Llista */}
             <div
               className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain -mx-4 px-4 pb-24"
-              style={{ WebkitOverflowScrolling: "touch" }}
+              ref={scrollRef}
             >
               <AnimatePresence mode="wait">
                 {loading ? (
@@ -287,19 +279,19 @@ const Comercos = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="mt-8 mx-auto max-w-xs text-center bg-white border border-km0-coral-100 rounded-2xl p-5"
+                    className="mt-8 mx-auto max-w-xs text-center bg-card border border-km0-coral-100 rounded-2xl p-5"
                   >
                     <p className="font-brand text-sm text-km0-blue-900 mb-3">
                       {t("merchants.error.title", lang)}
                     </p>
-                    <button
+                    <Button variant="bubbleSurface"
                       type="button"
                       onClick={retry}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-km0-coral-500 text-white font-ui text-xs font-bold active:scale-95 transition-transform"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-km0-coral-500 text-primary-foreground font-ui text-xs font-bold active:scale-95 transition-transform"
                     >
                       <RefreshCw size={12} />
                       {t("merchants.error.retry", lang)}
-                    </button>
+                    </Button>
                   </motion.div>
                 ) : items.length === 0 ? (
                   <motion.div
@@ -307,20 +299,20 @@ const Comercos = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="mt-8 mx-auto max-w-xs text-center bg-white border border-km0-blue-100 rounded-2xl p-5"
+                    className="mt-8 mx-auto max-w-xs text-center bg-card border border-km0-blue-100 rounded-2xl p-5"
                   >
                     <p className="text-3xl mb-2" aria-hidden>🏪</p>
                     <p className="font-brand text-sm text-km0-blue-900 mb-3">
                       {t("merchants.empty.title", lang)}
                     </p>
-                    <button
+                    <Button variant="bubbleSurface"
                       type="button"
                       onClick={() => setSelected("totes")}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-km0-blue-700 text-white font-ui text-xs font-bold active:scale-95 transition-transform"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-km0-blue-700 text-primary-foreground font-ui text-xs font-bold active:scale-95 transition-transform"
                     >
                       <X size={12} />
                       {t("merchants.empty.clear", lang)}
-                    </button>
+                    </Button>
                   </motion.div>
                 ) : (
                   <motion.ul
@@ -345,17 +337,18 @@ const Comercos = () => {
             </div>
 
             {/* FAB escàner (centrat sobre la tab bar) */}
-            <button
+            <Button variant="bubbleSurface"
               type="button"
               onClick={openScanner}
               aria-label={t("merchants.fab.scan", lang)}
-              className="absolute left-1/2 -translate-x-1/2 bottom-3 w-14 h-14 rounded-full bg-km0-teal-500 text-white shadow-lg shadow-km0-teal-500/40 flex items-center justify-center active:scale-95 transition-transform z-20 border-4 border-km0-beige-50"
+              className="absolute left-1/2 -translate-x-1/2 bottom-3 w-14 h-14 rounded-full bg-km0-teal-500 text-primary-foreground shadow-lg shadow-km0-teal-500/40 flex items-center justify-center active:scale-95 transition-transform z-20 border-4 border-km0-beige-50"
             >
               <ScanLine size={24} strokeWidth={2.4} />
-            </button>
+            </Button>
           </section>
 
 
+          <NotificationsOverlay open={notifications.open} items={notifications.items} loading={notifications.loading} error={notifications.error} lang={lang} onClose={notifications.close} onReload={notifications.reload} container={notifications.container} />
           <BottomTabs
             activeTab="home"
             isAuthed={isAuthed}
@@ -371,7 +364,7 @@ const Comercos = () => {
 
         </div>
       </div>
-    </DeviceShell>
+    </>
   );
 };
 
