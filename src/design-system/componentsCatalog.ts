@@ -254,7 +254,7 @@ export const componentsCatalog: ComponentSpec[] = [
     props: [
       { name: "townArtSrc", type: "string", description: "Ilustración por municipio, con fallback genérico cuando falta o falla." },
       { name: "cityName", type: "string", required: true, description: "Nombre de la ciudad/municipio." },
-      { name: "hasAlerts", type: "boolean", required: true, description: "Si true, la campana muestra dot coral." },
+      { name: "hasAlerts", type: "boolean", required: true, description: "Dot de la campana siempre visible: coral si hay no leídas, gris cuando todo está leído." },
       { name: "onToggleAlerts", type: "() => void", required: true, description: "Abre/cierra el overlay de notificaciones." },
       { name: "showLogin", type: "boolean", required: true, description: "Si true, muestra el LoginButton." },
       { name: "onLogin", type: "() => void", required: true, description: "Acción del login." },
@@ -321,10 +321,10 @@ export const componentsCatalog: ComponentSpec[] = [
     category: "cabecera",
     importPath: "@/components/NotificationBell",
     description:
-      "Campana con dot de estado (coral si hay no leídas, beige si no). Se comporta como botón si recibe onClick; si no, como icono decorativo.",
+      "Campana con dot de lectura siempre visible: coral si hay no leídas, gris cuando todo está leído. Se comporta como botón si recibe onClick.",
     usedIn: ["HomeHero"],
     props: [
-      { name: "hasAlerts", type: "boolean", defaultValue: "false", description: "Pinta el dot coral cuando hay notificaciones no leídas." },
+      { name: "hasAlerts", type: "boolean", defaultValue: "false", description: "Dot siempre visible: coral con notificaciones sin leer, gris (muted-foreground) cuando ya están leídas." },
       { name: "onClick", type: "() => void", description: "Si se pasa, el componente se renderiza como <button>." },
       { name: "ariaLabel", type: "string", defaultValue: '"Notifications"', description: "Aria label (i18n del consumidor)." },
       { name: "className", type: "string", description: "Clases extra." },
