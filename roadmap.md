@@ -20,3 +20,7 @@
 - [x] Agenda: selección de categorías múltiple y acumulativa (unión de slugs en cliente); «Tots» limpia la selección; la cabecera muestra todas las seleccionadas en chips amarillos lado a lado.
 - [x] Implementar el frontend navegable «Invita y gana»: Home, Acciones, compartir/QR, acceso con retorno, alta de negocio mock y confirmación.
 - [x] Hacer visible «Les meves invitacions» desde Home y Els meus punts, con resumen mock compartido y retorno contextual.
+- [ ] Burbuja · Etapa 1: piezas comunes y Home; conservar Compartir y las invitaciones actuales; detenerse para revisión.
+- [ ] Burbuja · Etapa 2: pantallas interiores y Agenda con filtros en panel lateral superpuesto; detenerse para revisión.
+- [ ] Burbuja · Etapa 3: entrada y tareas, preservando idioma y el carrusel «Cómo funciona»; detenerse para revisión.
+- [ ] Burbuja · Etapa 4: comprobar pantallas, idiomas, estados y navegación; entregar pendientes concretos.
