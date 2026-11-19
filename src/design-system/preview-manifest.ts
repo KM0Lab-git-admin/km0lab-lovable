@@ -159,14 +159,14 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "guest",
         label: "No registrado",
         src: "/home",
-        notes: "La tarjeta «Comparteix KM0 Lab» conserva un único botón «Compartir» que abre el panel de canales (drawer en móvil, modal en escritorio) con aviso de que sin sesión no hay puntos, accesos a crear cuenta / iniciar sesión, WhatsApp · Correu · Facebook · Més opcions (solo con menú nativo) y «Copia l'enllaç»; sin QR en esta fase. Vista directa del panel en /home?share=1. La cabecera muestra bajo el nombre del municipio el botón «Com funciona?» que abre el carrusel explicativo; la tarjeta de registro conserva solo su CTA principal. Oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles. RewardsPreview consume la API real de premios (UAT, /api/v1/rewards/public?postal_code=&lang=) con imágenes; fallback al mock local si falla. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
+        notes: "La tarjeta «Comparteix KM0 Lab» conserva un único botón «Compartir» que abre el panel de canales (drawer en móvil, modal en escritorio) con aviso de que sin sesión no hay puntos, accesos a crear cuenta / iniciar sesión, WhatsApp · Correu · Facebook · Més opcions (solo con menú nativo) y «Copia l'enllaç»; sin QR en esta fase. Vista directa del panel en /home?share=1. Acabado Burbuja: cabecera amarilla con ilustración genérica, registro blanco con «Com funciona?» y acceso a sesión, burbujas ilustradas, eventos 84%, premios 44%, filas de acciones y promociones y tarjeta Compartir al final. Oculta PointsCard. Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview visibles. RewardsPreview consume la API real de premios (UAT, /api/v1/rewards/public?postal_code=&lang=) con imágenes; fallback al mock local si falla. BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "registered",
         label: "Registrado",
         src: "/home",
         seedSession: true,
-        notes: "Oculta LoginButton; muestra PointsCard. La tarjeta «Invita i guanya punts» incluye el resumen mock 2 persones + 1 negoci = 700 punts, el CTA principal «Invitar» y el botón secundario «Les meves invitacions». Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
+        notes: "Acabado Burbuja con cabecera amarilla y PointsCard blanca con moneda y progreso. La tarjeta «Invita i guanya punts» incluye el resumen mock 2 persones + 1 negoci = 700 punts, el CTA principal «Invitar» y el botón secundario «Les meves invitacions». Secciones EarnPointsCard, RewardsPreview y MerchantPromosPreview activas. BottomTabs: Inici · Accions · Els meus punts · Premis canjats · Perfil.",
       },
       {
         id: "notifications",

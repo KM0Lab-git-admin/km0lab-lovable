@@ -6,6 +6,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
+import { getTownArt } from "@/data/townArt";
 import HomeContent from "@/components/HomeContent";
 
 import NotificationsOverlay from "@/components/NotificationsOverlay";
@@ -157,6 +158,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
 
   const sharedProps = {
     cityName,
+    townArtSrc: getTownArt(profile?.postal_code ?? localStorage.getItem("km0_postal_code")),
     hasAlerts: hasUnread,
     onToggleAlerts: openNotifications,
     greeting,

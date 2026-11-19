@@ -15,6 +15,15 @@ portarse **manualmente** al monorepo de producción KM0 LAB.
 
 ## v1.0 — En curso
 
+### Burbuja · Primera etapa
+
+**Qué:** Home con cabecera amarilla, ilustración municipal genérica, registro/puntos blancos, seis accesos ilustrados, carruseles de eventos y premios, filas de acciones y promociones y compartir/invitaciones al final. Barra inferior con cinco pestañas, etiquetas legibles y estado activo accesible. Paneles de Compartir y avisos con acabado Burbuja y cierre accesible.
+
+**Portabilidad:** variantes aditivas `bubblePrimary`, `bubbleSecondary`, `bubbleTertiary` y `bubbleLink` en Button; sombras semánticas nuevas, sin modificar colores existentes. `PointsCoin` reutilizable y `data/townArt` con fallback genérico; no hay ilustración específica de Malgrat en el ZIP. Assets mediante punteros CDN, sin paquetes nuevos. Datos, saldos, APIs y funcionamiento de invitaciones se conservan. No hay QR en el flujo actual; las notas antiguas de QR documentan una fase anterior, no dependencias necesarias hoy.
+
+**Pendiente:** aprobación visual de la etapa, interiores y panel lateral de Agenda, entrada/tareas y repaso final. La pantalla de idioma no se ha modificado.
+
+
 ### Invita y gana (piloto frontend)
 
 **Qué:** flujo navegable para invitar personas o negocios, con recompensas configurables de 100/500 puntos, tarjeta en Home para usuarios con sesión, acceso desde Acciones, enlaces diferenciados, compartir nativo, copia alternativa, QR real y alta web de negocio con validación y estados simulados.

@@ -1,3 +1,5 @@
+import PointsCoin from "@/components/PointsCoin";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import {
   Cake,
@@ -8,7 +10,6 @@ import {
   Mail,
   CalendarCheck,
   ClipboardList,
-  Circle,
   ArrowRight,
   Lock,
   type LucideIcon,
@@ -27,6 +28,7 @@ import type { PointAction, PointActionIcon } from "@/types/points";
 
 export interface EarnPointsCardProps {
   className?: string;
+  isAuthed?: boolean;
   /** Enlace opcional "Veure totes" que navega a /points-actions. */
   onSeeAll?: () => void;
   /** Si true, aplica overlay de candado + CTA de registro. */
@@ -57,9 +59,9 @@ const ICON_META: Record<PointActionIcon, { ring: string; text: string }> = {
   "clipboard-list": { ring: "bg-km0-yellow-100", text: "text-km0-blue-800" },
 };
 
-const fmtInt = (n: number) => n.toLocaleString("es-ES");
 
-const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin }: EarnPointsCardProps) => {
+
+const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin, isAuthed = false }: EarnPointsCardProps) => {
   const { lang } = useLang();
 
   const pending: PointAction[] = POINTS_ACTIONS.filter((a) => !a.completed).slice(0, 3);
@@ -71,32 +73,32 @@ const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin }: EarnPo
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
       className={cn(
-        "w-full rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-4 py-4 space-y-3",
+        "w-full space-y-3",
         className,
       )}
     >
       <div className="flex items-center justify-between gap-2">
-        <h2 className="font-brand font-black text-km0-blue-800 text-base flex items-center gap-2">
+        <h2 className="font-brand font-black text-km0-blue-800 text-lg flex items-center gap-2">
           <span>
             {t("home.earn.title", lang)}
-            <span className="text-km0-teal-500"> {t("home.earn.today", lang)}</span>
+            <span className="text-km0-teal-700"> {t("home.earn.today", lang)}</span>
           </span>
           {locked && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-km0-blue-800/85 text-white px-2 py-0.5 text-[10px] font-ui font-bold uppercase tracking-wide">
+            <span className="inline-flex items-center gap-1 rounded-full bg-km0-blue-800/85 text-primary-foreground px-2 py-0.5 text-[11px] font-ui font-bold uppercase tracking-wide">
               <Lock size={10} strokeWidth={2.4} />
               {t("home.locked.badge", lang)}
             </span>
           )}
         </h2>
         {handleSeeAll && (
-          <button
+          <Button variant="bubbleLink"
             type="button"
             onClick={handleSeeAll}
-            className="font-ui font-bold text-km0-coral-400 active:scale-95 transition-transform underline underline-offset-4 text-xs gap-0 flex items-center justify-start whitespace-nowrap shrink-0"
+            className="shrink-0 gap-1 px-0 text-xs text-km0-coral-700"
           >
             {t("home.action.see_all_m", lang)}
             <ArrowRight size={13} strokeWidth={2.4} />
-          </button>
+          </Button>
         )}
       </div>
 
@@ -110,9 +112,9 @@ const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin }: EarnPo
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.25, delay: Math.min(i * 0.06, 0.25) }}
-              className="flex items-center gap-3 px-3 py-3 bg-white rounded-2xl border border-km0-blue-100"
+              className="flex items-center gap-3 px-3 py-3 bg-card rounded-[20px] shadow-[var(--shadow-bubble)]"
             >
-              <span className={cn("shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center", meta.ring)}>
+              <span className={cn("shrink-0 w-12 h-12 rounded-full flex items-center justify-center", meta.ring)}>
                 <Icon size={20} className={meta.text} strokeWidth={2.2} />
               </span>
 
@@ -124,19 +126,14 @@ const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin }: EarnPo
                   {t(action.descriptionKey, lang)}
                 </p>
                 <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-ui font-bold uppercase tracking-wide bg-km0-blue-100 text-km0-blue-800">
+                  <span className="px-2 py-0.5 rounded-full text-[11px] font-ui font-bold uppercase tracking-wide bg-km0-blue-100 text-km0-blue-800">
                     {t(action.typeKey, lang)}
                   </span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-ui font-bold uppercase tracking-wide bg-km0-beige-100 text-km0-blue-800 flex items-center gap-1">
-                    <Circle size={10} strokeWidth={2.4} />
-                    {t("points.actions.pending", lang)}
-                  </span>
+                  {isAuthed && <span className="rounded-full bg-km0-blue-100 px-2 py-0.5 font-ui text-[11px] font-bold text-km0-blue-800">{t("points.actions.pending", lang)}</span>}
                 </div>
               </div>
 
-              <span className="shrink-0 rounded-full px-2.5 py-1.5 font-ui font-black text-xs tabular-nums bg-km0-yellow-400/90 text-km0-blue-900">
-                +{fmtInt(action.points)} pts
-              </span>
+              <PointsCoin points={action.points} earned />
             </motion.li>
           );
         })}

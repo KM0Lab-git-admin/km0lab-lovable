@@ -1,13 +1,14 @@
-import HomeModules, { type HomeModule } from "./HomeModules";
-import HomeHero from "./HomeHero";
-import EventHeroCarousel from "./EventHeroCarousel";
-import PointsCard from "./PointsCard";
-import JoinCard from "./JoinCard";
-import EarnPointsCard from "./EarnPointsCard";
-import RewardsPreview from "./RewardsPreview";
-import MerchantPromosPreview from "./MerchantPromosPreview";
-import InviteHomeCard from "./InviteHomeCard";
-import BottomTabs, { type HomeTab } from "./BottomTabs";
+import HomeModules, { type HomeModule } from "@/components/HomeModules";
+import HomeHero from "@/components/HomeHero";
+import EventHeroCarousel from "@/components/EventHeroCarousel";
+import PointsCard from "@/components/PointsCard";
+import JoinCard from "@/components/JoinCard";
+import EarnPointsCard from "@/components/EarnPointsCard";
+import RewardsPreview from "@/components/RewardsPreview";
+import MerchantPromosPreview from "@/components/MerchantPromosPreview";
+import InviteHomeCard from "@/components/InviteHomeCard";
+import BottomTabs, { type HomeTab } from "@/components/BottomTabs";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -19,6 +20,7 @@ import type { InvitationsSummary } from "@/types/invitation";
 
 export interface HomeContentProps {
   cityName: string;
+  townArtSrc?: string;
   hasAlerts: boolean;
   onToggleAlerts: () => void;
   /** Saludo ya localizado (e.g. "Bon dia, Aina 👋" o "Hola! 👋"). */
@@ -61,6 +63,7 @@ export interface HomeContentProps {
 
 const HomeContent = ({
   cityName,
+  townArtSrc,
   hasAlerts,
   onToggleAlerts,
   points,
@@ -101,26 +104,39 @@ const HomeContent = ({
     <>
       <HomeHero
         cityName={cityName}
+        townArtSrc={townArtSrc}
         hasAlerts={hasAlerts}
         onToggleAlerts={onToggleAlerts}
         showGreeting={false}
-        showHowItWorks={showLogin}
-        onHowItWorks={onHowItWorks}
       />
 
       <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
-        <div className="relative z-10 flex flex-col gap-5 px-2 pt-4 pb-6">
-          <section className="flex flex-col gap-3 px-2">
-            {showLogin && <JoinCard onCreateAccount={onLogin} />}
+        <div className="relative z-10 flex flex-col gap-5 px-4 pt-4 pb-7">
+          <section className="flex flex-col gap-3">
+            {showLogin && <JoinCard onCreateAccount={onLogin} onLogin={onLogin} onHowItWorks={onHowItWorks} />}
             {showPoints && <PointsCard points={points} nextLevel={nextLevel} nextReward={nextReward} level={level} onClick={onOpenPointsHistory} />}
           </section>
 
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 space-y-3 px-[10px] py-[10px]">
+          <section className="rounded-3xl bg-card p-4 shadow-[var(--shadow-bubble)] space-y-3">
             <SectionHeader title={t("home.section.quick", lang)} />
             <HomeModules modules={modules} />
           </section>
 
-          <div className="px-2">
+
+          <section className="space-y-3">
+            <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
+            <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
+          </section>
+
+          <EarnPointsCard onSeeAll={onActions} locked={false} onLogin={onLogin} isAuthed={isAuthed} />
+
+          <section className="space-y-3">
+            <SectionHeader title={t("home.section.rewards", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllRewards} />
+            <RewardsPreview items={rewards} onSeeAll={onSeeAllRewards} />
+          </section>
+
+          <MerchantPromosPreview onSeeAll={onSeeAllPromos} locked={false} onLogin={onLogin} />
+          <div>
             <InviteHomeCard
               isAuthed={isAuthed}
               onInvite={onInvite}
@@ -131,25 +147,6 @@ const HomeContent = ({
             />
           </div>
 
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
-            <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
-            <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />
-          </section>
-
-          {!isAuthed && (
-            <p className="text-center font-ui font-bold text-sm text-km0-coral-400 px-4">
-              {t("home.members.teaser", lang)}
-            </p>
-          )}
-
-          <EarnPointsCard onSeeAll={onActions} locked={false} onLogin={onLogin} />
-
-          <section className="rounded-3xl border border-km0-beige-200 bg-gradient-to-b from-card/90 to-secondary/40 shadow-[0_20px_50px_-32px_hsl(var(--foreground)/0.38)] ring-1 ring-white/60 px-6 py-6 space-y-3">
-            <SectionHeader title={t("home.section.rewards", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllRewards} />
-            <RewardsPreview items={rewards} onSeeAll={onSeeAllRewards} />
-          </section>
-
-          <MerchantPromosPreview onSeeAll={onSeeAllPromos} locked={false} onLogin={onLogin} />
         </div>
       </div>
 
@@ -179,18 +176,19 @@ interface SectionHeaderProps {
 
 const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => (
   <div className="flex items-center justify-between gap-2">
-    <h2 className="font-brand font-black text-km0-blue-800 text-base">
+    <h2 className="font-brand font-black text-km0-blue-800 text-lg">
       {title}
     </h2>
     {actionLabel && (
-      <button
+      <Button
+        variant="bubbleLink"
         type="button"
         onClick={onAction}
-        className="font-ui font-bold text-km0-coral-400 active:scale-95 transition-transform underline underline-offset-4 text-xs gap-0 flex items-center justify-start whitespace-nowrap shrink-0"
+        className="h-auto min-h-11 shrink-0 gap-1 px-0 text-xs text-km0-coral-700"
       >
         {actionLabel}
         <ArrowRight size={13} strokeWidth={2.4} />
-      </button>
+      </Button>
     )}
   </div>
 );

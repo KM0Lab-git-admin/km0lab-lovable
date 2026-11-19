@@ -50,13 +50,13 @@ const ScreenTitle = ({ title, date, className = "" }: ScreenTitleProps) => {
 
   return (
     <div
-      className={`w-full flex items-center gap-2 my-0 px-[10px] ${className}`.trim()}
+      className={`w-full flex items-center gap-2 ${className}`.trim()}
     >
       {/* Bloque 1: icono + título */}
       <div className="flex items-center gap-2 min-w-0">
         <div
           aria-hidden
-          className="shrink-0 w-9 h-9 rounded-full bg-km0-beige-50 border-2 border-km0-blue-700/15 shadow-sm flex items-center justify-center overflow-hidden"
+          className="shrink-0 w-11 h-11 rounded-full bg-card/75 flex items-center justify-center overflow-hidden"
         >
           <CalendarIcon
             className="w-4 h-4 text-km0-blue-700"
@@ -65,10 +65,10 @@ const ScreenTitle = ({ title, date, className = "" }: ScreenTitleProps) => {
         </div>
 
         <div className="flex flex-col leading-tight min-w-0">
-          <p className="font-brand font-black text-km0-blue-700 text-sm whitespace-nowrap truncate">
+          <p className="font-brand font-black text-km0-blue-700 text-xl leading-tight">
             {title}
           </p>
-          <span className="font-ui text-km0-blue-800 capitalize text-sm bg-transparent truncate">
+          <span className="font-ui text-km0-blue-800 capitalize text-xs bg-transparent">
             {weekday}
           </span>
         </div>
@@ -79,7 +79,7 @@ const ScreenTitle = ({ title, date, className = "" }: ScreenTitleProps) => {
         <p className="font-body text-km0-blue-800 whitespace-nowrap leading-tight text-xs">
           {TODAY_LABEL[lang]}
         </p>
-        <p className="font-brand text-km0-blue-700 whitespace-nowrap leading-tight mt-0.5 text-xl">
+        <p className="font-brand text-km0-blue-700 whitespace-nowrap leading-tight mt-0.5 text-sm">
           {dayNum} {monthName}
         </p>
       </div>

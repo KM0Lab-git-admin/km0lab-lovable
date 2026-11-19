@@ -76,6 +76,9 @@
 
 @layer base {
   :root {
+    --shadow-bubble: 0 10px 30px -18px hsl(var(--km0-blue-800) / 0.35);
+    --shadow-bubble-yellow: 0 8px 18px -10px hsl(var(--km0-yellow-600) / 0.8);
+    --shadow-bubble-blue: 0 8px 18px -10px hsl(var(--km0-blue-700) / 0.8);
     /* ── KM0 Blue ──────────────────────────────────────────── */
     --km0-blue-50:  214 69% 97%;   /* #F0F4FD */
     --km0-blue-100: 228 60% 91%;   /* #DADEF8 */

@@ -59,6 +59,12 @@ export interface ComponentSpec {
 }
 
 export const componentsCatalog: ComponentSpec[] = [
+  {
+    id: "points-coin", name: "PointsCoin", category: "home", importPath: "@/components/PointsCoin",
+    description: "Insignia monetaria compartida para puntos, acciones y premios.", usedIn: ["PointsCard", "EarnPointsCard", "RewardsPreview"],
+    props: [{ name: "points", type: "number", required: true, description: "Importe sin modificar su valor." }, { name: "earned", type: "boolean", description: "Añade el signo positivo." }], responsive: [],
+  },
+
   /* ─── Marca y layout ──────────────────────────────── */
   {
     id: "branded-frame",
@@ -131,10 +137,10 @@ export const componentsCatalog: ComponentSpec[] = [
     name: "BottomTabs",
     category: "navegacion",
     importPath: "@/components/BottomTabs",
-    description: "Barra de navegación inferior fija con 4 tabs (Inicio · Mis puntos · Premis canjats · Perfil). Sin sesión solo Inicio está activo; los demás redirigen a /login.",
+    description: "Barra Burbuja de cinco pestañas con cápsula amarilla activa, etiquetas de 11 px y candados en accesos protegidos. Inicio y Acciones siguen siendo públicos.",
     usedIn: ["Home", "Comercos", "PremisCanjats"],
     props: [
-      { name: "activeTab", type: '"home" | "perfil" | "puntos" | "rewards"', required: true, description: "Tab activo (controlado por la pantalla)." },
+      { name: "activeTab", type: '"home" | "actions" | "perfil" | "puntos" | "rewards"', required: true, description: "Tab activo (controlado por la pantalla)." },
       { name: "isAuthed", type: "boolean", required: true, description: "Indica si hay sesión. Sin sesión, solo el tab Inicio está activo; los demás redirigen a login." },
       { name: "onLogin", type: "() => void", required: true, description: "Acción cuando se pulsa un tab protegido sin sesión." },
       { name: "onHome", type: "() => void", required: true, description: "Acción al pulsar el tab Inicio." },
@@ -243,9 +249,10 @@ export const componentsCatalog: ComponentSpec[] = [
     category: "cabecera",
     importPath: "@/components/HomeHero",
     description:
-      "Header superior compartido por Home y pantallas interiores (Agenda, Chat). Skyline + escudo + nombre de ciudad + logo KM0 + (opcional) back + login + campana. Slot inferior con UserGreeting o contenido custom.",
+      "Cabecera amarilla Burbuja: municipio, logo e ilustración decorativa en Home; botón de volver y contenido del slot en interiores. Campana de 44 px.",
     usedIn: ["Home (vía HomeContent)", "Agenda", "Chat"],
     props: [
+      { name: "townArtSrc", type: "string", description: "Ilustración por municipio, con fallback genérico cuando falta o falla." },
       { name: "cityName", type: "string", required: true, description: "Nombre de la ciudad/municipio." },
       { name: "hasAlerts", type: "boolean", required: true, description: "Si true, la campana muestra dot coral." },
       { name: "onToggleAlerts", type: "() => void", required: true, description: "Abre/cierra el overlay de notificaciones." },
@@ -256,16 +263,8 @@ export const componentsCatalog: ComponentSpec[] = [
       { name: "showGreeting", type: "boolean", defaultValue: "true", description: "Oculta el UserGreeting cuando se pone false." },
       { name: "greetingSlot", type: "ReactNode", description: "Sustituye al UserGreeting (p.ej. ScreenTitle en Agenda/Chat) manteniendo la misma altura." },
     ],
-    responsive: [
-      { breakpoint: "vertical-mobile", behavior: "pt-2/pb-1, escudo 12×12, logo h-4, h1 text-lg." },
-      { breakpoint: "vertical-tablet", behavior: "Escudo 14×14, logo h-5, padding cómodo." },
-      { breakpoint: "horizontal-mobile", behavior: "Se vuelve absolute inset-0 (fondo del body). Escudo 7×7, logo h-3, h1 text-sm en línea." },
-      { breakpoint: "horizontal-desktop", behavior: "absolute inset-0 con contenido más amplio." },
-    ],
-    notes: [
-      "En landscape el Hero es FONDO del body — el contenido del Home queda por encima vía z-10.",
-      "Si pasas greetingSlot, NO pongas showGreeting=false: el wrapper de fondo se preserva por la condición `greetingSlot || showGreeting`.",
-    ],
+    responsive: [],
+    notes: ["Una columna portrait; ilustración únicamente en Home. Sin skyline ni escudo."],
   },
   {
     id: "user-greeting",
@@ -344,8 +343,7 @@ export const componentsCatalog: ComponentSpec[] = [
     name: "HomeContent",
     category: "home",
     importPath: "@/components/HomeContent",
-    description:
-      "Orquestador interno del Home reutilizado por los frames portrait y landscape de la página Home. Compone HomeHero + HomeModules + PromoSection + ComerciosSection + BottomTabs. NO conoce auth, router ni hooks: todo entra por props.",
+    description: "Home Burbuja presentacional: registro o puntos, accesos rápidos, eventos, acciones, premios, promociones y compartir/invitaciones. Cabecera y barra inferior fijas; cuerpo con scroll interno.",
     usedIn: ["Home"],
     props: [
       { name: "cityName", type: "string", required: true, description: "Ciudad mostrada en el HomeHero." },
@@ -364,16 +362,8 @@ export const componentsCatalog: ComponentSpec[] = [
 
       { name: "onSeeAllComercios", type: "() => void", description: "Acción del link 'Ver todos' en ComerciosSection." },
     ],
-    responsive: [
-      { breakpoint: "vertical-mobile", behavior: "Columna única: hero / módulos / promos / comercios apilados con justify-evenly." },
-      { breakpoint: "vertical-tablet", behavior: "Igual que vertical-mobile (la página clampa el ancho)." },
-      { breakpoint: "horizontal-mobile", behavior: "Hero como fondo absoluto, body en grid 2-col compacto (promos | comercios)." },
-      { breakpoint: "horizontal-desktop", behavior: "Hero como fondo, body en grid 2-col cómodo." },
-    ],
-    notes: [
-      "Solo lo monta `src/pages/Home.tsx` (dentro de los wrappers portrait/landscape).",
-      "Los borders negros visibles son DEBUG temporal — no quitar sin consultar.",
-    ],
+    responsive: [],
+    notes: ["Invitaciones con sesión conserva resumen y acceso al seguimiento; Compartir sin sesión conserva panel de canales."],
   },
   {
     id: "home-modules",
@@ -381,7 +371,7 @@ export const componentsCatalog: ComponentSpec[] = [
     category: "home",
     importPath: "@/components/HomeModules",
     description:
-      "Grid de 6 accesos rápidos (2 filas × 3 columnas) estilo Glovo recoloreado a marca KM0: banda azul con curva orgánica + círculos blancos con icono coloreado + pill de label flotando bajo el círculo. Cada módulo es togglable (active/inactive).",
+      "Rejilla Burbuja de seis accesos, círculos pastel de 76 px e ilustraciones CDN de 58 px; etiquetas de 12 px y aviso de próximamente.",
     usedIn: ["Home (vía HomeContent)"],
     props: [
       { name: "modules", type: "HomeModule[]", required: true, description: "Lista de módulos. Ids soportados: chat · agenda · ajuntament · punts · cupons · comerc · noticias · servicios." },

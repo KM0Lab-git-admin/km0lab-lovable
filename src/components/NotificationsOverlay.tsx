@@ -1,5 +1,7 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowRight, Loader2, RefreshCw, Newspaper } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ArrowRight, RefreshCw, Newspaper } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
@@ -43,51 +45,18 @@ const NotificationsOverlay = ({
   };
 
   return (
-    <AnimatePresence>
-      {open && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            className="absolute inset-0 z-40 bg-km0-blue-900/30"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
-            onClick={onClose}
-            aria-hidden
-          />
-
-          {/* Drawer lateral derecho */}
-          <motion.aside
-            className="absolute top-0 right-0 bottom-0 z-50 w-full bg-km0-beige-50 flex flex-col shadow-2xl rounded-l-3xl overflow-hidden"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-            role="dialog"
-            aria-modal="true"
-            aria-label={t("notifications.title", lang)}
-          >
+    <Dialog open={open} onOpenChange={(value) => { if (!value) onClose(); }}>
+      <DialogContent aria-describedby={undefined} className="top-auto bottom-0 flex max-h-[90dvh] w-[min(100%,430px)] max-w-[430px] translate-y-0 flex-col gap-0 overflow-hidden rounded-t-[28px] border-0 bg-km0-beige-50 p-0 [&>button]:h-11 [&>button]:w-11 [&>button]:rounded-full [&>button]:bg-card">
             {/* Header */}
-            <header className="flex items-center justify-between px-5 pt-6 pb-4 border-b border-km0-beige-200 shrink-0">
-              <h2 className="font-brand text-2xl text-km0-blue-700">
-                {t("notifications.title", lang)}
-              </h2>
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label={t("notifications.close", lang)}
-                className="w-10 h-10 flex items-center justify-center rounded-xl text-km0-blue-700 hover:bg-km0-beige-100 active:scale-95 transition"
-              >
-                <X size={22} strokeWidth={2.4} />
-              </button>
+            <header className="flex items-center justify-between px-5 pt-6 pb-4  shrink-0">
+              <DialogTitle className="pr-12 font-brand text-xl font-black text-km0-blue-800">{t("notifications.title", lang)}</DialogTitle>
             </header>
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
               {loading && items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center px-6 py-16 gap-2">
-                  <Loader2 className="w-6 h-6 text-km0-blue-700 animate-spin" />
+                  <Skeleton className="h-20 w-full rounded-[20px]" /><Skeleton className="h-20 w-full rounded-[20px]" />
                   <p className="font-body text-sm text-km0-blue-700/70">
                     {t("notifications.loading", lang)}
                   </p>
@@ -97,14 +66,14 @@ const NotificationsOverlay = ({
                   <p className="font-ui text-km0-blue-700 text-base">
                     {t("notifications.error.title", lang)}
                   </p>
-                  <button
+                  <Button variant="bubbleTertiary"
                     type="button"
                     onClick={onReload}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-km0-blue-700 text-white font-ui text-sm active:scale-95 transition"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-km0-blue-700 text-primary-foreground font-ui text-sm active:scale-95 transition"
                   >
                     <RefreshCw size={14} strokeWidth={2.5} />
                     {t("notifications.error.retry", lang)}
-                  </button>
+                  </Button>
                 </div>
               ) : items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center px-6 py-16 gap-2">
@@ -122,15 +91,15 @@ const NotificationsOverlay = ({
                   const titulo = noticia.titulo[lang] || noticia.titulo.es;
                   const resumen = noticia.resumen[lang] || noticia.resumen.es;
                   return (
-                    <button
+                    <Button variant="bubbleTertiary"
                       key={noticia.id}
                       type="button"
                       onClick={() => handleOpen(item)}
                       className={cn(
-                        "w-full text-left rounded-2xl border p-3 transition active:scale-[0.99]",
+                        "h-auto w-full whitespace-normal text-left rounded-[20px] bg-card p-3 shadow-[var(--shadow-bubble)] transition active:scale-[0.96]",
                         read
-                          ? "bg-km0-beige-50 border-km0-beige-200"
-                          : "bg-white border-km0-blue-700/20 shadow-sm",
+                          ? "bg-card"
+                          : "bg-card",
                       )}
                     >
                       <div className="flex items-start gap-3">
@@ -181,16 +150,13 @@ const NotificationsOverlay = ({
                           </div>
                         </div>
                       </div>
-                    </button>
+                    </Button>
                   );
                 })
               )}
             </div>
-          </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
+      </DialogContent>
+    </Dialog>
   );
 };
-
 export default NotificationsOverlay;

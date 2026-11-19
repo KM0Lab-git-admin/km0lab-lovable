@@ -16,6 +16,11 @@ export const LANGS: Lang[] = ["ca", "es", "en"];
 type Dict = Record<Lang, string>;
 
 const D = {
+  "navigation.main": { ca: "Navegació principal", es: "Navegación principal", en: "Main navigation" } as Dict,
+  "notifications.unread": { ca: "Tens notificacions noves", es: "Tienes notificaciones nuevas", en: "You have new notifications" } as Dict,
+  "notifications.none": { ca: "Sense notificacions", es: "Sin notificaciones", en: "No notifications" } as Dict,
+  "home.event.open": { ca: "Obrir {title}", es: "Abrir {title}", en: "Open {title}" } as Dict,
+  "home.event.page": { ca: "Anar a l’esdeveniment {n}", es: "Ir al evento {n}", en: "Go to event {n}" } as Dict,
   // ── Common ───────────────────────────────────────────────
   "common.back": { ca: "Enrere", es: "Volver", en: "Back" } as Dict,
   "common.continue": { ca: "CONTINUAR", es: "CONTINUAR", en: "CONTINUE" } as Dict,
@@ -539,7 +544,7 @@ const D = {
   // ── BottomTabs ───────────────────────────────────────────
   "tabs.home": { ca: "Inici", es: "Inicio", en: "Home" } as Dict,
   "tabs.points": { ca: "Els meus punts", es: "Mis puntos", en: "My points" } as Dict,
-  "tabs.rewards": { ca: "Premis canjats", es: "Premios canjeados", en: "Redeemed rewards" } as Dict,
+  "tabs.rewards": { ca: "Premis bescanviats", es: "Premios canjeados", en: "Redeemed rewards" } as Dict,
   "tabs.profile": { ca: "Perfil", es: "Perfil", en: "Profile" } as Dict,
   "tabs.actions": { ca: "Accions", es: "Acciones", en: "Actions" } as Dict,
 

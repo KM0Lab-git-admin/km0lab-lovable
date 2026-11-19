@@ -79,9 +79,9 @@ const ShareChannelList = ({ link, message, subject }: ShareChannelListProps) => 
           <li key={channel.id}>
             <Button
               type="button"
-              variant="outline"
+              variant="bubbleTertiary"
               onClick={channel.onSelect}
-              className="h-12 w-full justify-start gap-3 rounded-xl border-km0-blue-100 font-ui text-sm font-bold text-km0-blue-800"
+              className="h-12 w-full justify-start gap-3 rounded-full bg-card font-ui text-sm font-bold text-km0-blue-800"
             >
               <channel.icon aria-hidden size={18} />
               {channel.label}
@@ -92,9 +92,9 @@ const ShareChannelList = ({ link, message, subject }: ShareChannelListProps) => 
 
       <Button
         type="button"
-        variant="ghost"
+        variant="bubbleLink"
         onClick={() => void copyLink()}
-        className="mt-3 h-11 w-full justify-start gap-3 rounded-xl font-ui text-sm font-bold text-km0-blue-700"
+        className="mt-3 h-11 w-full justify-start gap-3 rounded-full font-ui text-sm font-bold text-km0-blue-700"
       >
         <Copy aria-hidden size={18} />
         {t("share.copy", lang)}
