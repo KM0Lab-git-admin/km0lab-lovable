@@ -167,7 +167,7 @@ const PointsActions = () => {
           {/* Lista */}
           <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-4 pb-6">
           {/* Resumen */}
-          <section className="shrink-0 px-4 pb-3">
+          <section className="shrink-0 pt-4 pb-3">
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -211,7 +211,7 @@ const PointsActions = () => {
           </section>
 
           {/* Filtros */}
-          <div className="shrink-0 px-4 pb-2 flex items-center gap-2">
+          <div className="shrink-0 pb-2 flex items-center gap-2">
             <FilterChip
               active={filter === "all"}
               onClick={() => setFilter("all")}

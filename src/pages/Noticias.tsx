@@ -73,7 +73,7 @@ const NoticiaCard = ({
       <Button variant="bubbleSurface"
         type="button"
         onClick={onOpen}
-        className="w-full text-left active:scale-[0.99] transition-transform"
+        className="block h-auto w-full whitespace-normal rounded-none p-0 text-left active:scale-[0.99] transition-transform"
       >
         {noticia.imagenUrl ? (
           <div className="aspect-[16/9] w-full bg-km0-blue-50 overflow-hidden">
