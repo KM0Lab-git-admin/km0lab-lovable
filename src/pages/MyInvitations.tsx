@@ -1,5 +1,5 @@
 import { useDragScroll } from "@/hooks/use-drag-scroll";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AlertCircle, Building2, ChevronLeft, ChevronRight, Clock, Coins, Loader2, RefreshCw, Share2, UserRound, type LucideIcon } from "lucide-react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
@@ -10,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { fetchInvitations, summarizeInvitations, type InvitationsVariant } from "@/services/mock/invitations";
+import { useInvitations } from "@/hooks/use-invitations";
 import type { InvitationRecord, InvitationStatus } from "@/types/invitation";
 
 /* ─── Filtros ─────────────────────────────────────────────── */
@@ -59,7 +59,7 @@ const MyInvitations = () => {
   const { lang } = useLang();
   const { loading: authLoading } = useAuth();
 
-  const forcedState = searchParams.get("state");
+  const { records, summary, loading, error, reload } = useInvitations();
   const requestedOrigin = searchParams.get("from");
   const origin: InvitationOrigin =
     requestedOrigin === "home" || requestedOrigin === "actions" || requestedOrigin === "points"
@@ -75,35 +75,11 @@ const MyInvitations = () => {
     points: "puntos",
     actions: "actions",
   };
-  const variant: InvitationsVariant =
-    forcedState === "empty" ? "empty" : forcedState === "pending" ? "pending" : "default";
-
-  const [records, setRecords] = useState<InvitationRecord[] | null>(null);
-  const [failed, setFailed] = useState(forcedState === "error");
   const [filter, setFilter] = useState<Filter>("all");
   const [openId, setOpenId] = useState<string | null>(null);
-  const [reloadToken, setReloadToken] = useState(0);
-
-  useEffect(() => {
-    if (forcedState === "error" || forcedState === "loading") return;
-    let active = true;
-    setRecords(null);
-    fetchInvitations(variant)
-      .then((data) => {
-        if (active) setRecords(data);
-      })
-      .catch(() => {
-        if (active) setFailed(true);
-      });
-    return () => {
-      active = false;
-    };
-  }, [variant, forcedState, reloadToken]);
-
-  const summary = useMemo(() => summarizeInvitations(records ?? []), [records]);
 
   const filtered = useMemo(() => {
-    const list = records ?? [];
+    const list = records;
     const scoped = filter === "all" ? list : list.filter((r) => r.kind === filter);
     return [...scoped].sort((a, b) => {
       const da = relevantDate(a);
@@ -247,10 +223,7 @@ const MyInvitations = () => {
       <Button
         type="button"
         variant="outline"
-        onClick={() => {
-          setFailed(false);
-          setReloadToken((token) => token + 1);
-        }}
+        onClick={reload}
         className="mt-4 border-km0-blue-100 font-ui font-bold text-km0-blue-800"
       >
         <RefreshCw aria-hidden />
@@ -293,8 +266,8 @@ const MyInvitations = () => {
   );
 
   const renderContent = () => {
-    if (failed) return renderError();
-    if (authLoading || forcedState === "loading" || records === null) return renderLoading();
+    if (error) return renderError();
+    if (authLoading || loading) return renderLoading();
     if (records.length === 0) return renderEmpty();
 
     return (

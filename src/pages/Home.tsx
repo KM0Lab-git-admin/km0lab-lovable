@@ -1,6 +1,6 @@
 import { useAccount } from "@/hooks/use-account";
 import { useLocationContext } from "@/hooks/use-location-context";
-import { MOCK_POINTS } from "@/data/mockPointsConfig";
+import { usePointsConfig } from "@/hooks/use-points-config";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -24,7 +24,7 @@ import { useFeaturedPromos } from "@/hooks/useFeaturedPromos";
 import { usePublicRewards } from "@/hooks/usePublicRewards";
 
 
-import { INVITATIONS_MOCK_SUMMARY } from "@/services/mock/invitations";
+import { useInviteSummary } from "@/hooks/use-invite-summary";
 
 type HomeProps = {
   /** Forzar estado para previews (`/home-registered`, `/home-no-registrado`). */
@@ -32,10 +32,12 @@ type HomeProps = {
 };
 
 const Home = ({ forceAuthState }: HomeProps = {}) => {
+  const pointsConfig = usePointsConfig();
   const { items: notifications, hasUnread, loading: notifLoading, error: notifError, reload: reloadNotifs, markAllSeen } = useNotifications();
   const { user, loading: authLoading } = useAuth();
   const { profile } = useProfile();
   const account = useAccount();
+  const { summary: invitationSummary } = useInviteSummary();
   const { town: cityName, postalCode } = useLocationContext();
   const { lang } = useLang();
   const navigate = useNavigate();
@@ -169,7 +171,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onInvite: () => navigate("/invite"),
     onViewInvitations: () =>
       navigate("/my-invitations?from=home", { state: { invitationOrigin: "home" } }),
-    invitationSummary: isAuthed ? INVITATIONS_MOCK_SUMMARY : null,
+    invitationSummary: isAuthed ? invitationSummary : null,
     showLogin,
     showPoints,
     onSeeAllEvents: () => navigate("/events"),
@@ -200,7 +202,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
           />
           {rewardOpen && isAuthed && (
             <PointsRewardOverlay
-              points={MOCK_POINTS.signup}
+              points={pointsConfig.signup}
               message={t("home.welcome.reason", lang)}
               contained
               onClose={() => {

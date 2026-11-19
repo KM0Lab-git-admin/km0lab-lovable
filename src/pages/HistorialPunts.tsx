@@ -17,7 +17,7 @@ import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 import type { PointsTransaction, PointsTxType } from "@/types/points";
-import { INVITATIONS_MOCK_SUMMARY } from "@/services/mock/invitations";
+import { useInviteSummary } from "@/hooks/use-invite-summary";
 
 /* ─── Filtros ────────────────────────────────────────────── */
 type Filter = "all" | "earned" | "spent";
@@ -35,6 +35,8 @@ const TYPE_META: Record<
   survey:       { Icon: ClipboardList,      ring: "bg-km0-yellow-100", text: "text-km0-blue-800"  },
   suggestion:   { Icon: MessageSquarePlus,  ring: "bg-km0-teal-100",   text: "text-km0-teal-700"  },
   invitation:   { Icon: Share2, ring: "bg-km0-teal-100", text: "text-km0-teal-700" },
+  invite_person: { Icon: Share2, ring: "bg-km0-teal-100", text: "text-km0-teal-700" },
+  invite_business: { Icon: Share2, ring: "bg-km0-teal-100", text: "text-km0-teal-700" },
   demo_credit: { Icon: Coins, ring: "bg-km0-yellow-100", text: "text-km0-blue-800" },
   redeem:       { Icon: Tag,                ring: "bg-km0-coral-100",  text: "text-km0-coral-500" },
 };
@@ -120,6 +122,7 @@ const TxRow = ({ tx, lang, index }: { tx: PointsTransaction; lang: Lang; index: 
 const HistorialPunts = () => {
   const navigate = useNavigate();
   const account = useAccount();
+  const { summary: invitationSummary } = useInviteSummary();
   const { lang } = useLang();
   const { user } = useAuth();
   const [filter, setFilter] = useState<Filter>("all");
@@ -243,10 +246,10 @@ const HistorialPunts = () => {
                   {t("invites.points.title", lang)}
                 </span>
                 <span className="block font-body text-xs leading-snug text-km0-blue-800/65">
-                  {INVITATIONS_MOCK_SUMMARY.pointsEarned > 0
+                  {invitationSummary.pointsEarned > 0
                     ? t("invites.points.earned", lang).replace(
                         "{points}",
-                        fmtInt(INVITATIONS_MOCK_SUMMARY.pointsEarned),
+                        fmtInt(invitationSummary.pointsEarned),
                       )
                     : t("invites.points.empty", lang)}
                 </span>

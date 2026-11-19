@@ -18,3 +18,5 @@
 - Use useAccount for localized account reads and redeemReward for redemption writes in product presentation; only the service assigns nullable collection codes so swapping production implementations does not require screen edits.
 
 - Product pages and components must consume stable, neutrally named data hooks/services, never mock stores/services or domain fixtures; data layers must not import presentation or contexts, data hooks expose loading/error/reload, and business rules stay outside presentation so production can replace implementations without editing screens (docs/KNOWLEDGE.md §5.1; migration reference: docs/ENCARGOS-LOVABLE.md).
+
+- Use usePointsActions/useHomeActions, useInviteSummary/useInvitations, useInviteRewards and usePointsConfig for product reads; keep invitation aggregation and preview data variants inside the data hooks so production implementations can replace examples without editing presentation.

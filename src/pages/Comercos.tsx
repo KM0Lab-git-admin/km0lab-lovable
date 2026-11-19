@@ -3,7 +3,7 @@ import NotificationsOverlay from "@/components/NotificationsOverlay";
 import { useNotificationsPanel } from "@/hooks/use-notifications-panel";
 import { useLocationContext } from "@/hooks/use-location-context";
 import { useDragScroll } from "@/hooks/use-drag-scroll";
-import { MOCK_POINTS } from "@/data/mockPointsConfig";
+import { usePointsConfig } from "@/hooks/use-points-config";
 import { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -132,6 +132,7 @@ const CardSkeleton = () => (
 
 /* ─── Pàgina ────────────────────────────────────────────────── */
 const Comercos = () => {
+  const pointsConfig = usePointsConfig();
   const navigate = useNavigate();
   const { lang } = useLang();
   const { user } = useAuth();
@@ -229,7 +230,7 @@ const Comercos = () => {
               </p>
               <p className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-km0-coral-500 text-primary-foreground text-[11px] font-ui font-bold">
                 <QrCode size={12} strokeWidth={2.4} />
-                {interpolate(t("merchants.points_notice", lang), { n: MOCK_POINTS.scan })}
+                {interpolate(t("merchants.points_notice", lang), { n: pointsConfig.scan })}
               </p>
             </header>
 

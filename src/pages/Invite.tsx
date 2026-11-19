@@ -8,7 +8,9 @@ import ShareChannelList from "@/components/ShareChannelList";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
-import { buildInviteLink, buildPublicShareLink, getReferralReferenceForUser, INVITE_REWARDS, type InviteKind } from "@/data/inviteConfig";
+import { buildInviteLink, buildPublicShareLink, getReferralReferenceForUser, type InviteKind } from "@/data/inviteConfig";
+
+import { useInviteRewards } from "@/hooks/use-invite-rewards";
 
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
@@ -19,6 +21,7 @@ const PREVIEW_USER_ID = "preview-user";
 
 const Invite = () => {
   const navigate = useNavigate();
+  const inviteRewards = useInviteRewards();
   const scrollRef = useDragScroll("vertical");
   const [searchParams] = useSearchParams();
   const { user, loading } = useAuth();
@@ -112,7 +115,7 @@ const Invite = () => {
                 {t(`invite.select.${option}`, lang)}
               </span>
               <span className="shrink-0 rounded-full bg-km0-teal-100 px-2 py-1 font-ui text-xs font-black text-km0-teal-700">
-                +{INVITE_REWARDS[option]} {t("common.points", lang)}
+                +{inviteRewards[option]} {t("common.points", lang)}
               </span>
             </Button>
           );
@@ -120,7 +123,7 @@ const Invite = () => {
       </div>
 
       <p className="rounded-xl bg-km0-beige-100 px-3 py-3 font-body text-xs leading-snug text-km0-blue-800/80">
-        {t(`invite.explain.${kind}`, lang).replace("{points}", String(INVITE_REWARDS[kind]))}
+        {t(`invite.explain.${kind}`, lang).replace("{points}", String(inviteRewards[kind]))}
       </p>
 
       <section>

@@ -9,6 +9,8 @@ export type PointsTxType =
   | "survey"
   | "suggestion"
   | "invitation"
+  | "invite_person"
+  | "invite_business"
   | "demo_credit"
   | "redeem";
 
@@ -29,11 +31,16 @@ export type PointActionIcon =
   | "qr"
   | "globe"
   | "mail"
+  | "share"
   | "calendar-check"
   | "clipboard-list";
 
 export interface PointAction {
-  id: PointActionId;
+  id: string;
+  apiType: string;
+  title?: string;
+  description?: string;
+  earnedPoints?: number;
   titleKey: TKey;
   descriptionKey: TKey;
   typeKey: TKey;
@@ -54,4 +61,11 @@ export interface PointsTransaction {
   date: string;
   /** Positivos → ganados, negativos → gastados. */
   points: number;
+}
+
+export interface PointsHistorySummary {
+  balance: number;
+  earnedTotal: number;
+  spentTotal: number;
+  items: PointsTransaction[];
 }

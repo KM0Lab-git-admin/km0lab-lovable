@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MOCK_POINTS } from "@/data/mockPointsConfig";
+import { usePointsConfig } from "@/hooks/use-points-config";
 import { useEffect, useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -29,6 +29,7 @@ type ProfileForm = {
 };
 
 const Profile = () => {
+  const pointsConfig = usePointsConfig();
   const navigate = useNavigate();
   const { lang } = useLang();
   const { user, signOut } = useAuth();
@@ -198,7 +199,7 @@ const Profile = () => {
                 className={inputCls}
               />
               <span className="font-body text-[11px] text-km0-blue-800/60 px-1 mt-0.5">
-                {t("profile.birth_date_hint", lang).replace("{n}", String(MOCK_POINTS.birthday))}
+                {t("profile.birth_date_hint", lang).replace("{n}", String(pointsConfig.birthday))}
               </span>
             </Field>
 

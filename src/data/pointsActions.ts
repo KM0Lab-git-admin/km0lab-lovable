@@ -11,6 +11,7 @@ import type { PointAction } from "@/types/points";
 export const POINTS_ACTIONS: PointAction[] = [
   {
     id: "birthday",
+    apiType: "birthday",
     titleKey: "points.actions.birthday.title",
     descriptionKey: "points.actions.birthday.description",
     typeKey: "points.actions.type.birthday",
@@ -20,6 +21,7 @@ export const POINTS_ACTIONS: PointAction[] = [
   },
   {
     id: "signup",
+    apiType: "signup",
     titleKey: "points.actions.signup.title",
     descriptionKey: "points.actions.signup.description",
     typeKey: "points.actions.type.signup",
@@ -29,6 +31,7 @@ export const POINTS_ACTIONS: PointAction[] = [
   },
   {
     id: "first_scan",
+    apiType: "first_scan",
     titleKey: "points.actions.first_scan.title",
     descriptionKey: "points.actions.first_scan.description",
     typeKey: "points.actions.type.first_scan",
@@ -38,6 +41,7 @@ export const POINTS_ACTIONS: PointAction[] = [
   },
   {
     id: "scan",
+    apiType: "scan",
     titleKey: "points.actions.scan.title",
     descriptionKey: "points.actions.scan.description",
     typeKey: "points.actions.type.scan",
@@ -47,6 +51,7 @@ export const POINTS_ACTIONS: PointAction[] = [
   },
   {
     id: "web_visit",
+    apiType: "web_visit",
     titleKey: "points.actions.web_visit.title",
     descriptionKey: "points.actions.web_visit.description",
     typeKey: "points.actions.type.web_visit",
@@ -56,6 +61,7 @@ export const POINTS_ACTIONS: PointAction[] = [
   },
   {
     id: "newsletter",
+    apiType: "newsletter",
     titleKey: "points.actions.newsletter.title",
     descriptionKey: "points.actions.newsletter.description",
     typeKey: "points.actions.type.newsletter",
@@ -65,6 +71,7 @@ export const POINTS_ACTIONS: PointAction[] = [
   },
   {
     id: "event_signup",
+    apiType: "event_signup",
     titleKey: "points.actions.event_signup.title",
     descriptionKey: "points.actions.event_signup.description",
     typeKey: "points.actions.type.event_signup",
@@ -74,6 +81,7 @@ export const POINTS_ACTIONS: PointAction[] = [
   },
   {
     id: "survey",
+    apiType: "survey",
     titleKey: "points.actions.survey.title",
     descriptionKey: "points.actions.survey.description",
     typeKey: "points.actions.type.survey",

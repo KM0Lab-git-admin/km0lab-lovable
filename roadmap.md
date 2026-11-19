@@ -1,5 +1,6 @@
 # Roadmap
 
+- [x] Portabilidad · Encargo 2: seis hooks neutros para acciones, invitaciones e importes, tipos ampliados y presentación conservada; 51 pruebas aprobadas y Home/Acciones/Historial/Invitar/Mis invitaciones comprobados con sesión simulada, ca/es/en y variantes de seguimiento. Parado para revisión antes del encargo 3.
 - [x] Portabilidad · Encargo 1: cuenta y canje con nombres neutros, traducciones dentro del hook y códigos anulables en el servicio; 38 pruebas y acceso/canje/historial/canjes ca/es/en comprobados. Parado para revisión antes del encargo 2.
 
 - [x] Revisar `/rewards`, `/redeemed-rewards` y patrones de interfaz del resto de la aplicación; diagnóstico en `.lovable/reviews/rewards-interface-consistency.md`.

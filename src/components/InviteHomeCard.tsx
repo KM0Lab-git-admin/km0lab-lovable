@@ -4,7 +4,7 @@ import { Share2 } from "lucide-react";
 import ShareChannelsSheet from "@/components/ShareChannelsSheet";
 import { Button } from "@/components/ui/button";
 import { useLang } from "@/contexts/LangContext";
-import { INVITE_REWARDS } from "@/data/inviteConfig";
+import { useInviteRewards } from "@/hooks/use-invite-rewards";
 import { t } from "@/lib/i18n";
 import type { InvitationsSummary } from "@/types/invitation";
 
@@ -26,6 +26,7 @@ const InviteHomeCard = ({
   invitationSummary,
 }: InviteHomeCardProps) => {
   const { lang } = useLang();
+  const inviteRewards = useInviteRewards();
   const [searchParams] = useSearchParams();
   // Al volver del acceso conservamos el contexto: ?share=1 reabre el panel.
   const [shareOpen, setShareOpen] = useState(() => searchParams.get("share") === "1");
@@ -51,10 +52,10 @@ const InviteHomeCard = ({
         <>
           <div className="mt-3 grid grid-cols-2 gap-2">
             <span className="rounded-lg bg-km0-yellow-100 px-2 py-1.5 text-center font-ui text-xs font-bold text-km0-blue-900">
-              {t("invite.person.short", lang)} · +{INVITE_REWARDS.person} {t("common.points", lang)}
+              {t("invite.person.short", lang)} · +{inviteRewards.person} {t("common.points", lang)}
             </span>
             <span className="rounded-lg bg-km0-teal-100 px-2 py-1.5 text-center font-ui text-xs font-bold text-km0-blue-900">
-              {t("invite.business.short", lang)} · +{INVITE_REWARDS.business} {t("common.points", lang)}
+              {t("invite.business.short", lang)} · +{inviteRewards.business} {t("common.points", lang)}
             </span>
           </div>
           {invitationSummary &&

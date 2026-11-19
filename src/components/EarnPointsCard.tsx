@@ -8,6 +8,7 @@ import {
   QrCode,
   Globe,
   Mail,
+  Share2,
   CalendarCheck,
   ClipboardList,
   ArrowRight,
@@ -17,7 +18,8 @@ import {
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
-import { POINTS_ACTIONS } from "@/data/pointsActions";
+import { useHomeActions } from "@/hooks/use-home-actions";
+import ScreenStatus from "@/components/ScreenStatus";
 import type { PointAction, PointActionIcon } from "@/types/points";
 
 /**
@@ -44,11 +46,13 @@ const ICONS: Record<PointActionIcon, LucideIcon> = {
   qr: QrCode,
   globe: Globe,
   mail: Mail,
+  share: Share2,
   "calendar-check": CalendarCheck,
   "clipboard-list": ClipboardList,
 };
 
 const ICON_META: Record<PointActionIcon, { ring: string; text: string }> = {
+  share: { ring: "bg-km0-coral-100", text: "text-km0-coral-400" },
   cake: { ring: "bg-km0-coral-100", text: "text-km0-coral-400" },
   "user-plus": { ring: "bg-km0-teal-100", text: "text-km0-teal-600" },
   star: { ring: "bg-km0-yellow-100", text: "text-km0-blue-800" },
@@ -64,7 +68,8 @@ const ICON_META: Record<PointActionIcon, { ring: string; text: string }> = {
 const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin, isAuthed = false }: EarnPointsCardProps) => {
   const { lang } = useLang();
 
-  const pending: PointAction[] = POINTS_ACTIONS.filter((a) => !a.completed).slice(0, 3);
+  const { actions, loading, error, reload } = useHomeActions();
+  const pending: PointAction[] = actions.filter((a) => !a.completed).slice(0, 3);
   const handleSeeAll = locked ? onLogin : onSeeAll;
 
   return (
@@ -102,7 +107,9 @@ const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin, isAuthed
         )}
       </div>
 
-      <ul className={cn("flex flex-col gap-3", locked && "pointer-events-none opacity-60")} aria-hidden={locked || undefined}>
+      {loading || error || pending.length === 0 ? (
+        <ScreenStatus state={loading ? "loading" : error ? "error" : "empty"} emptyKey="points.actions.empty" onRetry={reload} />
+      ) : <ul className={cn("flex flex-col gap-3", locked && "pointer-events-none opacity-60")} aria-hidden={locked || undefined}>
         {pending.map((action, i) => {
           const Icon = ICONS[action.icon];
           const meta = ICON_META[action.icon];
@@ -120,10 +127,10 @@ const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin, isAuthed
 
               <div className="flex-1 min-w-0">
                 <p className="font-ui font-bold text-sm text-km0-blue-900 leading-tight">
-                  {t(action.titleKey, lang)}
+                  {action.title ?? t(action.titleKey, lang)}
                 </p>
                 <p className="font-body text-xs text-km0-blue-800/60 mt-0.5 leading-snug">
-                  {t(action.descriptionKey, lang)}
+                  {action.description ?? t(action.descriptionKey, lang)}
                 </p>
                 <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                   <span className="px-2 py-0.5 rounded-full text-[11px] font-ui font-bold uppercase tracking-wide bg-km0-blue-100 text-km0-blue-800">
@@ -133,11 +140,11 @@ const EarnPointsCard = ({ className, onSeeAll, locked = false, onLogin, isAuthed
                 </div>
               </div>
 
-              <PointsCoin points={action.points} earned />
+              <PointsCoin points={action.earnedPoints ?? action.points} earned />
             </motion.li>
           );
         })}
-      </ul>
+      </ul>}
     </motion.section>
   );
 };

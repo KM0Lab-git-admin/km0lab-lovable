@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { listMockActions } from "@/services/mock/actions";
+import { usePointsActions } from "@/hooks/use-points-actions";
 import { usePreviewState } from "@/hooks/use-preview-state";
 import ScreenStatus from "@/components/ScreenStatus";
 import ScreenHeader from "@/components/ScreenHeader";
@@ -18,7 +17,7 @@ import { cn } from "@/lib/utils";
 
 import type { PointAction, PointActionIcon } from "@/types/points";
 import { Button } from "@/components/ui/button";
-import { INVITE_REWARDS } from "@/data/inviteConfig";
+import { useInviteRewards } from "@/hooks/use-invite-rewards";
 
 /* ─── Filtros ────────────────────────────────────────────── */
 type Filter = "all" | "pending" | "completed";
@@ -31,11 +30,13 @@ const ICONS: Record<PointActionIcon, LucideIcon> = {
   qr: QrCode,
   globe: Globe,
   mail: Mail,
+  share: Share2,
   "calendar-check": CalendarCheck,
   "clipboard-list": ClipboardList,
 };
 
 const ICON_META: Record<PointActionIcon, { ring: string; text: string }> = {
+  share: { ring: "bg-km0-coral-100", text: "text-km0-coral-400" },
   cake: { ring: "bg-km0-coral-100", text: "text-km0-coral-400" },
   "user-plus": { ring: "bg-km0-teal-100", text: "text-km0-teal-600" },
   star: { ring: "bg-km0-yellow-100", text: "text-km0-blue-800" },
@@ -82,10 +83,10 @@ const ActionRow = ({
 
       <div className="flex-1 min-w-0">
         <p className="font-ui font-bold text-sm text-km0-blue-900 leading-tight">
-          {t(action.titleKey, lang)}
+          {action.title ?? t(action.titleKey, lang)}
         </p>
         <p className="font-body text-xs text-km0-blue-800/60 mt-0.5 leading-snug">
-          {t(action.descriptionKey, lang)}
+          {action.description ?? t(action.descriptionKey, lang)}
         </p>
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
           <span
@@ -119,7 +120,7 @@ const ActionRow = ({
             : "bg-km0-yellow-400/90 text-km0-blue-900"
         )}
       >
-        +{fmtInt(action.points)} pts
+        +{fmtInt(action.earnedPoints ?? action.points)} pts
       </span>
     </motion.li>
   );
@@ -131,8 +132,9 @@ const PointsActions = () => {
   const { lang } = useLang();
   const { user } = useAuth();
   const [filter, setFilter] = useState<Filter>("all");
-  const query = useQuery({ queryKey: ["mock-actions"], queryFn: listMockActions, staleTime: Infinity });
-  const actions = (query.data ?? []).map(action => ({ ...action, completed: !!user && action.completed }));
+  const { actions: availableActions, loading, error, reload } = usePointsActions();
+  const inviteRewards = useInviteRewards();
+  const actions = useMemo(() => availableActions.map(action => ({ ...action, completed: !!user && action.completed })), [availableActions, user]);
   const scrollRef = useDragScroll("vertical");
 
   const isAuthed =
@@ -144,19 +146,19 @@ const PointsActions = () => {
     const completed = actions.filter((a) => a.completed).length;
     const pending = actions.length - completed;
     const points = actions.filter((a) => !a.completed).reduce(
-      (sum, a) => sum + a.points,
+      (sum, a) => sum + (a.earnedPoints ?? a.points),
       0
     );
     return { completedCount: completed, pendingCount: pending, totalPoints: points };
-  }, [query.data, user]);
+  }, [actions]);
 
   const filtered = useMemo(() => {
     if (filter === "completed") return actions.filter((a) => a.completed);
     if (filter === "pending") return actions.filter((a) => !a.completed);
     return actions;
-  }, [query.data, user, filter]);
+  }, [actions, filter]);
 
-  const preview = usePreviewState(query.isLoading, query.isError, filtered.length === 0);
+  const preview = usePreviewState(loading, !!error, filtered.length === 0);
 
   return (
     <>
@@ -231,7 +233,7 @@ const PointsActions = () => {
 
 
             {preview.state !== "ready" ? (
-              <ScreenStatus state={preview.state} emptyKey="points.actions.empty" onRetry={() => preview.retry(() => { void query.refetch(); })} />
+              <ScreenStatus state={preview.state} emptyKey="points.actions.empty" onRetry={() => preview.retry(reload)} />
             ) : (
               <ul className="flex flex-col gap-3 pt-2">
                 {filter !== "completed" && (
@@ -248,7 +250,7 @@ const PointsActions = () => {
                         <span className="mt-0.5 block font-body text-xs font-normal leading-snug text-km0-blue-800/60">{t("invite.action.description", lang)}</span>
                         <span className="mt-1.5 inline-flex rounded-full bg-km0-blue-100 px-2 py-0.5 font-ui text-[10px] font-bold uppercase text-km0-blue-800">{t("invite.action.type", lang)}</span>
                       </span>
-                      <span className="shrink-0 whitespace-normal rounded-full bg-km0-yellow-400/90 px-2 py-1 text-center font-ui text-[10px] font-black text-km0-blue-900">+{INVITE_REWARDS.person}<br />+{INVITE_REWARDS.business}</span>
+                      <span className="shrink-0 whitespace-normal rounded-full bg-km0-yellow-400/90 px-2 py-1 text-center font-ui text-[10px] font-black text-km0-blue-900">+{inviteRewards.person}<br />+{inviteRewards.business}</span>
                     </Button>
                   </li>
                 )}
