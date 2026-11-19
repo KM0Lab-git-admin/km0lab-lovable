@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Revisar consistencia de navegación, municipio, puntos, catálogos y portabilidad; diagnóstico confirmado en `.lovable/reviews/application-consistency.md`.
+- [ ] Aplicar correcciones de consistencia por etapas; pendiente de aprobación del diagnóstico y confirmación de importes vigentes.
+
 - [x] Home: panel contextual de cuenta para accesos con candado, notificaciones dentro del marco y moneda SVG con relieve.
 
 - [x] Home Burbuja: ocultar barras, habilitar arrastre vertical/horizontal y corregir la interacción del menú y controles comunes.
