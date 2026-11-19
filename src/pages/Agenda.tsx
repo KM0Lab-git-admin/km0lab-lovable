@@ -21,15 +21,13 @@ import {
   Gamepad2,
   Theater,
   LayoutGrid,
-  ChevronDown,
-  ChevronUp,
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
 import ScreenTitle from "@/components/ScreenTitle";
 import WhenTabs, { type WhenKey } from "@/components/WhenTabs";
-import { Button } from "@/components/ui/button";
+import CategoryFilterMenu, { type CategoryFilterOption } from "@/components/CategoryFilterMenu";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t, type Lang } from "@/lib/i18n";
@@ -50,7 +48,7 @@ const DEFAULT_TOWN = "Malgrat de Mar";
  *
  * Estructura visual:
  *   1. Título XL "Agenda" + número de día en mostaza.
- *   2. Fila de categorías con iconos y tratamiento cromático uniforme.
+ *   2. Fila de rango temporal + menú desplegable de categorías (CategoryFilterMenu).
  *   3. Resultados agrupados por día.
  *
  * Filtro de rango temporal (WhenTabs): "Esta semana" o "Próximos 30 días";
@@ -271,8 +269,6 @@ const Agenda = () => {
   const { lang } = useLang();
   /** Selección múltiple y acumulativa; [] equivale a «Tots». */
   const [selected, setSelected] = useState<string[]>([]);
-  /** La cuadrícula de categorías empieza visible; se puede plegar. */
-  const [catsOpen, setCatsOpen] = useState(true);
   const [price, setPrice] = useState<Price>("todos");
   const [when, setWhen] = useState<WhenKey>("mes");
 
@@ -385,9 +381,12 @@ const Agenda = () => {
    * Chips de cabecera plegable: muestran todas las categorías
    * seleccionadas una al lado de la otra; con selección vacía, «Tots».
    */
-  const selectedChips = chips.filter((c) => selected.includes(c.key));
-  const allChip = chips[chips.length - 1] ?? null;
-  const headerChips = selectedChips.length > 0 ? selectedChips : allChip ? [allChip] : [];
+  const allChip = chips[chips.length - 1];
+  const selectedLabels = chips.filter((c) => selected.includes(c.key)).map((c) => c.label);
+  const toOption = (c: (typeof chips)[number]): CategoryFilterOption => {
+    const Icon = c.presentation.Icon;
+    return { key: c.key, label: c.label, icon: <Icon size={16} strokeWidth={2.4} /> };
+  };
 
 
   const filtered = useMemo(() => {
@@ -440,110 +439,18 @@ const Agenda = () => {
            HomeHero decorativo (que en landscape es absolute inset-0). ─── */}
       <div className="relative z-10 flex-1 min-h-0 flex flex-col gap-3">
 
-        {/* ── Rango temporal ─── */}
-        <WhenTabs value={when} onChange={setWhen} className="shrink-0" />
-
-        {/* ── Categorías: cabecera con la selección activa + cuadrícula plegable ─── */}
-        <div className="shrink-0">
-          <div className="flex items-end justify-between gap-2 px-0.5">
-            <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <span className="font-ui text-[9px] font-bold uppercase tracking-[0.14em] text-km0-blue-500">
-                {t("agenda.cats.label", lang)}
-              </span>
-              {headerChips.length > 0 ? (
-                <button
-                  type="button"
-                  onClick={() => setCatsOpen((v) => !v)}
-                  aria-expanded={catsOpen}
-                  aria-label={`${t("agenda.cats.label", lang)}: ${headerChips
-                    .map((c) => c.label)
-                    .join(", ")}`}
-                  className="flex min-w-0 flex-wrap items-center gap-1 self-start"
-                >
-                  {headerChips.map((c) => {
-                    const Icon = c.presentation.Icon;
-                    return (
-                      <span
-                        key={c.key}
-                        className="inline-flex h-8 max-w-full items-center gap-1.5 rounded-lg border-2 border-km0-yellow-400 bg-km0-yellow-400 px-2.5 shadow-sm transition-all hover:bg-km0-yellow-500"
-                      >
-                        <Icon
-                          size={14}
-                          strokeWidth={2.5}
-                          className="shrink-0 text-km0-blue-900"
-                        />
-                        <span className="min-w-0 truncate font-ui text-[11px] font-bold text-km0-blue-900">
-                          {c.label}
-                        </span>
-                      </span>
-                    );
-                  })}
-                </button>
-              ) : null}
-            </div>
-
-            <button
-              type="button"
-              onClick={() => setCatsOpen((v) => !v)}
-              aria-expanded={catsOpen}
-              className="inline-flex shrink-0 items-center gap-1 pb-1.5"
-            >
-              <span className="font-ui text-[10px] font-bold uppercase underline underline-offset-4 text-km0-blue-700">
-                {t(catsOpen ? "agenda.cats.hide" : "agenda.cats.show", lang)}
-              </span>
-              {catsOpen ? (
-                <ChevronUp size={13} className="shrink-0 text-km0-blue-700" />
-              ) : (
-                <ChevronDown size={13} className="shrink-0 text-km0-blue-700" />
-              )}
-            </button>
-          </div>
-
-          <div
-            className={cn(
-              "grid transition-all duration-300 ease-out",
-              catsOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
-            )}
-          >
-            <div className="min-h-0 overflow-hidden">
-              <div className="grid grid-cols-4 gap-1.5 pt-2">
-                {chips.map((c) => {
-                  const active =
-                    c.key === "todos"
-                      ? selected.length === 0
-                      : selected.includes(c.key);
-                  const Icon = c.presentation.Icon;
-                  return (
-                    <Button
-                      key={c.key}
-                      type="button"
-                      variant="outline"
-                      onClick={() =>
-                        c.key === "todos" ? setSelected([]) : toggleCategory(c.key)
-                      }
-                      aria-pressed={active}
-                      className={cn(
-                        "h-11 min-w-0 rounded-lg border-2 px-1 font-ui text-[9px] leading-tight transition-all active:scale-95",
-                        active
-                          ? "border-km0-yellow-400 bg-km0-yellow-400 text-km0-blue-900 shadow-sm hover:bg-km0-yellow-500 hover:text-km0-blue-900"
-                          : "border-km0-blue-100 bg-white text-km0-blue-700 hover:border-km0-yellow-400 hover:bg-km0-yellow-50 hover:text-km0-blue-900",
-                      )}
-                    >
-                      <Icon
-                        size={14}
-                        strokeWidth={2.5}
-                        className={cn(
-                          "shrink-0",
-                          active ? "text-km0-blue-900" : "text-km0-blue-500",
-                        )}
-                      />
-                      <span className="min-w-0 truncate">{c.label}</span>
-                    </Button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+        {/* ── Rango temporal + menú de categorías en la misma fila ─── */}
+        <div className="flex shrink-0 items-center gap-2">
+          <WhenTabs value={when} onChange={setWhen} className="min-w-0 flex-1" />
+          <CategoryFilterMenu
+            title={t("agenda.cats.label", lang)}
+            multiple
+            allOption={toOption(allChip)}
+            options={chips.slice(0, -1).map(toOption)}
+            selected={selected}
+            onToggle={toggleCategory}
+            onClear={() => setSelected([])}
+          />
         </div>
 
         {/* ── Contador ─── */}
@@ -561,6 +468,9 @@ const Agenda = () => {
               {filtered.length === 1
                 ? t("agenda.count.one", lang)
                 : t("agenda.count.many", lang)}
+              {selectedLabels.length > 0 && (
+                <span className="text-km0-blue-700/70"> · {selectedLabels.join(", ")}</span>
+              )}
             </>
           )}
         </div>
