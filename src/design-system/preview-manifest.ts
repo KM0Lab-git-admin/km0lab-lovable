@@ -174,7 +174,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         src: "/home?notifs=open",
         notes: "Panel de noticias municipales abierto dentro del marco de Home, con cierre accesible y estados loading/empty/error/ready; no sustituye datos por avisos ficticios.",
       },
-      { id: "account-points", label: "Acceso a puntos sin sesión", src: "/home?access=points", notes: "Panel contextual de cuenta sobre Home, correo y acceso OTP simulado con retorno a puntos." },
+      { id: "account-points", label: "Acceso a puntos sin sesión", src: "/home?access=points", notes: "AccountBottomTabs reutiliza el panel contextual de cuenta de todos los interiores, correo y OTP simulado con retorno a puntos; cerrar conserva la pantalla y limpia access." },
       { id: "account-rewards", label: "Acceso a premios sin sesión", src: "/home?access=rewards" },
       { id: "account-profile", label: "Acceso a perfil sin sesión", src: "/home?access=profile" },
     ],
@@ -185,6 +185,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     path: "/invite",
     states: [
       { id: "guest", label: "Sin sesión", src: "/invite", notes: "Enlace público del municipio: aviso de que sin sesión no hay puntos, accesos a crear cuenta / iniciar sesión y canales WhatsApp · Correu · Facebook · Més opcions · Copia l'enllaç. Sin QR." },
+      { id: "account-profile", label: "Acceso a perfil sin sesión", src: "/invite?access=profile", notes: "Panel de cuenta compartido, contenido de invitación conservado al cerrar y retorno a perfil después del OTP." },
       { id: "registered", label: "Con sesión", src: "/invite", seedSession: true, notes: "Cabecera «Invita i guanya punts», selector Una persona (+100) / Un negoci (+500) con explicación contextual y canales de envío con enlace atribuido. Sin QR ni bloque de registro." },
       { id: "loading", label: "Cargando", src: "/invite?state=loading", seedSession: true },
       { id: "expired", label: "Sesión caducada", src: "/invite?state=expired", notes: "Estado excepcional: invita a recuperar la sesión antes de generar invitaciones con puntos." },
@@ -197,7 +198,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     path: "/my-invitations",
     dynamicContent: true,
     states: [
-      { id: "default", label: "Con registros", src: "/my-invitations", seedSession: true, notes: "Datos simulados compartidos con Home y Els meus punts: 2 persones + 1 negoci = 700 punts. El acceso directo vuelve por defecto a Els meus punts; ?from=home|points|actions conserva la sección de origen." },
+      { id: "default", label: "Con registros", src: "/my-invitations", seedSession: true, notes: "Datos simulados compartidos con Home y Els meus punts: 2 persones + 1 negoci = 700 punts. El acceso directo vuelve por defecto a Els meus punts; ?from=home|points|actions conserva la sección de origen. AccountBottomTabs comparte el flujo de acceso contextual." },
       { id: "pending", label: "Punts pendents", src: "/my-invitations?state=pending", seedSession: true, notes: "Incluye un registro completado con recompensa procesándose; los punts pendents no suman a «Punts guanyats»." },
       { id: "loading", label: "Cargando", src: "/my-invitations?state=loading", seedSession: true },
       { id: "empty", label: "Sin registros", src: "/my-invitations?state=empty", seedSession: true, notes: "Mensaje vacío + CTA «Invitar» y aclaración de que compartir no confirma envío ni registro." },
@@ -235,6 +236,9 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         seedSession: true,
         notes: "Lista de acciones para ganar puntos con sesión simulada. El tab 'Accions' está activo.",
       },
+      { id: "account-points", label: "Acceso a puntos sin sesión", src: "/points-actions?access=points" },
+      { id: "account-rewards", label: "Acceso a canjes sin sesión", src: "/points-actions?access=rewards" },
+      { id: "account-profile", label: "Acceso a perfil sin sesión", src: "/points-actions?access=profile" },
     ],
   },
   {
@@ -247,7 +251,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Registrado",
         src: "/points-history",
         seedSession: true,
-        notes: "Historial de transacciones con filtros y resumen de saldo. Incluye la fila «Punts per invitacions» con el total histórico concedido y acceso al seguimiento. BottomTabs con 5 tabs; «Els meus punts» activo.",
+        notes: "Historial de transacciones con filtros y resumen de saldo. Incluye la fila «Punts per invitacions» con el total histórico concedido y acceso al seguimiento. AccountBottomTabs comparte el acceso contextual sin sesión y abre destinos directamente con sesión; «Els meus punts» activo.",
       },
     ],
   },
@@ -323,12 +327,22 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "default",
         label: "Por defecto",
         src: "/redeemed-rewards",
-        notes: "Mock con todos los estados: pending, redeemed y expired. Incluye BottomTabs con 5 tabs: Inici · Accions · Els meus punts · Premis canjats · Perfil; tab 'Premis canjats' activo.",
+        notes: "Mock con todos los estados: pending, redeemed y expired. AccountBottomTabs con 5 tabs y panel de cuenta compartido para accesos sin sesión; tab 'Premis canjats' activo.",
       },
 
     ],
   },
 
+  {
+    id: "merchants",
+    label: "Comercos",
+    path: "/merchants",
+    states: [
+      { id: "guest", label: "Sin sesión", src: "/merchants" },
+      { id: "registered", label: "Con sesión", src: "/merchants", seedSession: true },
+      { id: "account-points", label: "Acceso a puntos sin sesión", src: "/merchants?access=points", notes: "El mismo panel de Home se abre sobre Comercios y conserva la lista al cerrar." },
+    ],
+  },
   {
     id: "scanner",
     label: "Scanner",

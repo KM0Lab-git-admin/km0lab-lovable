@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { AlertCircle, Building2, ChevronLeft, Loader2, RefreshCw, UserRound } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import DeviceShell from "@/components/DeviceShell";
-import BottomTabs from "@/components/BottomTabs";
+import BottomTabs from "@/components/AccountBottomTabs";
 import ShareChannelList from "@/components/ShareChannelList";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";

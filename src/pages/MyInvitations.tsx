@@ -15,7 +15,8 @@ import {
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import DeviceShell from "@/components/DeviceShell";
-import BottomTabs, { type HomeTab } from "@/components/BottomTabs";
+import BottomTabs from "@/components/AccountBottomTabs";
+import type { HomeTab } from "@/components/BottomTabs";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";

@@ -12,7 +12,7 @@ import {
 
 import DeviceShell from "@/components/DeviceShell";
 import HomeHero from "@/components/HomeHero";
-import BottomTabs from "@/components/BottomTabs";
+import BottomTabs from "@/components/AccountBottomTabs";
 import CategoryFilterMenu, { type CategoryFilterOption } from "@/components/CategoryFilterMenu";
 import { useLang } from "@/contexts/LangContext";
 import { useAuth } from "@/hooks/useAuth";

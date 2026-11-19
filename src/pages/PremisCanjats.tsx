@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 import DeviceShell from "@/components/DeviceShell";
-import BottomTabs from "@/components/BottomTabs";
+import BottomTabs from "@/components/AccountBottomTabs";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 
