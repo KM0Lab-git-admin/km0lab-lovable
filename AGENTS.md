@@ -14,3 +14,5 @@
 - Keep pilot point examples in mockPointsConfig; production reward amounts and expiry decisions remain backend-owned.
 
 - Preserve API-provided reward translations in local redemption snapshots, so changing language never rewrites the redeemed item or its cost.
+
+- Product pages and components must consume stable, neutrally named data hooks/services, never mock stores/services or domain fixtures; data layers must not import presentation or contexts, data hooks expose loading/error/reload, and business rules stay outside presentation so production can replace implementations without editing screens (docs/KNOWLEDGE.md §5.1; migration reference: docs/ENCARGOS-LOVABLE.md).
