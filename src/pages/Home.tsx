@@ -1,4 +1,4 @@
-import { useMockAccount } from "@/hooks/use-mock-account";
+import { useAccount } from "@/hooks/use-account";
 import { useLocationContext } from "@/hooks/use-location-context";
 import { MOCK_POINTS } from "@/data/mockPointsConfig";
 import { useEffect, useMemo, useState } from "react";
@@ -35,7 +35,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const { items: notifications, hasUnread, loading: notifLoading, error: notifError, reload: reloadNotifs, markAllSeen } = useNotifications();
   const { user, loading: authLoading } = useAuth();
   const { profile } = useProfile();
-  const account = useMockAccount();
+  const account = useAccount();
   const { town: cityName, postalCode } = useLocationContext();
   const { lang } = useLang();
   const navigate = useNavigate();

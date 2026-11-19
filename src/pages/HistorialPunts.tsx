@@ -1,7 +1,7 @@
 import FilterChip from "@/components/FilterChip";
 import ScreenHeader from "@/components/ScreenHeader";
 import { useDragScroll } from "@/hooks/use-drag-scroll";
-import { useMockAccount } from "@/hooks/use-mock-account";
+import { useAccount } from "@/hooks/use-account";
 import { usePreviewState } from "@/hooks/use-preview-state";
 import ScreenStatus from "@/components/ScreenStatus";
 import { useMemo, useState } from "react";
@@ -119,7 +119,7 @@ const TxRow = ({ tx, lang, index }: { tx: PointsTransaction; lang: Lang; index: 
 /* ─── Pantalla ───────────────────────────────────────────── */
 const HistorialPunts = () => {
   const navigate = useNavigate();
-  const account = useMockAccount();
+  const account = useAccount();
   const { lang } = useLang();
   const { user } = useAuth();
   const [filter, setFilter] = useState<Filter>("all");
@@ -160,7 +160,7 @@ const HistorialPunts = () => {
     }));
   }, [filtered]);
 
-  const preview = usePreviewState(account.loading, account.error, groups.length === 0);
+  const preview = usePreviewState(account.loading, !!account.error, groups.length === 0);
 
   return (
     <>

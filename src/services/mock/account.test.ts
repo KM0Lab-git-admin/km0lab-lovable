@@ -1,6 +1,7 @@
 import { COMERCIOS_ADHERITS, COMERCIOS_DETALL, CATEGORIES_ADHERITS } from "@/data/comerciosAdheridos";
 import { beforeEach, describe, expect, it } from "vitest";
-import { createSampleAccount, isPendingRedemption, loadMockAccount, redeemMockReward } from "@/services/mock/account";
+import { createSampleAccount, loadMockAccount, redeemMockReward } from "@/services/mock/account";
+import { isPendingRedemption } from "@/types/redemption";
 import { useMockAccountStore } from "@/stores/useMockAccountStore";
 import { useAppStore } from "@/stores/useAppStore";
 import { accountTotals } from "@/types/mockAccount";

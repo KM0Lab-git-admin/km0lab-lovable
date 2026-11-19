@@ -1,5 +1,5 @@
-import { useMockAccount } from "@/hooks/use-mock-account";
-import { redeemMockReward } from "@/services/mock/account";
+import { useAccount } from "@/hooks/use-account";
+import { redeemReward } from "@/services/redemptions";
 import { usePreviewState } from "@/hooks/use-preview-state";
 import ScreenStatus from "@/components/ScreenStatus";
 import { useMemo, useState } from "react";
@@ -103,7 +103,7 @@ const Premis = () => {
   const isAuthed = !!user;
   const access = useAccountAccess(isAuthed);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
-  const account = useMockAccount();
+  const account = useAccount();
   const points = account.balance;
   const [redeeming, setRedeeming] = useState<Reward | null>(null);
   const [searchParams] = useSearchParams();
@@ -133,14 +133,14 @@ const Premis = () => {
               badge={<span className="rounded-full bg-card px-3 py-1 font-ui text-[10px] font-bold text-km0-blue-800">{t(available ? "rewards.status.active" : "rewards.status.sold_out", lang)}</span>}>
               <div className="grid grid-cols-2 gap-3 font-ui text-xs text-km0-blue-800"><div><p className="text-km0-blue-800/60">{t("rewards.value", lang)}</p><p className="mt-1 font-bold">{reward.valueLabel}</p></div><div><p className="text-km0-blue-800/60">{t("rewards.stock", lang)}</p><p className="mt-1 flex items-center gap-1 font-bold"><Package size={12} />{reward.stock === null ? t("rewards.stock_unlimited", lang) : t("rewards.stock_units", lang).replace("{n}", String(reward.stock))}</p></div></div>
               <p className="font-body text-xs text-km0-blue-800/60">{reward.scope}</p>
-              <Button variant="bubblePrimary" disabled={!available || (isAuthed && (missing > 0 || account.loading || account.error))} onClick={() => isAuthed ? setRedeeming(reward) : access.open("rewards")} className="h-auto min-h-11 whitespace-normal">{t(label, lang).replace("{n}", fmt(missing))}</Button>
+              <Button variant="bubblePrimary" disabled={!available || (isAuthed && (missing > 0 || account.loading || !!account.error))} onClick={() => isAuthed ? setRedeeming(reward) : access.open("rewards")} className="h-auto min-h-11 whitespace-normal">{t(label, lang).replace("{n}", fmt(missing))}</Button>
             </RewardCardFrame>;
           })}</div>}
       </> : <div className="space-y-3"><p className="font-body text-xs text-km0-blue-800/60">{t("rewards.promos.info", lang)}</p>{promoRows.length ? promoRows.map((row, index) => <PromoCard key={`${row.shopId}-${row.promo.id}`} row={row} index={index} />) : <p>{t("rewards.promos.empty", lang)}</p>}</div>}
     </div>
     <AccountBottomTabs activeTab={null} isAuthed={isAuthed} onLogin={access.open} onHome={() => navigate("/home")} onActions={() => navigate("/points-actions")} onPoints={() => navigate("/points-history")} onRewards={() => navigate("/redeemed-rewards")} onProfile={() => navigate("/profile")} />
     <AccountAccessSheet target={access.target} lang={lang} container={container} submitting={access.submitting} error={access.error} onClose={access.close} onContinue={access.continueWithEmail} onLogin={access.login} />
-    {redeeming && (redeeming.category === "balance" ? <RedeemBalanceOverlay reward={redeeming} currentPoints={points} container={container} onClose={() => setRedeeming(null)} onConfirmed={async ({ code }) => { if (redeeming) await redeemMockReward(redeeming, code); }} /> : <RedeemMerchandiseOverlay reward={redeeming} currentPoints={points} container={container} onClose={() => setRedeeming(null)} onConfirmed={async ({ code }) => { if (redeeming) await redeemMockReward(redeeming, code); }} />)}
+    {redeeming && (redeeming.category === "balance" ? <RedeemBalanceOverlay reward={redeeming} currentPoints={points} container={container} onClose={() => setRedeeming(null)} onConfirmed={() => redeemReward(redeeming)} /> : <RedeemMerchandiseOverlay reward={redeeming} currentPoints={points} container={container} onClose={() => setRedeeming(null)} onConfirmed={() => redeemReward(redeeming)} />)}
   </div></>;
 };
 export default Premis;

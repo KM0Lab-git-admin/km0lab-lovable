@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useMockAccount } from "@/hooks/use-mock-account";
+import { useAccount } from "@/hooks/use-account";
 import { Check } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -24,7 +24,7 @@ interface SuccessState {
 const ScannerSuccess = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
-  const account = useMockAccount();
+  const account = useAccount();
   const { state } = useLocation();
   const data = (state ?? {}) as SuccessState;
 

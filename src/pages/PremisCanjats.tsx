@@ -1,5 +1,5 @@
-import { localizeRedemption, isPendingRedemption } from "@/services/mock/account";
-import { useMockAccount } from "@/hooks/use-mock-account";
+import { isPendingRedemption } from "@/types/redemption";
+import { useAccount } from "@/hooks/use-account";
 import { usePreviewState } from "@/hooks/use-preview-state";
 import ScreenStatus from "@/components/ScreenStatus";
 import { useMemo, useState } from "react";
@@ -85,8 +85,7 @@ const RedemptionCard = ({
   const status = STATUS_META[redemption.status];
   const StatusIcon = status.Icon;
 
-  const showCode =
-    redemption.status === "pending" || redemption.status === "ready";
+  const showCode = !!redemption.code && isPendingRedemption(redemption);
 
   const handleCopy = async () => {
     if (!redemption.code) return;
@@ -192,7 +191,7 @@ const RedemptionCard = ({
 /* ─── Pantalla ───────────────────────────────────────────── */
 const PremisCanjats = () => {
   const navigate = useNavigate();
-  const account = useMockAccount();
+  const account = useAccount();
   const { lang } = useLang();
   const { user } = useAuth();
   const isAuthed = !!user;
@@ -210,10 +209,10 @@ const PremisCanjats = () => {
 
   const sorted = useMemo(
     () =>
-      [...account.redemptions].map(redemption => localizeRedemption(redemption, lang)).sort(
+      [...account.redemptions].sort(
         (a, b) => new Date(b.redeemedAt).getTime() - new Date(a.redeemedAt).getTime(),
       ),
-    [account.redemptions, lang],
+    [account.redemptions],
   );
 
   const filtered = useMemo(() => {
@@ -236,7 +235,7 @@ const PremisCanjats = () => {
     { key: "expired", labelKey: "redemptions.filter.expired" },
   ];
 
-  const preview = usePreviewState(account.loading, account.error, filtered.length === 0);
+  const preview = usePreviewState(account.loading, !!account.error, filtered.length === 0);
 
   return (
     <>

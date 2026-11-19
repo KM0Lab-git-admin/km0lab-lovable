@@ -114,9 +114,9 @@ const D = {
     en: "Confirm the request and we'll deduct the points from your balance.",
   } as Dict,
   "redeem_merch.step2": {
-    ca: "Rebràs un codi de 5 dígits. Ensenya'l al comerç per recollir el premi.",
-    es: "Recibirás un código de 5 dígitos. Muéstralo en el comercio para recoger el premio.",
-    en: "You'll get a 5-digit code. Show it at the shop to pick up the prize.",
+    ca: "El premi quedarà pendent de lliurament. Consulta el bescanvi per recollir-lo al comerç.",
+    es: "El premio quedará pendiente de entrega. Consulta el canje para recogerlo en el comercio.",
+    en: "The prize will be pending delivery. Check your redemption to collect it at the shop.",
   } as Dict,
   "redeem_merch.step3": {
     ca: "Quan el back‑office confirmi el lliurament, el bescanvi passarà a redimit.",
@@ -126,14 +126,14 @@ const D = {
   "redeem_merch.cta_request": { ca: "Sol·licitar bescanvi", es: "Solicitar canje", en: "Request redemption" } as Dict,
   "redeem_merch.status_pending": { ca: "Pendent de lliurament", es: "Pendiente de entrega", en: "Pending delivery" } as Dict,
   "redeem_merch.pending_hint": {
-    ca: "Ensenya aquest codi al comerç per recollir el teu premi. Quedarà com a redimit quan el back‑office ho confirmi.",
-    es: "Muestra este código en el comercio para recoger tu premio. Quedará como redimido cuando el back‑office lo confirme.",
-    en: "Show this code at the shop to pick up your prize. It becomes redeemed once the back‑office confirms.",
+    ca: "Consulta aquest bescanvi per recollir el teu premi. Quedarà com a redimit quan es confirmi el lliurament.",
+    es: "Consulta este canje para recoger tu premio. Quedará como redimido cuando se confirme la entrega.",
+    en: "Check this redemption to collect your prize. It becomes redeemed once delivery is confirmed.",
   } as Dict,
   "redeem_merch.instructions_pickup": {
-    ca: "Acosta't al comerç indicat i ensenya el codi al personal per recollir el premi.",
-    es: "Acércate al comercio indicado y muestra el código al personal para recoger el premio.",
-    en: "Visit the indicated shop and show the code to the staff to pick up your prize.",
+    ca: "Acosta't al comerç indicat i presenta el bescanvi al personal per recollir el premi.",
+    es: "Acércate al comercio indicado y presenta el canje al personal para recoger el premio.",
+    en: "Visit the indicated shop and present your redemption to the staff to collect your prize.",
   } as Dict,
   "redeem_merch.instructions_confirm": {
     ca: "Quan el back‑office validi el lliurament, rebràs la confirmació i el bescanvi quedarà redimit.",

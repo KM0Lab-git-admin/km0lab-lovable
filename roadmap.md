@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Portabilidad · Encargo 1: cuenta y canje con nombres neutros, traducciones dentro del hook y códigos anulables en el servicio; 38 pruebas y acceso/canje/historial/canjes ca/es/en comprobados. Parado para revisión antes del encargo 2.
+
 - [x] Revisar `/rewards`, `/redeemed-rewards` y patrones de interfaz del resto de la aplicación; diagnóstico en `.lovable/reviews/rewards-interface-consistency.md`.
 - [x] Alinear premios y canjes: tarjetas, imágenes, filtros, confirmación accesible y navegación.
 - [x] Unificar campanas, copia, arrastre y contexto municipal.

@@ -4,12 +4,13 @@ import RewardArtwork from "@/components/RewardArtwork";
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Gift, Coins, Store, PackageCheck, Ticket, ShoppingBag, type LucideIcon } from "lucide-react";
+import { Coins, Store, PackageCheck } from "lucide-react";
 
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 
-import type { Reward, RewardKind } from "@/types/reward";
+import type { Reward } from "@/types/reward";
+import type { Redemption } from "@/types/redemption";
 
 /**
  * RedeemMerchandiseOverlay — flujo de canje de premios físicos / experiencia.
@@ -25,20 +26,10 @@ export interface RedeemMerchandiseOverlayProps {
   reward: Reward;
   currentPoints: number;
   onClose: () => void;
-  onConfirmed?: (payload: { code: string; costPoints: number }) => void | Promise<void>;
+  onConfirmed: () => Promise<Redemption>;
 }
 
-const KIND_ICON: Record<RewardKind, LucideIcon> = {
-  voucher: Gift,
-  ticket: Ticket,
-  product: ShoppingBag,
-  discount: Gift,
-};
-
 const fmt = (n: number) => n.toLocaleString("es-ES");
-
-const generateCode = () =>
-  Math.floor(10000 + Math.random() * 90000).toString();
 
 const RedeemMerchandiseOverlay = ({
   reward,
@@ -48,11 +39,9 @@ const RedeemMerchandiseOverlay = ({
   onConfirmed,
 }: RedeemMerchandiseOverlayProps) => {
   const { lang } = useLang();
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [step, setStep] = useState<"confirm" | "pending">("confirm");
-
-  const KindIcon = KIND_ICON[reward.kind];
 
   const balanceAfter = useMemo(
     () => Math.max(0, currentPoints - reward.costPoints),
@@ -62,7 +51,7 @@ const RedeemMerchandiseOverlay = ({
   const handleRequest = async () => {
     if (submitting) return;
     setSubmitting(true);
-    try { const newCode = generateCode(); await onConfirmed?.({ code: newCode, costPoints: reward.costPoints }); setCode(newCode); setStep("pending"); }
+    try { const redemption = await onConfirmed(); setCode(redemption.code); setStep("pending"); }
     catch { toast.error(t("account.error", lang)); }
     finally { setSubmitting(false); }
   };
@@ -161,7 +150,7 @@ const RedeemMerchandiseOverlay = ({
               transition={{ duration: 0.2 }}
               className="px-4 pb-5 flex flex-col gap-4"
             >
-              <div className="rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 p-5 text-center"><p className="font-ui text-xs text-primary-foreground">{t("redemptions.code", lang)}</p><p className="mt-2 font-brand text-3xl font-black text-primary-foreground">{code}</p>
+              <div className="rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 p-5 text-center">{code && <><p className="font-ui text-xs text-primary-foreground">{t("redemptions.code", lang)}</p><p className="mt-2 font-brand text-3xl font-black text-primary-foreground">{code}</p></>}
                 <p className="font-ui font-bold text-[11px] uppercase tracking-widest text-primary-foreground/60">
                   {t("redeem_merch.status_pending", lang)}
                 </p>

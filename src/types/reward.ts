@@ -14,6 +14,7 @@ export interface Reward {
   translations?: Partial<Record<Lang, { title: string; description: string }>>;
   id: string;
   imageUrl?: string | null;
+  hasImage?: boolean;
   title: string;
   description: string;
   category: RewardCategory;

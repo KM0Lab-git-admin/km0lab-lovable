@@ -39,7 +39,7 @@ export async function loadMockAccount(userId: string): Promise<MockAccount> {
 }
 
 /** Atomic local simulation: one deduction and one matching redemption. */
-export async function redeemMockReward(reward: Reward, code: string): Promise<Redemption> {
+export async function redeemMockReward(reward: Reward, code: string | null): Promise<Redemption> {
   const userId = useAppStore.getState().session?.user.id;
   const account = userId ? useMockAccountStore.getState().accounts[userId] : null;
   if (!userId || !account || reward.status !== "active" || reward.stock === 0 || accountTotals(account.transactions).balance < reward.costPoints) throw new Error("Cannot redeem");
@@ -47,7 +47,8 @@ export async function redeemMockReward(reward: Reward, code: string): Promise<Re
   const redemption: Redemption = {
     translations: reward.translations,
     id: crypto.randomUUID(), rewardId: reward.id, rewardTitle: reward.title, rewardDescription: reward.description,
-    rewardCategory: reward.category, rewardKind: reward.kind, imageUrl: reward.imageUrl ?? undefined,
+    rewardCategory: reward.category, rewardKind: reward.kind, imageUrl: reward.imageUrl ?? null,
+    hasImage: reward.hasImage ?? !!reward.imageUrl, isMock: true,
     costPoints: reward.costPoints, valueLabel: reward.valueLabel, status: "pending", code, redeemedAt: date,
   };
   useMockAccountStore.getState().putAccount(userId, {
@@ -72,8 +73,4 @@ export function localizeRedemption(redemption: Redemption, lang: Lang): Redempti
   if (!key) return redemption;
   return { ...redemption, rewardTitle: t(key[0], lang), rewardDescription: t(key[1], lang),
     valueLabel: redemption.rewardKind === "product" ? t("reward.mock.unit", lang) : redemption.rewardKind === "ticket" ? t("reward.mock.ticket", lang) : redemption.valueLabel };
-}
-
-export function isPendingRedemption(redemption: Redemption): boolean {
-  return redemption.status === "pending" || redemption.status === "ready";
 }

@@ -10,6 +10,7 @@ import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { Reward } from "@/types/reward";
+import type { Redemption } from "@/types/redemption";
 
 /**
  * RedeemBalanceOverlay — flujo de canje de premios de categoría "saldo".
@@ -25,13 +26,10 @@ export interface RedeemBalanceOverlayProps {
   reward: Reward;
   currentPoints: number;
   onClose: () => void;
-  onConfirmed?: (payload: { code: string; costPoints: number }) => void | Promise<void>;
+  onConfirmed: () => Promise<Redemption>;
 }
 
 const fmt = (n: number) => n.toLocaleString("es-ES");
-
-const generateCode = () =>
-  Math.floor(10000 + Math.random() * 90000).toString();
 
 const RedeemBalanceOverlay = ({
   reward,
@@ -60,8 +58,7 @@ const RedeemBalanceOverlay = ({
   const handleConfirm = async () => {
     if (submitting) return;
     setSubmitting(true);
-    const newCode = generateCode();
-    try { await onConfirmed?.({ code: newCode, costPoints: reward.costPoints }); setCode(newCode); setStep("code"); }
+    try { const redemption = await onConfirmed(); setCode(redemption.code); setStep("code"); }
     catch { toast.error(t("account.error", lang)); }
     finally { setSubmitting(false); }
   };
@@ -187,7 +184,7 @@ const RedeemBalanceOverlay = ({
               className="px-4 pb-5 flex flex-col gap-4"
             >
               {/* Codi */}
-              <div className="rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 p-5 text-center">
+              {code && <div className="rounded-2xl bg-gradient-to-br from-km0-blue-800 to-km0-blue-900 p-5 text-center">
                 <p className="font-ui font-bold text-[11px] uppercase tracking-widest text-primary-foreground/60">
                   {t("redeem.code_label", lang)}
                 </p>
@@ -226,7 +223,7 @@ const RedeemBalanceOverlay = ({
                     </>
                   )}
                 </Button>
-              </div>
+              </div>}
 
               {/* Estat + premi resum */}
               <div className="rounded-2xl border border-km0-blue-100 bg-card p-4 flex items-center gap-3">

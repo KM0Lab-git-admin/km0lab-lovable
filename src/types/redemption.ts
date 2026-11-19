@@ -22,12 +22,14 @@ export interface Redemption {
   rewardCategory: RewardCategory;
   rewardKind: RewardKind;
   /** Imagen del premio (misma URL pública que el catálogo UAT); si falta, se muestra el icono del tipo. */
-  imageUrl?: string;
+  imageUrl?: string | null;
+  hasImage?: boolean;
+  isMock?: boolean;
   costPoints: number;
   valueLabel: string;
   status: RedemptionStatus;
   /** Codi de 5 dígits que el comerç valida al back-office. */
-  code: string;
+  code: string | null;
   /** Nom del comerç o punt de recollida. */
   shopName?: string;
   /** Data en què l'usuari va sol·licitar el bescanvi. */
@@ -36,4 +38,8 @@ export interface Redemption {
   expiresAt?: string;
   /** Data en què es va completar la validació/lliurament. */
   completedAt?: string;
+}
+
+export function isPendingRedemption(redemption: Redemption): boolean {
+  return redemption.status === "pending" || redemption.status === "ready";
 }
