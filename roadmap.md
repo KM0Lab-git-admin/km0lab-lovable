@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Home Burbuja: ocultar barras, habilitar arrastre vertical/horizontal y corregir la interacción del menú y controles comunes.
+
 - [x] Integrar LanguageSelection.png en la pantalla de idioma sin cambiar los colores de los botones.
 - [x] Recuperar el fondo beige en el bloque de selección de idioma.
 - [x] Eliminar el espacio sobrante arriba y abajo en la pantalla de idioma (foto y selector a altura completa).

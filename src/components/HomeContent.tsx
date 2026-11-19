@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
+import { useDragScroll } from "@/hooks/use-drag-scroll";
 
 import type { Promo } from "@/types/promo";
 import type { ApiReward } from "@/services/rewardsApi";
@@ -99,6 +100,7 @@ const HomeContent = ({
 
 
   const { lang } = useLang();
+  const scrollRef = useDragScroll("vertical");
 
   return (
     <>
@@ -110,7 +112,7 @@ const HomeContent = ({
         showGreeting={false}
       />
 
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col">
+      <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col cursor-grab data-[dragging=true]:cursor-grabbing data-[dragging=true]:select-none">
         <div className="relative z-10 flex flex-col gap-5 px-4 pt-4 pb-7">
           <section className="flex flex-col gap-3">
             {showLogin && <JoinCard onCreateAccount={onLogin} onLogin={onLogin} onHowItWorks={onHowItWorks} />}

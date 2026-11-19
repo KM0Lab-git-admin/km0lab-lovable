@@ -228,6 +228,14 @@
     width: 100%;
     overflow-x: hidden;
   }
+
+  #root * {
+    scrollbar-width: none;
+  }
+
+  #root *::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* ── KM0 Animations ─────────────────────────────────────── */

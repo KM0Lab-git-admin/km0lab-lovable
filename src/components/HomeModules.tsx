@@ -50,7 +50,7 @@ const HomeModules = ({ modules, className }: HomeModulesProps) => {
   return (
     <div className={cn("grid grid-cols-3 items-start gap-x-1 gap-y-5 pt-2", className)}>
       {modules.map((mod) => (
-        <Button key={mod.id} variant="ghost" onClick={mod.onClick} disabled={!mod.active} className="relative h-auto min-h-11 w-full flex-col gap-2 whitespace-normal rounded-2xl p-0 hover:bg-transparent active:scale-[0.96]">
+        <Button key={mod.id} variant="bubbleSurface" onClick={mod.onClick} disabled={!mod.active} className="relative h-auto min-h-11 w-full flex-col gap-2 whitespace-normal rounded-2xl p-0">
           <span className={cn("flex h-[76px] w-[76px] shrink-0 items-center justify-center rounded-full shadow-[var(--shadow-bubble)]", mod.active ? BACKGROUNDS[mod.id] ?? "bg-km0-blue-100" : "bg-km0-blue-50")}>
             <img src={IMAGE_SRC[mod.id]} alt="" className={cn("h-[58px] w-[58px] object-contain", !mod.active && "grayscale opacity-60")} />
           </span>

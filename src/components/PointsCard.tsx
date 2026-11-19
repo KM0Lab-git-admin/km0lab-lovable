@@ -65,7 +65,7 @@ const PointsCard = ({
       className={cn(
         "relative w-full overflow-hidden rounded-3xl bg-card p-4 shadow-[var(--shadow-bubble)]",
         clickable &&
-          "cursor-pointer active:scale-[0.96] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-km0-yellow-400"
+          "cursor-pointer hover:brightness-95 active:scale-[0.96] transition-[filter,transform] duration-150 motion-reduce:transition-none motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-km0-yellow-400"
       )}
     >
       {/* Fila superior: puntos + nivel */}

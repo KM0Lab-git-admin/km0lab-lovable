@@ -99,12 +99,12 @@ interface TabItemProps {
 }
 
 const TabItem = ({ icon, label, active, available, onClick }: TabItemProps) => (
-  <Button variant="ghost"
+  <Button variant="bubbleSurface"
     type="button"
     onClick={onClick}
     aria-current={active ? "page" : undefined}
     className={cn(
-      "h-auto min-h-14 min-w-0 flex-col justify-start gap-1 whitespace-normal rounded-xl px-0 py-1 active:scale-[0.96] hover:bg-transparent",
+      "h-auto min-h-14 min-w-0 flex-col justify-start gap-1 whitespace-normal rounded-xl px-0 py-1",
       active
         ? "text-km0-blue-700"
         : available
