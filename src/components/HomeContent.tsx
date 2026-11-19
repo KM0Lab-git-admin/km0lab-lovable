@@ -39,7 +39,7 @@ export interface HomeContentProps {
 
   activeTab: HomeTab;
   isAuthed: boolean;
-  onLogin: () => void;
+  onLogin: (tab?: HomeTab) => void;
   onHowItWorks: () => void;
   onHome: () => void;
   onProfile: () => void;

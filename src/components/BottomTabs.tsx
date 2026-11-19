@@ -11,7 +11,7 @@ export interface BottomTabsProps {
   activeTab: HomeTab;
   /** Si hay sesión, los tabs no-home responden con su handler real; si no, redirigen a login. */
   isAuthed: boolean;
-  onLogin: () => void;
+  onLogin: (tab?: HomeTab) => void;
   onHome: () => void;
   onProfile: () => void;
   onPoints: () => void;
@@ -34,7 +34,7 @@ const BottomTabs = ({
   const handleClick = (tab: HomeTab, action: () => void) => {
     // Actions e Inicio están disponibles para todos; el resto requiere sesión.
     if (!isAuthed && tab !== "home" && tab !== "actions") {
-      onLogin();
+      onLogin(tab);
       return;
     }
     action();

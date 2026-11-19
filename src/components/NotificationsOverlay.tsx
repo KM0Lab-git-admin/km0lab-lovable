@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import BubbleSheet from "@/components/BubbleSheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowRight, RefreshCw, Newspaper } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ interface NotificationsOverlayProps {
   lang: Lang;
   onClose: () => void;
   onReload: () => void;
+  container?: HTMLElement | null;
 }
 
 const formatRelative = (iso: string | null, lang: Lang): string => {
@@ -36,6 +37,7 @@ const NotificationsOverlay = ({
   lang,
   onClose,
   onReload,
+  container,
 }: NotificationsOverlayProps) => {
   const navigate = useNavigate();
 
@@ -45,15 +47,8 @@ const NotificationsOverlay = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={(value) => { if (!value) onClose(); }}>
-      <DialogContent aria-describedby={undefined} className="top-auto bottom-0 flex max-h-[90dvh] w-[min(100%,430px)] max-w-[430px] translate-y-0 flex-col gap-0 overflow-hidden rounded-t-[28px] border-0 bg-km0-beige-50 p-0 [&>button]:h-11 [&>button]:w-11 [&>button]:rounded-full [&>button]:bg-card">
-            {/* Header */}
-            <header className="flex items-center justify-between px-5 pt-6 pb-4  shrink-0">
-              <DialogTitle className="pr-12 font-brand text-xl font-black text-km0-blue-800">{t("notifications.title", lang)}</DialogTitle>
-            </header>
-
-            {/* Body */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+    <BubbleSheet open={open} onClose={onClose} title={t("notifications.title", lang)} lang={lang} container={container}>
+            <div className="space-y-3">
               {loading && items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center px-6 py-16 gap-2">
                   <Skeleton className="h-20 w-full rounded-[20px]" /><Skeleton className="h-20 w-full rounded-[20px]" />
@@ -155,8 +150,7 @@ const NotificationsOverlay = ({
                 })
               )}
             </div>
-      </DialogContent>
-    </Dialog>
+    </BubbleSheet>
   );
 };
 export default NotificationsOverlay;

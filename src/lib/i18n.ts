@@ -16,6 +16,15 @@ export const LANGS: Lang[] = ["ca", "es", "en"];
 type Dict = Record<Lang, string>;
 
 const D = {
+  "account.sheet.title": { ca: "Crea el teu compte", es: "Crea tu cuenta", en: "Create your account" } as Dict,
+  "account.sheet.points": { ca: "Aquí veuràs els teus punts i d’on venen.", es: "Aquí verás tus puntos y de dónde vienen.", en: "Here you’ll see your points and where they come from." } as Dict,
+  "account.sheet.rewards": { ca: "Aquí veuràs els premis que has bescanviat.", es: "Aquí verás los premios que has canjeado.", en: "Here you’ll see the rewards you’ve redeemed." } as Dict,
+  "account.sheet.profile": { ca: "Aquí podràs canviar les teves dades, el teu idioma i el teu municipi.", es: "Aquí podrás cambiar tus datos, tu idioma y tu municipio.", en: "Here you can change your details, language and town." } as Dict,
+  "account.sheet.hint": { ca: "Només necessites un correu. Et portarà uns 30 segons.", es: "Solo necesitas un correo. Te llevará unos 30 segundos.", en: "You only need an email. It takes about 30 seconds." } as Dict,
+  "account.sheet.email": { ca: "Correu electrònic", es: "Correo electrónico", en: "Email address" } as Dict,
+  "account.sheet.continue": { ca: "Continuar", es: "Continuar", en: "Continue" } as Dict,
+  "account.sheet.login": { ca: "Ja tinc compte: inicia sessió", es: "Ya tengo cuenta: iniciar sesión", en: "Already have an account? Sign in" } as Dict,
+  "account.sheet.demo": { ca: "Prototip: no s’envien correus. Fes servir el codi 123456.", es: "Prototipo: no se envían correos. Usa el código 123456.", en: "Prototype: no emails are sent. Use code 123456." } as Dict,
   "navigation.main": { ca: "Navegació principal", es: "Navegación principal", en: "Main navigation" } as Dict,
   "notifications.unread": { ca: "Tens notificacions noves", es: "Tienes notificaciones nuevas", en: "You have new notifications" } as Dict,
   "notifications.none": { ca: "Sense notificacions", es: "Sin notificaciones", en: "No notifications" } as Dict,

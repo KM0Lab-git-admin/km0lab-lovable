@@ -8,6 +8,9 @@ import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import { getTownArt } from "@/data/townArt";
 import HomeContent from "@/components/HomeContent";
+import AccountAccessSheet, { type AccountAccessTarget } from "@/components/AccountAccessSheet";
+import type { HomeTab } from "@/components/BottomTabs";
+import { requestOtp } from "@/services/mock/auth";
 
 import NotificationsOverlay from "@/components/NotificationsOverlay";
 import PointsRewardOverlay from "@/components/PointsRewardOverlay";
@@ -73,6 +76,13 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const [notifOpen, setNotifOpen] = useState(searchParams.get("notifs") === "open");
   const [rewardOpen, setRewardOpen] = useState(searchParams.get("welcome") === "1");
   const [moduleSeeds, setModuleSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
+  const [sheetContainer, setSheetContainer] = useState<HTMLDivElement | null>(null);
+  const [accountTarget, setAccountTarget] = useState<AccountAccessTarget | null>(() => {
+    const access = searchParams.get("access");
+    return !isAuthed && (access === "points" || access === "rewards" || access === "profile") ? access : null;
+  });
+  const [accountSubmitting, setAccountSubmitting] = useState(false);
+  const [accountError, setAccountError] = useState<string | null>(null);
 
   const { promos: apiPromos } = useFeaturedPromos(4);
   const promos = apiPromos.length > 0 ? apiPromos : PROMOS;
@@ -126,7 +136,34 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   };
 
   const goToProfile = () => navigate("/profile");
-  const goToLogin = () => navigate("/login");
+  const goToLogin = (tab?: HomeTab) => {
+    if (tab === "puntos" || tab === "rewards" || tab === "perfil") {
+      setAccountError(null);
+      setAccountTarget(tab === "puntos" ? "points" : tab === "perfil" ? "profile" : "rewards");
+      return;
+    }
+    navigate("/login");
+  };
+  const accountReturnTo = accountTarget === "profile" ? "/profile" : accountTarget === "rewards" ? "/redeemed-rewards" : "/points-history";
+  const continueAccount = async (email: string) => {
+    setAccountSubmitting(true);
+    setAccountError(null);
+    try {
+      const result = await requestOtp(email, {
+        postal_code: localStorage.getItem("km0_postal_code") ?? undefined,
+        town: localStorage.getItem("km0_town") ?? undefined,
+      });
+      if (result.error) {
+        setAccountError(t("login.error_email", lang));
+        return;
+      }
+      navigate("/check-email", { state: { email, mode: "signup", returnTo: accountReturnTo } });
+    } catch {
+      setAccountError(t("login.error_email", lang));
+    } finally {
+      setAccountSubmitting(false);
+    }
+  };
   const goToPoints = () => navigate("/points-history");
   const goToRewards = () => navigate("/redeemed-rewards");
 
@@ -199,7 +236,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   return (
     <DeviceShell>
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
-        <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
+        <div ref={setSheetContainer} className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           <HomeContent {...sharedProps} />
           <NotificationsOverlay
             open={notifOpen}
@@ -209,7 +246,9 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
             lang={lang}
             onClose={() => setNotifOpen(false)}
             onReload={reloadNotifs}
+            container={sheetContainer}
           />
+          <AccountAccessSheet target={isAuthed ? null : accountTarget} lang={lang} container={sheetContainer} submitting={accountSubmitting} error={accountError} onClose={() => setAccountTarget(null)} onContinue={continueAccount} onLogin={() => navigate(`/login?returnTo=${encodeURIComponent(accountReturnTo)}`)} />
           {rewardOpen && isAuthed && (
             <PointsRewardOverlay
               points={100}

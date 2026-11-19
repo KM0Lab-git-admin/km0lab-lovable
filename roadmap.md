@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Home: panel contextual de cuenta para accesos con candado, notificaciones dentro del marco y moneda SVG con relieve.
+
 - [x] Home Burbuja: ocultar barras, habilitar arrastre vertical/horizontal y corregir la interacción del menú y controles comunes.
 
 - [x] Integrar LanguageSelection.png en la pantalla de idioma sin cambiar los colores de los botones.

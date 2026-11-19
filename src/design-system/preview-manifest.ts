@@ -172,8 +172,11 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         id: "notifications",
         label: "Notificaciones abiertas",
         src: "/home?notifs=open",
-        notes: "NotificationsOverlay abierto al montar.",
+        notes: "Panel de noticias municipales abierto dentro del marco de Home, con cierre accesible y estados loading/empty/error/ready; no sustituye datos por avisos ficticios.",
       },
+      { id: "account-points", label: "Acceso a puntos sin sesión", src: "/home?access=points", notes: "Panel contextual de cuenta sobre Home, correo y acceso OTP simulado con retorno a puntos." },
+      { id: "account-rewards", label: "Acceso a premios sin sesión", src: "/home?access=rewards" },
+      { id: "account-profile", label: "Acceso a perfil sin sesión", src: "/home?access=profile" },
     ],
   },
   {
