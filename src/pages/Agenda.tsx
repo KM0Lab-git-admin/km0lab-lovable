@@ -347,6 +347,18 @@ const Agenda = () => {
     staleTime: 5 * 60 * 1000,
   });
 
+  // Conteos por categoría sobre los eventos del rango vigente (el mismo
+  // listado que ve el usuario), así el número del menú coincide con lo que
+  // aparece al elegir esa categoría. Un evento cuenta una sola vez por
+  // categoría aunque repita el tag.
+  const categoryCounts = useMemo(() => {
+    const map = new Map<string, number>();
+    eventos.forEach((e) => {
+      new Set(e.tags).forEach((slug) => map.set(slug, (map.get(slug) ?? 0) + 1));
+    });
+    return map;
+  }, [eventos]);
+
   // Categorías devueltas por la API + "Tots" al final.
   const chips = useMemo(() => {
     const items = apiCategories
@@ -356,6 +368,7 @@ const Agenda = () => {
         label: lang === "ca" ? c.nombre_cat : c.nombre_es,
         presentation:
           CATEGORY_PRESENTATIONS[c.slug] ?? DEFAULT_CATEGORY_PRESENTATION,
+        count: categoryCounts.get(c.slug) ?? 0,
       }));
     return [
       ...items,
@@ -363,9 +376,10 @@ const Agenda = () => {
         key: "todos",
         label: t("agenda.cat.todos", lang),
         presentation: ALL_CATEGORY_PRESENTATION,
+        count: eventos.length,
       },
     ];
-  }, [apiCategories, availableSlugs, lang]);
+  }, [apiCategories, availableSlugs, categoryCounts, eventos.length, lang]);
 
   // Si una categoría seleccionada deja de tener eventos en el rango
   // vigente, se retira de la selección (el resto se conserva).
@@ -385,7 +399,12 @@ const Agenda = () => {
   const selectedLabels = chips.filter((c) => selected.includes(c.key)).map((c) => c.label);
   const toOption = (c: (typeof chips)[number]): CategoryFilterOption => {
     const Icon = c.presentation.Icon;
-    return { key: c.key, label: c.label, icon: <Icon size={16} strokeWidth={2.4} /> };
+    return {
+      key: c.key,
+      label: c.label,
+      icon: <Icon size={16} strokeWidth={2.4} />,
+      count: c.count,
+    };
   };
 
 
