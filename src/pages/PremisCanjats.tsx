@@ -38,6 +38,14 @@ const KIND_ICON: Record<RewardKind, LucideIcon> = {
   discount: Percent,
 };
 
+/** Fondos suaves por tipo, coherentes con el carrusel de premios de Home. */
+const KIND_BACKGROUND: Record<RewardKind, string> = {
+  voucher: "bg-km0-yellow-100",
+  ticket: "bg-km0-teal-100",
+  product: "bg-km0-coral-50",
+  discount: "bg-km0-blue-100",
+};
+
 const STATUS_META: Record<
   RedemptionStatus,
   { labelKey: Parameters<typeof t>[0]; cls: string; Icon: LucideIcon }
@@ -139,11 +147,11 @@ const RedemptionCard = ({
       transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
       className="rounded-2xl bg-white border border-km0-blue-100 overflow-hidden shadow-[0_8px_20px_-14px_hsl(var(--km0-blue-900)/0.35)]"
     >
-      {/* Cabecera con icono */}
+      {/* Cabecera con imagen del premio (o icono del tipo si no tiene) */}
       <div
         className={cn(
           "relative h-28 flex items-center justify-center",
-          "bg-gradient-to-br from-km0-yellow-100 to-km0-yellow-300",
+          KIND_BACKGROUND[redemption.rewardKind],
           redemption.status === "expired" && "opacity-60",
         )}
       >
@@ -156,14 +164,26 @@ const RedemptionCard = ({
           <StatusIcon size={12} />
           {t(status.labelKey, lang)}
         </span>
-        <KindIcon
-          size={48}
-          strokeWidth={1.8}
-          className={cn(
-            "text-km0-blue-900",
-            redemption.status === "expired" && "grayscale-[0.4]",
-          )}
-        />
+        {redemption.imageUrl ? (
+          <img
+            src={redemption.imageUrl}
+            alt=""
+            loading="lazy"
+            className={cn(
+              "h-full w-full object-contain p-3",
+              redemption.status === "expired" && "grayscale-[0.4]",
+            )}
+          />
+        ) : (
+          <KindIcon
+            size={48}
+            strokeWidth={1.8}
+            className={cn(
+              "text-km0-blue-900",
+              redemption.status === "expired" && "grayscale-[0.4]",
+            )}
+          />
+        )}
       </div>
 
       {/* Cuerpo */}

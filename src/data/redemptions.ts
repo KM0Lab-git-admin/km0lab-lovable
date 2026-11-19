@@ -1,5 +1,10 @@
 import type { Redemption } from "@/types/redemption";
 
+/** Host público de la API de premios: las imágenes son las mismas que muestra el catálogo. */
+const REWARDS_HOST = "https://api.uat.km0lab.com";
+const rewardImg = (id: string, v: string) =>
+  `${REWARDS_HOST}/api/v1/rewards/${id}/media?v=${v}`;
+
 /**
  * Dades fictícies de bescanvis per visualitzar tots els estats possibles.
  *
@@ -13,6 +18,7 @@ export const REDEMPTIONS: Redemption[] = [
     rewardDescription: "Val de descompte bescanviable a qualsevol comerç adherit.",
     rewardCategory: "balance",
     rewardKind: "voucher",
+    imageUrl: rewardImg("28f86ca8c4ecdc2c7d36aa9e13e06724", "1789768136"),
     costPoints: 4000,
     valueLabel: "20 €",
     status: "redeemed",
@@ -29,6 +35,7 @@ export const REDEMPTIONS: Redemption[] = [
     rewardDescription: "Una entrada per a qualsevol sessió no premium.",
     rewardCategory: "experience",
     rewardKind: "ticket",
+    imageUrl: rewardImg("d4a51753cb7262631277bd736e3336af", "1789768137"),
     costPoints: 1500,
     valueLabel: "1 entrada",
     status: "ready",
@@ -44,6 +51,7 @@ export const REDEMPTIONS: Redemption[] = [
     rewardDescription: "Gorra oficial del programa KM0 LAB.",
     rewardCategory: "merchandising",
     rewardKind: "product",
+    imageUrl: rewardImg("869c2bc2bbd6a0250aef5aa3d377572d", "1789768136"),
     costPoints: 600,
     valueLabel: "1 unitat",
     status: "pending",
@@ -58,6 +66,7 @@ export const REDEMPTIONS: Redemption[] = [
     rewardDescription: "Samarreta oficial del programa KM0 LAB.",
     rewardCategory: "merchandising",
     rewardKind: "product",
+    imageUrl: rewardImg("4ab8890c66736e1c017a0698ad73939d", "1789768136"),
     costPoints: 800,
     valueLabel: "1 unitat",
     status: "redeemed",
@@ -73,6 +82,7 @@ export const REDEMPTIONS: Redemption[] = [
     rewardDescription: "Val de descompte bescanviable a qualsevol comerç adherit.",
     rewardCategory: "balance",
     rewardKind: "voucher",
+    imageUrl: rewardImg("2f8dd9364967685f775293693a94defe", "1789768136"),
     costPoints: 1000,
     valueLabel: "5 €",
     status: "expired",

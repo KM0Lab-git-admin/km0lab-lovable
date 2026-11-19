@@ -19,6 +19,8 @@ export interface Redemption {
   rewardDescription: string;
   rewardCategory: RewardCategory;
   rewardKind: RewardKind;
+  /** Imagen del premio (misma URL pública que el catálogo UAT); si falta, se muestra el icono del tipo. */
+  imageUrl?: string;
   costPoints: number;
   valueLabel: string;
   status: RedemptionStatus;
