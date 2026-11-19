@@ -1,5 +1,9 @@
 # Roadmap
 
+- [x] Revisar `/rewards`, `/redeemed-rewards` y patrones de interfaz del resto de la aplicación; diagnóstico en `.lovable/reviews/rewards-interface-consistency.md`.
+- [ ] Alinear la presentación de premios y canjes (una columna, imágenes y controles coherentes); pendiente de confirmación de la propuesta visual.
+- [ ] Corregir los demás hallazgos del repaso de interfaz; pendiente de aprobación por etapas y de los importes vigentes.
+
 - [x] Revisar consistencia de navegación, municipio, puntos, catálogos y portabilidad; diagnóstico confirmado en `.lovable/reviews/application-consistency.md`.
 - [x] Unificar accesos con candado de Home e interiores; panel contextual compartido, cancelación sin salir y OTP simulado con retorno a puntos/canjes/perfil comprobados.
 - [ ] Aplicar el resto de correcciones de consistencia; pendiente de aprobación de las siguientes etapas y confirmación de importes vigentes.
