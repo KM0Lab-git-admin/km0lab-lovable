@@ -1367,6 +1367,24 @@ const D = {
   "invites.points.empty": { ca: "Encara no has guanyat punts per invitacions", es: "Todavía no has ganado puntos por invitaciones", en: "You have not earned invitation points yet" } as Dict,
   "invites.points.action": { ca: "Veure invitacions", es: "Ver invitaciones", en: "View invitations" } as Dict,
 
+  "territory.homeTown": { ca: "El teu poble", es: "Tu población", en: "Your town" } as Dict,
+  "territory.groupedIntro": { ca: "Notícies, activitats i comerços del teu poble i dels municipis veïns", es: "Noticias, actividades y comercios de tu población y de los municipios vecinos", en: "News, events and shops from your town and the neighbouring towns" } as Dict,
+  "territory.townAndNeighbours": { ca: "{town} i municipis veïns", es: "{town} y municipios vecinos", en: "{town} and neighbouring towns" } as Dict,
+  "territory.newsFrom": { ca: "Notícies de {town}", es: "Noticias de {town}", en: "News from {town}" } as Dict,
+  "territory.moreNewsFrom": { ca: "Més notícies de {town}", es: "Más noticias de {town}", en: "More news from {town}" } as Dict,
+  "territory.nearYou": { ca: "A prop teu", es: "Cerca de ti", en: "Near you" } as Dict,
+  "territory.allFeminine": { ca: "Totes", es: "Todas", en: "All" } as Dict,
+  "territory.allTowns": { ca: "Tots els pobles", es: "Todas las poblaciones", en: "All towns" } as Dict,
+  "territory.discover": { ca: "Descobreix {town}", es: "Descubre {town}", en: "Discover {town}" } as Dict,
+  "territory.alsoNearYou": { ca: "També a prop teu", es: "También cerca de ti", en: "Also near you" } as Dict,
+  "territory.alsoSee": { ca: "També veuràs el que passa a", es: "También verás lo que pasa en", en: "You'll also see what's on in" } as Dict,
+  "territory.pickerText": { ca: "Tria el poble que vols veure primer. Continuaràs veient també els altres.", es: "Elige la población que quieres ver primero. Seguirás viendo también las demás.", en: "Choose the town you want to see first. You'll still see the others." } as Dict,
+  "territory.pointsUnchanged": { ca: "Els teus punts i premis no canvien.", es: "Tus puntos y premios no cambian.", en: "Your points and rewards stay the same." } as Dict,
+  "territory.myTown": { ca: "El meu poble", es: "Mi población", en: "My town" } as Dict,
+  "territory.save": { ca: "Desa", es: "Guardar", en: "Save" } as Dict,
+  "territory.sampleContent": { ca: "Contingut de mostra", es: "Contenido de muestra", en: "Sample content" } as Dict,
+  "territory.townUnavailable": { ca: "No s'ha pogut carregar el contingut de {town}", es: "No se ha podido cargar el contenido de {town}", en: "Could not load content from {town}" } as Dict,
+
 } as const;
 
 export type TKey = keyof typeof D;
@@ -1375,3 +1393,7 @@ export const t = (key: TKey, lang: Lang): string => {
   const entry = D[key];
   return entry?.[lang] ?? entry?.es ?? String(key);
 };
+
+/** Translate and replace `{name}` placeholders. */
+export const tf = (key: TKey, lang: Lang, vars: Record<string, string | number>): string =>
+  t(key, lang).replace(/\{(\w+)\}/g, (match, name: string) => (name in vars ? String(vars[name]) : match));

@@ -1,5 +1,6 @@
 import { listEvents, type ListEventsParams, type AgendaEvent } from "@/services/eventsApi";
 import { listNews, type ListNewsParams, type Noticia } from "@/services/newsApi";
+import type { ScopeListing, ScopedItem, Territory, Town } from "@/types/territory";
 
 /** Fetch every verified page so category counts cannot silently truncate. */
 export async function listMunicipalEvents(params: ListEventsParams): Promise<AgendaEvent[]> {
@@ -26,4 +27,45 @@ export async function listMunicipalNews(params: ListNewsParams): Promise<Noticia
     if (items.size === before) throw new Error("Incomplete news pagination");
     offset += result.noticias.length;
   }
+}
+async function listScope<T>(
+  territory: Territory,
+  fetchTown: (town: Town) => Promise<T[]>,
+  idOf: (item: T) => string,
+  compare: (a: T, b: T) => number,
+): Promise<ScopeListing<T>> {
+  const results = await Promise.allSettled(territory.towns.map(fetchTown));
+  if (results.every(result => result.status === "rejected")) throw new Error("Scope listing failed");
+  const seen = new Set<string>();
+  const home: ScopedItem<T>[] = [];
+  const nearby: ScopedItem<T>[] = [];
+  const failedTownIds: string[] = [];
+  const homeIndex = territory.towns.findIndex(town => town.id === territory.homeTownId);
+  const order = homeIndex < 0 ? territory.towns.map((_, i) => i) : [homeIndex, ...territory.towns.map((_, i) => i).filter(i => i !== homeIndex)];
+  order.forEach(index => {
+    const town = territory.towns[index];
+    const result = results[index];
+    if (result.status === "rejected") { failedTownIds.push(town.id); return; }
+    result.value.forEach(item => {
+      const id = idOf(item);
+      if (seen.has(id)) return;
+      seen.add(id);
+      (town.id === territory.homeTownId ? home : nearby).push({ item, town });
+    });
+  });
+  const byItem = (a: ScopedItem<T>, b: ScopedItem<T>) => compare(a.item, b.item);
+  return { home: home.sort(byItem), nearby: nearby.sort(byItem), failedTownIds };
+}
+
+const newestFirst = (a: Noticia, b: Noticia) => (b.fechaPublicacion ?? "").localeCompare(a.fechaPublicacion ?? "");
+const soonestFirst = (a: AgendaEvent, b: AgendaEvent) =>
+  `${a.fecha_inicio ?? "9999"}${a.hora_inicio ?? ""}`.localeCompare(`${b.fecha_inicio ?? "9999"}${b.hora_inicio ?? ""}`);
+
+/** One request per town in parallel; a failing town does not hide the others. */
+export function listScopeNews(territory: Territory, params: Omit<ListNewsParams, "city"> = {}): Promise<ScopeListing<Noticia>> {
+  return listScope(territory, town => listMunicipalNews({ ...params, city: town.name }), item => item.id, newestFirst);
+}
+
+export function listScopeEvents(territory: Territory, params: Omit<ListEventsParams, "poblacion"> = {}): Promise<ScopeListing<AgendaEvent>> {
+  return listScope(territory, town => listMunicipalEvents({ ...params, poblacion: town.name }), item => item.id_unico_evento, soonestFirst);
 }
