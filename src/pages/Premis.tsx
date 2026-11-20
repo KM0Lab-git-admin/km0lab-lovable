@@ -10,11 +10,10 @@ import ScreenHeader from "@/components/ScreenHeader";
 import RewardCardFrame from "@/components/RewardCardFrame";
 import FilterChip from "@/components/FilterChip";
 import AccountBottomTabs from "@/components/AccountBottomTabs";
-import AccountAccessSheet from "@/components/AccountAccessSheet";
+import AccountAccessFlow from "@/components/AccountAccessFlow";
 import RedeemBalanceOverlay from "@/components/RedeemBalanceOverlay";
 import RedeemMerchandiseOverlay from "@/components/RedeemMerchandiseOverlay";
 import { Button } from "@/components/ui/button";
-import { useAccountAccess } from "@/hooks/use-account-access";
 import { useAuth } from "@/hooks/useAuth";
 import { useDragScroll } from "@/hooks/use-drag-scroll";
 import { usePublicRewards } from "@/hooks/usePublicRewards";
@@ -101,7 +100,6 @@ const Premis = () => {
   const { lang } = useLang();
   const { user } = useAuth();
   const isAuthed = !!user;
-  const access = useAccountAccess(isAuthed);
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const account = useAccount();
   const points = account.balance;
@@ -115,7 +113,7 @@ const Premis = () => {
   const filtered = rewards.filter(r => filter === "all" || r.category === filter);
   const preview = usePreviewState(loading, error, filtered.length === 0);
   const { promotions: promoRows, loading: promosLoading, error: promosError, reload: reloadPromos } = useShopPromotions();
-  return <><div ref={setContainer} className="relative flex h-full w-full min-h-0 flex-col overflow-hidden bg-km0-beige-50">
+  return <AccountAccessFlow isAuthed={isAuthed} container={container}>{access => <><div ref={setContainer} className="relative flex h-full w-full min-h-0 flex-col overflow-hidden bg-km0-beige-50">
     <ScreenHeader title={t("rewards.title", lang)} />
     <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 py-4">
       <p className="mb-3 font-ui text-sm font-bold text-km0-blue-800">{t(isAuthed ? "rewards.balance_label" : "rewards.guest_label", lang).replace("{n}", fmt(points))}</p>
@@ -138,8 +136,7 @@ const Premis = () => {
       </> : <div className="space-y-3"><p className="font-body text-xs text-km0-blue-800/60">{t("rewards.promos.info", lang)}</p>{promosLoading || promosError ? <ScreenStatus state={promosLoading ? "loading" : "error"} emptyKey="rewards.promos.empty" onRetry={reloadPromos} /> : promoRows.length ? promoRows.map((row, index) => <PromoCard key={`${row.shopId}-${row.id}`} row={row} index={index} />) : <p>{t("rewards.promos.empty", lang)}</p>}</div>}
     </div>
     <AccountBottomTabs activeTab={null} isAuthed={isAuthed} onLogin={access.open} onHome={() => navigate("/home")} onActions={() => navigate("/points-actions")} onPoints={() => navigate("/points-history")} onRewards={() => navigate("/redeemed-rewards")} onProfile={() => navigate("/profile")} />
-    <AccountAccessSheet target={access.target} lang={lang} container={container} submitting={access.submitting} error={access.error} onClose={access.close} onContinue={access.continueWithEmail} onLogin={access.login} />
     {redeeming && (redeeming.category === "balance" ? <RedeemBalanceOverlay reward={redeeming} currentPoints={points} container={container} onClose={() => setRedeeming(null)} onConfirmed={() => redeemReward(redeeming)} /> : <RedeemMerchandiseOverlay reward={redeeming} currentPoints={points} container={container} onClose={() => setRedeeming(null)} onConfirmed={() => redeemReward(redeeming)} />)}
-  </div></>;
+  </div></>}</AccountAccessFlow>;
 };
 export default Premis;

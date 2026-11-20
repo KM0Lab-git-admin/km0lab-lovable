@@ -3,7 +3,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { useAccountAccess } from "@/hooks/use-account-access";
+import AccountAccessFlow, { type AccountAccessControls } from "@/components/AccountAccessFlow";
 import { useAppStore } from "@/stores/useAppStore";
 import { requestOtp } from "@/services/mock/auth";
 
@@ -14,17 +14,20 @@ Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 let root: Root | null = null;
 let container: HTMLDivElement | null = null;
 const renderAccess = (isAuthed = false) => {
-  let current: { access: ReturnType<typeof useAccountAccess>; location: ReturnType<typeof useLocation> } | null = null;
+  let current: { access: AccountAccessControls; location: ReturnType<typeof useLocation> } | null = null;
   const Probe = () => {
-    current = { access: useAccountAccess(isAuthed), location: useLocation() };
-    return null;
+    const location = useLocation();
+    return <AccountAccessFlow isAuthed={isAuthed} container={null}>{access => {
+      current = { access, location };
+      return null;
+    }}</AccountAccessFlow>;
   };
   container = document.createElement("div");
   document.body.append(container);
   root = createRoot(container);
   act(() => root?.render(wrapper({ children: <Probe /> })));
   return { result: { get current() {
-    if (!current) throw new Error("Account hook has not rendered");
+    if (!current) throw new Error("Account flow has not rendered");
     return current;
   } } };
 };

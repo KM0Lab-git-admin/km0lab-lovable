@@ -5,7 +5,7 @@
 - Keep points badges in PointsCoin and municipality artwork lookup in data/townArt, so visual reuse does not alter balances or assume missing local assets.
 - Use useDragScroll for mouse dragging on nested scroll regions; each region owns one axis and suppresses drag-generated clicks while preserving native touch, wheel and keyboard scrolling.
 - Use additive Bubble Button variants for consistent hover/press feedback without replacing foreground colors, so navigation remains visible on pointer entry and exit.
-- Compose overlays with BubbleSheet inside their portrait frame; AccountBottomTabs and useAccountAccess own the shared locked-tab mock OTP flow so Home and interiors preserve the requested destination without duplicated account logic.
+- Compose overlays with BubbleSheet inside their portrait frame; AccountBottomTabs and AccountAccessFlow own the shared locked-tab mock OTP flow, with AccountAccessTarget in types, so Home and interiors preserve destinations without data hooks importing presentation.
 
 - Keep reward artwork and card framing in RewardArtwork/RewardCardFrame, and common filtering in FilterChip, so catalogue, redemptions and confirmation cannot drift visually.
 - Keep the simulated ledger and redemptions per user in useMockAccountStore behind services/mock/account; every local redemption must atomically add its matching signed transaction.

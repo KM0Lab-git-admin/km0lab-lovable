@@ -80,7 +80,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
   {
     id: "rewards", label: "Premis", path: "/rewards", dynamicContent: true,
     states: [
-      { id: "guest", label: "Público", src: "/rewards", notes: "Catálogo público UAT compartido con Home; tarjetas de una columna con imágenes completas y fallback de icono solo sin imagen. Sin saldo de invitado ni pestaña Canjes activa; confirmación requiere sesión." },
+      { id: "guest", label: "Público", src: "/rewards", notes: "Catálogo público UAT compartido con Home; tarjetas de una columna con imágenes completas y fallback de icono solo sin imagen. Sin saldo de invitado ni pestaña Canjes activa; confirmación requiere sesión mediante AccountAccessFlow compartido con las pestañas." },
       { id: "registered", label: "Cuenta demo", src: "/rewards", seedSession: true, notes: "Saldo compartido con Home/historial/canjes; confirmación en BubbleSheet y escritura solo en el ledger local simulado. Navegación inferior, teclado y arrastre." },
       { id: "promos", label: "Promociones", src: "/rewards?tab=promos", notes: "Promociones y arte de comercios mediante useShopPromotions, compartidos con Home; presentación conservada." },
       { id: "loading", label: "Carga", src: "/rewards?state=loading" },
@@ -350,7 +350,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         label: "Por defecto",
         src: "/redeemed-rewards",
         seedSession: true,
-        notes: "Tarjetas compartidas con catálogo, imágenes, arrastre, copia confirmada y cuenta simulada persistida. Pendientes reúne pending/ready, filtro caducados y fechas relativas coherentes; ca/es/en. Mock con todos los estados: pending, ready, redeemed y expired. AccountBottomTabs con 5 tabs y panel de cuenta compartido para accesos sin sesión; tab 'Premis canjats' activo.",
+        notes: "Un único DeviceShell en App. Tarjetas compartidas con catálogo, imágenes, arrastre, copia confirmada y cuenta simulada persistida. Pendientes reúne pending/ready, filtro caducados y fechas relativas coherentes; ca/es/en. Mock con todos los estados: pending, ready, redeemed y expired. AccountBottomTabs con 5 tabs y AccountAccessFlow compartido; tab 'Premis canjats' activo.",
       },
 
     ],
@@ -363,7 +363,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     states: [
       { id: "guest", label: "Sin sesión", src: "/merchants" },
       { id: "registered", label: "Con sesión", src: "/merchants", seedSession: true },
-      { id: "account-points", label: "Acceso a puntos sin sesión", src: "/merchants?access=points", notes: "El mismo panel de Home se abre sobre Comercios y conserva la lista al cerrar." },
+      { id: "account-points", label: "Acceso a puntos sin sesión", src: "/merchants?access=points", notes: "AccountBottomTabs compone AccountAccessFlow: el mismo panel de Home se abre sobre Comercios, conserva el destino tras OTP y mantiene la lista al cerrar." },
       { id: "loading", label: "Carga", src: "/merchants?state=loading" },
       { id: "empty", label: "Vacío", src: "/merchants?state=empty" },
       { id: "error", label: "Error recuperable", src: "/merchants?state=error" },

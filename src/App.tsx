@@ -70,7 +70,7 @@ const App = () => (
             <Route path="/points-history" element={<RequireAuth><DeviceShell><HistorialPunts /></DeviceShell></RequireAuth>} />
             <Route path="/points-actions" element={<DeviceShell><PointsActions /></DeviceShell>} />
             <Route path="/rewards" element={<DeviceShell><Premis /></DeviceShell>} />
-            <Route path="/redeemed-rewards" element={<RequireAuth><DeviceShell><DeviceShell><PremisCanjats /></DeviceShell></DeviceShell></RequireAuth>} />
+            <Route path="/redeemed-rewards" element={<RequireAuth><DeviceShell><PremisCanjats /></DeviceShell></RequireAuth>} />
 
 
             <Route path="/events" element={<DeviceShell><Agenda /></DeviceShell>} />

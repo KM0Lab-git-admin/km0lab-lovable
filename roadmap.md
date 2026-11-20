@@ -1,7 +1,7 @@
 # Roadmap
 
 - [x] Portabilidad · Encargo 4: hooks de comercios/promociones, distancia anulable, servicio y tipos de escáner neutros, campana y municipio compartidos; 79 pruebas aprobadas y comercios, dos fichas, notificaciones, reintentos, promociones y cinco casos del escáner comprobados con sesión 123456. Sin rediseño.
-- [ ] Portabilidad · Encargo 5: trasladar el acceso con candados a componentes y quitar el marco duplicado; pendiente de confirmar excepción a la revisión entre encargos.
+- [x] Portabilidad · Encargo 5: AccountAccessFlow compartido en componentes, AccountAccessTarget en types, hook anterior eliminado y un solo marco para canjes; 79 pruebas aprobadas, cancelación sin salir y OTP 123456 con retorno a canjes comprobados. Ejecución conjunta autorizada solo para esta tanda; parado antes del encargo 6.
 - [x] Portabilidad · Encargo 3: enlaces y canales centralizados, useInviteLink neutro y PointActionId ampliado con invite_person/invite_business; 64 pruebas aprobadas, compartir desde Home sin sesión, acceso 123456, copia persona/negocio, WhatsApp/Facebook y compartir un evento real comprobados. Sin cambios visuales; parado para revisión antes del encargo 4.
 - [x] Portabilidad · Encargo 2: seis hooks neutros para acciones, invitaciones e importes, tipos ampliados y presentación conservada; 51 pruebas aprobadas y Home/Acciones/Historial/Invitar/Mis invitaciones comprobados con sesión simulada, ca/es/en y variantes de seguimiento. Parado para revisión antes del encargo 3.
 - [x] Portabilidad · Encargo 1: cuenta y canje con nombres neutros, traducciones dentro del hook y códigos anulables en el servicio; 38 pruebas y acceso/canje/historial/canjes ca/es/en comprobados. Parado para revisión antes del encargo 2.

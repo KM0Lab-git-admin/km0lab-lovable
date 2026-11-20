@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { t, type Lang } from "@/lib/i18n";
-
-export type AccountAccessTarget = "points" | "rewards" | "profile";
+import type { AccountAccessTarget } from "@/types/accountAccess";
 
 interface AccountAccessSheetProps {
   target: AccountAccessTarget | null;
