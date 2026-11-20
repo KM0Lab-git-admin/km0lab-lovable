@@ -76,7 +76,7 @@ const PostalCode = () => {
       {/* Maqueta ÚNICA portrait, centrada verticalmente en el marco. */}
       <div className="w-full max-w-[390px] mx-auto flex flex-col gap-6 vertical-mobile:gap-7 min-h-full justify-center py-4">
         <motion.div
-          className="relative aspect-square shrink-0 rounded-3xl overflow-hidden shadow-lg"
+          className="relative aspect-square w-full max-w-[320px] mx-auto shrink-0 rounded-3xl overflow-hidden shadow-lg"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.15 }}
@@ -91,13 +91,13 @@ const PostalCode = () => {
             {townArtSrc && (
               <motion.div
                 key={townArtSrc}
-                className="absolute inset-0 flex items-end justify-center bg-km0-yellow-500 px-6 pt-6"
+                className="absolute inset-0 flex items-center justify-center bg-km0-yellow-500 px-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: reduceMotion ? 0 : 0.18 }}
               >
-                <TownArt src={townArtSrc} className="pointer-events-none h-full w-full select-none object-contain object-bottom" />
+                <TownArt src={townArtSrc} className="pointer-events-none h-full w-full select-none object-contain object-center" />
               </motion.div>
             )}
           </AnimatePresence>
