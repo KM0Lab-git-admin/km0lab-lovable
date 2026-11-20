@@ -251,7 +251,7 @@ const Comercos = () => {
                 />
                 {isGrouped && <CategoryFilterMenu title={t("territory.townFilter", lang)} icon={<MapPin aria-hidden className="!h-4 !w-4" />}
                   allOption={{ key: "all", label: t("territory.allTowns", lang), icon: <MapPin size={16} /> }}
-                  options={territory?.towns.map(origin => ({ key: origin.id, label: origin.name, icon: <MapPin size={16} /> })) ?? []}
+                  options={territory?.towns.map(origin => ({ key: origin.id, label: origin.name, icon: <MapPin size={16} />, isHome: origin.id === homeTown?.id })) ?? []}
                   selected={selectedTown ? [selectedTown] : []} onToggle={setSelectedTown} onClear={() => setSelectedTown(null)} /> }
               </div>
             </div>
