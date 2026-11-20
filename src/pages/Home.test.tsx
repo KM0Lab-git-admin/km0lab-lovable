@@ -41,6 +41,10 @@ describe("Home reference town artwork", () => {
     expect(container.querySelector("header img")?.getAttribute("src")).toBe("/reference.webp");
     vi.mocked(useTerritory).mockReturnValue({ ...state, homeTown: { ...reference, artUrl: "/next-reference.webp" } });
     renderHome();
+    expect(container.querySelector("header img")?.getAttribute("src")).toBe("/reference.webp");
+    const pending = container.querySelector('header img[src="/next-reference.webp"]');
+    if (!pending) throw new Error("Missing replacement artwork");
+    act(() => pending.dispatchEvent(new Event("load")));
     expect(container.querySelector("header img")?.getAttribute("src")).toBe("/next-reference.webp");
   });
   it("passes no specific artwork while territory loads", () => {

@@ -23,6 +23,7 @@ const PostalCode = () => {
   const [isValidating, setIsValidating] = useState(false);
   const [validationResult, setValidationResult] = useState<"idle" | "found" | "not_found">("idle");
   const [resolvedTown, setResolvedTown] = useState<string | null>(null);
+  const [loadedArtSrc, setLoadedArtSrc] = useState<string | null>(null);
 
   const isNumeric = /^\d*$/.test(value);
   const isComplete = value.length === 5 && isNumeric;
@@ -31,6 +32,7 @@ const PostalCode = () => {
   const showNotFound = validationResult === "not_found";
   const { homeTown, nearbyTowns } = useTerritoryFor(cityName ? value : null);
   const townArtSrc = cityName ? homeTown?.artUrl : null;
+  const isArtReady = !!townArtSrc && loadedArtSrc === townArtSrc;
 
   useEffect(() => {
     if (!isComplete) {
@@ -57,6 +59,7 @@ const PostalCode = () => {
     setValue(e.target.value);
     setValidationResult("idle");
     setResolvedTown(null);
+    setLoadedArtSrc(null);
     if (!touched) setTouched(true);
   };
 
@@ -84,20 +87,21 @@ const PostalCode = () => {
           <img
             src={postalCodeMapAsset.url}
             alt={t("postal.image_alt", lang)}
-            aria-hidden={!!townArtSrc}
+            aria-hidden={isArtReady}
             className="h-full w-full object-cover"
           />
           <AnimatePresence>
             {townArtSrc && (
               <motion.div
                 key={townArtSrc}
+                aria-hidden={!isArtReady}
                 className="absolute inset-0 flex items-center justify-center bg-km0-yellow-500 px-6"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                animate={{ opacity: isArtReady ? 1 : 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: reduceMotion ? 0 : 0.18 }}
               >
-                <TownArt src={townArtSrc} className="pointer-events-none h-full w-full select-none object-contain object-center" />
+                <TownArt src={townArtSrc} onLoad={() => setLoadedArtSrc(townArtSrc)} onError={() => setLoadedArtSrc(null)} className="pointer-events-none h-full w-full select-none object-contain object-center" />
               </motion.div>
             )}
           </AnimatePresence>

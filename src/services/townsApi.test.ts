@@ -1,8 +1,9 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { getTownArtUrl, publicTownResponseSchema } from "@/services/townsApi";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { getCachedTownArtUrl, getTownArtUrl, publicTownResponseSchema } from "@/services/townsApi";
 import townFixture from "@/data/fixtures/towns-public.json";
 
 afterEach(() => vi.unstubAllGlobals());
+beforeEach(() => localStorage.clear());
 
 function response(body: unknown, status = 200) {
   const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify(body), { status }));
@@ -52,5 +53,38 @@ describe("public town artwork", () => {
   it("returns null for invalid JSON", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("invalid json")));
     expect(await getTownArtUrl("17400")).toBeNull();
+  });
+  it("remembers the server URL by postal code and updates a changed version", async () => {
+    response({ ...townFixture, art_url: "/art?v=123" });
+    await getTownArtUrl("17400");
+    expect(getCachedTownArtUrl("17400")).toBe("https://api.uat.km0lab.com/art?v=123");
+    expect(getCachedTownArtUrl("17450")).toBeNull();
+    response({ ...townFixture, art_url: "/art?v=456" });
+    await getTownArtUrl("17400");
+    expect(getCachedTownArtUrl("17400")).toBe("https://api.uat.km0lab.com/art?v=456");
+  });
+  it.each([null, undefined])("removes remembered artwork when the server returns %s", async artUrl => {
+    localStorage.setItem("km0_town_art:17400", "https://api.uat.km0lab.com/old-art");
+    response({ ...townFixture, art_url: artUrl });
+    await getTownArtUrl("17400");
+    expect(getCachedTownArtUrl("17400")).toBeNull();
+  });
+  it("removes remembered artwork when the town no longer exists", async () => {
+    localStorage.setItem("km0_town_art:17400", "https://api.uat.km0lab.com/old-art");
+    response({ detail: "Unknown postal code" }, 404);
+    await getTownArtUrl("17400");
+    expect(getCachedTownArtUrl("17400")).toBeNull();
+  });
+  it("retains remembered artwork on transient network failure", async () => {
+    localStorage.setItem("km0_town_art:17400", "https://api.uat.km0lab.com/old-art");
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Network unavailable")));
+    expect(await getTownArtUrl("17400")).toBeNull();
+    expect(getCachedTownArtUrl("17400")).toBe("https://api.uat.km0lab.com/old-art");
+  });
+  it("works when browser storage is blocked", async () => {
+    vi.stubGlobal("localStorage", { getItem: () => { throw new Error("blocked"); }, setItem: () => { throw new Error("blocked"); } });
+    expect(getCachedTownArtUrl("17400")).toBeNull();
+    response({ ...townFixture, art_url: "/art?v=123" });
+    expect(await getTownArtUrl("17400")).toBe("https://api.uat.km0lab.com/art?v=123");
   });
 });

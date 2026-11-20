@@ -7,7 +7,7 @@ import PostalCode from "@/pages/PostalCode";
 import { getTownArtUrl } from "@/services/townsApi";
 import mapAsset from "@/assets/postal-code-map.png.asset.json";
 
-vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn(async (postalCode: string) => postalCode === "17400" ? "https://api.uat.km0lab.com/art/reference?v=123" : null) }));
+vi.mock("@/services/townsApi", () => ({ getCachedTownArtUrl: () => null, getTownArtUrl: vi.fn(async (postalCode: string) => postalCode === "17400" ? "https://api.uat.km0lab.com/art/reference?v=123" : null) }));
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 let root: Root | null = null;
@@ -42,9 +42,27 @@ describe("postal code artwork", () => {
     const src = "https://api.uat.km0lab.com/art/reference?v=123";
     change("17400");
     await until(() => expect(container.querySelector(`img[src="${src}"]`)).not.toBeNull());
+    expect(container.querySelector(`img[src="${mapAsset.url}"]`)?.getAttribute("aria-hidden")).toBe("false");
+    const image = container.querySelector(`img[src="${src}"]`);
+    if (!image) throw new Error("Missing pending artwork");
+    expect(image.parentElement?.getAttribute("aria-hidden")).toBe("true");
+    act(() => image.dispatchEvent(new Event("load")));
+    expect(container.querySelector(`img[src="${mapAsset.url}"]`)?.getAttribute("aria-hidden")).toBe("true");
+    expect(image.parentElement?.getAttribute("aria-hidden")).toBe("false");
     change("");
     await until(() => expect(container.querySelector(`img[src="${src}"]`)).toBeNull());
     expect(container.querySelector(`img[src="${mapAsset.url}"]`)?.getAttribute("aria-hidden")).toBe("false");
+  });
+  it("keeps the map when the resolved illustration fails to load", async () => {
+    setup();
+    change("17400");
+    const src = "https://api.uat.km0lab.com/art/reference?v=123";
+    await until(() => expect(container.querySelector(`img[src="${src}"]`)).not.toBeNull());
+    const image = container.querySelector(`img[src="${src}"]`);
+    if (!image) throw new Error("Missing pending artwork");
+    act(() => image.dispatchEvent(new Event("error")));
+    expect(container.querySelector(`img[src="${mapAsset.url}"]`)?.getAttribute("aria-hidden")).toBe("false");
+    expect(image.parentElement?.getAttribute("aria-hidden")).toBe("true");
   });
   it("keeps the map with 17404 even after a town with artwork", async () => {
     setup();

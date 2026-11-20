@@ -26,6 +26,17 @@ const waitFor = (check: () => void) => vi.waitFor(check);
 const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}><MemoryRouter>{children}</MemoryRouter></QueryClientProvider>;
 
 describe("territory hooks error shape", () => {
+  it("delivers remembered artwork on the first render and refreshes it without waiting to show it", async () => {
+    const territory: Territory = { scopeId: "s", scopeName: "S", homeTownId: "reference", towns: [{ id: "reference", name: "Reference", postalCodes: ["12345"], artUrl: "/remembered?v=123" }] };
+    const deferred: { resolve?: (value: Territory) => void } = {};
+    vi.mocked(resolveTerritory).mockReturnValueOnce(territory);
+    vi.mocked(getTerritory).mockImplementationOnce(() => new Promise(resolve => { deferred.resolve = resolve; }));
+    const { result } = renderHook(() => useTerritoryFor("12345"));
+    expect(result.current.homeTown?.artUrl).toBe("/remembered?v=123");
+    expect(result.current.loading).toBe(false);
+    act(() => deferred.resolve?.({ ...territory, towns: territory.towns.map(town => ({ ...town, artUrl: "/new?v=456" })) }));
+    await waitFor(() => expect(result.current.homeTown?.artUrl).toBe("/new?v=456"));
+  });
   it("exposes local town metadata immediately and adds API artwork when it arrives", async () => {
     const territory: Territory = { scopeId: "s", scopeName: "S", homeTownId: "reference", towns: [{ id: "reference", name: "Reference", postalCodes: ["12345"], artUrl: null }] };
     const deferred: { resolve?: (value: Territory) => void } = {};

@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Retoque de carga de ilustraciones: mapa hasta carga correcta y ante fallo; townsApi recuerda URL por código postal y hooks renuevan en segundo plano. 143 pruebas aprobadas, compilación correcta y flujo postal → principal → recarga verificado con UAT y descarga retenida, respuesta null y fallo de imagen. Parado para revisión.
+
 - [x] Corrección de ilustraciones: towns/public mediante proxy existente, cuatro punteros y tres imágenes antiguas sin uso retirados; solo genérica local. UAT real: cuatro ilustraciones y Riells null, sample sin arte inventado, carga lenta sin salto; 132 pruebas y tipos correctos. Parada para revisión.
 
 - [x] Ilustraciones de pueblos: datos Town.artUrl, TownArt compartida y cuatro assets CDN; principal y código postal conservan medidas, Riells usa genérica/mapa, cambio local y fallos comprobados; 119 pruebas y tipos correctos. Una sola etapa, parada para revisión.

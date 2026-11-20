@@ -8,7 +8,7 @@ import { useShop } from "@/hooks/use-shop";
 import { useShopPromotions } from "@/hooks/use-shop-promotions";
 import type { ComercAdherit, ComercDetall } from "@/types/comercAdherit";
 
-vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn(async () => null) }));
+vi.mock("@/services/townsApi", () => ({ getCachedTownArtUrl: () => null, getTownArtUrl: vi.fn(async () => null) }));
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 const mounts: { root: Root; container: HTMLDivElement; client: QueryClient }[] = [];

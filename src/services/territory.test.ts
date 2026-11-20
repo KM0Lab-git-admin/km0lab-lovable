@@ -1,14 +1,21 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { getTerritory } from "@/services/territory";
-import { getTownArtUrl } from "@/services/townsApi";
+import { getTerritory, resolveTerritory } from "@/services/territory";
+import { getCachedTownArtUrl, getTownArtUrl } from "@/services/townsApi";
 
-vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn() }));
+vi.mock("@/services/townsApi", () => ({ getCachedTownArtUrl: vi.fn(() => null), getTownArtUrl: vi.fn() }));
 beforeEach(() => {
+  vi.mocked(getCachedTownArtUrl).mockReset().mockReturnValue(null);
   vi.mocked(getTownArtUrl).mockReset();
   vi.mocked(getTownArtUrl).mockImplementation(async postalCode => postalCode === "17404" ? null : `https://api.uat.km0lab.com/art/${postalCode}?v=123`);
 });
 
 describe("territory", () => {
+  it("exposes remembered server artwork synchronously without making a request", () => {
+    vi.mocked(getCachedTownArtUrl).mockImplementation(cp => cp === "17400" ? "/remembered?v=123" : null);
+    const territory = resolveTerritory("17400");
+    expect(territory?.towns[0]?.artUrl).toBe("/remembered?v=123");
+    expect(getTownArtUrl).not.toHaveBeenCalled();
+  });
   it("carries the reference town artwork for 17400", async () => {
     const territory = await getTerritory("17400");
     const home = territory?.towns.find(town => town.id === territory.homeTownId);

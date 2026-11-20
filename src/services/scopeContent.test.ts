@@ -4,7 +4,7 @@ import { getContentSource, getContentPath } from "@/hooks/use-preview-state";
 import { getTerritory } from "@/services/territory";
 import { listScopeEvents } from "@/services/municipalListings";
 
-vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn(async () => null) }));
+vi.mock("@/services/townsApi", () => ({ getCachedTownArtUrl: () => null, getTownArtUrl: vi.fn(async () => null) }));
 
 describe("explicit scope preview source", () => {
   it("never enables sample for a missing, empty, error or unknown state", () => {
