@@ -8,8 +8,10 @@ import { useTerritory, useTerritoryFor } from "@/hooks/use-territory";
 import { useScopeNews } from "@/hooks/use-scope-news";
 import { useScopeEvents } from "@/hooks/use-scope-events";
 import { getTerritory } from "@/services/territory";
+import { resolveTerritory } from "@/services/territory";
+import type { Territory } from "@/types/territory";
 import { listScopeNews, listScopeEvents } from "@/services/municipalListings";
-vi.mock("@/services/territory", () => ({ getTerritory: vi.fn() }));
+vi.mock("@/services/territory", () => ({ getTerritory: vi.fn(), resolveTerritory: vi.fn(() => null) }));
 vi.mock("@/services/municipalListings", () => ({ listScopeNews: vi.fn(), listScopeEvents: vi.fn() }));
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
@@ -24,6 +26,17 @@ const waitFor = (check: () => void) => vi.waitFor(check);
 const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}><MemoryRouter>{children}</MemoryRouter></QueryClientProvider>;
 
 describe("territory hooks error shape", () => {
+  it("exposes local town metadata immediately and adds API artwork when it arrives", async () => {
+    const territory: Territory = { scopeId: "s", scopeName: "S", homeTownId: "reference", towns: [{ id: "reference", name: "Reference", postalCodes: ["12345"], artUrl: null }] };
+    const deferred: { resolve?: (value: Territory) => void } = {};
+    vi.mocked(resolveTerritory).mockReturnValueOnce(territory);
+    vi.mocked(getTerritory).mockImplementationOnce(() => new Promise(resolve => { deferred.resolve = resolve; }));
+    const { result } = renderHook(() => useTerritoryFor("12345"));
+    expect(result.current.homeTown?.id).toBe("reference");
+    expect(result.current.homeTown?.artUrl).toBeNull();
+    act(() => deferred.resolve?.({ ...territory, towns: territory.towns.map(town => ({ ...town, artUrl: "/api-art?v=123" })) }));
+    await waitFor(() => expect(result.current.homeTown?.artUrl).toBe("/api-art?v=123"));
+  });
   it("useTerritoryFor exposes the reference town with its artwork before location is saved", async () => {
     vi.mocked(getTerritory).mockResolvedValue({ scopeId: "s", scopeName: "S", homeTownId: "reference", towns: [
       { id: "nearby", name: "Nearby", postalCodes: ["12344"] },

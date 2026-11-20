@@ -1,8 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { getScopeNews, getScopeEvents } from "@/services/scopeContent";
 import { getContentSource, getContentPath } from "@/hooks/use-preview-state";
 import { getTerritory } from "@/services/territory";
 import { listScopeEvents } from "@/services/municipalListings";
+
+vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn(async () => null) }));
 
 describe("explicit scope preview source", () => {
   it("never enables sample for a missing, empty, error or unknown state", () => {

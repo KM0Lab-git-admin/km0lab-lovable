@@ -2,11 +2,13 @@ import { act, type ReactNode } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { useShops } from "@/hooks/use-shops";
 import { useShop } from "@/hooks/use-shop";
 import { useShopPromotions } from "@/hooks/use-shop-promotions";
 import type { ComercAdherit, ComercDetall } from "@/types/comercAdherit";
+
+vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn(async () => null) }));
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 const mounts: { root: Root; container: HTMLDivElement; client: QueryClient }[] = [];

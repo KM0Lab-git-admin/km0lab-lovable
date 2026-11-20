@@ -1,7 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { listShops } from "@/services/shops";
 import { getTerritory } from "@/services/territory";
 import { filterShops } from "@/lib/scopeListings";
+
+vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn(async () => null) }));
 
 describe("scope shops", () => {
   it("serves seven examples across Breda, Hostalric and Riells through listShops", async () => {

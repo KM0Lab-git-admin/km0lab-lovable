@@ -1,14 +1,20 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getTerritory } from "@/services/territory";
-import { SCOPE_DEFINITIONS, SINGLE_TOWN_ART } from "@/data/territories";
+import { getTownArtUrl } from "@/services/townsApi";
+
+vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn() }));
+beforeEach(() => {
+  vi.mocked(getTownArtUrl).mockReset();
+  vi.mocked(getTownArtUrl).mockImplementation(async postalCode => postalCode === "17404" ? null : `https://api.uat.km0lab.com/art/${postalCode}?v=123`);
+});
 
 describe("territory", () => {
   it("carries the reference town artwork for 17400", async () => {
     const territory = await getTerritory("17400");
     const home = territory?.towns.find(town => town.id === territory.homeTownId);
     expect(home?.id).toBe("breda");
-    expect(home?.artUrl).toBeTruthy();
-    expect(home?.artUrl).toBe(SCOPE_DEFINITIONS[0]?.towns.find(town => town.id === "breda")?.artUrl);
+    expect(home?.artUrl).toBe("https://api.uat.km0lab.com/art/17400?v=123");
+    expect(getTownArtUrl).toHaveBeenCalledWith("17400");
   });
   it("leaves 17404 without specific artwork", async () => {
     const territory = await getTerritory("17404");
@@ -19,8 +25,22 @@ describe("territory", () => {
   it.each(["08380", "17300"])("carries standalone town artwork for %s", async postalCode => {
     const territory = await getTerritory(postalCode);
     const home = territory?.towns[0];
-    expect(home?.artUrl).toBeTruthy();
-    expect(home?.artUrl).toBe(SINGLE_TOWN_ART[home?.id ?? ""]);
+    expect(home?.artUrl).toBe(`https://api.uat.km0lab.com/art/${postalCode}?v=123`);
+    expect(getTownArtUrl).toHaveBeenCalledTimes(1);
+    expect(getTownArtUrl).toHaveBeenCalledWith(postalCode);
+  });
+  it("requests all town artworks concurrently and preserves towns when one request rejects", async () => {
+    const pending: { postalCode: string; resolve: (value: string | null) => void; reject: (reason: Error) => void }[] = [];
+    vi.mocked(getTownArtUrl).mockImplementation(postalCode => new Promise((resolve, reject) => pending.push({ postalCode, resolve, reject })));
+    const territoryPromise = getTerritory("17400");
+    await vi.waitFor(() => expect(pending.map(request => request.postalCode)).toEqual(["17400", "17450", "17404"]));
+    for (const request of pending) {
+      if (request.postalCode === "17404") request.reject(new Error("unavailable"));
+      else request.resolve(`/art/${request.postalCode}`);
+    }
+    const territory = await territoryPromise;
+    expect(territory?.towns.map(town => town.artUrl)).toEqual(["/art/17400", "/art/17450", null]);
+    expect(territory?.towns).toHaveLength(3);
   });
   it("puts the home town first and the rest alphabetically", async () => {
     const territory = await getTerritory("17450");
@@ -33,5 +53,6 @@ describe("territory", () => {
   });
   it("returns null for an unknown postal code", async () => {
     expect(await getTerritory("99999")).toBeNull();
+    expect(getTownArtUrl).not.toHaveBeenCalled();
   });
 });

@@ -128,7 +128,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     path: "/postal-code",
     states: [
       { id: "default", label: "Por defecto", src: "/postal-code", notes: "Mapa isométrico a ancho completo y sin recortes. Tarjeta cuadrada de dimensiones estables." },
-      { id: "town-art", label: "Pueblo con ilustración", src: "/postal-code", notes: "Introducir 17400, 17450, 08380 o 17300: ilustración decorativa del pueblo sobre amarillo KM0, fundido corto sin movimiento y sin animación con reduced motion. Al borrar o cambiar el código vuelve el mapa; 17404 conserva el mapa. Misma tarjeta y medidas." },
+      { id: "town-art", label: "Pueblo con ilustración", src: "/postal-code", notes: "Introducir 17400, 17450, 08380 o 17300: ilustración decorativa desde towns/public de UAT sobre amarillo KM0; mapa durante carga, sin art_url o ante fallo. Fundido corto sin movimiento y sin animación con reduced motion. Al borrar o cambiar el código vuelve el mapa; 17404 conserva el mapa. Misma tarjeta y medidas." },
     ],
   },
   {
@@ -192,7 +192,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       { id: "loading", label: "Carga", src: "/home?state=loading" },
       { id: "empty", label: "Vacío", src: "/home?state=empty" },
       { id: "error", label: "Error", src: "/home?state=error" },
-      { id: "grouped-scope", label: "Ámbito agrupado (CP 17400)", src: "/home", notes: "Cabecera con TownArt del pueblo de referencia desde Town.artUrl; genérica durante carga, sin ilustración (17404) o si falla. Cambiar a 17450 en TownPickerSheet cambia la ilustración sin modificar medidas. Etiqueta «El teu poble», línea de ámbito, carrusel existente y dos bloques de noticias compactas conservados." },
+      { id: "grouped-scope", label: "Ámbito agrupado (CP 17400)", src: "/home", notes: "Cabecera con TownArt desde Town.artUrl leído en towns/public de UAT por el proxy existente; genérica durante carga, sin ilustración (17404) o si falla. El modo sample también lee el arte real, nunca lo inventa. Cambiar a 17450 en TownPickerSheet cambia la ilustración sin modificar medidas. Etiqueta «El teu poble», línea de ámbito, carrusel existente y noticias conservados." },
       { id: "account-points", label: "Acceso a puntos sin sesión", src: "/home?access=points", notes: "AccountBottomTabs reutiliza el panel contextual de cuenta de todos los interiores, correo y OTP simulado con retorno a puntos; cerrar conserva la pantalla y limpia access." },
       { id: "account-rewards", label: "Acceso a premios sin sesión", src: "/home?access=rewards" },
       { id: "account-profile", label: "Acceso a perfil sin sesión", src: "/home?access=profile" },

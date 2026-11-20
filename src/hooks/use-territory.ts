@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocationContext } from "@/hooks/use-location-context";
-import { getTerritory } from "@/services/territory";
+import { getTerritory, resolveTerritory } from "@/services/territory";
 import { useAppStore } from "@/stores/useAppStore";
 import type { Town } from "@/types/territory";
 
 export function useTerritory() {
   const { postalCode } = useLocationContext();
-  const query = useQuery({ queryKey: ["territory", postalCode], queryFn: () => getTerritory(postalCode), staleTime: Infinity });
+  const query = useQuery({ queryKey: ["territory", postalCode], queryFn: () => getTerritory(postalCode), placeholderData: () => resolveTerritory(postalCode), staleTime: Infinity });
   const territory = query.data ?? null;
   const homeTown = territory?.towns.find(town => town.id === territory.homeTownId) ?? null;
   const nearbyTowns = territory?.towns.filter(town => town.id !== territory.homeTownId) ?? [];
@@ -18,7 +18,7 @@ export function useTerritory() {
 
 /** Territory for a postal code that is not stored yet (postal code confirmation). */
 export function useTerritoryFor(postalCode: string | null) {
-  const query = useQuery({ queryKey: ["territory", postalCode], queryFn: () => getTerritory(postalCode ?? ""), enabled: postalCode !== null, staleTime: Infinity });
+  const query = useQuery({ queryKey: ["territory", postalCode], queryFn: () => getTerritory(postalCode ?? ""), placeholderData: () => postalCode ? resolveTerritory(postalCode) : null, enabled: postalCode !== null, staleTime: Infinity });
   const territory = query.data ?? null;
   return {
     territory, homeTown: territory?.towns.find(town => town.id === territory.homeTownId) ?? null,

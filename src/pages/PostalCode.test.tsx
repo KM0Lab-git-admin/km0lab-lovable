@@ -2,14 +2,20 @@ import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import PostalCode from "@/pages/PostalCode";
-import { SCOPE_DEFINITIONS } from "@/data/territories";
+import { getTownArtUrl } from "@/services/townsApi";
 import mapAsset from "@/assets/postal-code-map.png.asset.json";
+
+vi.mock("@/services/townsApi", () => ({ getTownArtUrl: vi.fn(async (postalCode: string) => postalCode === "17400" ? "https://api.uat.km0lab.com/art/reference?v=123" : null) }));
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 let root: Root | null = null;
 const container = document.createElement("div");
+beforeEach(() => {
+  vi.mocked(getTownArtUrl).mockReset();
+  vi.mocked(getTownArtUrl).mockImplementation(async postalCode => postalCode === "17400" ? "https://api.uat.km0lab.com/art/reference?v=123" : null);
+});
 afterEach(() => { act(() => root?.unmount()); root = null; });
 function setup() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -33,8 +39,7 @@ async function until(check: () => void) {
 describe("postal code artwork", () => {
   it("shows town artwork with 17400 and restores the map when cleared", async () => {
     setup();
-    const src = SCOPE_DEFINITIONS[0]?.towns.find(town => town.id === "breda")?.artUrl;
-    expect(src).toBeTruthy();
+    const src = "https://api.uat.km0lab.com/art/reference?v=123";
     change("17400");
     await until(() => expect(container.querySelector(`img[src="${src}"]`)).not.toBeNull());
     change("");
@@ -48,6 +53,16 @@ describe("postal code artwork", () => {
     change("17404");
     await until(() => expect(container.querySelector("h1")?.textContent).toContain("Riells i Viabrea"));
     await until(() => expect(container.querySelectorAll('img[alt=""]')).toHaveLength(0));
+    expect(container.querySelector(`img[src="${mapAsset.url}"]`)?.getAttribute("aria-hidden")).toBe("false");
+  });
+  it("keeps the map when the API gives 17400 no artwork", async () => {
+    vi.mocked(getTownArtUrl).mockResolvedValue(null);
+    setup();
+    change("17400");
+    await until(() => expect(container.querySelector("h1")?.textContent).toContain("Breda"));
+    await until(() => expect(getTownArtUrl).toHaveBeenCalledWith("17400"));
+    await act(async () => { await new Promise(resolve => setTimeout(resolve, 100)); });
+    expect(container.querySelectorAll('img[alt=""]')).toHaveLength(0);
     expect(container.querySelector(`img[src="${mapAsset.url}"]`)?.getAttribute("aria-hidden")).toBe("false");
   });
 });
