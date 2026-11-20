@@ -1,11 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { isUnavailableMunicipalCatalogue } from "./publicRewardsResponse.ts";
 
 const UPSTREAM = "https://api.uat.km0lab.com";
 
@@ -29,7 +24,6 @@ serve(async (req) => {
     const search = url.search || inlineSearch;
 
     const target = `${UPSTREAM}${subpath}${search}`;
-    console.log("proxy", req.method, url.pathname, url.search, "->", target);
 
     const hasBody = req.method !== "GET" && req.method !== "HEAD";
     const body = hasBody ? await req.text() : undefined;
@@ -41,6 +35,14 @@ serve(async (req) => {
     });
 
     const respBody = await apiRes.arrayBuffer();
+    if (isUnavailableMunicipalCatalogue(
+      req.method, new URL(target), apiRes.status, new TextDecoder().decode(respBody),
+    )) {
+      return new Response(JSON.stringify([]), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     if (!apiRes.ok) {
       console.error("Upstream error:", apiRes.status, target);
     }

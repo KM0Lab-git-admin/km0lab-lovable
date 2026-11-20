@@ -32,3 +32,4 @@
 
 - Keep explicit preview content in data/sampleScope behind services/scopeContent; source-specific query keys prevent sample/live cache contamination, and sample remains a data source alongside the four screen states.
 - Scope listShops through an optional Territory and share filterShops for search/category/town filtering; omit grouped presentation for single-town scopes to preserve the existing view.
+- The rewards preview proxy maps only the public GET catalogue's explicit unknown-postal-code 404 to an empty list; preserve other errors and never substitute rewards from another municipality.
