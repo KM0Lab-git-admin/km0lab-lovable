@@ -1,3 +1,5 @@
+import { getShareLink } from "@/lib/shareUrl";
+
 export const INVITE_REWARDS = {
   person: 100,
   business: 500,
@@ -24,25 +26,6 @@ export const getReferralReferenceForUser = (userId: string): string => {
   return `km0-${hash.toString(36)}${userId.length.toString(36)}`;
 };
 
-interface InviteLinkOptions {
-  kind: InviteKind;
-  reference: string;
-  town?: string | null;
-  lang?: string | null;
-}
-
-export const buildInviteLink = ({ kind, reference, town, lang }: InviteLinkOptions): string => {
-  const url = new URL(kind === "person" ? "/home" : "/business-signup", window.location.origin);
-  url.searchParams.set("invite", kind);
-  url.searchParams.set("ref", reference);
-  if (town) url.searchParams.set("town", town);
-  if (lang) url.searchParams.set("lang", lang);
-  return url.toString();
-};
-
 export const buildPublicShareLink = (town?: string | null, lang?: string | null): string => {
-  const url = new URL("/home", window.location.origin);
-  if (town) url.searchParams.set("town", town);
-  if (lang) url.searchParams.set("lang", lang);
-  return url.toString();
+  return getShareLink("/home", { town: town || undefined, lang: lang || undefined });
 };

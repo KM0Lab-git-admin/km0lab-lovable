@@ -1,5 +1,6 @@
 # Roadmap
 
+- [x] Portabilidad · Encargo 3: enlaces y canales centralizados, useInviteLink neutro y PointActionId ampliado con invite_person/invite_business; 64 pruebas aprobadas, compartir desde Home sin sesión, acceso 123456, copia persona/negocio, WhatsApp/Facebook y compartir un evento real comprobados. Sin cambios visuales; parado para revisión antes del encargo 4.
 - [x] Portabilidad · Encargo 2: seis hooks neutros para acciones, invitaciones e importes, tipos ampliados y presentación conservada; 51 pruebas aprobadas y Home/Acciones/Historial/Invitar/Mis invitaciones comprobados con sesión simulada, ca/es/en y variantes de seguimiento. Parado para revisión antes del encargo 3.
 - [x] Portabilidad · Encargo 1: cuenta y canje con nombres neutros, traducciones dentro del hook y códigos anulables en el servicio; 38 pruebas y acceso/canje/historial/canjes ca/es/en comprobados. Parado para revisión antes del encargo 2.
 

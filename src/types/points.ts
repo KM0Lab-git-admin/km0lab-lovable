@@ -21,6 +21,8 @@ export type PointActionId =
   | "scan"
   | "web_visit"
   | "newsletter"
+  | "invite_person"
+  | "invite_business"
   | "event_signup"
   | "survey";
 

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useLang } from "@/contexts/LangContext";
 import { useShareLink } from "@/hooks/useShareLink";
 import { t } from "@/lib/i18n";
+import { openShareChannel } from "@/lib/openShareChannel";
 
 interface ShareChannelListProps {
   /** Enlace exacto que se comparte en todos los canales. */
@@ -33,10 +34,6 @@ const ShareChannelList = ({ link, message, subject }: ShareChannelListProps) => 
     title: t("share.title", lang),
   });
 
-  const openExternal = (url: string): void => {
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-
   const hasNativeShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
 
   const channels: Channel[] = [
@@ -44,21 +41,19 @@ const ShareChannelList = ({ link, message, subject }: ShareChannelListProps) => 
       id: "whatsapp",
       label: t("share.channel.whatsapp", lang),
       icon: MessageCircle,
-      onSelect: () => openExternal(`https://wa.me/?text=${encodeURIComponent(message)}`),
+      onSelect: () => void openShareChannel({ channel: "whatsapp", message, subject, link }),
     },
     {
       id: "email",
       label: t("share.channel.email", lang),
       icon: Mail,
-      onSelect: () => {
-        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
-      },
+      onSelect: () => void openShareChannel({ channel: "email", message, subject, link }),
     },
     {
       id: "facebook",
       label: t("share.channel.facebook", lang),
       icon: ThumbsUp,
-      onSelect: () => openExternal(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`),
+      onSelect: () => void openShareChannel({ channel: "facebook", message, subject, link }),
     },
     ...(hasNativeShare
       ? [

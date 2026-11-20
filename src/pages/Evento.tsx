@@ -19,6 +19,7 @@ import BrandedFrame from "@/components/BrandedFrame";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
+import { getShareLink } from "@/lib/shareUrl";
 import { getEvento, type EventoDetalleAdaptado } from "@/services/eventsApi";
 
 /* ─────────────────────────────────────────────────────────────
@@ -154,9 +155,11 @@ const ImageCarousel = ({
 /* ── Detalle ─────────────────────────────────────────────────── */
 const EventoDetalle = ({
   ev,
+  id,
   onBack,
 }: {
   ev: EventoDetalleAdaptado;
+  id: string;
   onBack: () => void;
 }) => {
   const { lang } = useLang();
@@ -179,7 +182,7 @@ const EventoDetalle = ({
         await navigator.share({
           title: ev.titulo,
           text: ev.descripcionCorta || ev.titulo,
-          url: window.location.href,
+          url: getShareLink("/event", { id }),
         });
       } catch {
         /* cancelado */
@@ -498,7 +501,7 @@ const Evento = () => {
           </div>
         </StateWrapper>
       ) : (
-        <EventoDetalle ev={data} onBack={onBack} />
+        <EventoDetalle ev={data} id={id ?? data.id} onBack={onBack} />
       )}
     </BrandedFrame>
   );

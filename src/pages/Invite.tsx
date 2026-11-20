@@ -8,7 +8,8 @@ import ShareChannelList from "@/components/ShareChannelList";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
-import { buildInviteLink, buildPublicShareLink, getReferralReferenceForUser, type InviteKind } from "@/data/inviteConfig";
+import { useInviteLink } from "@/hooks/use-invite-link";
+import type { InvitationKind } from "@/types/invitation";
 
 import { useInviteRewards } from "@/hooks/use-invite-rewards";
 
@@ -27,7 +28,9 @@ const Invite = () => {
   const { user, loading } = useAuth();
   const { lang } = useLang();
   const { town } = useLocationContext();
-  const [kind, setKind] = useState<InviteKind>("person");
+  const [kind, setKind] = useState<InvitationKind>("person");
+  const { link: inviteLink, loading: linkLoading, error: linkError, reload } = useInviteLink(kind);
+  const link = inviteLink ?? "";
   const forcedState = searchParams.get("state");
 
   const previewAuthed = useMemo(
@@ -44,13 +47,6 @@ const Invite = () => {
   const loginPath = "/login?returnTo=%2Finvite";
 
   const townLabel = town ?? t("share.town_fallback", lang);
-
-  /** Enlace personal con atribución (sesión) o enlace público (sin sesión). */
-  const link = useMemo(() => {
-    if (typeof window === "undefined") return "";
-    if (!userId) return buildPublicShareLink(town, lang);
-    return buildInviteLink({ kind, reference: getReferralReferenceForUser(userId), town, lang });
-  }, [userId, kind, town, lang]);
 
   const message = isAuthed
     ? t(kind === "person" ? "invite.share.person_text" : "invite.share.business_text", lang).replace("{link}", link)
@@ -74,7 +70,7 @@ const Invite = () => {
         type="button"
         variant="outline"
         onClick={() =>
-          titleKey === "invite.error.title" ? navigate("/invite", { replace: true }) : navigate(loginPath)
+          titleKey === "invite.error.title" ? (reload(), navigate("/invite", { replace: true })) : navigate(loginPath)
         }
         className="mt-4 border-km0-blue-100 font-ui font-bold text-km0-blue-800"
       >
@@ -176,8 +172,8 @@ const Invite = () => {
   );
 
   const renderMain = () => {
-    if (loading || forcedState === "loading") return renderLoading();
-    if (forcedState === "error") return renderError("invite.error.title");
+    if (loading || linkLoading || forcedState === "loading") return renderLoading();
+    if (linkError || forcedState === "error") return renderError("invite.error.title");
     if (forcedState === "expired") return renderError("invite.session.expired.title");
     if (isAuthed && !link) return renderError("invite.error.title");
     return isAuthed ? renderAuthed() : renderGuest();
