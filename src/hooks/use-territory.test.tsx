@@ -5,10 +5,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 import { useTerritory } from "@/hooks/use-territory";
 import { useScopeNews } from "@/hooks/use-scope-news";
+import { useScopeEvents } from "@/hooks/use-scope-events";
 import { getTerritory } from "@/services/territory";
-import { listScopeNews } from "@/services/municipalListings";
+import { listScopeNews, listScopeEvents } from "@/services/municipalListings";
 vi.mock("@/services/territory", () => ({ getTerritory: vi.fn() }));
-vi.mock("@/services/municipalListings", () => ({ listScopeNews: vi.fn() }));
+vi.mock("@/services/municipalListings", () => ({ listScopeNews: vi.fn(), listScopeEvents: vi.fn() }));
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 function renderHook<T>(hook: () => T): { result: { current: T } } {
@@ -32,5 +33,21 @@ describe("territory hooks error shape", () => {
     vi.mocked(listScopeNews).mockRejectedValueOnce(new Error("Scope listing failed"));
     const { result } = renderHook(() => useScopeNews());
     await waitFor(() => expect(result.current.error).toBe("Scope listing failed"));
+  });
+  it("useScopeEvents exposes an error message instead of a boolean", async () => {
+    vi.mocked(getTerritory).mockResolvedValue({ scopeId: "s", scopeName: "S", homeTownId: "b", towns: [{ id: "b", name: "Breda", postalCodes: ["17400"] }] });
+    vi.mocked(listScopeEvents).mockRejectedValueOnce(new Error("events down"));
+    const { result } = renderHook(() => useScopeEvents());
+    await waitFor(() => expect(result.current.error).toBe("events down"));
+  });
+  it("territory failure stops loading in both list hooks", async () => {
+    vi.mocked(getTerritory).mockRejectedValue(new Error("territory unavailable"));
+    const { result } = renderHook(() => ({ news: useScopeNews(), events: useScopeEvents() }));
+    await waitFor(() => {
+      expect(result.current.news.error).toBe("territory unavailable");
+      expect(result.current.news.loading).toBe(false);
+      expect(result.current.events.error).toBe("territory unavailable");
+      expect(result.current.events.loading).toBe(false);
+    });
   });
 });

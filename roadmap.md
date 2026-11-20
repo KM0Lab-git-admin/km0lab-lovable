@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Agrupación de poblaciones · Etapa 3: noticias compactas en Home, procedencia separada, Notícies por población y Agenda conjunta; 96 pruebas, tipos sin errores, filtros a 360 px, cuatro estados y fallos parciales comprobados. Detalle de noticia vecina real verificado; detalle de evento con respuesta controlada porque la agenda real está vacía. Parado para revisión antes de la etapa 4.
+
 - [x] Portabilidad · Encargo 4: hooks de comercios/promociones, distancia anulable, servicio y tipos de escáner neutros, campana y municipio compartidos; 79 pruebas aprobadas y comercios, dos fichas, notificaciones, reintentos, promociones y cinco casos del escáner comprobados con sesión 123456. Sin rediseño.
 - [x] Portabilidad · Encargo 5: AccountAccessFlow compartido en componentes, AccountAccessTarget en types, hook anterior eliminado y un solo marco para canjes; 79 pruebas aprobadas, cancelación sin salir y OTP 123456 con retorno a canjes comprobados. Ejecución conjunta autorizada solo para esta tanda; parado antes del encargo 6.
 - [x] Portabilidad · Encargo 3: enlaces y canales centralizados, useInviteLink neutro y PointActionId ampliado con invite_person/invite_business; 64 pruebas aprobadas, compartir desde Home sin sesión, acceso 123456, copia persona/negocio, WhatsApp/Facebook y compartir un evento real comprobados. Sin cambios visuales; parado para revisión antes del encargo 4.

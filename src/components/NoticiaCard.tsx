@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { TownTag } from "@/components/TownTag";
 import type { Lang } from "@/lib/i18n";
 import type { Noticia } from "@/services/newsApi";
+import { cn } from "@/lib/utils";
 
 export const formatNewsDate = (iso: string | null, lang: Lang): string => {
   if (!iso) return "";
@@ -21,16 +22,19 @@ const NoticiaCard = ({
   lang,
   onOpen,
   town,
+  variant = "default",
 }: {
   noticia: Noticia;
   lang: Lang;
   onOpen: () => void;
   /** Town of origin inside a grouped scope; omit for single-town scopes. */
   town?: { name: string; isHome: boolean };
+  variant?: "default" | "compact";
 }) => {
   const titulo = noticia.titulo[lang];
   const resumen = noticia.resumen[lang];
   const tags = noticia.tags[lang] ?? [];
+  const compact = variant === "compact";
   return (
     <motion.article
       layout
@@ -41,42 +45,40 @@ const NoticiaCard = ({
       <Button variant="bubbleSurface"
         type="button"
         onClick={onOpen}
-        className="block h-auto w-full whitespace-normal rounded-none p-0 text-left active:scale-[0.99] transition-transform"
+        className={cn("h-auto w-full whitespace-normal rounded-none text-left active:scale-[0.99] transition-transform", compact ? "flex items-start justify-start gap-3 p-3" : "block p-0")}
       >
         {noticia.imagenUrl ? (
-          <div className="aspect-[16/9] w-full bg-km0-blue-50 overflow-hidden">
+          <div className={cn("bg-km0-blue-50 overflow-hidden", compact ? "h-16 w-16 shrink-0 rounded-xl" : "aspect-[16/9] w-full")}>
             <img
               src={noticia.imagenUrl}
               alt=""
               loading="lazy"
               className="w-full h-full object-cover"
-              onError={(e) => {
-                (e.currentTarget as HTMLImageElement).style.display = "none";
-              }}
+              onError={(e) => { e.currentTarget.hidden = true; }}
             />
           </div>
         ) : (
-          <div className="aspect-[16/9] w-full bg-gradient-to-br from-km0-blue-100 to-km0-blue-50 flex items-center justify-center">
+          <div className={cn("bg-gradient-to-br from-km0-blue-100 to-km0-blue-50 flex items-center justify-center", compact ? "h-16 w-16 shrink-0 rounded-xl" : "aspect-[16/9] w-full")}>
             <Newspaper size={28} className="text-km0-blue-700/40" />
           </div>
         )}
-        <div className="p-3">
+        <div className={compact ? "min-w-0 flex-1" : "p-3"}>
+          {town && <div className="mb-1 flex"><TownTag townName={town.name} isHome={town.isHome} lang={lang} /></div>}
           <h3 className="font-brand text-sm leading-tight text-km0-blue-900 mb-1 line-clamp-2">
             {titulo}
           </h3>
-          {resumen && (
+          {!compact && resumen && (
             <p className="text-[11px] font-ui text-km0-blue-700/80 line-clamp-2 mb-1.5">
               {resumen}
             </p>
           )}
           <div className="flex flex-wrap items-center gap-1">
-            {town && <TownTag townName={town.name} isHome={town.isHome} lang={lang} />}
             {noticia.fechaPublicacion && (
               <span className="text-[10px] font-ui text-km0-blue-700/60">
                 {formatNewsDate(noticia.fechaPublicacion, lang)}
               </span>
             )}
-            {tags.slice(0, 3).map((tag) => (
+            {!compact && tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
                 className="px-1.5 py-0.5 rounded-full text-[10px] font-ui bg-km0-blue-50 text-km0-blue-700"

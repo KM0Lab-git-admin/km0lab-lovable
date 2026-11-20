@@ -230,14 +230,14 @@ const HomeScopeNews = ({ scope }: { scope: HomeScopeProps }) => {
         <section className="space-y-3">
           <SectionHeader title={tf("territory.newsFrom", lang, { town: scope.homeTownName })} actionLabel={t("home.action.see_all_f", lang)} onAction={scope.onSeeAllNews} />
           {scope.failedTownNames.home && unavailable(scope.homeTownName)}
-          {scope.homeNews.slice(0, HOME_NEWS_LIMIT).map(({ item }) => <NoticiaCard key={item.id} noticia={item} lang={lang} onOpen={() => scope.onOpenNews(item.id)} />)}
+          {scope.homeNews.slice(0, HOME_NEWS_LIMIT).map(({ item }) => <NoticiaCard key={item.id} variant="compact" noticia={item} lang={lang} onOpen={() => scope.onOpenNews(item.id)} />)}
         </section>
       )}
       {showNearby && (
         <section className="space-y-3">
           <SectionHeader title={t("territory.nearYou", lang)} subtitle={scope.nearbyTownNames.join(" · ")} />
           {scope.failedTownNames.nearby.map(unavailable)}
-          {scope.nearbyNews.slice(0, NEARBY_NEWS_LIMIT).map(({ item, town }) => <NoticiaCard key={item.id} noticia={item} lang={lang} town={{ name: town.name, isHome: false }} onOpen={() => scope.onOpenNews(item.id)} />)}
+          {scope.nearbyNews.slice(0, NEARBY_NEWS_LIMIT).map(({ item, town }) => <NoticiaCard key={item.id} variant="compact" noticia={item} lang={lang} town={{ name: town.name, isHome: false }} onOpen={() => scope.onOpenNews(item.id)} />)}
         </section>
       )}
     </>

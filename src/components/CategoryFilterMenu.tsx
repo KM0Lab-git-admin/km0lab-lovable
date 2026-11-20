@@ -20,6 +20,7 @@ interface CategoryFilterMenuProps {
   onToggle: (key: string) => void;
   onClear: () => void;
   className?: string;
+  icon?: ReactNode;
 }
 
 /**
@@ -35,6 +36,7 @@ const CategoryFilterMenu = ({
   onToggle,
   onClear,
   className,
+  icon,
 }: CategoryFilterMenuProps) => {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -111,7 +113,7 @@ const CategoryFilterMenu = ({
           selected.length > 0 && "border-km0-yellow-400 bg-km0-yellow-400 text-km0-blue-900 hover:bg-km0-yellow-500",
         )}
       >
-        <SlidersHorizontal aria-hidden className="!h-4 !w-4" />
+        {icon ?? <SlidersHorizontal aria-hidden className="!h-4 !w-4" />}
         <ChevronDown aria-hidden className={cn("!h-4 !w-4 transition-transform", open && "rotate-180")} />
         {selected.length > 0 && (
           <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-km0-blue-600 px-1 font-ui text-[10px] font-bold text-km0-yellow-400">

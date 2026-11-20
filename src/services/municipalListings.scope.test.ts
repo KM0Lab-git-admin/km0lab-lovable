@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { listNews, type Noticia } from "@/services/newsApi";
-import { listScopeNews, pickFeatured } from "@/services/municipalListings";
+import { listEvents, type AgendaEvent } from "@/services/eventsApi";
+import { listScopeNews, listScopeEvents, pickFeatured } from "@/services/municipalListings";
 import type { Territory } from "@/types/territory";
 vi.mock("@/services/eventsApi", () => ({ listEvents: vi.fn() }));
 vi.mock("@/services/newsApi", () => ({ listNews: vi.fn() }));
@@ -38,5 +39,20 @@ describe("featured events quota", () => {
   });
   it("gives unused home seats to nearby towns", () => {
     expect(pickFeatured(["h1"], ["n1", "n2", "n3", "n4"], 4)).toEqual(["h1", "n1", "n2", "n3"]);
+  });
+});
+
+describe("scope events", () => {
+  it("preserves provenance, sorts nearby events and survives one unavailable town", async () => {
+    const event = (id: string, date: string): AgendaEvent => ({ id_unico_evento: id, titulo: id, fecha_inicio: date, fecha_fin: null, hora_inicio: null, hora_fin: null, es_gratuito: true, precio_euros: null, poblacion_nombre: null, lugar_nombre: null, categorias: [], tags: [], url_imagen: null });
+    vi.mocked(listEvents).mockImplementation(async ({ poblacion }) => {
+      if (poblacion === "Breda") return { eventos: [event("shared", "2026-11-22")], total: 1 };
+      if (poblacion === "Hostalric") return { eventos: [event("later", "2026-11-24"), event("shared", "2026-11-22"), event("sooner", "2026-11-21")], total: 3 };
+      throw new Error("down");
+    });
+    const result = await listScopeEvents(territory);
+    expect(result.home.map(entry => entry.item.id_unico_evento)).toEqual(["shared"]);
+    expect(result.nearby.map(entry => [entry.item.id_unico_evento, entry.town.id])).toEqual([["sooner", "h"], ["later", "h"]]);
+    expect(result.failedTownIds).toEqual(["r"]);
   });
 });

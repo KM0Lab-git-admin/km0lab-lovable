@@ -185,7 +185,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         src: "/home?notifs=open",
         notes: "Panel de noticias municipales abierto dentro del marco de Home, con cierre accesible y estados loading/empty/error/ready; no sustituye datos por avisos ficticios.",
       },
-      { id: "grouped-scope", label: "Ámbito agrupado (CP 17400)", src: "/home", notes: "Con CP de un ámbito agrupado: etiqueta «El teu poble» y nombre como botón que abre TownPickerSheet (BubbleSheet), línea de ámbito, eventos destacados del ámbito (máx. 4, 2 plazas reservadas a vecinas con TownTag) y noticias en dos bloques: «Notícies de {població}» (máx. 2) y «A prop teu» (máx. 3, TownTag). Con CP de una sola población (08380) se ve como antes." },
+      { id: "grouped-scope", label: "Ámbito agrupado (CP 17400)", src: "/home", notes: "Con CP de un ámbito agrupado: etiqueta «El teu poble» y nombre como botón que abre TownPickerSheet (BubbleSheet), línea de ámbito, eventos destacados del ámbito (máx. 4, 2 plazas reservadas a vecinas con TownTag) y noticias compactas con miniatura de 64px, titular a dos líneas y fecha en dos bloques: «Notícies de {població}» (máx. 2) y «A prop teu» (máx. 3, TownTag en línea propia encima del titular). Con CP de una sola población (08380) se ve como antes." },
       { id: "account-points", label: "Acceso a puntos sin sesión", src: "/home?access=points", notes: "AccountBottomTabs reutiliza el panel contextual de cuenta de todos los interiores, correo y OTP simulado con retorno a puntos; cerrar conserva la pantalla y limpia access." },
       { id: "account-rewards", label: "Acceso a premios sin sesión", src: "/home?access=rewards" },
       { id: "account-profile", label: "Acceso a perfil sin sesión", src: "/home?access=profile" },
@@ -288,6 +288,10 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         src: "/events",
         notes: "Una sola consulta paginada completa por municipio/rango/idioma. Categorías y conteos derivados de esa lista, selección múltiple y menú junto a fechas. Campana abre el panel compartido y marca leído al abrir; arrastre vertical.",
       },
+      { id: "grouped", label: "Agenda del ámbito (CP 17400)", src: "/events", notes: "Una consulta por población en paralelo; lista única por fecha con TownTag. Dos desplegables compactos en la fila de WhenTabs, sin desbordar a 360px. Selección única de población y conteos de categorías sobre esa población; fallos parciales discretos. CP 08380 conserva la lista sin etiquetas ni filtro de población." },
+      { id: "loading", label: "Carga", src: "/events?state=loading" },
+      { id: "empty", label: "Vacío", src: "/events?state=empty" },
+      { id: "error", label: "Error", src: "/events?state=error" },
     ],
   },
 
@@ -311,6 +315,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     path: "/news",
     states: [
       { id: "happy", label: "Feliz", src: "/news", notes: "Municipio único, noticias completas paginadas y caché compartida con campanas. Campana abre NotificationsOverlay contenido en el marco; arrastre vertical." },
+      { id: "grouped", label: "Noticias del ámbito (CP 17400)", src: "/news", notes: "Subtítulo del ámbito; FilterChip Totes + poblaciones ordenadas. Cinco noticias propias con expansión en el sitio, seguidas de vecinas mezcladas. Selección de población muestra lista única; TownTag encima del titular. Detalle busca en todo el ámbito y conserva procedencia/fuente. Avisos parciales sin ocultar las demás. CP 08380 sin cambios de composición." },
       { id: "loading", label: "Loading", src: "/news?state=loading" },
       { id: "empty", label: "Vacío", src: "/news?state=empty" },
       { id: "error", label: "Error", src: "/news?state=error" },
