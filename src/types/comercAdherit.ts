@@ -9,7 +9,7 @@ export interface ComercAdherit {
   categoriaNom: { ca: string; es: string };
   adreca: string;
   /** Distància en metres (mock). */
-  distanciaM: number;
+  distanciaM: number | null;
   /** Punts que ofereix per compra (mock). */
   punts: number;
   /** Si dóna punts escanejant QR al comerç. */
@@ -38,6 +38,14 @@ export interface PromocioInfo {
   condicio?: { ca: string; es: string };
 }
 
+export interface ShopPromotion extends PromocioInfo {
+  shopId: string;
+  shopName: string;
+  shopEmoji?: string;
+  shopImage?: string;
+  shopBg?: string;
+}
+
 /** Detall complet d'un comerç adherit (mock, no API). */
 export interface ComercDetall {
   id: string;
@@ -53,7 +61,7 @@ export interface ComercDetall {
   adreca: string;
   codiPostal: string;
   poblacio: string;
-  distanciaM: number;
+  distanciaM: number | null;
   telefon?: string;
   web?: string;
   coordenades?: { lat: number; lng: number };

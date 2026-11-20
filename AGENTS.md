@@ -22,3 +22,5 @@
 - Use usePointsActions/useHomeActions, useInviteSummary/useInvitations, useInviteRewards and usePointsConfig for product reads; keep invitation aggregation and preview data variants inside the data hooks so production implementations can replace examples without editing presentation.
 
 - Only lib/shareUrl may read window.location.origin; use getShareLink/getCanonicalWebLink, openShareChannel and useInviteLink as stable sharing boundaries so installed-app implementations can replace browser behavior without editing presentation.
+
+- Use useShops/useShop/useShopPromotions for merchant data and scannerService with types/scan for scanning; keep fixtures behind services and hide nullable distances so production can replace data without changing screens.

@@ -82,7 +82,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
     states: [
       { id: "guest", label: "Público", src: "/rewards", notes: "Catálogo público UAT compartido con Home; tarjetas de una columna con imágenes completas y fallback de icono solo sin imagen. Sin saldo de invitado ni pestaña Canjes activa; confirmación requiere sesión." },
       { id: "registered", label: "Cuenta demo", src: "/rewards", seedSession: true, notes: "Saldo compartido con Home/historial/canjes; confirmación en BubbleSheet y escritura solo en el ledger local simulado. Navegación inferior, teclado y arrastre." },
-      { id: "promos", label: "Promociones", src: "/rewards?tab=promos" },
+      { id: "promos", label: "Promociones", src: "/rewards?tab=promos", notes: "Promociones y arte de comercios mediante useShopPromotions, compartidos con Home; presentación conservada." },
       { id: "loading", label: "Carga", src: "/rewards?state=loading" },
       { id: "empty", label: "Vacío", src: "/rewards?state=empty" },
       { id: "error", label: "Error", src: "/rewards?state=error" },
@@ -364,13 +364,26 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       { id: "guest", label: "Sin sesión", src: "/merchants" },
       { id: "registered", label: "Con sesión", src: "/merchants", seedSession: true },
       { id: "account-points", label: "Acceso a puntos sin sesión", src: "/merchants?access=points", notes: "El mismo panel de Home se abre sobre Comercios y conserva la lista al cerrar." },
+      { id: "loading", label: "Carga", src: "/merchants?state=loading" },
+      { id: "empty", label: "Vacío", src: "/merchants?state=empty" },
+      { id: "error", label: "Error recuperable", src: "/merchants?state=error" },
+    ],
+  },
+  {
+    id: "merchant-detail", label: "ComercDetall", path: "/merchants/forn-rovira",
+    states: [
+      { id: "unvisited", label: "Sin visitar", src: "/merchants/forn-rovira", notes: "Datos mediante useShop; municipio y panel de notificaciones compartidos con Agenda; distancia oculta si es null." },
+      { id: "visited", label: "Visitado", src: "/merchants/cafe-del-mar" },
+      { id: "loading", label: "Carga", src: "/merchants/forn-rovira?state=loading" },
+      { id: "empty", label: "No encontrado", src: "/merchants/forn-rovira?state=empty" },
+      { id: "error", label: "Error recuperable", src: "/merchants/forn-rovira?state=error" },
     ],
   },
   {
     id: "scanner",
     label: "Scanner",
     path: "/scanner",
-    states: [{ id: "default", label: "Lectura", src: "/scanner", notes: "Escaneo mock suma 20 solo en la cuenta simulada; total deriva del ledger compartido." }],
+    states: [{ id: "default", label: "Lectura", src: "/scanner", notes: "scannerService.scan y tipos de types/scan; escaneo mock suma 20 solo en la cuenta simulada, total deriva del ledger compartido. Casos: éxito, ya visitado, código inválido, QR caducado y sin conexión." }],
   },
 ];
 

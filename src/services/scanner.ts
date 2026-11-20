@@ -4,7 +4,7 @@ import { loadMockAccount } from "@/services/mock/account";
 import { accountTotals } from "@/types/mockAccount";
 import { MOCK_POINTS } from "@/data/mockPointsConfig";
 /**
- * scannerMockService — Mock del escaneig de QR de comerç.
+ * scannerService — Mock del escaneig de QR de comerç.
  *
  * FRONTERA: aquí NO es llegeix cap càmera real ni s'escriuen punts al
  * backend. El service simula la latència de validació i retorna un
@@ -14,26 +14,7 @@ import { MOCK_POINTS } from "@/data/mockPointsConfig";
  */
 import { COMERCIOS_ADHERITS } from "@/data/comerciosAdheridos";
 
-export type ScanErrorKind =
-  | "ja_visitat"
-  | "codi_no_valid"
-  | "qr_caducat"
-  | "sense_connexio";
-
-export type ScanResult =
-  | {
-      ok: true;
-      comercId: string;
-      comercNom: string;
-      puntsGuanyats: number;
-      totalPunts: number;
-      nivell?: number;
-    }
-  | {
-      ok: false;
-      kind: ScanErrorKind;
-      comercNom?: string;
-    };
+import type { ScanResult } from "@/types/scan";
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
@@ -47,7 +28,7 @@ const rand = (min: number, max: number) => min + Math.random() * (max - min);
  *  - "ERR_CONNEXIO"     → sense connexió
  *  - qualsevol altre    → èxit amb un comerç aleatori
  */
-export const scannerMockService = {
+export const scannerService = {
   async scan(code?: string): Promise<ScanResult> {
     await delay(rand(600, 1200));
 

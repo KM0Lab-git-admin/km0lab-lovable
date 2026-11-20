@@ -12,14 +12,11 @@
  *   RESET            → torna a reading
  *
  * La lectura real de càmera i la validació contra el backend viuen a
- * PRODUCCIÓ; aquí només s'invoca `scannerMockService.scan`.
+ * PRODUCCIÓ; aquí només s'invoca `scannerService.scan`.
  */
 import { assign, fromPromise, setup } from "xstate";
-import {
-  scannerMockService,
-  type ScanErrorKind,
-  type ScanResult,
-} from "@/services/mock/scanner";
+import { scannerService } from "@/services/scanner";
+import type { ScanErrorKind, ScanResult } from "@/types/scan";
 
 interface ScannerContext {
   code: string | null;
@@ -37,7 +34,7 @@ export const scannerMachine = setup({
   },
   actors: {
     validate: fromPromise<ScanResult, { code: string }>(({ input }) =>
-      scannerMockService.scan(input.code),
+      scannerService.scan(input.code),
     ),
   },
   actions: {

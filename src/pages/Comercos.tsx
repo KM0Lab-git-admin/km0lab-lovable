@@ -4,7 +4,7 @@ import { useNotificationsPanel } from "@/hooks/use-notifications-panel";
 import { useLocationContext } from "@/hooks/use-location-context";
 import { useDragScroll } from "@/hooks/use-drag-scroll";
 import { usePointsConfig } from "@/hooks/use-points-config";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { QrCode, MapPin, ScanLine, X, RefreshCw, BadgeCheck } from "lucide-react";
@@ -17,7 +17,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { COMERCIOS_ADHERITS, CATEGORIES_ADHERITS } from "@/data/comerciosAdheridos";
+import { useShops } from "@/hooks/use-shops";
 import type { ComercAdherit, CategoriaAdherit } from "@/types/comercAdherit";
 
 /* ─────────────────────────────────────────────────────────────
@@ -99,9 +99,9 @@ const ComercCard = ({ c, lang, onOpen }: CardProps) => (
               <span className="truncate">{c.adreca}</span>
             </p>
           </div>
-          <span className="shrink-0 font-ui text-[10px] text-km0-blue-700/60 pt-0.5">
+          {c.distanciaM !== null && <span className="shrink-0 font-ui text-[10px] text-km0-blue-700/60 pt-0.5">
             {formatDistance(c.distanciaM)}
-          </span>
+          </span>}
         </div>
 
         {c.teQR && (
@@ -148,38 +148,17 @@ const Comercos = () => {
   const goToActions = () => navigate("/points-actions");
 
 
-  const forced = new URLSearchParams(window.location.search).get("state");
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { shops, categories, loading, error, reload } = useShops();
   const [selected, setSelected] = useState("totes");
-  const [notifOpen, setNotifOpen] = useState(false);
-
-
-
-  useEffect(() => {
-    if (forced === "loading") {
-      setLoading(true);
-      return;
-    }
-    if (forced === "error") {
-      setLoading(false);
-      setError("FORCED_ERROR");
-      return;
-    }
-    const timer = setTimeout(() => setLoading(false), 400);
-    return () => clearTimeout(timer);
-  }, [forced]);
 
   const items = useMemo<ComercAdherit[]>(() => {
-    if (forced === "empty") return [];
-    if (selected === "totes") return COMERCIOS_ADHERITS;
-    return COMERCIOS_ADHERITS.filter((c) => c.categoriaSlug === selected);
-  }, [selected, forced]);
+    if (selected === "totes") return shops;
+    return shops.filter((c) => c.categoriaSlug === selected);
+  }, [selected, shops]);
 
-  const totalPrograma = COMERCIOS_ADHERITS.length;
+  const totalPrograma = shops.length;
 
-  const selectedCat = CATEGORIES_ADHERITS.find((c) => c.slug === selected);
+  const selectedCat = categories.find((c) => c.slug === selected);
   const selectedLabel =
     selectedCat?.nom[lang === "en" ? "es" : lang] ??
     t("merchants.filter_all", lang);
@@ -190,21 +169,17 @@ const Comercos = () => {
     key: c.slug,
     label: c.nom[lang === "en" ? "es" : lang],
     icon: <span className="text-base">{c.emoji ?? "🏷️"}</span>,
-    count: c.slug === "totes" ? COMERCIOS_ADHERITS.length : COMERCIOS_ADHERITS.filter(shop => shop.categoriaSlug === c.slug).length,
+    count: c.slug === "totes" ? shops.length : shops.filter(shop => shop.categoriaSlug === c.slug).length,
   });
   const allCategory: CategoriaAdherit =
-    CATEGORIES_ADHERITS.find((c) => c.slug === "totes") ?? {
-      ...CATEGORIES_ADHERITS[0],
+    categories.find((c) => c.slug === "totes") ?? {
       slug: "totes",
+      nom: { ca: t("merchants.filter_all", "ca"), es: t("merchants.filter_all", "es") },
+      count: shops.length,
+      emoji: "🗂️",
     };
 
   const openScanner = () => navigate("/scanner");
-
-  const retry = () => {
-    setError(null);
-    setLoading(true);
-    setTimeout(() => setLoading(false), 400);
-  };
 
   return (
     <>
@@ -248,7 +223,7 @@ const Comercos = () => {
                 <CategoryFilterMenu
                   title={t("merchants.filter_by_category", lang)}
                   allOption={toOption(allCategory)}
-                  options={CATEGORIES_ADHERITS.filter((c) => c.slug !== "totes").map(toOption)}
+                  options={categories.filter((c) => c.slug !== "totes").map(toOption)}
                   selected={selected === "totes" ? [] : [selected]}
                   onToggle={setSelected}
                   onClear={() => setSelected("totes")}
@@ -287,7 +262,7 @@ const Comercos = () => {
                     </p>
                     <Button variant="bubbleSurface"
                       type="button"
-                      onClick={retry}
+                      onClick={reload}
                       className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-km0-coral-500 text-primary-foreground font-ui text-xs font-bold active:scale-95 transition-transform"
                     >
                       <RefreshCw size={12} />

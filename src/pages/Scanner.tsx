@@ -11,7 +11,7 @@ import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { scannerMachine } from "@/machines/scannerMachine";
 import { useAppStore } from "@/stores/useAppStore";
-import type { ScanErrorKind } from "@/services/mock/scanner";
+import type { ScanErrorKind } from "@/types/scan";
 
 /**
  * Scanner — Escàner global de QR (mock).

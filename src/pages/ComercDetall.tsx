@@ -1,16 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { useDragScroll } from "@/hooks/use-drag-scroll";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Clock, Phone, Globe, ScanLine, Tag, CheckCircle2, Circle, RefreshCw } from "lucide-react";
 
 import HomeHero from "@/components/HomeHero";
 import { useLang } from "@/contexts/LangContext";
-import { useNotifications } from "@/hooks/useNotifications";
+import { useNotificationsPanel } from "@/hooks/use-notifications-panel";
+import { useLocationContext } from "@/hooks/use-location-context";
+import { useShop } from "@/hooks/use-shop";
+import NotificationsOverlay from "@/components/NotificationsOverlay";
 import { t, type Lang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { COMERCIOS_DETALL } from "@/data/comerciosAdheridos";
 import type { ComercDetall, PromocioInfo } from "@/types/comercAdherit";
 
 /* ─────────────────────────────────────────────────────────────
@@ -231,19 +233,9 @@ const ComercDetallPage = () => {
   const { id } = useParams<{ id: string }>();
   const [params] = useSearchParams();
   const { lang } = useLang();
-  const { hasUnread, markAllSeen } = useNotifications();
-  const [notifOpen, setNotifOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const forced = params.get("state");
-
-  useEffect(() => {
-    if (forced === "loading") {
-      setLoading(true);
-      return;
-    }
-    const timer = setTimeout(() => setLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, [forced, id]);
+  const notifications = useNotificationsPanel();
+  const { town } = useLocationContext();
+  const { shop, loading, error, reload } = useShop(id ?? "");
 
   const visitatOverride = params.get("visitat");
   const initialVisitat =
@@ -254,19 +246,18 @@ const ComercDetallPage = () => {
         : null;
   const [visitatToggle, setVisitatToggle] = useState<boolean | null>(initialVisitat);
 
-  const comerc = useMemo<ComercDetall | undefined>(() => {
-    if (!id) return undefined;
-    const base = COMERCIOS_DETALL[id];
-    if (!base) return undefined;
+  const comerc = useMemo<ComercDetall | null>(() => {
+    const base = shop;
+    if (!base) return null;
     if (visitatToggle !== null) {
       return { ...base, visitat: visitatToggle };
     }
     return base;
-  }, [id, visitatToggle]);
+  }, [shop, visitatToggle]);
 
 
   const k = langKey(lang);
-  const isError = forced === "error";
+  const isError = Boolean(error);
   const goBack = () => navigate("/merchants");
   const openScanner = () => navigate("/scanner");
 
@@ -277,21 +268,18 @@ const ComercDetallPage = () => {
   return (
     <>
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
-        <div className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
+        <div ref={notifications.setContainer} className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           <HomeHero
-            cityName="Malgrat de Mar"
-            hasAlerts={hasUnread}
-            onToggleAlerts={() => {
-              setNotifOpen((v) => !v);
-              markAllSeen();
-            }}
+            cityName={town}
+            hasAlerts={notifications.hasUnread}
+            onToggleAlerts={notifications.show}
             onBack={goBack}
             backAriaLabel={t("merchant.back", lang)}
             showGreeting={false}
           />
 
           {/* Body scroll */}
-          <section className="relative flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-28">
+          <section ref={scrollRef} className="relative flex-1 min-h-0 overflow-y-auto overflow-x-hidden pb-28">
             <AnimatePresence mode="wait">
               {loading ? (
                 <motion.div
@@ -315,7 +303,7 @@ const ComercDetallPage = () => {
                   </p>
                   <Button variant="bubbleSurface"
                     type="button"
-                    onClick={() => setLoading(true)}
+                    onClick={reload}
                     className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-km0-coral-500 text-primary-foreground font-ui text-xs font-bold active:scale-95 transition-transform"
                   >
                     <RefreshCw size={12} />
@@ -398,7 +386,7 @@ const ComercDetallPage = () => {
                           })}
                         </span>
                       )}
-                      <span>· {formatDistance(comerc.distanciaM)}</span>
+                      {comerc.distanciaM !== null && <span>· {formatDistance(comerc.distanciaM)}</span>}
                     </p>
                   </header>
 
@@ -578,6 +566,8 @@ const ComercDetallPage = () => {
               )}
             </AnimatePresence>
           </section>
+
+          <NotificationsOverlay open={notifications.open} items={notifications.items} loading={notifications.loading} error={notifications.error} lang={lang} onClose={notifications.close} onReload={notifications.reload} container={notifications.container} />
 
           {/* CTA sticky — només escanejar */}
           {comerc && !loading && !isError && !comerc.visitat && (

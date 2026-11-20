@@ -2,7 +2,7 @@ import { useAccount } from "@/hooks/use-account";
 import { redeemReward } from "@/services/redemptions";
 import { usePreviewState } from "@/hooks/use-preview-state";
 import ScreenStatus from "@/components/ScreenStatus";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Package, Tag } from "lucide-react";
@@ -21,12 +21,11 @@ import { usePublicRewards } from "@/hooks/usePublicRewards";
 import { useLang } from "@/contexts/LangContext";
 import { t, type TKey } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { COMERCIOS_DETALL } from "@/data/comerciosAdheridos";
-import type { PromocioInfo } from "@/types/comercAdherit";
+import { useShopPromotions } from "@/hooks/use-shop-promotions";
+import type { ShopPromotion } from "@/types/comercAdherit";
 import type { Reward, RewardCategory } from "@/types/reward";
 
 type TopTab = "rewards" | "promos";
-interface PromoRow { promo: PromocioInfo; shopId: string; shopName: string; shopEmoji?: string; shopImage?: string; shopBg?: string; }
 const CATEGORY_KEY: Record<RewardCategory, TKey> = {
   balance: "rewards.category.balance", experience: "rewards.category.experience",
   merchandising: "rewards.category.merchandising", discount: "rewards.category.discount",
@@ -35,14 +34,15 @@ const fmt = (n: number) => n.toLocaleString("es-ES");
 
 /* ─── Tarjeta de promoción de comercio ───────────────────── */
 interface PromoCardProps {
-  row: PromoRow;
+  row: ShopPromotion;
   index: number;
 }
 
 const PromoCard = ({ row, index }: PromoCardProps) => {
   const { lang } = useLang();
   const l = lang === "en" ? "es" : lang;
-  const { promo, shopName, shopEmoji, shopImage, shopBg } = row;
+  const { shopName, shopEmoji, shopImage, shopBg } = row;
+  const promo = row;
 
   return (
     <motion.article
@@ -114,8 +114,7 @@ const Premis = () => {
   const categories = [...new Set(rewards.map(r => r.category))];
   const filtered = rewards.filter(r => filter === "all" || r.category === filter);
   const preview = usePreviewState(loading, error, filtered.length === 0);
-  const promoRows = useMemo<PromoRow[]>(() => Object.values(COMERCIOS_DETALL).flatMap(shop =>
-    shop.promocions.map(promo => ({ promo, shopId: shop.id, shopName: shop.nom, shopEmoji: shop.emoji, shopImage: shop.imatge, shopBg: shop.bg }))), []);
+  const { promotions: promoRows, loading: promosLoading, error: promosError, reload: reloadPromos } = useShopPromotions();
   return <><div ref={setContainer} className="relative flex h-full w-full min-h-0 flex-col overflow-hidden bg-km0-beige-50">
     <ScreenHeader title={t("rewards.title", lang)} />
     <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-4 py-4">
@@ -136,7 +135,7 @@ const Premis = () => {
               <Button variant="bubblePrimary" disabled={!available || (isAuthed && (missing > 0 || account.loading || !!account.error))} onClick={() => isAuthed ? setRedeeming(reward) : access.open("rewards")} className="h-auto min-h-11 whitespace-normal">{t(label, lang).replace("{n}", fmt(missing))}</Button>
             </RewardCardFrame>;
           })}</div>}
-      </> : <div className="space-y-3"><p className="font-body text-xs text-km0-blue-800/60">{t("rewards.promos.info", lang)}</p>{promoRows.length ? promoRows.map((row, index) => <PromoCard key={`${row.shopId}-${row.promo.id}`} row={row} index={index} />) : <p>{t("rewards.promos.empty", lang)}</p>}</div>}
+      </> : <div className="space-y-3"><p className="font-body text-xs text-km0-blue-800/60">{t("rewards.promos.info", lang)}</p>{promosLoading || promosError ? <ScreenStatus state={promosLoading ? "loading" : "error"} emptyKey="rewards.promos.empty" onRetry={reloadPromos} /> : promoRows.length ? promoRows.map((row, index) => <PromoCard key={`${row.shopId}-${row.id}`} row={row} index={index} />) : <p>{t("rewards.promos.empty", lang)}</p>}</div>}
     </div>
     <AccountBottomTabs activeTab={null} isAuthed={isAuthed} onLogin={access.open} onHome={() => navigate("/home")} onActions={() => navigate("/points-actions")} onPoints={() => navigate("/points-history")} onRewards={() => navigate("/redeemed-rewards")} onProfile={() => navigate("/profile")} />
     <AccountAccessSheet target={access.target} lang={lang} container={container} submitting={access.submitting} error={access.error} onClose={access.close} onContinue={access.continueWithEmail} onLogin={access.login} />

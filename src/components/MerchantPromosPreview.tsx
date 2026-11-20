@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, Tag, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
-import { COMERCIOS_DETALL } from "@/data/comerciosAdheridos";
-import type { PromocioInfo } from "@/types/comercAdherit";
+import { useShopPromotions } from "@/hooks/use-shop-promotions";
+import ScreenStatus from "@/components/ScreenStatus";
 
 /**
  * MerchantPromosPreview — sección Home con las primeras promocions de
@@ -20,35 +19,13 @@ export interface MerchantPromosPreviewProps {
   className?: string;
 }
 
-interface PromoRow {
-  promo: PromocioInfo;
-  shopName: string;
-  shopEmoji?: string;
-  shopImage?: string;
-  shopBg?: string;
-}
-
 const MerchantPromosPreview = ({ onSeeAll, locked = false, onLogin, className }: MerchantPromosPreviewProps) => {
   const { lang } = useLang();
   const l = lang === "en" ? "es" : lang;
   const handleSeeAll = locked ? onLogin : onSeeAll;
 
-  const rows = useMemo<PromoRow[]>(() => {
-    const acc: PromoRow[] = [];
-    for (const shop of Object.values(COMERCIOS_DETALL)) {
-      for (const promo of shop.promocions) {
-        acc.push({
-          promo,
-          shopName: shop.nom,
-          shopEmoji: shop.emoji,
-          shopImage: shop.imatge,
-          shopBg: shop.bg,
-        });
-        if (acc.length >= 4) return acc;
-      }
-    }
-    return acc;
-  }, []);
+  const { promotions, loading, error, reload } = useShopPromotions();
+  const rows = promotions.slice(0, 4);
 
   return (
     <motion.section
@@ -82,13 +59,13 @@ const MerchantPromosPreview = ({ onSeeAll, locked = false, onLogin, className }:
         )}
       </div>
 
-      <ul
+      {loading || error || !rows.length ? <ScreenStatus state={loading ? "loading" : error ? "error" : "empty"} emptyKey="rewards.promos.empty" onRetry={reload} /> : <ul
         className={cn("flex flex-col gap-2.5", locked && "pointer-events-none opacity-60")}
         aria-hidden={locked || undefined}
       >
         {rows.map((row, i) => (
           <motion.li
-            key={`${row.shopName}-${row.promo.id}`}
+            key={`${row.shopName}-${row.id}`}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: Math.min(i * 0.05, 0.2) }}
@@ -112,20 +89,20 @@ const MerchantPromosPreview = ({ onSeeAll, locked = false, onLogin, className }:
                   {t("rewards.promos.at", lang).replace("{shop}", row.shopName)}
                 </p>
                 <h3 className="font-ui font-bold text-sm text-km0-blue-900 leading-tight">
-                  {row.promo.titol[l]}
+                  {row.titol[l]}
                 </h3>
               </div>
               <span className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-ui font-black bg-km0-coral-400 text-primary-foreground">
-                {row.promo.etiqueta}
+                {row.etiqueta}
               </span>
             </div>
             <p className="font-body text-[11px] text-km0-blue-800/70 leading-snug line-clamp-2 flex items-start gap-1">
               <Tag size={10} className="mt-0.5 shrink-0 text-km0-blue-800/50" />
-              <span>{row.promo.detall[l]}</span>
+              <span>{row.detall[l]}</span>
             </p>
           </motion.li>
         ))}
-      </ul>
+      </ul>}
 
       {locked && onLogin && (
         <Button variant="bubbleLink"
