@@ -10,12 +10,15 @@ import InviteHomeCard from "@/components/InviteHomeCard";
 import BottomTabs from "@/components/AccountBottomTabs";
 import type { HomeTab } from "@/components/BottomTabs";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import SectionHeader from "@/components/SectionHeader";
 import { useLang } from "@/contexts/LangContext";
-import { t } from "@/lib/i18n";
+import { t, tf } from "@/lib/i18n";
 import { useDragScroll } from "@/hooks/use-drag-scroll";
 
 import type { Promo } from "@/types/promo";
+import type { Noticia } from "@/services/newsApi";
+import type { ScopedItem } from "@/types/territory";
+import NoticiaCard from "@/components/NoticiaCard";
 import type { ApiReward } from "@/services/rewardsApi";
 import type { InvitationsSummary } from "@/types/invitation";
 
@@ -65,6 +68,22 @@ export interface HomeContentProps {
   onSeeAllPromos?: () => void;
   onOpenEvent?: (id: string) => void;
   onOpenPointsHistory?: () => void;
+  /** Present only when the scope groups several towns. */
+  scope?: HomeScopeProps;
+}
+
+export interface HomeScopeProps {
+  homeTownName: string;
+  nearbyTownNames: string[];
+  onChangeTown: () => void;
+  homeNews: ScopedItem<Noticia>[];
+  nearbyNews: ScopedItem<Noticia>[];
+  failedTownNames: { home: boolean; nearby: string[] };
+  newsLoading: boolean;
+  newsError: string | null;
+  reloadNews: () => void;
+  onSeeAllNews: () => void;
+  onOpenNews: (id: string) => void;
 }
 
 
@@ -108,7 +127,7 @@ const HomeContent = ({
   onSeeAllPromos,
   onOpenEvent,
   onOpenPointsHistory,
-
+  scope,
 }: HomeContentProps) => {
 
 
@@ -123,10 +142,12 @@ const HomeContent = ({
         hasAlerts={hasAlerts}
         onToggleAlerts={onToggleAlerts}
         showGreeting={false}
+        onChangeTown={scope?.onChangeTown}
       />
 
       <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col cursor-grab data-[dragging=true]:cursor-grabbing data-[dragging=true]:select-none">
         <div className="relative z-10 flex flex-col gap-5 px-4 pt-4 pb-7">
+          {scope && <p className="-mb-2 font-body text-xs text-muted-foreground">{t("territory.groupedIntro", lang)}</p>}
           <section className="flex flex-col gap-3">
             {showLogin && <JoinCard onCreateAccount={onLogin} onLogin={onLogin} onHowItWorks={onHowItWorks} />}
             {showPoints && accountLoading && <div aria-busy className="h-20 animate-pulse rounded-3xl bg-muted" />}
@@ -143,6 +164,8 @@ const HomeContent = ({
             <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
             {eventsLoading ? <div aria-busy className="h-40 animate-pulse rounded-3xl bg-muted" /> : eventsError ? <p role="alert" className="font-body text-xs text-destructive">{t("agenda.error", lang)}</p> : promos.length === 0 ? <p className="font-body text-xs text-muted-foreground">{t("agenda.empty.title", lang)}</p> : <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />}
           </section>
+
+          {scope && <HomeScopeNews scope={scope} />}
 
           <EarnPointsCard onSeeAll={onActions} locked={false} onLogin={onLogin} isAuthed={isAuthed} />
 
@@ -184,29 +207,41 @@ const HomeContent = ({
   );
 };
 
-interface SectionHeaderProps {
-  title: string;
-  actionLabel?: string;
-  onAction?: () => void;
-}
+const HOME_NEWS_LIMIT = 2;
+const NEARBY_NEWS_LIMIT = 3;
 
-const SectionHeader = ({ title, actionLabel, onAction }: SectionHeaderProps) => (
-  <div className="flex items-center justify-between gap-2">
-    <h2 className="font-brand font-black text-km0-blue-800 text-lg">
-      {title}
-    </h2>
-    {actionLabel && (
-      <Button
-        variant="bubbleLink"
-        type="button"
-        onClick={onAction}
-        className="h-auto min-h-11 shrink-0 gap-1 px-0 text-xs text-km0-coral-700"
-      >
-        {actionLabel}
-        <ArrowRight size={13} strokeWidth={2.4} />
-      </Button>
-    )}
-  </div>
-);
+const HomeScopeNews = ({ scope }: { scope: HomeScopeProps }) => {
+  const { lang } = useLang();
+  if (scope.newsLoading) return <div aria-busy className="h-40 animate-pulse rounded-3xl bg-muted" />;
+  if (scope.newsError) return (
+    <section role="alert" className="space-y-1">
+      <SectionHeader title={tf("territory.newsFrom", lang, { town: scope.homeTownName })} />
+      <p className="font-body text-xs text-destructive">{t("news.error.title", lang)}</p>
+      <Button variant="bubbleLink" onClick={scope.reloadNews}>{t("merchants.error.retry", lang)}</Button>
+    </section>
+  );
+  const unavailable = (name: string) => <p key={name} className="font-body text-xs text-muted-foreground">{tf("territory.townUnavailable", lang, { town: name })}</p>;
+  const showHome = scope.homeNews.length > 0 || scope.failedTownNames.home;
+  const showNearby = scope.nearbyNews.length > 0 || scope.failedTownNames.nearby.length > 0;
+  if (!showHome && !showNearby) return null;
+  return (
+    <>
+      {showHome && (
+        <section className="space-y-3">
+          <SectionHeader title={tf("territory.newsFrom", lang, { town: scope.homeTownName })} actionLabel={t("home.action.see_all_f", lang)} onAction={scope.onSeeAllNews} />
+          {scope.failedTownNames.home && unavailable(scope.homeTownName)}
+          {scope.homeNews.slice(0, HOME_NEWS_LIMIT).map(({ item }) => <NoticiaCard key={item.id} noticia={item} lang={lang} onOpen={() => scope.onOpenNews(item.id)} />)}
+        </section>
+      )}
+      {showNearby && (
+        <section className="space-y-3">
+          <SectionHeader title={t("territory.nearYou", lang)} subtitle={scope.nearbyTownNames.join(" · ")} />
+          {scope.failedTownNames.nearby.map(unavailable)}
+          {scope.nearbyNews.slice(0, NEARBY_NEWS_LIMIT).map(({ item, town }) => <NoticiaCard key={item.id} noticia={item} lang={lang} town={{ name: town.name, isHome: false }} onOpen={() => scope.onOpenNews(item.id)} />)}
+        </section>
+      )}
+    </>
+  );
+};
 
 export default HomeContent;

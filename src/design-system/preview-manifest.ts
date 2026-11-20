@@ -185,6 +185,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
         src: "/home?notifs=open",
         notes: "Panel de noticias municipales abierto dentro del marco de Home, con cierre accesible y estados loading/empty/error/ready; no sustituye datos por avisos ficticios.",
       },
+      { id: "grouped-scope", label: "Ámbito agrupado (CP 17400)", src: "/home", notes: "Con CP de un ámbito agrupado: etiqueta «El teu poble» y nombre como botón que abre TownPickerSheet (BubbleSheet), línea de ámbito, eventos destacados del ámbito (máx. 4, 2 plazas reservadas a vecinas con TownTag) y noticias en dos bloques: «Notícies de {població}» (máx. 2) y «A prop teu» (máx. 3, TownTag). Con CP de una sola población (08380) se ve como antes." },
       { id: "account-points", label: "Acceso a puntos sin sesión", src: "/home?access=points", notes: "AccountBottomTabs reutiliza el panel contextual de cuenta de todos los interiores, correo y OTP simulado con retorno a puntos; cerrar conserva la pantalla y limpia access." },
       { id: "account-rewards", label: "Acceso a premios sin sesión", src: "/home?access=rewards" },
       { id: "account-profile", label: "Acceso a perfil sin sesión", src: "/home?access=profile" },

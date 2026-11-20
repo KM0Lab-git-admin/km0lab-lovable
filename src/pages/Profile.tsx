@@ -11,6 +11,10 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import BrandedFrame from "@/components/BrandedFrame";
+import TownPickerSheet from "@/components/TownPickerSheet";
+import { useSetHomeTown, useTerritory } from "@/hooks/use-territory";
+import { useLocationContext } from "@/hooks/use-location-context";
+import { ChevronRight } from "lucide-react";
 
 /**
  * Profile — Edición y visualización del perfil del usuario.
@@ -116,6 +120,12 @@ const Profile = () => {
     toast.success(t("profile.toast_saved", lang));
   };
 
+  const territory = useTerritory();
+  const { town } = useLocationContext();
+  const setHomeTown = useSetHomeTown();
+  const [townPickerOpen, setTownPickerOpen] = useState(false);
+  const openMyTown = () => { if (territory.isGrouped) setTownPickerOpen(true); else navigate("/postal-code"); };
+
   const handleLogout = async () => {
     await signOut();
     toast.success(t("profile.toast_logout", lang));
@@ -123,6 +133,7 @@ const Profile = () => {
   };
 
   return (
+    <>
     <BrandedFrame onBack={() => navigate(-1)} backAriaLabel={t("common.back", lang)}>
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -204,6 +215,14 @@ const Profile = () => {
             </Field>
 
 
+            <Field label={t("territory.myTown", lang)}>
+              <Button variant="bubbleSurface" type="button" onClick={openMyTown} aria-haspopup={territory.isGrouped ? "dialog" : undefined}
+                className={`${inputCls} justify-between gap-2 text-left`}>
+                <span className="truncate">{territory.homeTown?.name ?? town}</span>
+                <ChevronRight aria-hidden size={18} className="shrink-0 text-km0-blue-700" />
+              </Button>
+            </Field>
+
             <Button variant="bubbleSurface"
               type="submit"
               disabled={saving}
@@ -225,6 +244,11 @@ const Profile = () => {
         )}
       </motion.div>
     </BrandedFrame>
+    {territory.territory && territory.isGrouped && (
+      <TownPickerSheet open={townPickerOpen} onClose={() => setTownPickerOpen(false)} towns={territory.territory.towns}
+        homeTownId={territory.territory.homeTownId} onSave={setHomeTown} lang={lang} />
+    )}
+    </>
   );
 };
 

@@ -25,6 +25,10 @@ import { usePublicRewards } from "@/hooks/usePublicRewards";
 
 
 import { useInviteSummary } from "@/hooks/use-invite-summary";
+import { useSetHomeTown, useTerritory } from "@/hooks/use-territory";
+import { useScopeNews } from "@/hooks/use-scope-news";
+import TownPickerSheet from "@/components/TownPickerSheet";
+import type { HomeScopeProps } from "@/components/HomeContent";
 
 type HomeProps = {
   /** Forzar estado para previews (`/home-registered`, `/home-no-registrado`). */
@@ -68,6 +72,27 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const [sheetContainer, setSheetContainer] = useState<HTMLDivElement | null>(null);
 
   const { promos, loading: eventsLoading, error: eventsError } = useFeaturedPromos(4);
+
+  const territory = useTerritory();
+  const scopeNews = useScopeNews();
+  const setHomeTown = useSetHomeTown();
+  const [townPickerOpen, setTownPickerOpen] = useState(false);
+  const scope: HomeScopeProps | undefined = territory.isGrouped && territory.homeTown ? {
+    homeTownName: territory.homeTown.name,
+    nearbyTownNames: territory.nearbyTowns.map(town => town.name),
+    onChangeTown: () => setTownPickerOpen(true),
+    homeNews: scopeNews.home,
+    nearbyNews: scopeNews.nearby,
+    failedTownNames: {
+      home: scopeNews.failedTownIds.includes(territory.homeTown.id),
+      nearby: territory.nearbyTowns.filter(town => scopeNews.failedTownIds.includes(town.id)).map(town => town.name),
+    },
+    newsLoading: scopeNews.loading,
+    newsError: scopeNews.error,
+    reloadNews: scopeNews.reload,
+    onSeeAllNews: () => navigate("/news"),
+    onOpenNews: (id: string) => navigate(`/news?id=${encodeURIComponent(id)}`),
+  } : undefined;
 
   const { rewards, loading: rewardsLoading, error: rewardsError, reload: reloadRewards } = usePublicRewards();
 
@@ -179,6 +204,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     onSeeAllPromos: () => navigate("/rewards?tab=promos"),
     onOpenEvent: (id: string) => navigate(`/event?id=${id}`),
     onOpenPointsHistory: () => navigate("/points-history"),
+    scope,
 
   };
 
@@ -190,6 +216,17 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
       <div className="w-full h-full bg-km0-beige-50 overflow-hidden flex justify-center">
         <div ref={setSheetContainer} className="relative w-full max-w-[430px] h-full flex flex-col overflow-hidden bg-km0-beige-50">
           <HomeContent {...sharedProps} />
+          {territory.territory && territory.isGrouped && (
+            <TownPickerSheet
+              open={townPickerOpen}
+              onClose={() => setTownPickerOpen(false)}
+              towns={territory.territory.towns}
+              homeTownId={territory.territory.homeTownId}
+              onSave={setHomeTown}
+              lang={lang}
+              container={sheetContainer}
+            />
+          )}
           <NotificationsOverlay
             open={notifOpen}
             items={notifications}

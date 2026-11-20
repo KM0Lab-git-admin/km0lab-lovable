@@ -13,7 +13,7 @@ export function useScopeNews(params: Omit<ListNewsParams, "city"> = {}) {
   });
   return {
     home: query.data?.home ?? [], nearby: query.data?.nearby ?? [], failedTownIds: query.data?.failedTownIds ?? [],
-    loading: territoryLoading || query.isLoading, error: territoryError || query.isError,
-    reload: () => { if (territoryError) reloadTerritory(); else void query.refetch(); },
+    loading: territoryLoading || query.isLoading, error: territoryError ?? query.error?.message ?? null,
+    reload: () => { if (territoryError !== null) reloadTerritory(); else void query.refetch(); },
   };
 }

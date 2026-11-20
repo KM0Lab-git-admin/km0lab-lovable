@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import { ChevronLeft } from "lucide-react";
+import { ChevronDown, ChevronLeft } from "lucide-react";
 import Km0Logo from "@/components/Km0Logo";
 import NotificationBell from "@/components/NotificationBell";
 import UserGreeting from "@/components/UserGreeting";
@@ -19,9 +19,11 @@ export interface HomeHeroProps {
   showHowItWorks?: boolean;
   onHowItWorks?: () => void;
   townArtSrc?: string;
+  /** Grouped scopes: small "El teu poble" label and the town name as a button. */
+  onChangeTown?: () => void;
 }
 
-const HomeHero = ({ cityName, hasAlerts, onToggleAlerts, onBack, backAriaLabel, showGreeting = true, greetingSlot, townArtSrc = DEFAULT_TOWN_ART }: HomeHeroProps) => {
+const HomeHero = ({ cityName, hasAlerts, onToggleAlerts, onBack, backAriaLabel, showGreeting = true, greetingSlot, townArtSrc = DEFAULT_TOWN_ART, onChangeTown }: HomeHeroProps) => {
   const { lang } = useLang();
   const [failedArt, setFailedArt] = useState<string | null>(null);
   if (onBack) return (
@@ -35,7 +37,16 @@ const HomeHero = ({ cityName, hasAlerts, onToggleAlerts, onBack, backAriaLabel, 
     <header className="relative z-20 shrink-0 overflow-hidden bg-km0-yellow-500 shadow-[var(--shadow-bubble)]">
       <div className="relative min-h-[90px] px-4 py-3">
         <div className="relative z-10 flex w-[56%] min-w-0 flex-col items-start gap-1.5 pr-1">
-          <h1 className="font-brand text-[21px] font-black leading-tight text-km0-blue-800">{cityName}</h1>
+          {onChangeTown ? (
+            <div className="flex min-w-0 flex-col items-start">
+              <span className="font-ui text-[11px] font-bold text-km0-blue-800/80">{t("territory.homeTown", lang)}</span>
+              <h1 className="min-w-0 max-w-full">
+                <Button variant="bubbleSurface" type="button" onClick={onChangeTown} aria-haspopup="dialog" className="h-auto min-h-0 max-w-full gap-1 whitespace-normal p-0 text-left font-brand text-[21px] font-black leading-tight text-km0-blue-800">
+                  {cityName}<ChevronDown aria-hidden className="!h-4 !w-4 shrink-0" strokeWidth={3} />
+                </Button>
+              </h1>
+            </div>
+          ) : <h1 className="font-brand text-[21px] font-black leading-tight text-km0-blue-800">{cityName}</h1>}
           <Km0Logo className="h-[30px] w-auto max-w-full" />
         </div>
         <img src={failedArt === townArtSrc ? DEFAULT_TOWN_ART : townArtSrc} onError={() => setFailedArt(townArtSrc)} alt="" className="pointer-events-none absolute bottom-0 right-0 h-[86px] w-[44%] max-w-[190px] select-none object-contain object-right-bottom" />

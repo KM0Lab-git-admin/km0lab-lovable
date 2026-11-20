@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 import { useLang } from "@/contexts/LangContext";
 import type { Promo } from "@/types/promo";
+import { TownTag } from "@/components/TownTag";
 import cine from "@/assets/burbuja/cover-cine.webp.asset.json";
 import culture from "@/assets/burbuja/cover-cultura.webp.asset.json";
 import nature from "@/assets/burbuja/cover-naturaleza.webp.asset.json";
@@ -39,6 +40,7 @@ const EventHeroCarousel = ({ promos, onOpen }: EventHeroCarouselProps) => {
             <span className="flex flex-col gap-2 p-3">
               <span className="line-clamp-2 min-h-10 font-brand text-[17px] font-black leading-tight text-km0-blue-800">{promo.title}</span>
               <span className="flex items-start gap-1.5 font-ui text-xs text-km0-blue-700"><MapPin aria-hidden />{promo.location}</span>
+              {promo.town && !promo.town.isHome && <TownTag townName={promo.town.name} lang={lang} className="self-start" />}
             </span>
           </Button>
         ))}

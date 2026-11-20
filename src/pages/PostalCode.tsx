@@ -9,6 +9,8 @@ import postalCodeMapAsset from "@/assets/postal-code-map.png.asset.json";
 import { lookupTown } from "@/lib/postalCodes";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
+import { useTerritoryFor } from "@/hooks/use-territory";
+import { TownTag } from "@/components/TownTag";
 
 const PostalCode = () => {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ const PostalCode = () => {
   const cityName = validationResult === "found" ? resolvedTown : null;
   const showError = touched && !isNumeric;
   const showNotFound = validationResult === "not_found";
+  const { nearbyTowns } = useTerritoryFor(cityName ? value : null);
 
   useEffect(() => {
     if (!isComplete) {
@@ -91,6 +94,14 @@ const PostalCode = () => {
               <h1 className="font-brand font-medium text-xl vertical-mobile:text-2xl text-km0-teal-600 leading-tight text-center break-words">
                 <span className="mr-1">📍</span>{cityName}
               </h1>
+              {nearbyTowns.length > 0 && (
+                <div className="mt-2 flex flex-col items-center gap-1.5">
+                  <p className="font-body text-xs text-muted-foreground">{t("territory.alsoSee", lang)}</p>
+                  <div className="flex flex-wrap justify-center gap-1.5">
+                    {nearbyTowns.map(town => <TownTag key={town.id} townName={town.name} lang={lang} />)}
+                  </div>
+                </div>
+              )}
             </motion.div>
           ) : (
             <motion.div key="default" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }}>
