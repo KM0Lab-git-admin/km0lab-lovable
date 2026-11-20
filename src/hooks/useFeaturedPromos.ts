@@ -1,11 +1,9 @@
 import { useContentSource } from "@/hooks/use-preview-state";
 import { getScopeEvents } from "@/services/scopeContent";
-import { pickFeatured } from "@/services/municipalListings";
 import { useQuery } from "@tanstack/react-query";
 import { useLocationContext } from "@/hooks/use-location-context";
 
 import { listEvents, type AgendaEvent } from "@/services/eventsApi";
-import { listScopeFeaturedEvents } from "@/services/municipalListings";
 import { useTerritory } from "@/hooks/use-territory";
 import type { Promo } from "@/types/promo";
 import { useAppStore } from "@/stores/useAppStore";
@@ -77,26 +75,17 @@ export function useFeaturedPromos(limit = 4): {
   const { town } = useLocationContext();
   const today = new Date();
   const date = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
-  const { territory, isGrouped, loading: territoryLoading, error: territoryError, reload: reloadTerritory } = useTerritory();
+  const { territory, loading: territoryLoading, error: territoryError, reload: reloadTerritory } = useTerritory();
   const apiLang = lang === "ca" ? "ca" : "es";
   const query = useQuery({ queryKey: ["featured-events", town, lang, limit, date],
-    queryFn: () => listEvents({ poblacion: town, fechaDesde: date, pageSize: limit, lang: apiLang }), staleTime: 300000, enabled: !isGrouped && !territoryLoading && territoryError === null && source !== "sample" });
-  const scopeQuery = useQuery({
-    queryKey: ["scope-featured-events", territory?.scopeId, territory?.homeTownId, territory?.towns.map(item => item.id), lang, limit, date],
-    queryFn: () => territory ? listScopeFeaturedEvents(territory, { fechaDesde: date, lang: apiLang }, limit) : Promise.resolve([]),
-    enabled: isGrouped && source !== "sample", staleTime: 300000,
-  });
+    queryFn: () => listEvents({ poblacion: town, fechaDesde: date, pageSize: limit, lang: apiLang }), staleTime: 300000, enabled: !territoryLoading && territoryError === null && source !== "sample" });
   if (source === "sample") {
     const listing = territory ? getScopeEvents(territory, { fechaDesde: date, lang: apiLang }) : { home: [], nearby: [] };
     return {
-      promos: pickFeatured(listing.home, listing.nearby, limit).map(({ item, town: origin }, i) => ({ ...toPromo(item, i, lang), town: isGrouped ? { name: origin.name, isHome: origin.id === territory?.homeTownId } : undefined })),
+      promos: listing.home.slice(0, limit).map(({ item }, i) => toPromo(item, i, lang)),
       loading: territoryLoading, error: territoryError, reload: reloadTerritory,
     };
   }
-  if (isGrouped) return {
-    promos: (scopeQuery.data ?? []).map(({ item, town: origin }, i) => ({ ...toPromo(item, i, lang), town: { name: origin.name, isHome: origin.id === territory?.homeTownId } })),
-    reload: () => { void scopeQuery.refetch(); }, loading: scopeQuery.isLoading, error: scopeQuery.isError ? "events_error" : null,
-  };
   return { reload: () => { if (territoryError) reloadTerritory(); else void query.refetch(); }, promos: (query.data?.eventos ?? []).map((ev, i) => toPromo(ev, i, lang)), loading: territoryLoading || (territoryError === null && query.isLoading),
     error: territoryError ?? (query.isError ? "events_error" : null) };
 }

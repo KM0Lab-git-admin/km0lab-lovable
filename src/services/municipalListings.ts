@@ -74,17 +74,4 @@ export function listScopeEvents(territory: Territory, params: Omit<ListEventsPar
 }
 
 /** Home items first, with ceil(limit/3) seats reserved for nearby towns; unused seats go to the other group. */
-export function pickFeatured<T>(home: T[], nearby: T[], limit: number): T[] {
-  const nearbyQuota = Math.min(Math.ceil(limit / 3), nearby.length);
-  const homeCount = Math.min(limit - nearbyQuota, home.length);
-  const nearbyCount = Math.min(limit - homeCount, nearby.length);
-  return [...home.slice(0, homeCount), ...nearby.slice(0, nearbyCount)];
-}
 
-/** First page of upcoming events per town, then the featured quota. */
-export async function listScopeFeaturedEvents(
-  territory: Territory, params: Omit<ListEventsParams, "poblacion" | "pageSize" | "page">, limit: number,
-): Promise<ScopedItem<AgendaEvent>[]> {
-  const listing = await listScope(territory, town => listEvents({ ...params, poblacion: town.name, pageSize: limit }).then(result => result.eventos), item => item.id_unico_evento, soonestFirst);
-  return pickFeatured(listing.home, listing.nearby, limit);
-}

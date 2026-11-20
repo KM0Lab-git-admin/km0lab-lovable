@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { listNews, type Noticia } from "@/services/newsApi";
 import { listEvents, type AgendaEvent } from "@/services/eventsApi";
-import { listScopeNews, listScopeEvents, pickFeatured } from "@/services/municipalListings";
+import { listScopeNews, listScopeEvents } from "@/services/municipalListings";
 import type { Territory } from "@/types/territory";
 vi.mock("@/services/eventsApi", () => ({ listEvents: vi.fn() }));
 vi.mock("@/services/newsApi", () => ({ listNews: vi.fn() }));
@@ -27,18 +27,6 @@ describe("scope news", () => {
   it("fails only when every town fails", async () => {
     vi.mocked(listNews).mockRejectedValue(new Error("down"));
     await expect(listScopeNews(territory)).rejects.toThrow();
-  });
-});
-
-describe("featured events quota", () => {
-  it("keeps 2 of 4 seats for nearby towns", () => {
-    expect(pickFeatured(["h1", "h2", "h3", "h4"], ["n1", "n2", "n3"], 4)).toEqual(["h1", "h2", "n1", "n2"]);
-  });
-  it("gives unused nearby seats to the home town", () => {
-    expect(pickFeatured(["h1", "h2", "h3", "h4"], ["n1"], 4)).toEqual(["h1", "h2", "h3", "n1"]);
-  });
-  it("gives unused home seats to nearby towns", () => {
-    expect(pickFeatured(["h1"], ["n1", "n2", "n3", "n4"], 4)).toEqual(["h1", "n1", "n2", "n3"]);
   });
 });
 
