@@ -3,7 +3,7 @@ import { useAppStore } from "@/stores/useAppStore";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapPin, MapPinOff, AlertTriangle, Loader2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import BrandedFrame from "@/components/BrandedFrame";
 import postalCodeMapAsset from "@/assets/postal-code-map.png.asset.json";
 import { lookupTown } from "@/lib/postalCodes";
@@ -11,10 +11,12 @@ import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import { useTerritoryFor } from "@/hooks/use-territory";
 import { TownTag } from "@/components/TownTag";
+import TownArt from "@/components/TownArt";
 
 const PostalCode = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
+  const reduceMotion = useReducedMotion();
 
   const [value, setValue] = useState("");
   const [touched, setTouched] = useState(false);
@@ -27,7 +29,8 @@ const PostalCode = () => {
   const cityName = validationResult === "found" ? resolvedTown : null;
   const showError = touched && !isNumeric;
   const showNotFound = validationResult === "not_found";
-  const { nearbyTowns } = useTerritoryFor(cityName ? value : null);
+  const { homeTown, nearbyTowns } = useTerritoryFor(cityName ? value : null);
+  const townArtSrc = cityName ? homeTown?.artUrl : null;
 
   useEffect(() => {
     if (!isComplete) {
@@ -52,6 +55,8 @@ const PostalCode = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+    setValidationResult("idle");
+    setResolvedTown(null);
     if (!touched) setTouched(true);
   };
 
@@ -71,7 +76,7 @@ const PostalCode = () => {
       {/* Maqueta ÚNICA portrait, centrada verticalmente en el marco. */}
       <div className="w-full max-w-[390px] mx-auto flex flex-col gap-6 vertical-mobile:gap-7 min-h-full justify-center py-4">
         <motion.div
-          className="rounded-3xl overflow-hidden shadow-lg"
+          className="relative aspect-square shrink-0 rounded-3xl overflow-hidden shadow-lg"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.45, delay: 0.15 }}
@@ -79,8 +84,23 @@ const PostalCode = () => {
           <img
             src={postalCodeMapAsset.url}
             alt={t("postal.image_alt", lang)}
-            className="w-full h-auto object-cover"
+            aria-hidden={!!townArtSrc}
+            className="h-full w-full object-cover"
           />
+          <AnimatePresence>
+            {townArtSrc && (
+              <motion.div
+                key={townArtSrc}
+                className="absolute inset-0 flex items-end justify-center bg-km0-yellow-500 px-6 pt-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.18 }}
+              >
+                <TownArt src={townArtSrc} className="pointer-events-none h-full w-full select-none object-contain object-bottom" />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
 
         <motion.div

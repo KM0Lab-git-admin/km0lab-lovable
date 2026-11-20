@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Ilustraciones de pueblos: datos Town.artUrl, TownArt compartida y cuatro assets CDN; principal y código postal conservan medidas, Riells usa genérica/mapa, cambio local y fallos comprobados; 119 pruebas y tipos correctos. Una sola etapa, parada para revisión.
+
 - [x] Agrupación de poblaciones · Etapa 4: noticias sin etiqueta propia repetida, filtro Població, siete comercios por ámbito, sample explícito en cuatro pantallas y Perfil neutro; 106 pruebas y comprobación automática sin errores. Cuatro estados en 375×667 y 1280×550, muestra en 360/390/768/667, Perfil con OTP local guardado/recargado y cambio de pueblo comprobados. Perfil de invitado sigue protegido; Sin lugar viene del campo API sin literal local. Informe final entregado; parado para revisión.
 
 - [x] Agrupación de poblaciones · Etapa 3: noticias compactas en Home, procedencia separada, Notícies por población y Agenda conjunta; 96 pruebas, tipos sin errores, filtros a 360 px, cuatro estados y fallos parciales comprobados. Detalle de noticia vecina real verificado; detalle de evento con respuesta controlada porque la agenda real está vacía. Parado para revisión antes de la etapa 4.

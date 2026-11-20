@@ -30,7 +30,7 @@ export interface HomeContentProps {
   isSample?: boolean;
   onRetryContent?: () => void;
   cityName: string;
-  townArtSrc?: string;
+  townArtSrc?: string | null;
   hasAlerts: boolean;
   onToggleAlerts: () => void;
   /** Saludo ya localizado (e.g. "Bon dia, Aina 👋" o "Hola! 👋"). */

@@ -21,7 +21,8 @@ export function useTerritoryFor(postalCode: string | null) {
   const query = useQuery({ queryKey: ["territory", postalCode], queryFn: () => getTerritory(postalCode ?? ""), enabled: postalCode !== null, staleTime: Infinity });
   const territory = query.data ?? null;
   return {
-    territory, nearbyTowns: territory?.towns.filter(town => town.id !== territory.homeTownId) ?? [],
+    territory, homeTown: territory?.towns.find(town => town.id === territory.homeTownId) ?? null,
+    nearbyTowns: territory?.towns.filter(town => town.id !== territory.homeTownId) ?? [],
     loading: query.isLoading && postalCode !== null, error: query.error?.message ?? null, reload: () => { void query.refetch(); },
   };
 }

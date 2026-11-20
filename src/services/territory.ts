@@ -1,4 +1,4 @@
-import { SCOPE_DEFINITIONS } from "@/data/territories";
+import { SCOPE_DEFINITIONS, SINGLE_TOWN_ART } from "@/data/territories";
 import { MOCK_POSTAL_CODES } from "@/data/mockPostalCodes";
 import type { Territory, Town } from "@/types/territory";
 
@@ -24,5 +24,5 @@ export async function getTerritory(postalCode: string): Promise<Territory | null
   if (!name) return null;
   const id = slug(name);
   const postalCodes = Object.keys(MOCK_POSTAL_CODES).filter(code => MOCK_POSTAL_CODES[code] === name);
-  return { scopeId: `town-${id}`, scopeName: name, homeTownId: id, towns: [{ id, name, postalCodes }] };
+  return { scopeId: `town-${id}`, scopeName: name, homeTownId: id, towns: [{ id, name, postalCodes, artUrl: SINGLE_TOWN_ART[id] ?? null }] };
 }

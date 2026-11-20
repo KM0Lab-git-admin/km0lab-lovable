@@ -126,7 +126,10 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
 
     label: "PostalCode",
     path: "/postal-code",
-    states: [{ id: "default", label: "Por defecto", src: "/postal-code", notes: "Ilustración isométrica de la plaza (fuente, ayuntamiento, panadería, farmacia, cafetería y frutería) a ancho completo y sin recortes; el resto de la pantalla no cambia." }],
+    states: [
+      { id: "default", label: "Por defecto", src: "/postal-code", notes: "Mapa isométrico a ancho completo y sin recortes. Tarjeta cuadrada de dimensiones estables." },
+      { id: "town-art", label: "Pueblo con ilustración", src: "/postal-code", notes: "Introducir 17400, 17450, 08380 o 17300: ilustración decorativa del pueblo sobre amarillo KM0, fundido corto sin movimiento y sin animación con reduced motion. Al borrar o cambiar el código vuelve el mapa; 17404 conserva el mapa. Misma tarjeta y medidas." },
+    ],
   },
   {
     id: "login",
@@ -189,7 +192,7 @@ export const PREVIEW_SCREENS: PreviewScreen[] = [
       { id: "loading", label: "Carga", src: "/home?state=loading" },
       { id: "empty", label: "Vacío", src: "/home?state=empty" },
       { id: "error", label: "Error", src: "/home?state=error" },
-      { id: "grouped-scope", label: "Ámbito agrupado (CP 17400)", src: "/home", notes: "Con CP de un ámbito agrupado: etiqueta «El teu poble» y nombre como botón que abre TownPickerSheet (BubbleSheet), línea de ámbito, eventos destacados del ámbito (máx. 4, 2 plazas reservadas a vecinas con TownTag) y noticias compactas con miniatura de 64px, titular a dos líneas y fecha en dos bloques: «Notícies de {població}» (máx. 2) y «A prop teu» (máx. 3, TownTag en línea propia encima del titular). Con CP de una sola población (08380) se ve como antes." },
+      { id: "grouped-scope", label: "Ámbito agrupado (CP 17400)", src: "/home", notes: "Cabecera con TownArt del pueblo de referencia desde Town.artUrl; genérica durante carga, sin ilustración (17404) o si falla. Cambiar a 17450 en TownPickerSheet cambia la ilustración sin modificar medidas. Etiqueta «El teu poble», línea de ámbito, carrusel existente y dos bloques de noticias compactas conservados." },
       { id: "account-points", label: "Acceso a puntos sin sesión", src: "/home?access=points", notes: "AccountBottomTabs reutiliza el panel contextual de cuenta de todos los interiores, correo y OTP simulado con retorno a puntos; cerrar conserva la pantalla y limpia access." },
       { id: "account-rewards", label: "Acceso a premios sin sesión", src: "/home?access=rewards" },
       { id: "account-profile", label: "Acceso a perfil sin sesión", src: "/home?access=profile" },

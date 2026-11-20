@@ -9,7 +9,6 @@ import { useProfile } from "@/hooks/useProfile";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
-import { getTownArt } from "@/data/townArt";
 import { usePreviewState, getContentPath } from "@/hooks/use-preview-state";
 import HomeContent from "@/components/HomeContent";
 
@@ -43,7 +42,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const { profile } = useProfile();
   const account = useAccount();
   const { summary: invitationSummary } = useInviteSummary();
-  const { town: cityName, postalCode } = useLocationContext();
+  const { town: cityName } = useLocationContext();
   const { lang } = useLang();
   const navigate = useNavigate();
   const preview = usePreviewState(false, false, false);
@@ -173,7 +172,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     isSample: preview.isSample,
     onRetryContent: reloadContent,
     cityName,
-    townArtSrc: getTownArt(postalCode),
+    townArtSrc: territory.loading ? null : territory.homeTown?.artUrl,
     hasAlerts: hasUnread,
     onToggleAlerts: openNotifications,
     greeting,

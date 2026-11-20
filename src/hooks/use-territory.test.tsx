@@ -4,7 +4,7 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import { useTerritory } from "@/hooks/use-territory";
+import { useTerritory, useTerritoryFor } from "@/hooks/use-territory";
 import { useScopeNews } from "@/hooks/use-scope-news";
 import { useScopeEvents } from "@/hooks/use-scope-events";
 import { getTerritory } from "@/services/territory";
@@ -24,6 +24,15 @@ const waitFor = (check: () => void) => vi.waitFor(check);
 const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}><MemoryRouter>{children}</MemoryRouter></QueryClientProvider>;
 
 describe("territory hooks error shape", () => {
+  it("useTerritoryFor exposes the reference town with its artwork before location is saved", async () => {
+    vi.mocked(getTerritory).mockResolvedValue({ scopeId: "s", scopeName: "S", homeTownId: "reference", towns: [
+      { id: "nearby", name: "Nearby", postalCodes: ["12344"] },
+      { id: "reference", name: "Reference", postalCodes: ["12345"], artUrl: "/reference.webp" },
+    ] });
+    const { result } = renderHook(() => useTerritoryFor("12345"));
+    await waitFor(() => expect(result.current.homeTown?.artUrl).toBe("/reference.webp"));
+    expect(result.current.homeTown?.id).toBe("reference");
+  });
   it("useTerritory exposes the failure as a message string", async () => {
     vi.mocked(getTerritory).mockRejectedValueOnce(new Error("territory down"));
     const { result } = renderHook(() => useTerritory());
