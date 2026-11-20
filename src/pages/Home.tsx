@@ -10,6 +10,7 @@ import { useNotifications } from "@/hooks/useNotifications";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
 import { getTownArt } from "@/data/townArt";
+import { usePreviewState, getContentPath } from "@/hooks/use-preview-state";
 import HomeContent from "@/components/HomeContent";
 
 import NotificationsOverlay from "@/components/NotificationsOverlay";
@@ -45,6 +46,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const { town: cityName, postalCode } = useLocationContext();
   const { lang } = useLang();
   const navigate = useNavigate();
+  const preview = usePreviewState(false, false, false);
+  const contentPath = (path: string) => getContentPath(path, preview.isSample ? "sample" : "live");
 
   // Estado real según sesión: sin user → mostrar CTA de login y ocultar
   // puntos / acceso a perfil. Con user → al revés.
@@ -71,7 +74,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const [moduleSeeds, setModuleSeeds] = useState<HomeModuleSeed[]>(INITIAL_MODULES);
   const [sheetContainer, setSheetContainer] = useState<HTMLDivElement | null>(null);
 
-  const { promos, loading: eventsLoading, error: eventsError } = useFeaturedPromos(4);
+  const { promos, loading: eventsLoading, error: eventsError, reload: reloadEvents } = useFeaturedPromos(4);
 
   const territory = useTerritory();
   const scopeNews = useScopeNews();
@@ -90,8 +93,8 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     newsLoading: scopeNews.loading,
     newsError: scopeNews.error,
     reloadNews: scopeNews.reload,
-    onSeeAllNews: () => navigate("/news"),
-    onOpenNews: (id: string) => navigate(`/news?id=${encodeURIComponent(id)}`),
+    onSeeAllNews: () => navigate(contentPath("/news")),
+    onOpenNews: (id: string) => navigate(contentPath(`/news?id=${encodeURIComponent(id)}`)),
   } : undefined;
 
   const { rewards, loading: rewardsLoading, error: rewardsError, reload: reloadRewards } = usePublicRewards();
@@ -113,15 +116,15 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
           onClick: () => {
             if (!active) return;
             if (m.id === "agenda") {
-              navigate("/events");
+              navigate(contentPath("/events"));
               return;
             }
             if (m.id === "noticias") {
-              navigate("/news");
+              navigate(contentPath("/news"));
               return;
             }
             if (m.id === "comerc") {
-              navigate("/merchants");
+              navigate(contentPath("/merchants"));
               return;
             }
             if (m.id === "premis") {
@@ -132,7 +135,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
           },
         };
       }),
-    [moduleSeeds, lang, navigate],
+    [moduleSeeds, lang, navigate, preview.isSample],
   );
 
 
@@ -164,7 +167,11 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
   const nextLevel = level * 1000;
   const nextReward = rewards.find(reward => reward.costPoints > points)?.title;
 
+  const reloadContent = () => preview.retry(() => { reloadEvents(); scopeNews.reload(); reloadRewards(); });
   const sharedProps = {
+    contentState: preview.state,
+    isSample: preview.isSample,
+    onRetryContent: reloadContent,
     cityName,
     townArtSrc: getTownArt(postalCode),
     hasAlerts: hasUnread,
@@ -199,7 +206,7 @@ const Home = ({ forceAuthState }: HomeProps = {}) => {
     invitationSummary: isAuthed ? invitationSummary : null,
     showLogin,
     showPoints,
-    onSeeAllEvents: () => navigate("/events"),
+    onSeeAllEvents: () => navigate(contentPath("/events")),
     onSeeAllRewards: () => navigate("/rewards"),
     onSeeAllPromos: () => navigate("/rewards?tab=promos"),
     onOpenEvent: (id: string) => navigate(`/event?id=${id}`),

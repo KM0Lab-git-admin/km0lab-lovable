@@ -1,3 +1,4 @@
+import { useContentSource } from "@/hooks/use-preview-state";
 import { useQuery } from "@tanstack/react-query";
 import { useTerritory } from "@/hooks/use-territory";
 import { listScopeEvents } from "@/services/municipalListings";
@@ -5,10 +6,11 @@ import type { ListEventsParams, AgendaEvent } from "@/services/eventsApi";
 import type { ScopeListing } from "@/types/territory";
 
 export function useScopeEvents(params: Omit<ListEventsParams, "poblacion"> = {}) {
+  const source = useContentSource();
   const { territory, loading: territoryLoading, error: territoryError, reload: reloadTerritory } = useTerritory();
   const query = useQuery<ScopeListing<AgendaEvent>>({
-    queryKey: ["scope-events", territory?.scopeId, territory?.homeTownId, territory?.towns.map(town => town.id), params],
-    queryFn: () => territory ? listScopeEvents(territory, params) : Promise.resolve({ home: [], nearby: [], failedTownIds: [] }),
+    queryKey: ["scope-events", territory?.scopeId, territory?.homeTownId, territory?.towns.map(town => town.id), params, source],
+    queryFn: () => territory ? listScopeEvents(territory, params, source) : Promise.resolve({ home: [], nearby: [], failedTownIds: [] }),
     enabled: territory !== null,
     staleTime: 300000,
   });

@@ -348,7 +348,7 @@ const Agenda = () => {
     return Array.from(map.values());
   }, [filtered]);
 
-  const { state, retry } = usePreviewState(loading, error !== null, grouped.length === 0);
+  const { state, retry, isSample } = usePreviewState(loading, error !== null, grouped.length === 0);
 
   /* ─── Render ─────────────────────────────────────── */
   const content = (
@@ -383,7 +383,7 @@ const Agenda = () => {
             onClear={() => setSelected([])}
           />
           {isGrouped && <CategoryFilterMenu
-            title={t("territory.allTowns", lang)} icon={<MapPin aria-hidden className="!h-4 !w-4" />}
+            title={t("territory.townFilter", lang)} icon={<MapPin aria-hidden className="!h-4 !w-4" />}
             allOption={{ key: "all", label: t("territory.allTowns", lang), icon: <MapPin size={16} /> }}
             options={territory?.towns.map(origin => ({ key: origin.id, label: origin.name, icon: <MapPin size={16} /> })) ?? []}
             selected={selectedTown ? [selectedTown] : []} onToggle={setSelectedTown} onClear={() => setSelectedTown(null)}
@@ -417,6 +417,7 @@ const Agenda = () => {
           className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain space-y-3 -mx-4 px-4 pb-4"
           ref={scrollRef}
         >
+          {isSample && <p role="status" className="font-ui text-xs font-bold text-km0-coral-700">{t("territory.sampleContent", lang)}</p>}
           <ScreenStatus state={state} emptyKey="agenda.empty.title" onRetry={() => retry(scope.reload)} />
           {state !== "loading" && state !== "error" && failures.map(origin => <p key={origin.id} role="status" className="font-body text-xs text-muted-foreground">{tf("territory.townUnavailable", lang, { town: origin.name })}</p>)}
 

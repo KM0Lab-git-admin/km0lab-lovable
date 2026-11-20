@@ -25,6 +25,8 @@ export const useProfile = () => {
   return {
     profile,
     loading: false,
+    error: null as string | null,
+    reload: () => {/* reactive store requires no refresh */},
     refetch: () => {/* no-op: el store es la fuente de verdad */},
   };
 };

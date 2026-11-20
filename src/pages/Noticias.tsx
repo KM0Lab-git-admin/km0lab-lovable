@@ -136,12 +136,12 @@ const Noticias = () => {
 
   const allNews = useMemo(() => [...scope.home, ...scope.nearby], [scope.home, scope.nearby]);
   const visible = filterScopeTown(allNews, selectedTown);
-  const { state, retry } = usePreviewState(scope.loading, scope.error !== null, visible.length === 0);
+  const { state, retry, isSample } = usePreviewState(scope.loading, scope.error !== null, visible.length === 0);
   const load = () => retry(scope.reload);
   const opened = openId ? allNews.find(entry => entry.item.id === openId) ?? null : null;
   const failures = territory?.towns.filter(entry => scope.failedTownIds.includes(entry.id) && (selectedTown === null || entry.id === selectedTown)) ?? [];
-  const renderCard = ({ item, town: origin }: ScopedItem<Noticia>) => (
-    <NoticiaCard key={item.id} noticia={item} lang={lang} town={isGrouped ? { name: origin.name, isHome: origin.id === homeTown?.id } : undefined} onOpen={() => openNoticia(item.id)} />
+  const renderCard = ({ item, town: origin }: ScopedItem<Noticia>, showTown = true) => (
+    <NoticiaCard key={item.id} noticia={item} lang={lang} town={isGrouped && showTown ? { name: origin.name, isHome: origin.id === homeTown?.id } : undefined} onOpen={() => openNoticia(item.id)} />
   );
   const renderFailure = (origin: Town) => <p key={origin.id} role="status" className="font-body text-xs text-muted-foreground">{tf("territory.townUnavailable", lang, { town: origin.name })}</p>;
 
@@ -187,20 +187,21 @@ const Noticias = () => {
               {territory?.towns.map(origin => <div key={origin.id} className="shrink-0"><FilterChip label={origin.name} active={selectedTown === origin.id} onClick={() => setSelectedTown(origin.id)} /></div>)}
             </div>}
             <motion.section key="list" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden touch-pan-y overscroll-contain -mx-4 px-4 pb-4 space-y-3" ref={scrollRef}>
+              {isSample && <p role="status" className="font-ui text-xs font-bold text-km0-coral-700">{t("territory.sampleContent", lang)}</p>}
               <ScreenStatus state={state} emptyKey="news.empty.title" onRetry={load} />
-              {state !== "loading" && state !== "error" && (!isGrouped || selectedTown !== null) && <>{failures.map(renderFailure)}{state === "ready" && visible.map(renderCard)}</>}
+              {state !== "loading" && state !== "error" && (!isGrouped || selectedTown !== null) && <>{failures.map(renderFailure)}{state === "ready" && visible.map(entry => renderCard(entry))}</>}
               {state === "empty" && isGrouped && selectedTown === null && failures.map(renderFailure)}
               {state === "ready" && isGrouped && selectedTown === null && <>
                 {(scope.home.length > 0 || failures.some(origin => origin.id === homeTown?.id)) && <section className="space-y-3">
                   <SectionHeader title={tf("territory.newsFrom", lang, { town: homeTown?.name ?? town })} aside={<TownTag townName={homeTown?.name ?? town} isHome lang={lang} />} />
                   {failures.filter(origin => origin.id === homeTown?.id).map(renderFailure)}
-                  {visibleHomeNews(scope.home, expanded).map(renderCard)}
+                  {visibleHomeNews(scope.home, expanded).map(entry => renderCard(entry, false))}
                   {!expanded && scope.home.length > 5 && <Button variant="bubbleLink" onClick={() => setExpanded(true)}>{tf("territory.moreNewsFrom", lang, { town: homeTown?.name ?? town })}</Button>}
                 </section>}
                 {(scope.nearby.length > 0 || failures.some(origin => origin.id !== homeTown?.id)) && <section className="space-y-3">
                   <SectionHeader title={t("territory.nearYou", lang)} />
                   {failures.filter(origin => origin.id !== homeTown?.id).map(renderFailure)}
-                  {scope.nearby.map(renderCard)}
+                  {scope.nearby.map(entry => renderCard(entry))}
                 </section>}
               </>}
             </motion.section>

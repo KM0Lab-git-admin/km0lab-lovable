@@ -1,3 +1,5 @@
+import ScreenStatus from "@/components/ScreenStatus";
+import type { ScreenState } from "@/hooks/use-preview-state";
 import HomeModules, { type HomeModule } from "@/components/HomeModules";
 import HomeHero from "@/components/HomeHero";
 import EventHeroCarousel from "@/components/EventHeroCarousel";
@@ -24,6 +26,9 @@ import type { InvitationsSummary } from "@/types/invitation";
 
 
 export interface HomeContentProps {
+  contentState?: ScreenState;
+  isSample?: boolean;
+  onRetryContent?: () => void;
   cityName: string;
   townArtSrc?: string;
   hasAlerts: boolean;
@@ -89,6 +94,9 @@ export interface HomeScopeProps {
 
 
 const HomeContent = ({
+  contentState = "ready",
+  isSample = false,
+  onRetryContent = () => {},
   cityName,
   townArtSrc,
   hasAlerts,
@@ -147,6 +155,9 @@ const HomeContent = ({
 
       <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col cursor-grab data-[dragging=true]:cursor-grabbing data-[dragging=true]:select-none">
         <div className="relative z-10 flex flex-col gap-5 px-4 pt-4 pb-7">
+          {isSample && <p role="status" className="font-ui text-xs font-bold text-km0-coral-700">{t("territory.sampleContent", lang)}</p>}
+          <ScreenStatus state={contentState} emptyKey="news.empty.title" onRetry={onRetryContent} />
+          {contentState === "ready" && <>
           {scope && <p className="-mb-2 font-body text-xs text-muted-foreground">{t("territory.groupedIntro", lang)}</p>}
           <section className="flex flex-col gap-3">
             {showLogin && <JoinCard onCreateAccount={onLogin} onLogin={onLogin} onHowItWorks={onHowItWorks} />}
@@ -162,7 +173,7 @@ const HomeContent = ({
 
           <section className="space-y-3">
             <SectionHeader title={t("home.section.events", lang)} actionLabel={t("home.action.see_all_m", lang)} onAction={onSeeAllEvents} />
-            {eventsLoading ? <div aria-busy className="h-40 animate-pulse rounded-3xl bg-muted" /> : eventsError ? <p role="alert" className="font-body text-xs text-destructive">{t("agenda.error", lang)}</p> : promos.length === 0 ? <p className="font-body text-xs text-muted-foreground">{t("agenda.empty.title", lang)}</p> : <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />}
+            {eventsLoading ? <div aria-busy className="h-40 animate-pulse rounded-3xl bg-muted" /> : eventsError ? <div role="alert"><p className="font-body text-xs text-destructive">{t("agenda.error", lang)}</p><Button variant="bubbleLink" onClick={onRetryContent}>{t("merchants.error.retry", lang)}</Button></div> : promos.length === 0 ? <p className="font-body text-xs text-muted-foreground">{t("agenda.empty.title", lang)}</p> : <EventHeroCarousel promos={promos} onOpen={onOpenEvent} />}
           </section>
 
           {scope && <HomeScopeNews scope={scope} />}
@@ -186,6 +197,7 @@ const HomeContent = ({
             />
           </div>
 
+          </>}
         </div>
       </div>
 

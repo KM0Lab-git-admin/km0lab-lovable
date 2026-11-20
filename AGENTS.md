@@ -15,6 +15,8 @@
 
 - Preserve API-provided reward translations in local redemption snapshots, so changing language never rewrites the redeemed item or its cost.
 
+- Use useProfile for reactive profile reads and services/profile for local profile updates; presentation never imports the mock implementation.
+
 - Use useAccount for localized account reads and redeemReward for redemption writes in product presentation; only the service assigns nullable collection codes so swapping production implementations does not require screen edits.
 
 - Product pages and components must consume stable, neutrally named data hooks/services, never mock stores/services or domain fixtures; data layers must not import presentation or contexts, data hooks expose loading/error/reload, and business rules stay outside presentation so production can replace implementations without editing screens (docs/KNOWLEDGE.md §5.1; migration reference: docs/ENCARGOS-LOVABLE.md).
@@ -27,3 +29,6 @@
 
 - Use getTerritory/useTerritory for scope and town ordering, and listScopeNews/listScopeEvents (one request per town, allSettled, home-town dedupe) via useScopeNews/useScopeEvents; town names live only in data, so 1-to-N town scopes need no screen edits.
 - Reuse NoticiaCard variants for Home/list news and scope category reads through useScopeCategories; keep town filtering, initial news limits and category counting in lib/scopeListings so grouped screens share tested behavior without changing API contracts.
+
+- Keep explicit preview content in data/sampleScope behind services/scopeContent; source-specific query keys prevent sample/live cache contamination, and sample remains a data source alongside the four screen states.
+- Scope listShops through an optional Territory and share filterShops for search/category/town filtering; omit grouped presentation for single-town scopes to preserve the existing view.

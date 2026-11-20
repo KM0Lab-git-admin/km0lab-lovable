@@ -1,3 +1,4 @@
+import { getScopeNews, getScopeEvents } from "@/services/scopeContent";
 import { listEvents, type ListEventsParams, type AgendaEvent } from "@/services/eventsApi";
 import { listNews, type ListNewsParams, type Noticia } from "@/services/newsApi";
 import type { ScopeListing, ScopedItem, Territory, Town } from "@/types/territory";
@@ -62,11 +63,13 @@ const soonestFirst = (a: AgendaEvent, b: AgendaEvent) =>
   `${a.fecha_inicio ?? "9999"}${a.hora_inicio ?? ""}`.localeCompare(`${b.fecha_inicio ?? "9999"}${b.hora_inicio ?? ""}`);
 
 /** One request per town in parallel; a failing town does not hide the others. */
-export function listScopeNews(territory: Territory, params: Omit<ListNewsParams, "city"> = {}): Promise<ScopeListing<Noticia>> {
+export function listScopeNews(territory: Territory, params: Omit<ListNewsParams, "city"> = {}, source: "live" | "sample" = "live"): Promise<ScopeListing<Noticia>> {
+  if (source === "sample") return Promise.resolve(getScopeNews(territory));
   return listScope(territory, town => listMunicipalNews({ ...params, city: town.name }), item => item.id, newestFirst);
 }
 
-export function listScopeEvents(territory: Territory, params: Omit<ListEventsParams, "poblacion"> = {}): Promise<ScopeListing<AgendaEvent>> {
+export function listScopeEvents(territory: Territory, params: Omit<ListEventsParams, "poblacion"> = {}, source: "live" | "sample" = "live"): Promise<ScopeListing<AgendaEvent>> {
+  if (source === "sample") return Promise.resolve(getScopeEvents(territory, params));
   return listScope(territory, town => listMunicipalEvents({ ...params, poblacion: town.name }), item => item.id_unico_evento, soonestFirst);
 }
 

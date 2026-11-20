@@ -6,7 +6,8 @@ import { motion } from "framer-motion";
 import { LogOut, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { getProfile, updateProfile } from "@/services/mock/profile";
+import { updateProfile } from "@/services/profile";
+import { useProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/hooks/useAuth";
 import { useLang } from "@/contexts/LangContext";
 import { t } from "@/lib/i18n";
@@ -37,7 +38,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
   const { user, signOut } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const { profile, loading } = useProfile();
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<ProfileForm>({
     first_name: "",
@@ -65,15 +66,8 @@ const Profile = () => {
 
 
   useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      const data = await getProfile(user.id);
-      if (cancelled) return;
-      if (data) {
+    if (profile) {
+      const data = profile;
         setForm({
           first_name: data.first_name ?? "",
           last_name: data.last_name ?? "",
@@ -81,13 +75,8 @@ const Profile = () => {
           birth_date: data.birth_date ?? "",
         });
 
-      }
-      setLoading(false);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [user]);
+    }
+  }, [profile]);
 
   const handleChange = (key: keyof ProfileForm) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [key]: e.target.value }));

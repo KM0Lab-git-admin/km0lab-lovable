@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Agrupación de poblaciones · Etapa 4: noticias sin etiqueta propia repetida, filtro Població, siete comercios por ámbito, sample explícito en cuatro pantallas y Perfil neutro; 106 pruebas y comprobación automática sin errores. Cuatro estados en 375×667 y 1280×550, muestra en 360/390/768/667, Perfil con OTP local guardado/recargado y cambio de pueblo comprobados. Perfil de invitado sigue protegido; Sin lugar viene del campo API sin literal local. Informe final entregado; parado para revisión.
+
 - [x] Agrupación de poblaciones · Etapa 3: noticias compactas en Home, procedencia separada, Notícies por población y Agenda conjunta; 96 pruebas, tipos sin errores, filtros a 360 px, cuatro estados y fallos parciales comprobados. Detalle de noticia vecina real verificado; detalle de evento con respuesta controlada porque la agenda real está vacía. Parado para revisión antes de la etapa 4.
 
 - [x] Portabilidad · Encargo 4: hooks de comercios/promociones, distancia anulable, servicio y tipos de escáner neutros, campana y municipio compartidos; 79 pruebas aprobadas y comercios, dos fichas, notificaciones, reintentos, promociones y cinco casos del escáner comprobados con sesión 123456. Sin rediseño.

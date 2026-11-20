@@ -1,3 +1,4 @@
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
@@ -20,7 +21,7 @@ function renderHook<T>(hook: () => T): { result: { current: T } } {
   return { result };
 }
 const waitFor = (check: () => void) => vi.waitFor(check);
-const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>{children}</QueryClientProvider>;
+const wrapper = ({ children }: { children: ReactNode }) => <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}><MemoryRouter>{children}</MemoryRouter></QueryClientProvider>;
 
 describe("territory hooks error shape", () => {
   it("useTerritory exposes the failure as a message string", async () => {
